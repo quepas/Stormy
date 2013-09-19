@@ -3,6 +3,7 @@ __author__ = 'Quepas'
 from html.parser import HTMLParser
 from xml.parsers.expat import XMLParserType
 from xml.parsers.expat import ParserCreate
+import xml.etree.ElementTree as ETree
 import re
 
 class MeteoADataParser(HTMLParser):
@@ -52,7 +53,56 @@ class MeteoADataParser(HTMLParser):
         return result
 
 class MeteoBDataParser(HTMLParser):
-    pass
+    data = {}
+
+    def parse(self, fileName, encoding="UTF-8"):
+        text = open(fileName, encoding=encoding).read()
+        content = self.extractTable(text)
+        root = ETree.fromstring(content)
+        if root.tag == "tbody":
+            self.parseData(root)
+
+    def parseText(self, text, encoding="UTF-8"):
+        content = self.extractTable(text)
+        print(self.addTBodyTags(content))
+        root = ETree.fromstring(self.addTBodyTags(content))
+        if root.tag == "tbody":
+            self.parseData(root)
+
+    def parseData(self, root):
+        for child in root:
+            if child.tag == "tr":
+                row = self.parseSingleRow(child)
+                if row != None:
+                    self.data.update(row)
+
+    def parseSingleRow(self, tr):
+        if len(tr) == 2:
+            return {tr[0][0].text : tr[1][0].text}
+
+    def extractBody(self, text):
+        lowerText = text.lower()
+        bodyStart = lowerText.find("<body>")
+        if bodyStart > -1:
+            bodyEnd = lowerText.rfind("</body>")
+            return text[bodyStart+6 : bodyEnd].strip()
+
+    def extractTable(self, text):
+        lowerText = text.lower()
+        tableTagStart = lowerText.find("<table>")
+        if tableTagStart > -1:
+            tableTagEnd = lowerText.rfind("</table>")
+            return text[tableTagStart+7 : tableTagEnd].strip()
+
+    def removeDiv(self, text):
+        lowerText = text.lower()
+        divEndTag = lowerText.find("</div>")
+        if divEndTag > -1:
+            divEndTag += 6
+            return text[divEndTag:]
+
+    def addTBodyTags(self, text):
+        return "<tbody>" + text + "</tbody>"
 
 class MeteoStationParser():
     parser = ParserCreate()
@@ -63,14 +113,16 @@ class MeteoStationParser():
         self.parser.CharacterDataHandler = self.handle_data
 
     def handle_startelem(self, name, attrs):
-        print("Start: ")
-        print(name)
-        print(attrs)
-    def handle_endelem(self, name):
-        print("End: ")
-        print(name)
-    def handle_data(self, data):
-        print("Data: " + data)
+        if name == "station":
+            print("Start: ")
+            print(name)
+            print(attrs)
+    def handle_endelem(self, name): pass
+        #print("End: ")
+        #print(name)
+    def handle_data(self, data): pass
+        #print("Data: " + data)
+
     def Parse(self, data):
         self.parser.Parse(data)
 

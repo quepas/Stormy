@@ -1,17 +1,17 @@
 <stations>
-<station>
-	<name>Wisła Malink</name>
-	<coordinate></coordinate>
-	<url>http://stacjameteo.pl/dane/index.php?stacja=21</url>
-</station>
-<station>
-	<name>Brenna</name>
-	<coordinate></coordinate>
-	<url>http://stacjameteo.pl/dane/index.php?stacja=23</url>
-</station>
-<station>
-	<name>Meteo na Jeziorze</name>
-	<coordinate></coordinate>
-	<url>http://stacjameteo.pl/dane/index.php?stacja=24</url>
-</station>
+	<station>
+		<name>Wisła Malink</name>
+		<coordinate></coordinate>
+		<url>http://stacjameteo.pl/dane/index.php?stacja=21</url>
+	</station>
+	<station>
+		<name>Brenna</name>
+		<coordinate></coordinate>
+		<url>http://stacjameteo.pl/dane/index.php?stacja=23</url>
+	</station>
+	<station>
+		<name>Meteo na Jeziorze</name>
+		<coordinate></coordinate>
+		<url>http://stacjameteo.pl/dane/index.php?stacja=24</url>
+	</station>
 </stations>
