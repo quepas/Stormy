@@ -64,7 +64,6 @@ class MeteoBDataParser(HTMLParser):
 
     def parseText(self, text, encoding="UTF-8"):
         content = self.extractTable(text)
-        print(self.addTBodyTags(content))
         root = ETree.fromstring(self.addTBodyTags(content))
         if root.tag == "tbody":
             self.parseData(root)
