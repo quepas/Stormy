@@ -93,13 +93,6 @@ class MeteoBDataParser(HTMLParser):
             tableTagEnd = lowerText.rfind("</table>")
             return text[tableTagStart+7 : tableTagEnd].strip()
 
-    def removeDiv(self, text):
-        lowerText = text.lower()
-        divEndTag = lowerText.find("</div>")
-        if divEndTag > -1:
-            divEndTag += 6
-            return text[divEndTag:]
-
     def addTBodyTags(self, text):
         return "<tbody>" + text + "</tbody>"
 
