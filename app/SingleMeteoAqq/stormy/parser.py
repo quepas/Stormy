@@ -5,6 +5,7 @@ from xml.parsers.expat import XMLParserType
 from xml.parsers.expat import ParserCreate
 import xml.etree.ElementTree as ETree
 import re
+from urllib import request
 
 class MeteoADataParser(HTMLParser):
     allData = []
@@ -62,11 +63,25 @@ class MeteoBDataParser(HTMLParser):
         if root.tag == "tbody":
             self.parseData(root)
 
-    def parseText(self, text, encoding="UTF-8"):
+    def parseFromHtml(self, url, encoding="UTF-8"):
+        sock = request.urlopen(url);
+        htmlSource = str(sock.read(), encoding)
+        self.parseText(htmlSource)
+        sock.close()
+
+    def parseText(self, text):
+        text = self.prepareProperHtml(text)
         content = self.extractTable(text)
         root = ETree.fromstring(self.addTBodyTags(content))
         if root.tag == "tbody":
             self.parseData(root)
+
+    def prepareProperHtml(self, text):
+        return text.replace(" class=tr-0", "")\
+                   .replace(" class=tr-1", "")\
+                   .replace("&deg;", "°")\
+                   .replace("&sup2;", "²")\
+                   .replace("<tr/>", "</tr>");
 
     def parseData(self, root):
         for child in root:
@@ -79,13 +94,6 @@ class MeteoBDataParser(HTMLParser):
         if len(tr) == 2:
             return {tr[0][0].text : tr[1][0].text}
 
-    def extractBody(self, text):
-        lowerText = text.lower()
-        bodyStart = lowerText.find("<body>")
-        if bodyStart > -1:
-            bodyEnd = lowerText.rfind("</body>")
-            return text[bodyStart+6 : bodyEnd].strip()
-
     def extractTable(self, text):
         lowerText = text.lower()
         tableTagStart = lowerText.find("<table>")
@@ -95,26 +103,3 @@ class MeteoBDataParser(HTMLParser):
 
     def addTBodyTags(self, text):
         return "<tbody>" + text + "</tbody>"
-
-class MeteoStationParser():
-    parser = ParserCreate()
-
-    def __init__(self):
-        self.parser.StartElementHandler = self.handle_startelem
-        self.parser.EndElementHandler = self.handle_endelem
-        self.parser.CharacterDataHandler = self.handle_data
-
-    def handle_startelem(self, name, attrs):
-        if name == "station":
-            print("Start: ")
-            print(name)
-            print(attrs)
-    def handle_endelem(self, name): pass
-        #print("End: ")
-        #print(name)
-    def handle_data(self, data): pass
-        #print("Data: " + data)
-
-    def Parse(self, data):
-        self.parser.Parse(data)
-
