@@ -1,4 +1,4 @@
 Stormy
 ======
 
-Download and presentation of weather data
+Acquisition, aggregation, analysis, visualization of weather data.
