@@ -72,6 +72,7 @@ class MeteoBDataParser(HTMLParser):
     def parseText(self, text):
         text = self.prepareProperHtml(text)
         content = self.extractTable(text)
+        content = self.removeDiv(content)
         root = ETree.fromstring(self.addTBodyTags(content))
         if root.tag == "tbody":
             self.parseData(root)
@@ -103,3 +104,10 @@ class MeteoBDataParser(HTMLParser):
 
     def addTBodyTags(self, text):
         return "<tbody>" + text + "</tbody>"
+
+    def removeDiv(self, text):
+        lowerText = text.lower()
+        divEndTag = lowerText.find("</div>")
+        if divEndTag > -1:
+            divEndTag += 6
+            return text[divEndTag:]
