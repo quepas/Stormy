@@ -111,3 +111,5 @@ class MeteoBDataParser(HTMLParser):
         if divEndTag > -1:
             divEndTag += 6
             return text[divEndTag:]
+        else:
+            return text
