@@ -34,3 +34,12 @@ nosetests.xml
 .idea/
 *.iml
 *.iws
+
+# Visual C++
+*.opensdf
+*.sdf
+*.sln
+*.suo
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
