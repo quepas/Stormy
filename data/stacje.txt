@@ -42,3 +42,7 @@ Stacjameteo.pl (dane zebrane, mało znane źródła)
 12. Dane meteo ze stacji Elbląg (http://stacjameteo.pl/dane/index.php?stacja=34)
 13. Dane meteo ze stacji Włocławek (http://stacjameteo.pl/dane/index.php?stacja=35)
 14. Dane meteo ze stacji Biebrza (http://stacjameteo.pl/dane/index.php?stacja=37)
+
+D:
+stajce zebrane:
+http://stacjapogody.waw.pl/index.php?id=mapastacji

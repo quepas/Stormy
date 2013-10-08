@@ -44,3 +44,5 @@ nosetests.xml
 *.vcxproj.filters
 *.vcxproj.user
 ipch/
+Debug/
+Release/

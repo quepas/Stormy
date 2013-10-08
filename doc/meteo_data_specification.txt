@@ -1,0 +1,43 @@
+Depends on meteo station:
+
+B (per 10 min):
+- Data pomiaru 	(yyyy-mm-dd)
+- Czas pomiaru 	(hh:mm)
+- Temperatura powietrza	(°C)
+- Wilgotność powietrza	(%)
+- Ciśnienie atmosferyczne	(hPa)
+- Prędkość wiatru (m/s)
+- Kierunek wiatru 
+- Prędkość średnia (m/s)
+- Opad chwilowy
+- Temperatura odczuwalna	(°C)
+- Promieniowanie UV
+- Promieniowanie słoneczne	(W/m²)
+- Punkt rosy	(°C)
+
+A (per 1-1.5 min):
+- Temperatura
+- Wilgotność
+- Punkt rosy
+- Wiatr
+- Barometr
+- Dzienny Opad
+- Opad/h
+- Opad burzowy
+- Opad miesięczny
+- Roczny opad
+- Temperatura odczuwalna
+- Index ciepła
+- Index THW
+
+A1 (daily max/min):
+- Temperatura max-min
+- Wilgotność max-min
+- Temperatura punktu rosy max-min
+- Prędkość wiatru max
+- Barometr max-min
+- Opad/h max
+- Temperatura wiatru min
+- Wskaźnik ciepła max
+
+

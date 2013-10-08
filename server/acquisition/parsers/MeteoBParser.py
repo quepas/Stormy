@@ -1,5 +1,3 @@
-__author__ = 'Quepas'
-
 from html.parser import HTMLParser
 from xml.parsers.expat import XMLParserType
 from xml.parsers.expat import ParserCreate
@@ -7,51 +5,11 @@ import xml.etree.ElementTree as ETree
 import re
 from urllib import request
 
-class MeteoADataParser(HTMLParser):
-    allData = []
-
-    validData = []
-    validDataIndex = []
-
-    validLabels = []
-    validLabelsIndex = []
-
-    def handle_data(self, data):
-        self.allData.append((self.getpos()[1], data))
-
-    def handle_starttag(self, tag, attrs):
-        globalOffset = self.getpos()[1]
-        fullTag = str(self.get_starttag_text())
-        dataOffset = globalOffset + len(fullTag)
-
-        if tag == "font" and ('color', 'Brown') in attrs:
-            self.validLabelsIndex.append(dataOffset)
-        if tag == "font" and ('color', '#3366FF') in attrs:
-            self.validDataIndex.append(dataOffset)
-
-    def get_meteo_data(self):
-        lables = self.get_meteo_labels()
-        values = self.get_meteo_values()
-        result = []
-
-        for i in range(self.validLabelsIndex.__len__()):
-            result.append((lables[i], values[i]))
-
-        return result
-
-    def get_meteo_labels(self):
-        result = []
-        for data in self.allData:
-            if data[0] in self.validLabelsIndex or data[0]-7 in self.validLabelsIndex:
-                result.append(data[1])
-        return result
-
-    def get_meteo_values(self):
-        result = []
-        for data in self.allData:
-            if data[0] in self.validDataIndex or data[0]-7 in self.validDataIndex:
-                result.append(data[1])
-        return result
+def run(text, encoding="UTF-8"):
+    parser = MeteoBDataParser()
+    parser.parseFromHtml(text, encoding)
+    print(parser.data)
+    return None
 
 class MeteoBDataParser(HTMLParser):
     data = {}
@@ -64,8 +22,9 @@ class MeteoBDataParser(HTMLParser):
             self.parseData(root)
 
     def parseFromHtml(self, url, encoding="UTF-8"):
-        sock = request.urlopen(url);
-        htmlSource = str(sock.read(), encoding)
+        sock = request.urlopen(url)
+        #sock = request.urlopen("http://stacjameteo.pl/dane/index.php?stacja=37")        
+        htmlSource = str(sock.read(), encoding)        
         self.parseText(htmlSource)
         sock.close()
 
@@ -82,7 +41,8 @@ class MeteoBDataParser(HTMLParser):
                    .replace(" class=tr-1", "")\
                    .replace("&deg;", "°")\
                    .replace("&sup2;", "²")\
-                   .replace("<tr/>", "</tr>");
+                   .replace("<tr/>", "</tr>")\
+                   .replace("\xb2", "");
 
     def parseData(self, root):
         for child in root:
@@ -93,7 +53,9 @@ class MeteoBDataParser(HTMLParser):
 
     def parseSingleRow(self, tr):
         if len(tr) == 2:
-            return {tr[0][0].text : tr[1][0].text}
+            dictItem = {tr[0][0].text : tr[1][0].text}
+            print(dictItem)
+            return dictItem
 
     def extractTable(self, text):
         lowerText = text.lower()
