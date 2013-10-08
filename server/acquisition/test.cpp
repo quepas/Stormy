@@ -2,6 +2,8 @@
 
 #include "PyParserWrapper.h"
 #include "PyObjectMapper.h"
+#include "PyExecutor.h"
+#include "PyFunction.h"
 
 #include <sstream>
 
@@ -18,9 +20,9 @@ Out lexical_cast(In in)
 };
 
 int main() 
-{
+{	
 	std::cout << "Acquisition Module Test" << std::endl;
-
+	Py_ExecutorInit();	
 	Stormy::PyParserWrapper* meteoBParser = new Stormy::PyParserWrapper("MeteoBParser");
 	
 	for(int i = 20; i < 40; ++i)
