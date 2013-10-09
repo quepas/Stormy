@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "PyFunction.h"
+#include "PyObjectMapper.h"
 
 using namespace Stormy;
 
@@ -31,6 +32,8 @@ MeteoData* PyParserWrapper::parseFromURL( std::string url )
 		// !~ return data mapping here ~!
 		std::cout << "Check: " << PySequence_Check(pFuncResult) << std::endl;
 		std::cout << "Size: " << PySequence_Size(pFuncResult) << std::endl;		
+
+		PyObjectMapper::extractDictsFromDictSequence(pFuncResult);
 	} 
 	else
 	{
