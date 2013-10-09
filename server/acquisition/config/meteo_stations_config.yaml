@@ -1,0 +1,20 @@
+-
+  name: Wisła Malink
+  url: http://stacjameteo.pl/dane/index.php?stacja=21
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Brenna
+  url: http://stacjameteo.pl/dane/index.php?stacja=23
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Meteo na Jeziorze
+  url: http://stacjameteo.pl/dane/index.php?stacja=24
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Frelichów
+  url: http://stacjameteo.pl/dane/index.php?stacja=25
+  parserClass: MeteoBDataParser
+  refreshTime: 10
