@@ -18,3 +18,60 @@
   url: http://stacjameteo.pl/dane/index.php?stacja=25
   parserClass: MeteoBDataParser
   refreshTime: 10
+
+
+-
+  name: Wisła Czarne Zapora
+  url: http://stacjameteo.pl/dane/index.php?stacja=26
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Wisła Wielka Przystań
+  url: http://stacjameteo.pl/dane/index.php?stacja=27
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Skoczów
+  url: http://stacjameteo.pl/dane/index.php?stacja=28
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Wapienica Zapora
+  url: http://stacjameteo.pl/dane/index.php?stacja=29
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Góra Żar
+  url: http://stacjameteo.pl/dane/index.php?stacja=30
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Gubałówka
+  url: http://stacjameteo.pl/dane/index.php?stacja=31
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Miasteczko Śląskie
+  url: http://stacjameteo.pl/dane/index.php?stacja=32
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Szczecin
+  url: http://stacjameteo.pl/dane/index.php?stacja=33
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Elbląg
+  url: http://stacjameteo.pl/dane/index.php?stacja=34
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Włocławek
+  url: http://stacjameteo.pl/dane/index.php?stacja=35
+  parserClass: MeteoBDataParser
+  refreshTime: 10
+-
+  name: Biebrza
+  url: http://stacjameteo.pl/dane/index.php?stacja=37
+  parserClass: MeteoBDataParser
+  refreshTime: 10
