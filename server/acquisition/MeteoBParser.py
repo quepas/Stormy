@@ -10,7 +10,7 @@ def run(text, encoding="UTF-8"):
     parser.data=[]
     parser.parseFromHtml(text, encoding)
     print(parser.data)
-    return 1
+    return parser.data
 
 class MeteoBDataParser(HTMLParser):
     data = []

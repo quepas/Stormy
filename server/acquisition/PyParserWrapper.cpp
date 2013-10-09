@@ -27,14 +27,15 @@ MeteoData* PyParserWrapper::parseFromURL( std::string url )
 	Py_DECREF(pArgs);
 
 	if(pFuncResult != nullptr)
-	{
-		std::cout << "Method returns: " << PyLong_AsLong(pFuncResult) << std::endl;	
+	{				
+		// !~ return data mapping here ~!
+		std::cout << "Check: " << PySequence_Check(pFuncResult) << std::endl;
+		std::cout << "Size: " << PySequence_Size(pFuncResult) << std::endl;		
 	} 
 	else
 	{
 		std::cout << "No data at current URL" << std::endl;
-	}	
-	// !~ return data mapping here ~!
+	}		
 	
 	return nullptr;
 }

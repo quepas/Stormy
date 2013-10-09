@@ -1,4 +1,5 @@
 #include "MeteoStationsCfg.h"
+#include "YAMLUtils.h"
 
 using namespace Stormy;
 
@@ -28,38 +29,33 @@ bool Stormy::MeteoStationsCfg::load(std::string filePath)
 
 	for(auto it = root.begin(); it != root.end(); ++it)
 	{
-		if(!checkIfFieldDefined(it, "url"))
+		if(!YAMLUtils::isDefined(it, "url"))
 		{
 			std::cout << "Field url is not defined" << std::endl;
 			return false;
 		}
-		if(!checkIfFieldDefined(it, "parserClass"))
+		if(!YAMLUtils::isDefined(it, "parserClass"))
 		{
 			std::cout << "Field parserClass is not defined" << std::endl;
 			return false;
 		}			
-		if(!checkIfFieldDefined(it, "refreshTime"))
+		if(!YAMLUtils::isDefined(it, "refreshTime"))
 		{
 			std::cout << "Field refreshTime is not defined" << std::endl;
 			return false;
 		}
 
 		MeteoStation* meteoStation = new MeteoStation();
-		meteoStation->url = (*it)["url"].as<std::string>();
-		meteoStation->parserClass = (*it)["parserClass"].as<std::string>();
-		meteoStation->refreshTime = (*it)["refreshTime"].as<double>();
+		meteoStation->url = YAMLUtils::getString(it, "url");
+		meteoStation->parserClass = YAMLUtils::getString(it, "parserClass");
+		meteoStation->refreshTime = YAMLUtils::getNumber(it, "refreshTime");
 
-		if(checkIfFieldDefined(it, "id"))
-			meteoStation -> id = (*it)["id"].as<std::string>();
-		if(checkIfFieldDefined(it, "name"))
-			meteoStation -> name = (*it)["name"].as<std::string>();
+		if(YAMLUtils::isDefined(it, "id"))
+			meteoStation -> id = YAMLUtils::getString(it, "id");
+		if(YAMLUtils::isDefined(it, "name"))
+			meteoStation -> name = YAMLUtils::getString(it, "name");
 
 		configuration.push_back(meteoStation);
 	}
 	return true;
-}
-
-bool MeteoStationsCfg::checkIfFieldDefined( YAML::iterator it, std::string field )
-{
-	return (*it)[field].IsDefined();
 }

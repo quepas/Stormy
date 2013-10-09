@@ -19,8 +19,7 @@ namespace Stormy
 
 		private:
 			bool load(std::string filePath);
-			bool loadSingleStation(YAML::iterator it);
-			bool checkIfFieldDefined(YAML::iterator it, std::string field);
+			bool loadSingleStation(YAML::iterator it);			
 
 			std::vector<MeteoStation*> configuration;
 	};
