@@ -7,12 +7,13 @@ from urllib import request
 
 def run(text, encoding="UTF-8"):
     parser = MeteoBDataParser()
+    parser.data=[]
     parser.parseFromHtml(text, encoding)
     print(parser.data)
     return 1
 
 class MeteoBDataParser(HTMLParser):
-    data = {}
+    data = []
 
     def parse(self, fileName, encoding="UTF-8"):
         text = open(fileName, encoding=encoding).read()
@@ -48,7 +49,7 @@ class MeteoBDataParser(HTMLParser):
             if child.tag == "tr":
                 row = self.parseSingleRow(child)
                 if row != None:
-                    self.data.update(row)
+                    self.data.append(row)
 
     def parseSingleRow(self, tr):
         if len(tr) == 2:

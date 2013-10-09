@@ -49,6 +49,11 @@ bool Stormy::MeteoStationsCfg::load(std::string filePath)
 		meteoStation->parserClass = (*it)["parserClass"].as<std::string>();
 		meteoStation->refreshTime = (*it)["refreshTime"].as<double>();
 
+		if(checkIfFieldDefined(it, "id"))
+			meteoStation -> id = (*it)["id"].as<std::string>();
+		if(checkIfFieldDefined(it, "name"))
+			meteoStation -> name = (*it)["name"].as<std::string>();
+
 		configuration.push_back(meteoStation);
 	}
 	return true;
