@@ -18,8 +18,6 @@
   url: http://stacjameteo.pl/dane/index.php?stacja=25
   parserClass: MeteoBDataParser
   refreshTime: 10
-
-
 -
   name: Wisła Czarne Zapora
   url: http://stacjameteo.pl/dane/index.php?stacja=26

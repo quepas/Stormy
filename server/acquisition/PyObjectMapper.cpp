@@ -12,7 +12,7 @@ std::vector<PyObject*> PyObjectMapper::extractItemsFromSequence( PyObject* seque
 	if(PySequence_Check(sequence))
 	{
 		unsigned int size = PySequence_Size(sequence);
-		for(int i = 0; i < size; ++i)
+		for(unsigned int i = 0; i < size; ++i)
 		{
 			result.push_back(PySequence_GetItem(sequence, i));
 		}

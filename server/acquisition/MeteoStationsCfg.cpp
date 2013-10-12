@@ -1,5 +1,5 @@
 #include "MeteoStationsCfg.h"
-#include "YAMLUtils.h"
+#include "../../common/YAMLUtils.h"
 
 using namespace Stormy;
 
