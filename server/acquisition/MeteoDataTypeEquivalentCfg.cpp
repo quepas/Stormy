@@ -1,8 +1,11 @@
 #include "MeteoDataTypeEquivalentCfg.h"
 #include "../../common/YAMLUtils.h"
 #include <boost/algorithm/string.hpp>
+#include <string>
 
-Stormy::MeteoDataTypeEquivalentCfg::MeteoDataTypeEquivalentCfg( std::string filePath )
+using namespace Stormy;
+
+MeteoDataTypeEquivalentCfg::MeteoDataTypeEquivalentCfg( std::string filePath )
 	:	equivalents(std::vector<MeteoDataType*>())
 {
 	if(!load(filePath))
@@ -12,27 +15,54 @@ Stormy::MeteoDataTypeEquivalentCfg::MeteoDataTypeEquivalentCfg( std::string file
 	}
 }
 
-Stormy::MeteoDataTypeEquivalentCfg::~MeteoDataTypeEquivalentCfg()
+MeteoDataTypeEquivalentCfg::~MeteoDataTypeEquivalentCfg()
 {
 
 }
 
-std::vector<std::string> Stormy::MeteoDataTypeEquivalentCfg::getEquivalents( TYPE type )
-{
-
+std::vector<std::string> MeteoDataTypeEquivalentCfg::getEquivalentsForType( TYPE type )
+{	
+	MeteoDataType* meteoDataType = getMeteoDataTypeForType(type);
+	if(meteoDataType != nullptr)	
+		return meteoDataType -> equivalents; 
+	return std::vector<std::string>();
 }
 
-Stormy::MeteoDataType Stormy::MeteoDataTypeEquivalentCfg::getEquivalentsData( TYPE type )
+MeteoDataType* MeteoDataTypeEquivalentCfg::getMeteoDataTypeForType( TYPE type )
 {
-
+	for(auto it = equivalents.begin(); it != equivalents.end(); ++it) {
+		if((*it)->type == type)
+			return *it;
+	}
+	return nullptr;
 }
 
-bool Stormy::MeteoDataTypeEquivalentCfg::isEquivalent( std::string text )
+bool MeteoDataTypeEquivalentCfg::areEquivalentsForType( TYPE type, std::string text )
 {
-
+	MeteoDataType* meteoDataType = getMeteoDataTypeForType(type);
+	std::vector<std::string> equivalentsVec = meteoDataType -> equivalents;
+	for(auto it = equivalentsVec.begin(); it != equivalentsVec.end(); ++it) {
+		if(*it == text)
+			return true;
+	}
+	return false;
 }
 
-bool Stormy::MeteoDataTypeEquivalentCfg::load( std::string filePath )
+TYPE MeteoDataTypeEquivalentCfg::getTypeByEquivalent( std::string text )
+{
+	for(auto it = equivalents.begin(); it != equivalents.end(); ++it) {
+		TYPE currentType = (*it) -> type;
+		std::vector<std::string> equivalentsVec = (*it) -> equivalents;
+
+		for(auto it = equivalentsVec.begin(); it != equivalentsVec.end(); ++it) {
+			if(boost::equal(text, *it))			
+				return currentType;
+		}		
+	}
+	return T_UNKNOWN;
+}
+
+bool MeteoDataTypeEquivalentCfg::load( std::string filePath )
 {
 	YAML::Node root = YAML::LoadFile(filePath);
 

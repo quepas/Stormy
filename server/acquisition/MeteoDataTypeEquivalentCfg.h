@@ -15,9 +15,10 @@ namespace Stormy
 			~MeteoDataTypeEquivalentCfg();
 
 			bool reload();
-			std::vector<std::string> getEquivalents(TYPE type);
-			MeteoDataType getEquivalentsData(TYPE type);
-			bool isEquivalent(std::string text);
+			std::vector<std::string> getEquivalentsForType(TYPE type);
+			MeteoDataType* getMeteoDataTypeForType(TYPE type);
+			bool areEquivalentsForType(TYPE type, std::string text);
+			TYPE getTypeByEquivalent(std::string text);
 		private:
 			bool load(std::string filePath);
 
