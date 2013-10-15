@@ -1,12 +1,17 @@
 -
   type: AIR_TEMPERATURE
   equivalents: Temperatura powietrza
+  valueType: number
+  unit: celsius
 -
   type: PERCEPTIBLE_TEMPERATURE
   equivalents: Temperatura odczuwalna
+  valueType: number
+  unit: celsius
 -
   type: AIR_HUMIDITY
   equivalents: Wilgotność powietrza
+  valueType: number
 -
   type: ATMOSPHERIC_PRESSURE
   equivalents: Ciśnienie atmosferyczne

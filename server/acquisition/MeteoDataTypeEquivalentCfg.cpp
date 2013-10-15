@@ -45,12 +45,24 @@ bool Stormy::MeteoDataTypeEquivalentCfg::load( std::string filePath )
 				std::cout << "Meteo data type is defined but with no string equivalents" << std::endl;
 				return false;
 			}
-			// TODO: split equivalents
-			std::cout << "equivalents: " << YAMLUtils::getString(it, "equivalents") << std::endl;
+			// TODO: split equivalents			
 			std::string equivalentsStr = YAMLUtils::getString(it, "equivalents");
+
 			MeteoDataType* meteoDataType = new MeteoDataType();
 			meteoDataType -> type = MeteoDataType::getTypeFromString(typeStr);
-			meteoDataType->equivalents.push_back(equivalentsStr);
+			meteoDataType -> equivalents.push_back(equivalentsStr);			
+
+			if(YAMLUtils::isDefined(it, "valueType"))
+			{
+				std::string valueTypeStr = YAMLUtils::getString(it, "valueType");
+				meteoDataType -> valueType = MeteoDataType::getValueTypeFromString(valueTypeStr);
+			}
+			if(YAMLUtils::isDefined(it, "unit"))
+			{
+				std::string unitStr = YAMLUtils::getString(it, "unit");
+				meteoDataType->unitType = MeteoDataType::getUnitTypeFromString(unitStr);
+			}
+
 			equivalents.push_back(meteoDataType);
 		}				
 	}

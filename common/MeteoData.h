@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include <boost/algorithm/string.hpp>
+
 namespace Stormy
 {
 	enum TYPE
@@ -18,14 +20,31 @@ namespace Stormy
 		MOMENT_DROP,
 		UV_RADIATION,
 		SOLAR_RADIATION,
-		DEW_POINT
+		DEW_POINT,
+		T_UNKNOWN
+	};
+
+	enum VALUE_TYPE
+	{
+		NUMBER,
+		TEXT,
+		INTEGER,
+		DATE,
+		TIME,
+		VT_UNKNOWN		
+	};
+
+	enum UNIT_TYPE
+	{
+		CELSIUS,
+		UT_UNKNOWN
 	};
 
 	union SingleMeteoData
-	{
-		char* s;
-		double d;
-		int i;
+	{		
+		std::string* text;
+		double number;
+		int integer;		
 	};
 
 	struct MeteoData
@@ -36,6 +55,8 @@ namespace Stormy
 	struct MeteoDataType
 	{
 		TYPE type;
+		VALUE_TYPE valueType;
+		UNIT_TYPE unitType;
 		std::vector<std::string> equivalents;
 
 		static std::string getStringType(TYPE type)
@@ -62,11 +83,14 @@ namespace Stormy
 					return "SOLAR_RADIATION";
 				case DEW_POINT:
 					return "DEW_POINT";
+				default:
+					return "T_UNKNOWN";
 			}
 		}
 
 		static TYPE getTypeFromString(std::string text)
 		{
+			boost::to_upper(text);
 			if(text == "AIR_TEMPERATURE")
 				return AIR_TEMPERATURE;
 			if(text == "PERCEPTIBLE_TEMPERATURE")
@@ -87,6 +111,31 @@ namespace Stormy
 				return SOLAR_RADIATION;
 			if(text == "DEW_POINT")
 				return DEW_POINT;
+			return T_UNKNOWN;
+		}
+
+		static VALUE_TYPE getValueTypeFromString(std::string valueType)
+		{
+			boost::to_upper(valueType);
+			if(valueType == "NUMBER")
+				return NUMBER;
+			if(valueType == "TEXT")
+				return TEXT;
+			if(valueType == "INTEGER")
+				return INTEGER;
+			if(valueType == "DATE")
+				return DATE;
+			if(valueType == "TIME")
+				return TIME;				
+			return VT_UNKNOWN;					
+		}
+
+		static UNIT_TYPE getUnitTypeFromString(std::string unitType)
+		{
+			boost::to_upper(unitType);
+			if(unitType == "CELSIUS")
+				return CELSIUS;
+			return UT_UNKNOWN;
 		}
 	};
 }
