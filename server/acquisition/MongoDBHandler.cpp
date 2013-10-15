@@ -26,3 +26,8 @@ void MongoDBHandler::connect( std::string dbAddress )
 		connected = false;
 	}
 }
+
+void Stormy::MongoDBHandler::insertMeteoData( MeteoData* meteoData )
+{
+
+}

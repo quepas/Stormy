@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "../../common/MeteoData.h"
 
 namespace Stormy
 {
@@ -11,6 +12,7 @@ namespace Stormy
 			~MongoDBHandler();
 
 			void connect(std::string dbAddress);
+			void insertMeteoData(MeteoData* meteoData);
 
 		private:
 			bool connected;			

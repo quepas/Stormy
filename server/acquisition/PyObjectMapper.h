@@ -5,13 +5,14 @@
 #include <Python.h>
 
 #include "../../common/MeteoData.h"
+#include "MeteoDataTypeEquivalentCfg.h"
 
 namespace Stormy
 {
 	class PyObjectMapper
 	{
 		public:
-			static MeteoData* mapToMeteoData(std::map<std::string, std::string> map);
+			static MeteoData* mapToMeteoDataWithRules(std::map<std::string, std::string> map, MeteoDataTypeEquivalentCfg* rules);
 
 			static std::vector<PyObject*> extractItemsFromSequence(PyObject* sequence);
 			static PyObject* extractKeyFromSingleDict(PyObject* dict);

@@ -62,3 +62,20 @@ std::map<std::string, std::string> PyObjectMapper::extractDictsFromDictSequence(
 	}
 	return result;
 }
+
+MeteoData* Stormy::PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string, std::string> map, MeteoDataTypeEquivalentCfg* rules )
+{
+	MeteoData* result = new MeteoData();
+	for(auto it = map.begin(); it != map.end(); ++it)
+	{
+		std::string currentKey = it -> first;
+		TYPE type = rules -> getTypeByEquivalent(currentKey);
+		
+		if(type == T_UNKNOWN) {
+			std::cout << "Couldn't find type for equivalent: " << currentKey << std::endl;
+			continue;
+		}
+		// TODO: second (map value) should be already parsed
+		result -> data.insert(std::make_pair(type, it -> second));
+	}
+}
