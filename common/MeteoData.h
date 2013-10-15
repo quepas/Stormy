@@ -2,11 +2,12 @@
 
 #include <map>
 #include <vector>
+#include <string>
 
 namespace Stormy
 {
 	enum TYPE
-	{
+	{		
 		AIR_TEMPERATURE,
 		PERCEPTIBLE_TEMPERATURE,
 		AIR_HUMIDITY,
@@ -36,5 +37,56 @@ namespace Stormy
 	{
 		TYPE type;
 		std::vector<std::string> equivalents;
+
+		static std::string getStringType(TYPE type)
+		{
+			switch(type)
+			{
+				case AIR_TEMPERATURE:
+					return "AIR_TEMPERATURE";
+				case PERCEPTIBLE_TEMPERATURE:
+					return "PERCEPTIBLE_TEMPERATURE";
+				case AIR_HUMIDITY:
+					return "AIR_HUMIDITY";
+				case ATMOSPHERIC_PRESSURE:
+					return "ATMOSPHERIC_PRESSURE";
+				case WIND_SPEED:
+					return "WIND_SPEED";
+				case WIND_MEDIUM_SPEED:
+					return "WIND_MEDIUM_SPEED";
+				case MOMENT_DROP:
+					return "MOMENT_DROP";
+				case UV_RADIATION:
+					return "UV_RADIATION";
+				case SOLAR_RADIATION:
+					return "SOLAR_RADIATION";
+				case DEW_POINT:
+					return "DEW_POINT";
+			}
+		}
+
+		static TYPE getTypeFromString(std::string text)
+		{
+			if(text == "AIR_TEMPERATURE")
+				return AIR_TEMPERATURE;
+			if(text == "PERCEPTIBLE_TEMPERATURE")
+				return PERCEPTIBLE_TEMPERATURE;
+			if(text == "AIR_HUMIDITY")
+				return AIR_HUMIDITY;
+			if(text == "ATMOSPHERIC_PRESSURE")
+				return ATMOSPHERIC_PRESSURE;
+			if(text == "WIND_SPEED")
+				return WIND_SPEED;
+			if(text == "WIND_MEDIUM_SPEED")
+				return WIND_MEDIUM_SPEED;
+			if(text == "MOMENT_DROP")
+				return MOMENT_DROP;
+			if(text == "UV_RADIATION")
+				return UV_RADIATION;
+			if(text == "SOLAR_RADIATION")
+				return SOLAR_RADIATION;
+			if(text == "DEW_POINT")
+				return DEW_POINT;
+		}
 	};
 }

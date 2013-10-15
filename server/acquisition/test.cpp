@@ -39,7 +39,7 @@ int main()
 		meteoBParser -> parseFromURL((*it) -> url);
 		std::cout << "--------------------------------------------------------------------------" << std::endl;
 		std::cout << std::endl;
-	}	
+	}
 
 	getchar();
 }
