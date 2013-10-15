@@ -1,0 +1,33 @@
+-
+  type: AIR_TEMPERATURE
+  equivalents: Temperatura powietrza
+-
+  type: PERCEPTIBLE_TEMPERATURE
+  equivalents: Temperatura odczuwalna
+-
+  type: AIR_HUMIDITY
+  equivalents: Wilgotność powietrza
+-
+  type: ATMOSPHERIC_PRESSURE
+  equivalents: Ciśnienie atmosferyczne
+-
+  type: WIND_SPEED
+  equivalents: Prędkość wiatru
+-
+  type: WIND_DIRECTION
+  equivalents: Kierunek wiatru
+-
+  type: WIND_MEDIUM_SPEED
+  equivalents: Prędkość średnia
+-
+  type: MOMENT_DROP
+  equivalents: Opad chwilowy
+-
+  type: UV_RADIATION
+  equivalents: Promieniowanie UV
+-
+  type: SOLAR_RADIATION
+  equivalents: Promieniowanie słoneczne
+-
+  type: DEW_POINT
+  equivalents: Punkt rosy

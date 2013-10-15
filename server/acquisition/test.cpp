@@ -5,6 +5,7 @@
 #include "PyExecutor.h"
 #include "PyFunction.h"
 #include "MeteoStationsCfg.h"
+#include "MeteoDataTypeEquivalentCfg.h"
 #include "../../common/MeteoStation.h"
 
 #include <sstream>
@@ -27,6 +28,7 @@ int main()
 	Py_ExecutorInit();	
 	Stormy::PyParserWrapper* meteoBParser = new Stormy::PyParserWrapper("MeteoBParser");
 	Stormy::MeteoStationsCfg* meteoStationsCfg = new Stormy::MeteoStationsCfg("config/meteo_stations_config.yaml");
+	Stormy::MeteoDataTypeEquivalentCfg* meteoDataTypeEquivalentCfg = new Stormy::MeteoDataTypeEquivalentCfg("config/meteo_data_type_equivalents.yaml");
 
 	std::vector<Stormy::MeteoStation*> stations = meteoStationsCfg->getConfiguration();
 	for(auto it = stations.begin(); it != stations.end(); ++it)

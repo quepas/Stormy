@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <vector>
 
 namespace Stormy
 {
@@ -29,5 +30,11 @@ namespace Stormy
 	struct MeteoData
 	{
 		std::map<TYPE, SingleMeteoData> data;
+	};
+
+	struct MeteoDataType
+	{
+		TYPE type;
+		std::vector<std::string> equivalents;
 	};
 }
