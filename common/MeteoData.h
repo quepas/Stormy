@@ -49,7 +49,7 @@ namespace Stormy
 
 	struct MeteoData
 	{
-		std::map<TYPE, SingleMeteoData> data;
+		std::map<TYPE, SingleMeteoData*> data;
 	};
 
 	struct MeteoDataType

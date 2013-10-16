@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <mongo/client/dbclient.h>
+
 #include "../../common/MeteoData.h"
 
 namespace Stormy
@@ -14,7 +16,13 @@ namespace Stormy
 			void connect(std::string dbAddress);
 			void insertMeteoData(MeteoData* meteoData);
 
+			void setDbAndCollection(std::string dbName, std::string collectionName);			
+
 		private:
-			bool connected;			
+			bool connected;		
+			std::string currentDB, currentCollection;
+			mongo::DBClientConnection connection;
+
+			std::string createDbCollectionName();
 	};
 }

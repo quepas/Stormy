@@ -76,6 +76,8 @@ MeteoData* Stormy::PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string
 			continue;
 		}
 		// TODO: second (map value) should be already parsed
-		result -> data.insert(std::make_pair(type, it -> second));
+		SingleMeteoData* singleMeteoData = new SingleMeteoData();
+		singleMeteoData -> text = new std::string(it -> second);
+		result -> data.insert(std::make_pair(type, singleMeteoData));
 	}
 }
