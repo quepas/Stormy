@@ -9,6 +9,8 @@
 #include "MongoDBHandler.h"
 #include "../../common/MeteoStation.h"
 
+#include "HttpServer.h"
+
 #include <sstream>
 
 template<typename Out, typename In>
@@ -23,9 +25,9 @@ Out lexical_cast(In in)
 	return out;
 };
 
-int main() 
+int main(int argc, char** argv) 
 {	
-	std::cout << "++++++++++++++++ Acquisition Module Test ++++++++++++++++" << std::endl;
+	std::cout << "++++++++++++++++ Acquisition Module Test ++++++++++++++++" << std::endl;	
 	Py_ExecutorInit();	
 	Stormy::PyParserWrapper* meteoBParser = new Stormy::PyParserWrapper("MeteoBParser");
 	Stormy::MeteoStationsCfg* meteoStationsCfg = new Stormy::MeteoStationsCfg("config/meteo_stations_config.yaml");
@@ -45,5 +47,6 @@ int main()
 		std::cout << std::endl;
 	}
 
-	getchar();
+	Stormy::HttpServer httpServer;
+	return httpServer.run(argc, argv);
 }

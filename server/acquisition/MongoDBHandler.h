@@ -16,6 +16,9 @@ namespace Stormy
 			void connect(std::string dbAddress);
 			void insertMeteoData(MeteoData* meteoData);
 
+			MeteoData* getCurrentMeteoData(std::string stationId);
+			MeteoData* getArchivalMeteoData(std::string stationId, long long timestamp);
+
 			void setDbAndCollection(std::string dbName, std::string collectionName);			
 
 		private:

@@ -3,7 +3,7 @@
 
 using namespace Stormy;
 
-Stormy::MeteoStationsCfg::MeteoStationsCfg( std::string filePath )
+MeteoStationsCfg::MeteoStationsCfg( std::string filePath )
 	:	configuration(std::vector<MeteoStation*>())
 {
 	if(!load(filePath))
@@ -13,17 +13,17 @@ Stormy::MeteoStationsCfg::MeteoStationsCfg( std::string filePath )
 	}
 }
 
-Stormy::MeteoStationsCfg::~MeteoStationsCfg()
+MeteoStationsCfg::~MeteoStationsCfg()
 {
 	configuration.clear();
 }
 
-bool Stormy::MeteoStationsCfg::reload()
+bool MeteoStationsCfg::reload()
 {
 	return false;
 }
 
-bool Stormy::MeteoStationsCfg::load(std::string filePath)
+bool MeteoStationsCfg::load(std::string filePath)
 {
 	YAML::Node root = YAML::LoadFile(filePath);
 
