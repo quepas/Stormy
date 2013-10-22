@@ -3,7 +3,7 @@
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocket.h>
 
-#include "GetResourceRequestFactory.h"
+#include "GetRequestFactory.h"
 
 using namespace Stormy;
 
@@ -39,7 +39,7 @@ int HttpServer::main( const std::vector<std::string>& args )
 		config().getInt("HttpServer.port", port);
 
 	ServerSocket serverSocket(configuredPort);
-	HTTPServer httpServer(new GetResourceRequestFactory(), 
+	HTTPServer httpServer(new GetRequestFactory(), 
 		serverSocket, new HTTPServerParams);
 	httpServer.start();
 	waitForTerminationRequest();

@@ -4,6 +4,7 @@
 #include <mongo/client/dbclient.h>
 
 #include "../../common/MeteoData.h"
+#include "../../common/MeteoStation.h"
 
 namespace Stormy
 {
@@ -15,6 +16,11 @@ namespace Stormy
 
 			void connect(std::string dbAddress);
 			void insertMeteoData(MeteoData* meteoData);
+
+			void clearStationsData();
+			void insertStationsData(std::vector<MeteoStation*>& data);			
+			void insertStationData(MeteoStation* data);
+			std::vector<MeteoStation*> getStationsData();
 
 			MeteoData* getCurrentMeteoData(std::string stationId);
 			MeteoData* getArchivalMeteoData(std::string stationId, long long timestamp);

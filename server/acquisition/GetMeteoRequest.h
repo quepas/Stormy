@@ -10,13 +10,13 @@ using Poco::Net::HTTPServerResponse;
 
 namespace Stormy
 {
-	class GetResourceRequest : public HTTPRequestHandler
+	class GetMeteoRequest : public HTTPRequestHandler
 	{
 		public:
-			GetResourceRequest();
-			~GetResourceRequest();
-
-			void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
-		private:
+			GetMeteoRequest();
+			~GetMeteoRequest();
+			
+			void handleRequest(HTTPServerRequest& request, 
+				HTTPServerResponse& response);
 	};
 }

@@ -8,22 +8,11 @@
 #include "MeteoDataTypeEquivalentCfg.h"
 #include "MongoDBHandler.h"
 #include "../../common/MeteoStation.h"
+#include "Utils.h"
 
 #include "HttpServer.h"
 
 #include <sstream>
-
-template<typename Out, typename In>
-Out lexical_cast(In in)
-{
-	std::stringstream ss;
-	Out out;
-
-	ss << in;
-	ss >> out;
-
-	return out;
-};
 
 int main(int argc, char** argv) 
 {	
@@ -33,6 +22,9 @@ int main(int argc, char** argv)
 	Stormy::MeteoStationsCfg* meteoStationsCfg = new Stormy::MeteoStationsCfg("config/meteo_stations_config.yaml");
 	Stormy::MeteoDataTypeEquivalentCfg* meteoDataTypeEquivalentCfg = new Stormy::MeteoDataTypeEquivalentCfg("config/meteo_data_type_equivalents.yaml");
 	Stormy::MongoDBHandler* dbHandler = new Stormy::MongoDBHandler("localhost");
+
+	//dbHandler -> clearStationsData();
+	//dbHandler ->insertStationsData(meteoStationsCfg->getConfiguration());
 
 	dbHandler->setDbAndCollection("test", "person");
 	dbHandler->insertMeteoData(nullptr);
@@ -46,7 +38,6 @@ int main(int argc, char** argv)
 		std::cout << "--------------------------------------------------------------------------" << std::endl;
 		std::cout << std::endl;
 	}
-
 	Stormy::HttpServer httpServer;
-	return httpServer.run(argc, argv);
+	return httpServer.run(argc, argv);	
 }

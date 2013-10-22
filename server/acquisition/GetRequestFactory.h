@@ -10,11 +10,11 @@ using Poco::Net::HTTPRequestHandlerFactory;
 
 namespace Stormy
 {
-	class GetResourceRequestFactory : public HTTPRequestHandlerFactory
+	class GetRequestFactory : public HTTPRequestHandlerFactory
 	{
 		public:
-			GetResourceRequestFactory();
-			~GetResourceRequestFactory();
+			GetRequestFactory();
+			~GetRequestFactory();
 			
 			HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request);
 

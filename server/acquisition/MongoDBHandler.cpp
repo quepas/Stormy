@@ -31,15 +31,7 @@ void MongoDBHandler::connect( std::string dbAddress )
 
 void MongoDBHandler::insertMeteoData( MeteoData* meteoData )
 {
-	if(!connected) return;
-	mongo::BSONObjBuilder bsonBuilder;
-	bsonBuilder.append("name", "hihihi");
-	bsonBuilder.append("surname", "hjehje");
-	bsonBuilder.append("age", 33);
-	mongo::BSONObj bsonObject = bsonBuilder.obj();	
-	std::string dbColName = createDbCollectionName();
-	if(dbColName != "_none")
-		connection.insert(dbColName, bsonObject);
+	
 }
 
 void MongoDBHandler::setDbAndCollection( std::string dbName, std::string collectionName )
@@ -53,4 +45,50 @@ std::string MongoDBHandler::createDbCollectionName()
 	if(currentDB.empty() || currentCollection.empty())
 		return "_none";
 	return currentDB + "." + currentCollection;
+}
+
+void Stormy::MongoDBHandler::clearStationsData()
+{
+	if(!connected) return;
+	connection.dropCollection("test.stations");		
+}
+
+void Stormy::MongoDBHandler::insertStationsData( std::vector<MeteoStation*>& data )
+{
+	if(!connected) return;
+	for(auto it = data.begin(); it != data.end(); ++it)
+		insertStationData(*it);
+}
+
+void Stormy::MongoDBHandler::insertStationData( MeteoStation* data )
+{
+	if(!connected && !data) return;	
+
+	mongo::BSONObjBuilder bsonBuilder;
+	bsonBuilder.append("_id", data -> id);
+	bsonBuilder.append("name", data -> name);
+	bsonBuilder.append("parserClass", data -> parserClass);
+	bsonBuilder.append("refreshTime", data -> refreshTime);
+	bsonBuilder.append("url", data -> url);
+	connection.insert("test.stations", bsonBuilder.obj());
+}
+
+std::vector<MeteoStation*> Stormy::MongoDBHandler::getStationsData()
+{
+	auto result = std::vector<MeteoStation*>();
+	if(!connected) return result;	
+
+	std::auto_ptr<mongo::DBClientCursor> cursor = 
+		connection.query("test.stations", mongo::BSONObj());
+	while( cursor -> more() ) {
+		mongo::BSONObj current = cursor -> next();
+		MeteoStation* station = new MeteoStation();
+		station -> id = current.getStringField("_id");
+		station -> name = current.getStringField("name");
+		station -> parserClass = current.getStringField("parserClass");
+		station -> refreshTime = current.getIntField("refreshTime");
+		station -> url = current.getStringField("url");
+		result.push_back(station);
+	}
+	return result;
 }
