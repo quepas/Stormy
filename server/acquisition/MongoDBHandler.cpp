@@ -1,5 +1,7 @@
 #include "MongoDBHandler.h"
 
+#include <boost/algorithm/string.hpp>
+
 using namespace Stormy;
 
 MongoDBHandler::MongoDBHandler( std::string dbAddress /*= ""*/ )
@@ -14,7 +16,7 @@ MongoDBHandler::MongoDBHandler( std::string dbAddress /*= ""*/ )
 
 MongoDBHandler::~MongoDBHandler()
 {
-
+	
 }
 
 void MongoDBHandler::connect( std::string dbAddress )
@@ -29,9 +31,30 @@ void MongoDBHandler::connect( std::string dbAddress )
 	}
 }
 
+
+void Stormy::MongoDBHandler::clearMeteosData()
+{
+	if(!connected) return;
+	connection.dropCollection("test.meteo");		
+}
+
 void MongoDBHandler::insertMeteoData( MeteoData* meteoData )
 {
-	
+	if(!connected || !meteoData) return;	
+
+	mongo::BSONObjBuilder bsonBuilder;
+	std::map<TYPE, SingleMeteoData*> data = meteoData -> data;	
+	for(auto it = data.begin(); it != data.end(); ++it) 
+	{		
+		bsonBuilder.append(MeteoDataType::getStringType(it -> first),
+			*((it -> second) -> text));
+	}	
+	connection.insert("test.meteo", bsonBuilder.obj());
+}
+
+void MongoDBHandler::insertMeteosData( std::vector<MeteoData*> meteoData )
+{
+
 }
 
 void MongoDBHandler::setDbAndCollection( std::string dbName, std::string collectionName )
@@ -62,7 +85,7 @@ void Stormy::MongoDBHandler::insertStationsData( std::vector<MeteoStation*>& dat
 
 void Stormy::MongoDBHandler::insertStationData( MeteoStation* data )
 {
-	if(!connected && !data) return;	
+	if(!connected || !data) return;	
 
 	mongo::BSONObjBuilder bsonBuilder;
 	bsonBuilder.append("_id", data -> id);
@@ -89,6 +112,28 @@ std::vector<MeteoStation*> Stormy::MongoDBHandler::getStationsData()
 		station -> refreshTime = current.getIntField("refreshTime");
 		station -> url = current.getStringField("url");
 		result.push_back(station);
+	}
+	return result;
+}
+
+std::vector<MeteoData*> MongoDBHandler::getMeteoData()
+{
+	auto result = std::vector<MeteoData*>();
+	if(!connected) return result;
+	
+	std::auto_ptr<mongo::DBClientCursor> cursor =
+		connection.query("test.meteo", mongo::BSONObj());
+	while( cursor -> more() ) {
+		mongo::BSONObj current = cursor -> next();
+		MeteoData* meteoData = new MeteoData();
+		// for tests
+		SingleMeteoData* airTemp = new SingleMeteoData();
+		airTemp->text = new std::string(current.getStringField("AIR_TEMPERATURE"));
+		meteoData -> data.insert(std::make_pair(AIR_TEMPERATURE, airTemp));
+		SingleMeteoData* airHum = new SingleMeteoData();
+		airHum -> text = new std::string(current.getStringField("AIR_HUMIDITY"));
+		meteoData -> data.insert(std::make_pair(AIR_HUMIDITY, airHum));
+		result.push_back(meteoData);
 	}
 	return result;
 }

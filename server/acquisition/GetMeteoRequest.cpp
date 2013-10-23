@@ -1,19 +1,41 @@
 #include "GetMeteoRequest.h"
 
+#include "MongoDBHandler.h"
+
 using namespace Stormy;
 
-Stormy::GetMeteoRequest::GetMeteoRequest()
+GetMeteoRequest::GetMeteoRequest()
 {
 
 }
 
-Stormy::GetMeteoRequest::~GetMeteoRequest()
+GetMeteoRequest::~GetMeteoRequest()
 {
 
 }
 
-void Stormy::GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerResponse& response )
+void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerResponse& response )
 {
 	std::ostream& ostr = response.send();
-	ostr << "<html><head><title>Meteo</title></head><body><h1>Meteo</h1></body></html>";
+
+	MongoDBHandler dbHandler("localhost");
+	std::vector<MeteoData*> meteo = dbHandler.getMeteoData();
+	std::string content;
+	for(auto it = meteo.begin(); it != meteo.end(); ++it) {
+		content += prepareMeteoHTML(*it);
+	}
+
+	ostr << "<html><head><title>Meteo</title></head><body><h1>Meteo</h1>"
+		 << content << "</body></html>";
 }
+
+std::string GetMeteoRequest::prepareMeteoHTML(MeteoData* meteo)
+{
+	std::string header = "<h2>Meteo station</h2>";
+	std::string content = 
+		"<ul><li>Air temperature: " + *(meteo -> data[AIR_TEMPERATURE]->text) + "</li>" +
+		"<li>Air humidity: " + *(meteo -> data[AIR_HUMIDITY]->text) + "</li></ul>";
+	return header + content;
+}
+
+

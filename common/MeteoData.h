@@ -50,6 +50,10 @@ namespace Stormy
 	struct MeteoData
 	{
 		std::map<TYPE, SingleMeteoData*> data;
+
+		bool contains(TYPE type) {
+			return data.find(type) != data.end();
+		}
 	};
 
 	struct MeteoDataType

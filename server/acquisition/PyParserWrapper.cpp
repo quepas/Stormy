@@ -5,6 +5,7 @@
 
 #include "PyFunction.h"
 #include "PyObjectMapper.h"
+#include "MeteoDataTypeEquivalentCfg.h"
 
 using namespace Stormy;
 
@@ -28,19 +29,26 @@ MeteoData* PyParserWrapper::parseFromURL( std::string url )
 	Py_DECREF(pArgs);
 
 	if(pFuncResult != nullptr)
-	{				
-		// !~ return data mapping here ~!
-		std::cout << "Check: " << PySequence_Check(pFuncResult) << std::endl;
-		std::cout << "Size: " << PySequence_Size(pFuncResult) << std::endl;		
+	{						
+		std::map<std::string, std::string> data = 
+			PyObjectMapper::extractDictsFromDictSequence(pFuncResult);
+		MeteoDataTypeEquivalentCfg* equivalents = new 
+			MeteoDataTypeEquivalentCfg("config/meteo_data_type_equivalents.yaml");
 
-		PyObjectMapper::extractDictsFromDictSequence(pFuncResult);
+		MeteoData* result = new MeteoData();
+		for(auto it = data.begin(); it != data.end(); ++it) {
+			SingleMeteoData* singleData = new SingleMeteoData();
+			singleData -> text = new std::string(it -> second);
+			result -> data.insert(
+				std::make_pair(equivalents->getTypeByEquivalent(it -> first), singleData));			
+		}
+		return result;
 	} 
 	else
 	{
 		std::cout << "No data at current URL" << std::endl;
-	}		
-	
-	return nullptr;
+		return nullptr;
+	}			
 }
 
 MeteoData* PyParserWrapper::parseFromText( std::wstring text )

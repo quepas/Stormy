@@ -15,7 +15,11 @@ namespace Stormy
 			~MongoDBHandler();
 
 			void connect(std::string dbAddress);
+
+			void clearMeteosData();
+			void insertMeteosData(std::vector<MeteoData*> meteoData);
 			void insertMeteoData(MeteoData* meteoData);
+			std::vector<MeteoData*> getMeteoData();
 
 			void clearStationsData();
 			void insertStationsData(std::vector<MeteoStation*>& data);			
