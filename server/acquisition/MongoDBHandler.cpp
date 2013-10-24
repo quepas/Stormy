@@ -46,8 +46,26 @@ void MongoDBHandler::insertMeteoData( MeteoData* meteoData )
 	std::map<TYPE, SingleMeteoData*> data = meteoData -> data;	
 	for(auto it = data.begin(); it != data.end(); ++it) 
 	{		
-		bsonBuilder.append(MeteoDataType::getStringType(it -> first),
-			*((it -> second) -> text));
+		std::string typeStr = MeteoDataType::getStringType(it -> first);
+		TYPE type = it -> first;
+
+		//if(type != AIR_TEMPERATURE || type != AIR_TEMPERATURE)
+		{
+			bsonBuilder.append(MeteoDataType::getStringType(it -> first),
+				*((it -> second) -> text));		
+		} 
+		/*else {
+			switch(type)
+			{
+				case AIR_TEMPERATURE:
+					bsonBuilder.append(typeStr, meteoData -> airTemperature);
+					break;
+				case AIR_HUMIDITY:
+					bsonBuilder.append(typeStr, meteoData -> airHumidity);
+					break;					
+			}
+		}*/
+		
 	}	
 	connection.insert("test.meteo", bsonBuilder.obj());
 }

@@ -1,11 +1,11 @@
-#include "MeteoDataTypeEquivalentCfg.h"
+#include "EquivalentsConfig.h"
 #include "../../common/YAMLUtils.h"
 #include <boost/algorithm/string.hpp>
 #include <string>
 
 using namespace Stormy;
 
-MeteoDataTypeEquivalentCfg::MeteoDataTypeEquivalentCfg( std::string filePath )
+EquivalentsConfig::EquivalentsConfig( std::string filePath )
 	:	equivalents(std::vector<MeteoDataType*>())
 {
 	if(!load(filePath))
@@ -15,12 +15,12 @@ MeteoDataTypeEquivalentCfg::MeteoDataTypeEquivalentCfg( std::string filePath )
 	}
 }
 
-MeteoDataTypeEquivalentCfg::~MeteoDataTypeEquivalentCfg()
+EquivalentsConfig::~EquivalentsConfig()
 {
 
 }
 
-std::vector<std::string> MeteoDataTypeEquivalentCfg::getEquivalentsForType( TYPE type )
+std::vector<std::string> EquivalentsConfig::getEquivalentsForType( TYPE type )
 {	
 	MeteoDataType* meteoDataType = getMeteoDataTypeForType(type);
 	if(meteoDataType != nullptr)	
@@ -28,7 +28,7 @@ std::vector<std::string> MeteoDataTypeEquivalentCfg::getEquivalentsForType( TYPE
 	return std::vector<std::string>();
 }
 
-MeteoDataType* MeteoDataTypeEquivalentCfg::getMeteoDataTypeForType( TYPE type )
+MeteoDataType* EquivalentsConfig::getMeteoDataTypeForType( TYPE type )
 {
 	for(auto it = equivalents.begin(); it != equivalents.end(); ++it) {
 		if((*it)->type == type)
@@ -37,7 +37,7 @@ MeteoDataType* MeteoDataTypeEquivalentCfg::getMeteoDataTypeForType( TYPE type )
 	return nullptr;
 }
 
-bool MeteoDataTypeEquivalentCfg::areEquivalentsForType( TYPE type, std::string text )
+bool EquivalentsConfig::areEquivalentsForType( TYPE type, std::string text )
 {
 	MeteoDataType* meteoDataType = getMeteoDataTypeForType(type);
 	std::vector<std::string> equivalentsVec = meteoDataType -> equivalents;
@@ -48,7 +48,7 @@ bool MeteoDataTypeEquivalentCfg::areEquivalentsForType( TYPE type, std::string t
 	return false;
 }
 
-TYPE MeteoDataTypeEquivalentCfg::getTypeByEquivalent( std::string text )
+TYPE EquivalentsConfig::getTypeByEquivalent( std::string text )
 {
 	for(auto it = equivalents.begin(); it != equivalents.end(); ++it) {
 		TYPE currentType = (*it) -> type;
@@ -62,7 +62,7 @@ TYPE MeteoDataTypeEquivalentCfg::getTypeByEquivalent( std::string text )
 	return T_UNKNOWN;
 }
 
-bool MeteoDataTypeEquivalentCfg::load( std::string filePath )
+bool EquivalentsConfig::load( std::string filePath )
 {
 	YAML::Node root = YAML::LoadFile(filePath);
 

@@ -13,11 +13,7 @@ namespace Stormy
 			~PyParserWrapper();
 
 			MeteoData* parseFromURL(std::string url);
-			MeteoData* parseFromText(std::wstring text);
-
-			MeteoData* getData();
-		private:
-			MeteoData* data;
+		private:			
 			std::string pyParserModuleName;
 	};
 }

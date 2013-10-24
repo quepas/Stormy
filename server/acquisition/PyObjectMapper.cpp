@@ -63,7 +63,7 @@ std::map<std::string, std::string> PyObjectMapper::extractDictsFromDictSequence(
 	return result;
 }
 
-MeteoData* Stormy::PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string, std::string> map, MeteoDataTypeEquivalentCfg* rules )
+MeteoData* Stormy::PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string, std::string> map, EquivalentsConfig* rules )
 {
 	MeteoData* result = new MeteoData();
 	for(auto it = map.begin(); it != map.end(); ++it)

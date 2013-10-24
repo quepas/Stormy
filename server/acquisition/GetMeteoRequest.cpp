@@ -1,6 +1,7 @@
 #include "GetMeteoRequest.h"
 
 #include "MongoDBHandler.h"
+#include "Utils.h"
 
 using namespace Stormy;
 

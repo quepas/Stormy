@@ -8,11 +8,11 @@
 
 namespace Stormy
 {
-	class MeteoDataTypeEquivalentCfg
+	class EquivalentsConfig
 	{
 		public:
-			MeteoDataTypeEquivalentCfg(std::string filePath);
-			~MeteoDataTypeEquivalentCfg();
+			EquivalentsConfig(std::string filePath);
+			~EquivalentsConfig();
 
 			bool reload();
 			std::vector<std::string> getEquivalentsForType(TYPE type);

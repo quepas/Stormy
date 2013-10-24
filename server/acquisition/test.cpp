@@ -5,7 +5,6 @@
 #include "PyExecutor.h"
 #include "PyFunction.h"
 #include "MeteoStationsCfg.h"
-#include "MeteoDataTypeEquivalentCfg.h"
 #include "MongoDBHandler.h"
 #include "../../common/MeteoStation.h"
 #include "Utils.h"
@@ -24,7 +23,7 @@ int main(int argc, char** argv)
 
 	dbHandler -> clearStationsData();
 	dbHandler -> insertStationsData(meteoStationsCfg->getConfiguration());
-	
+
 	std::vector<Stormy::MeteoStation*> stations = meteoStationsCfg->getConfiguration();
 	for(auto it = stations.begin(); it != stations.end(); ++it)
 	{
@@ -37,5 +36,5 @@ int main(int argc, char** argv)
 	}
 
 	Stormy::HttpServer httpServer;
-	return httpServer.run(argc, argv);	
+	return httpServer.run(argc, argv);
 }

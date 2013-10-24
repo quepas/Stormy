@@ -4,7 +4,10 @@
 #include <vector>
 #include <string>
 
+#include <Poco/Timestamp.h>
 #include <boost/algorithm/string.hpp>
+
+#include "MeteoStation.h"
 
 namespace Stormy
 {
@@ -54,6 +57,32 @@ namespace Stormy
 		bool contains(TYPE type) {
 			return data.find(type) != data.end();
 		}
+
+		MeteoData()
+			:	timestamp(0), windSpeedDirection("")
+		{
+			airTemperature = airHumidity = atmosphericPressure =
+			windSpeed = windSpeedAngle = windSpeedMedium = momentDrop =
+			perceptibleTemperature = uvRadiation = solarRadiation =
+			dewPoint = 0;		 
+		}
+
+		// POD
+		MeteoStation* station;
+
+		Poco::Int64 timestamp;
+		double airTemperature;
+		double airHumidity;
+		double atmosphericPressure;
+		double windSpeed;
+		double windSpeedAngle;
+		std::string windSpeedDirection;
+		double windSpeedMedium;
+		double momentDrop;
+		double perceptibleTemperature;
+		double uvRadiation;
+		double solarRadiation;
+		double dewPoint;
 	};
 
 	struct MeteoDataType

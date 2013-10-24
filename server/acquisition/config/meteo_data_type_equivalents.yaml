@@ -1,4 +1,10 @@
 -
+  type: DATE
+  equivalents: Data
+-
+  type: TIME
+  equivalents: Czas
+-
   type: AIR_TEMPERATURE
   equivalents: Temperatura powietrza
   valueType: number
@@ -20,6 +26,9 @@
   equivalents: Prędkość wiatru
 -
   type: WIND_DIRECTION
+  equivalents: Kierunek wiatru
+-
+  type: WIND_DIRECTION_ANGLE
   equivalents: Kierunek wiatru
 -
   type: WIND_MEDIUM_SPEED
