@@ -8,22 +8,25 @@
 #include "MongoDBHandler.h"
 #include "../../common/MeteoStation.h"
 #include "Utils.h"
+#include "MeteoUtils.h"
 
 #include "HttpServer.h"
 
 #include <sstream>
 
+using namespace Stormy;
+
 int main(int argc, char** argv) 
 {	
 	std::cout << "++++++++++++++++ Acquisition Module Test ++++++++++++++++" << std::endl;	
 	Py_ExecutorInit();	
-	Stormy::PyParserWrapper* meteoBParser = new Stormy::PyParserWrapper("MeteoBParser");
-	Stormy::MeteoStationsCfg* meteoStationsCfg = new Stormy::MeteoStationsCfg("config/meteo_stations_config.yaml");
-	Stormy::MongoDBHandler* dbHandler = new Stormy::MongoDBHandler("localhost");
+	PyParserWrapper* meteoBParser = new PyParserWrapper("MeteoBParser");
+	MeteoStationsCfg* meteoStationsCfg = new MeteoStationsCfg("config/meteo_stations_config.yaml");
+	MongoDBHandler* dbHandler = new MongoDBHandler("localhost");
 
 	dbHandler -> clearStationsData();
 	dbHandler -> insertStationsData(meteoStationsCfg->getConfiguration());
-
+	
 	std::vector<Stormy::MeteoStation*> stations = meteoStationsCfg->getConfiguration();
 	for(auto it = stations.begin(); it != stations.end(); ++it)
 	{

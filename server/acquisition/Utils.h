@@ -20,5 +20,6 @@ namespace Stormy
 	{
 		public:
 			static double stringToDouble(std::string);
+			static bool isNumber(std::string);
 	};
 }

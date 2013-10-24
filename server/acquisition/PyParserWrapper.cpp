@@ -36,6 +36,7 @@ MeteoData* PyParserWrapper::parseFromURL( std::string url )
 		EquivalentsConfig* equivalents = 
 			new EquivalentsConfig("config/meteo_data_type_equivalents.yaml");
 
+		// TODO: PyObjectMapper::mapToMeteoDataWithRules !
 		MeteoData* result = new MeteoData();
 		for(auto it = data.begin(); it != data.end(); ++it) {
 			std::string key = it -> first;
