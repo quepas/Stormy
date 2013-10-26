@@ -22,18 +22,10 @@ namespace Stormy
 			void clearStationsData();
 			void insertStationsData(std::vector<Meteo::Station*>& data);			
 			void insertStationData(Meteo::Station* data);
-			std::vector<Meteo::Station*> getStationsData();
-
-			Meteo::Measurement* getCurrentMeteoData(std::string stationId);
-			Meteo::Measurement* getArchivalMeteoData(std::string stationId, long long timestamp);
-
-			void setDbAndCollection(std::string dbName, std::string collectionName);			
+			std::vector<Meteo::Station*> getStationsData();		
 
 		private:
-			bool connected;		
-			std::string currentDB, currentCollection;
-			mongo::DBClientConnection connection;
-
-			std::string createDbCollectionName();
+			bool connected;				
+			mongo::DBClientConnection connection;		
 	};
 }

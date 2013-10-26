@@ -8,9 +8,7 @@ using Meteo::Station;
 using Meteo::Measurement;
 
 MongoDBHandler::MongoDBHandler( std::string dbAddress /*= ""*/ )
-	:	connected(false),
-		currentDB(""),
-		currentCollection(""),
+	:	connected(false),	
 		connection(mongo::DBClientConnection())
 {
 	if(!dbAddress.empty())	
@@ -33,7 +31,6 @@ void MongoDBHandler::connect( std::string dbAddress )
 		connected = false;
 	}
 }
-
 
 void Stormy::MongoDBHandler::clearMeteosData()
 {
@@ -61,19 +58,6 @@ void MongoDBHandler::insertMeteoData( Measurement* measurement )
 		bsonBuilder.append(key, value);						
 	}	
 	connection.insert("test.meteo", bsonBuilder.obj());
-}
-
-void MongoDBHandler::setDbAndCollection( std::string dbName, std::string collectionName )
-{
-	currentDB = dbName;
-	currentCollection = collectionName;
-}
-
-std::string MongoDBHandler::createDbCollectionName()
-{
-	if(currentDB.empty() || currentCollection.empty())
-		return "_none";
-	return currentDB + "." + currentCollection;
 }
 
 void MongoDBHandler::clearStationsData()
