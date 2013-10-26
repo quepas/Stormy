@@ -12,7 +12,7 @@ namespace Stormy
 	class PyObjectMapper
 	{
 		public:
-			static MeteoData* mapToMeteoDataWithRules(std::map<std::string, std::string> map, EquivalentsConfig* rules);
+			static Meteo::Measurement* mapToMeteoDataWithRules(std::map<std::string, std::string> map, EquivalentsConfig* rules);
 
 			static std::vector<PyObject*> extractItemsFromSequence(PyObject* sequence);
 			static PyObject* extractKeyFromSingleDict(PyObject* dict);

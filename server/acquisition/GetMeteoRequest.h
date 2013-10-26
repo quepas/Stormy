@@ -21,6 +21,6 @@ namespace Stormy
 			void handleRequest(HTTPServerRequest& request, 
 				HTTPServerResponse& response);
 		private:
-			std::string prepareMeteoHTML(MeteoData* meteo);
+			std::string prepareMeteoHTML(Meteo::Measurement* meteo);
 	};
 }

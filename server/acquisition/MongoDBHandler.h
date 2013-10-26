@@ -15,18 +15,17 @@ namespace Stormy
 
 			void connect(std::string dbAddress);
 
-			void clearMeteosData();
-			void insertMeteosData(std::vector<MeteoData*> meteoData);
-			void insertMeteoData(MeteoData* meteoData);
-			std::vector<MeteoData*> getMeteoData();
+			void clearMeteosData();			
+			void insertMeteoData(Meteo::Measurement* meteoData);
+			std::vector<Meteo::Measurement*> getMeteoData();
 
 			void clearStationsData();
 			void insertStationsData(std::vector<Meteo::Station*>& data);			
 			void insertStationData(Meteo::Station* data);
 			std::vector<Meteo::Station*> getStationsData();
 
-			MeteoData* getCurrentMeteoData(std::string stationId);
-			MeteoData* getArchivalMeteoData(std::string stationId, long long timestamp);
+			Meteo::Measurement* getCurrentMeteoData(std::string stationId);
+			Meteo::Measurement* getArchivalMeteoData(std::string stationId, long long timestamp);
 
 			void setDbAndCollection(std::string dbName, std::string collectionName);			
 

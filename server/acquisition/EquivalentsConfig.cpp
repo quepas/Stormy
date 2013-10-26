@@ -81,18 +81,18 @@ bool EquivalentsConfig::load( std::string filePath )
 			boost::split(splited, equivalentsStr, boost::is_any_of(","));
 
 			MeteoDataType* meteoDataType = new MeteoDataType();
-			meteoDataType -> type = MeteoDataType::getTypeFromString(typeStr);
+			meteoDataType -> type = T_UNKNOWN;//MeteoDataType::getTypeFromString(typeStr);
 			meteoDataType -> equivalents = splited;			
 
 			if(YAMLUtils::isDefined(it, "valueType"))
 			{
 				std::string valueTypeStr = YAMLUtils::getString(it, "valueType");
-				meteoDataType -> valueType = MeteoDataType::getValueTypeFromString(valueTypeStr);
+				meteoDataType -> valueType = VT_UNKNOWN; //MeteoDataType::getValueTypeFromString(valueTypeStr);
 			}
 			if(YAMLUtils::isDefined(it, "unit"))
 			{
 				std::string unitStr = YAMLUtils::getString(it, "unit");
-				meteoDataType->unitType = MeteoDataType::getUnitTypeFromString(unitStr);
+				meteoDataType->unitType = UT_UNKNOWN; // MeteoDataType::getUnitTypeFromString(unitStr);
 			}
 			equivalents.push_back(meteoDataType);
 		}				

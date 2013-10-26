@@ -1,9 +1,11 @@
 #include "MongoDBHandler.h"
 
 #include <boost/algorithm/string.hpp>
+#include <boost/any.hpp>
 
 using namespace Stormy;
 using Meteo::Station;
+using Meteo::Measurement;
 
 MongoDBHandler::MongoDBHandler( std::string dbAddress /*= ""*/ )
 	:	connected(false),
@@ -39,41 +41,19 @@ void Stormy::MongoDBHandler::clearMeteosData()
 	connection.dropCollection("test.meteo");		
 }
 
-void MongoDBHandler::insertMeteoData( MeteoData* meteoData )
+void MongoDBHandler::insertMeteoData( Measurement* measurement )
 {
-	if(!connected || !meteoData) return;	
+	if(!connected || !measurement) return;	
 
 	mongo::BSONObjBuilder bsonBuilder;
-	std::map<TYPE, SingleMeteoData*> data = meteoData -> data;	
+	auto data = measurement -> data;	
 	for(auto it = data.begin(); it != data.end(); ++it) 
 	{		
-		std::string typeStr = MeteoDataType::getStringType(it -> first);
-		TYPE type = it -> first;
-
-		//if(type != AIR_TEMPERATURE || type != AIR_TEMPERATURE)
-		{
-			bsonBuilder.append(MeteoDataType::getStringType(it -> first),
-				*((it -> second) -> text));		
-		} 
-		/*else {
-			switch(type)
-			{
-				case AIR_TEMPERATURE:
-					bsonBuilder.append(typeStr, meteoData -> airTemperature);
-					break;
-				case AIR_HUMIDITY:
-					bsonBuilder.append(typeStr, meteoData -> airHumidity);
-					break;					
-			}
-		}*/
-		
+		std::string key = it -> first;
+		std::string value = boost::any_cast<std::string>(it -> second);		
+		bsonBuilder.append(key, value);						
 	}	
 	connection.insert("test.meteo", bsonBuilder.obj());
-}
-
-void MongoDBHandler::insertMeteosData( std::vector<MeteoData*> meteoData )
-{
-
 }
 
 void MongoDBHandler::setDbAndCollection( std::string dbName, std::string collectionName )
@@ -135,14 +115,14 @@ std::vector<Station*> MongoDBHandler::getStationsData()
 	return result;
 }
 
-std::vector<MeteoData*> MongoDBHandler::getMeteoData()
+std::vector<Measurement*> MongoDBHandler::getMeteoData()
 {
-	auto result = std::vector<MeteoData*>();
+	auto result = std::vector<Measurement*>();
 	if(!connected) return result;
 	
 	std::auto_ptr<mongo::DBClientCursor> cursor =
 		connection.query("test.meteo", mongo::BSONObj());
-	while( cursor -> more() ) {
+	/*while( cursor -> more() ) {
 		mongo::BSONObj current = cursor -> next();
 		MeteoData* meteoData = new MeteoData();
 		// for tests
@@ -153,6 +133,6 @@ std::vector<MeteoData*> MongoDBHandler::getMeteoData()
 		airHum -> text = new std::string(current.getStringField("AIR_HUMIDITY"));
 		meteoData -> data.insert(std::make_pair(AIR_HUMIDITY, airHum));
 		result.push_back(meteoData);
-	}
+	}*/
 	return result;
 }

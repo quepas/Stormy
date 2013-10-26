@@ -6,6 +6,7 @@
 #include "MeteoUtils.h"
 
 using namespace Stormy;
+using namespace Meteo;
 
 std::vector<PyObject*> PyObjectMapper::extractItemsFromSequence( PyObject* sequence )
 {
@@ -65,33 +66,13 @@ std::map<std::string, std::string> PyObjectMapper::extractDictsFromDictSequence(
 	return result;
 }
 
-MeteoData* PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string, std::string> map, EquivalentsConfig* rules )
+Measurement* PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string, std::string> map, EquivalentsConfig* rules )
 {
-	MeteoData* result = new MeteoData();
+	Measurement* result = new Measurement();
 	for(auto it = map.begin(); it != map.end(); ++it)
 	{
 		std::string key = it -> first;
-		std::string value = it -> second;
-		TYPE type = rules -> getTypeByEquivalent(key);
-		
-		if(type == T_UNKNOWN) {
-			std::cout << "Couldn't find type for equivalent: " << key << std::endl;
-			continue;
-		}
-
-		switch(type)
-		{
-			case AIR_TEMPERATURE:
-				result -> airTemperature = MeteoUtils::extractTemperature(value);
-				break;
-			case AIR_HUMIDITY:
-				result -> airHumidity = MeteoUtils::extractTemperature(value);
-				break;
-		}
-
-		// TODO: second (map value) should be already parsed
-		SingleMeteoData* singleMeteoData = new SingleMeteoData();
-		singleMeteoData -> text = new std::string(it -> second);
-		result -> data.insert(std::make_pair(type, singleMeteoData));
+		std::string value = it -> second;		
 	}
+	return result;
 }
