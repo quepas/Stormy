@@ -4,7 +4,7 @@
 #include "PyObjectMapper.h"
 #include "PyExecutor.h"
 #include "PyFunction.h"
-#include "MeteoStationsCfg.h"
+#include "StationConfiguration.h"
 #include "MongoDBHandler.h"
 #include "Utils.h"
 #include "MeteoUtils.h"
@@ -14,13 +14,14 @@
 #include <sstream>
 
 using namespace Stormy;
+using namespace Meteo;
 
 int main(int argc, char** argv) 
 {	
 	std::cout << "++++++++++++++++ Acquisition Module Test ++++++++++++++++" << std::endl;	
 	Py_ExecutorInit();	
 	PyParserWrapper* meteoBParser = new PyParserWrapper("MeteoBParser");
-	MeteoStationsCfg* meteoStationsCfg = new MeteoStationsCfg("config/meteo_stations_config.yaml");
+	StationConfiguration* meteoStationsCfg = new StationConfiguration("config/meteo_stations_config.yaml");
 	MongoDBHandler* dbHandler = new MongoDBHandler("localhost");
 
 	dbHandler -> clearStationsData();

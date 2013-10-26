@@ -1,10 +1,9 @@
-#include "MeteoStationsCfg.h"
+#include "StationConfiguration.h"
 #include "../../common/YAMLUtils.h"
 
-using namespace Stormy;
-using Meteo::Station;
+using namespace Stormy::Meteo;
 
-MeteoStationsCfg::MeteoStationsCfg( std::string filePath )
+StationConfiguration::StationConfiguration( std::string filePath )
 	:	configuration(std::vector<Station*>())
 {
 	if(!load(filePath))
@@ -14,12 +13,12 @@ MeteoStationsCfg::MeteoStationsCfg( std::string filePath )
 	}
 }
 
-MeteoStationsCfg::~MeteoStationsCfg()
+StationConfiguration::~StationConfiguration()
 {
 	configuration.clear();
 }
 
-bool MeteoStationsCfg::load(std::string filePath)
+bool StationConfiguration::load(std::string filePath)
 {
 	YAML::Node root = YAML::LoadFile(filePath);
 
