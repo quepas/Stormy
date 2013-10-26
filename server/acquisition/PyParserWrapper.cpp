@@ -38,19 +38,18 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 		std::map<std::string, std::string> data = 
 			PyObjectMapper::extractDictsFromDictSequence(pFuncResult);		
 		TypeConfiguration* types = new TypeConfiguration("config/meteo_data_type_config.yaml");
-
-		// TODO: PyObjectMapper::mapToMeteoDataWithRules !
+		
 		Measurement* result = new Measurement();
 		for(auto it = data.begin(); it != data.end(); ++it) {
 			std::string id = types -> getTypeIdByEquivalent(it -> first);
 			Type* type = types -> getFullTypeById(id);
+			std::string valueType = boost::to_lower_copy(type -> valueType);
 			std::string value = boost::trim_copy(it -> second);
 
-			if(value != "-") {
-				std::cout << "|" << value << "|" << ": " << MeteoUtils::extractTemperature(value) << std::endl;;
-				if(type -> valueType == "number")
+			if(value != "-") {				
+				if(valueType == "number")
 					result -> data[id] = MeteoUtils::extractTemperature(value);
-				else if(type -> valueType == "text")
+				else if(valueType == "text")
 					result -> data[id] = value;	
 			}			
 		}
