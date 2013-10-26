@@ -4,7 +4,7 @@
 #include <vector>
 #include <Python.h>
 
-#include "../../common/MeteoData.h"
+#include "MeteoData.h"
 #include "EquivalentsConfig.h"
 
 namespace Stormy

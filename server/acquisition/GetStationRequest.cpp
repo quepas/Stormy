@@ -4,6 +4,7 @@
 #include "Utils.h"
 
 using namespace Stormy;
+using Meteo::Station;
 
 Stormy::GetStationRequest::GetStationRequest()
 {
@@ -20,7 +21,7 @@ void Stormy::GetStationRequest::handleRequest( HTTPServerRequest& request, HTTPS
 	std::ostream& ostr = response.send();
 
 	MongoDBHandler dbHandler("localhost");
-	std::vector<MeteoStation*> stations = dbHandler.getStationsData();
+	std::vector<Station*> stations = dbHandler.getStationsData();
 	std::string content;
 	for(auto it = stations.begin(); it != stations.end(); ++it)
 		content += prepareStationHTML(*it);	
@@ -29,7 +30,7 @@ void Stormy::GetStationRequest::handleRequest( HTTPServerRequest& request, HTTPS
 		 << content << "</body></html>";
 }
 
-std::string Stormy::GetStationRequest::prepareStationHTML( MeteoStation* station )
+std::string Stormy::GetStationRequest::prepareStationHTML( Station* station )
 {
 	std::string header = "<h2>" + station -> name + "</h2>";
 	std::string content =

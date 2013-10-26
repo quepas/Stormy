@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../../common/MeteoData.h"
+#include "MeteoData.h"
 
 namespace Stormy
 {

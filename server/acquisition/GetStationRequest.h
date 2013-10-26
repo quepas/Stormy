@@ -4,7 +4,7 @@
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
-#include "../../common/MeteoStation.h"
+#include "MeteoData.h"
 
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
@@ -21,6 +21,6 @@ namespace Stormy
 			void handleRequest(HTTPServerRequest& request, 
 				HTTPServerResponse& response);	
 		private:
-			std::string prepareStationHTML(MeteoStation* station);
+			std::string prepareStationHTML(Meteo::Station* station);
 	};
 }

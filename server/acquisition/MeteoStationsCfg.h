@@ -3,7 +3,7 @@
 #include "yaml-cpp/yaml.h"
 #include <vector>
 
-#include "../../common/MeteoStation.h"
+#include "MeteoData.h"
 
 namespace Stormy
 {
@@ -12,15 +12,13 @@ namespace Stormy
 		public:
 			MeteoStationsCfg(std::string filePath);
 			~MeteoStationsCfg();
-
-			bool reload();
-			std::vector<MeteoStation*> getConfiguration() 
+			
+			std::vector<Meteo::Station*> getConfiguration() 
 				{ return configuration; }
 
 		private:
-			bool load(std::string filePath);
-			bool loadSingleStation(YAML::iterator it);			
+			bool load(std::string filePath);						
 
-			std::vector<MeteoStation*> configuration;
+			std::vector<Meteo::Station*> configuration;
 	};
 }

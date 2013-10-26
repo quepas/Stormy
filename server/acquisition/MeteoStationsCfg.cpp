@@ -2,9 +2,10 @@
 #include "../../common/YAMLUtils.h"
 
 using namespace Stormy;
+using Meteo::Station;
 
 MeteoStationsCfg::MeteoStationsCfg( std::string filePath )
-	:	configuration(std::vector<MeteoStation*>())
+	:	configuration(std::vector<Station*>())
 {
 	if(!load(filePath))
 	{
@@ -16,11 +17,6 @@ MeteoStationsCfg::MeteoStationsCfg( std::string filePath )
 MeteoStationsCfg::~MeteoStationsCfg()
 {
 	configuration.clear();
-}
-
-bool MeteoStationsCfg::reload()
-{
-	return false;
 }
 
 bool MeteoStationsCfg::load(std::string filePath)
@@ -45,7 +41,7 @@ bool MeteoStationsCfg::load(std::string filePath)
 			return false;
 		}
 
-		MeteoStation* meteoStation = new MeteoStation();
+		Station* meteoStation = new Station();
 		meteoStation->url = YAMLUtils::getString(it, "url");
 		meteoStation->parserClass = YAMLUtils::getString(it, "parserClass");
 		meteoStation->refreshTime = YAMLUtils::getNumber(it, "refreshTime");

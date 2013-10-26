@@ -3,8 +3,7 @@
 #include <string>
 #include <mongo/client/dbclient.h>
 
-#include "../../common/MeteoData.h"
-#include "../../common/MeteoStation.h"
+#include "MeteoData.h"
 
 namespace Stormy
 {
@@ -22,9 +21,9 @@ namespace Stormy
 			std::vector<MeteoData*> getMeteoData();
 
 			void clearStationsData();
-			void insertStationsData(std::vector<MeteoStation*>& data);			
-			void insertStationData(MeteoStation* data);
-			std::vector<MeteoStation*> getStationsData();
+			void insertStationsData(std::vector<Meteo::Station*>& data);			
+			void insertStationData(Meteo::Station* data);
+			std::vector<Meteo::Station*> getStationsData();
 
 			MeteoData* getCurrentMeteoData(std::string stationId);
 			MeteoData* getArchivalMeteoData(std::string stationId, long long timestamp);

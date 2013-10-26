@@ -3,14 +3,42 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <limits>
 
 #include <Poco/Timestamp.h>
 #include <boost/algorithm/string.hpp>
-
-#include "MeteoStation.h"
+#include <boost/any.hpp>
 
 namespace Stormy
 {
+	namespace Meteo 
+	{
+		struct Measurement
+		{
+			Poco::Timestamp timestamp;
+			//Station* station;
+			std::map<std::string, boost::any> data;
+		};
+
+		struct Station
+		{
+			std::string id;
+			std::string url;
+			std::string name;
+			std::string parserClass;
+			double refreshTime;
+		};
+
+		struct Type
+		{
+			std::string id;
+			std::string valueType;
+			std::string valueUnit;
+			std::string valueFormat;
+			std::string equivalents;
+		};
+	}
+
 	enum TYPE
 	{		
 		AIR_TEMPERATURE,
@@ -67,9 +95,7 @@ namespace Stormy
 			dewPoint = 0;		 
 		}
 
-		// POD
-		MeteoStation* station;
-
+		// POD		
 		Poco::Int64 timestamp;
 		double airTemperature;
 		double airHumidity;

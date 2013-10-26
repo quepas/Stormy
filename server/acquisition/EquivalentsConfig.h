@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../../common/MeteoData.h"
+#include "MeteoData.h"
 
 namespace Stormy
 {

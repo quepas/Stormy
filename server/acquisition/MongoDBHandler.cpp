@@ -3,6 +3,7 @@
 #include <boost/algorithm/string.hpp>
 
 using namespace Stormy;
+using Meteo::Station;
 
 MongoDBHandler::MongoDBHandler( std::string dbAddress /*= ""*/ )
 	:	connected(false),
@@ -88,20 +89,20 @@ std::string MongoDBHandler::createDbCollectionName()
 	return currentDB + "." + currentCollection;
 }
 
-void Stormy::MongoDBHandler::clearStationsData()
+void MongoDBHandler::clearStationsData()
 {
 	if(!connected) return;
 	connection.dropCollection("test.stations");		
 }
 
-void Stormy::MongoDBHandler::insertStationsData( std::vector<MeteoStation*>& data )
+void MongoDBHandler::insertStationsData( std::vector<Station*>& data )
 {
 	if(!connected) return;
 	for(auto it = data.begin(); it != data.end(); ++it)
 		insertStationData(*it);
 }
 
-void Stormy::MongoDBHandler::insertStationData( MeteoStation* data )
+void MongoDBHandler::insertStationData( Station* data )
 {
 	if(!connected || !data) return;	
 
@@ -114,16 +115,16 @@ void Stormy::MongoDBHandler::insertStationData( MeteoStation* data )
 	connection.insert("test.stations", bsonBuilder.obj());
 }
 
-std::vector<MeteoStation*> Stormy::MongoDBHandler::getStationsData()
+std::vector<Station*> MongoDBHandler::getStationsData()
 {
-	auto result = std::vector<MeteoStation*>();
+	auto result = std::vector<Station*>();
 	if(!connected) return result;	
 
 	std::auto_ptr<mongo::DBClientCursor> cursor = 
 		connection.query("test.stations", mongo::BSONObj());
 	while( cursor -> more() ) {
 		mongo::BSONObj current = cursor -> next();
-		MeteoStation* station = new MeteoStation();
+		Station* station = new Station();
 		station -> id = current.getStringField("_id");
 		station -> name = current.getStringField("name");
 		station -> parserClass = current.getStringField("parserClass");

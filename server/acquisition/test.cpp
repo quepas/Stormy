@@ -6,10 +6,9 @@
 #include "PyFunction.h"
 #include "MeteoStationsCfg.h"
 #include "MongoDBHandler.h"
-#include "../../common/MeteoStation.h"
 #include "Utils.h"
 #include "MeteoUtils.h"
-
+#include "MeteoData.h"
 #include "HttpServer.h"
 
 #include <sstream>
@@ -27,7 +26,7 @@ int main(int argc, char** argv)
 	dbHandler -> clearStationsData();
 	dbHandler -> insertStationsData(meteoStationsCfg->getConfiguration());
 	
-	std::vector<Stormy::MeteoStation*> stations = meteoStationsCfg->getConfiguration();
+	std::vector<Stormy::Meteo::Station*> stations = meteoStationsCfg->getConfiguration();
 	for(auto it = stations.begin(); it != stations.end(); ++it)
 	{
 		std::cout << "=== Parsing from station " << (*it) -> name 
@@ -39,5 +38,5 @@ int main(int argc, char** argv)
 	}
 
 	Stormy::HttpServer httpServer;
-	return httpServer.run(argc, argv);
+	return httpServer.run(argc, argv);	
 }
