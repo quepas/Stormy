@@ -50,7 +50,14 @@ void MongoDBHandler::insertMeteoData( Measurement* measurement )
 	for(auto it = data.begin(); it != data.end(); ++it) 
 	{		
 		std::string key = it -> first;
-		std::string value = boost::any_cast<std::string>(it -> second);		
+		std::string value;
+		boost::any anyValue = it -> second;
+		
+		if(anyValue.type() == typeid(double))
+			value = boost::lexical_cast<std::string>(
+				boost::any_cast<double>(it -> second));		
+		else
+			value = boost::any_cast<std::string>(it ->second);
 		bsonBuilder.append(key, value);						
 	}	
 	connection.insert("test.meteo", bsonBuilder.obj());

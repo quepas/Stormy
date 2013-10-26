@@ -33,8 +33,7 @@ int main(int argc, char** argv)
 		std::cout << "=== Parsing from station " << (*it) -> name 
 			<< " ===\n\t(" << (*it) -> url << ")" << std::endl;
 		std::cout << "--------------------------------------------------------------------------" << std::endl;
-		//dbHandler -> insertMeteoData(meteoBParser -> parseFromURL((*it) -> url));
-		meteoBParser -> parseFromURL((*it) -> url);
+		dbHandler -> insertMeteoData(meteoBParser -> parseFromStation(*it));		
 		std::cout << "--------------------------------------------------------------------------" << std::endl;
 		std::cout << std::endl;
 	}

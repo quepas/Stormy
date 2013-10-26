@@ -2,11 +2,14 @@
 
 #include <Python.h>
 #include <iostream>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "PyFunction.h"
 #include "PyObjectMapper.h"
-#include "EquivalentsConfig.h"
+#include "TypeConfiguration.h"
 #include "Utils.h"
+#include "MeteoUtils.h"
 
 using namespace Stormy;
 using namespace Meteo;
@@ -33,17 +36,23 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 	if(pFuncResult != nullptr)
 	{						
 		std::map<std::string, std::string> data = 
-			PyObjectMapper::extractDictsFromDictSequence(pFuncResult);
-		EquivalentsConfig* equivalents = 
-			new EquivalentsConfig("config/meteo_data_type_equivalents.yaml");
+			PyObjectMapper::extractDictsFromDictSequence(pFuncResult);		
+		TypeConfiguration* types = new TypeConfiguration("config/meteo_data_type_config.yaml");
 
 		// TODO: PyObjectMapper::mapToMeteoDataWithRules !
 		Measurement* result = new Measurement();
 		for(auto it = data.begin(); it != data.end(); ++it) {
-			std::string key = it -> first;
-			std::string value = it -> second;
-			boost::any anyValue = value;
-			result -> data[key] = value;	
+			std::string id = types -> getTypeIdByEquivalent(it -> first);
+			Type* type = types -> getFullTypeById(id);
+			std::string value = boost::trim_copy(it -> second);
+
+			if(value != "-") {
+				std::cout << "|" << value << "|" << ": " << MeteoUtils::extractTemperature(value) << std::endl;;
+				if(type -> valueType == "number")
+					result -> data[id] = MeteoUtils::extractTemperature(value);
+				else if(type -> valueType == "text")
+					result -> data[id] = value;	
+			}			
 		}
 		return result;
 	} 
@@ -55,11 +64,6 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 }
 
 Measurement* PyParserWrapper::parseFromStation( Station* station )
-{
-	Measurement* result = new Measurement();
-	result -> station = station;
-
-	// parseFromUrl(station -> url)
-	
-	return result;
+{	
+	return parseFromURL(station -> url);
 }

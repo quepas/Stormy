@@ -1,0 +1,72 @@
+-
+  id: date
+  valueType: text
+  valueUnit: date
+  valueFormat: YYYY-MM-DD
+  equivalents: Data
+-
+  id: time
+  valueType: text
+  valueUnit: time
+  valueFormat: HH:MM
+  equivalents: Czas
+-
+  id: airTemperature
+  valueType: number
+  valueUnit: celsius
+  equivalents: Temperatura powietrza;Temperatura
+-
+  id: perceptibleTemperature
+  valueType: number
+  valueUnit: celsius
+  equivalents: Temperatura odczuwalna
+-
+  id: airHumidity  
+  valueType: number
+  valueUnit: percent
+  equivalents: Wilgotność powietrza
+-
+  id: atmosphericPressure
+  valueType: number
+  valueUnit: hectopascal
+  equivalents: Ciśnienie atmosferyczne
+-
+  id: windSpeed
+  valueType: number
+  valueUnit: meter_per_second
+  equivalents: Prędkość wiatru
+-
+  id: windDirectionAngle
+  valueType: number
+  valueUnit: angle
+  equivalents: Kierunek wiatru
+-
+  id: windDirection
+  valueType: text
+  valueUnit: direction
+  equivalents: Kierunek wiatru
+-
+  id: windSpeedMedium
+  valueType: number
+  valueUnit: meter_per_second
+  equivalents: Prędkość średnia
+-
+  id: momentDrop
+  valueType: number
+  valueUnit: none
+  equivalents: Opad chwilowy
+-
+  id: uvRadiation
+  valueType: number
+  valueUnit: none
+  equivalents: Promieniowanie UV
+-
+  id: solarRadiation
+  valueType: number
+  valueUnit: watt_per_square_meter
+  equivalents: Promieniowanie słoneczne
+-
+  id: dewPoint
+  valueType: number
+  valueUnit: celsius
+  equivalents: Punkt rosy

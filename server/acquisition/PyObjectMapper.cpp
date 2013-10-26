@@ -66,7 +66,7 @@ std::map<std::string, std::string> PyObjectMapper::extractDictsFromDictSequence(
 	return result;
 }
 
-Measurement* PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string, std::string> map, EquivalentsConfig* rules )
+Measurement* PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string, std::string> map, TypeConfiguration* rules )
 {
 	Measurement* result = new Measurement();
 	for(auto it = map.begin(); it != map.end(); ++it)

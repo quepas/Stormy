@@ -35,7 +35,7 @@ namespace Stormy
 			std::string valueType;
 			std::string valueUnit;
 			std::string valueFormat;
-			std::string equivalents;
+			std::vector<std::string> equivalents;
 		};
 	}
 

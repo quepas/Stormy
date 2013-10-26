@@ -11,6 +11,7 @@ double MeteoUtils::extractTemperature( std::string text )
 {
 	std::vector<std::string> splited;
 	boost::trim(text);
+	boost::replace_all(text, ",", ".");
 	boost::split(splited, text, boost::is_any_of(" "));	
 
 	for(auto it = splited.begin(); it != splited.end(); ++it) {
