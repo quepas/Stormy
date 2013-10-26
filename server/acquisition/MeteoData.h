@@ -13,13 +13,6 @@ namespace Stormy
 {
 	namespace Meteo 
 	{
-		struct Measurement
-		{
-			Poco::Timestamp timestamp;
-			//Station* station;
-			std::map<std::string, boost::any> data;
-		};
-
 		struct Station
 		{
 			std::string id;
@@ -28,6 +21,13 @@ namespace Stormy
 			std::string parserClass;
 			double refreshTime;
 		};
+
+		struct Measurement
+		{
+			Poco::Timestamp timestamp;
+			Station* station;
+			std::map<std::string, boost::any> data;
+		};		
 
 		struct Type
 		{
