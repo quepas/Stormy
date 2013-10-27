@@ -11,6 +11,7 @@ namespace Stormy
 			static bool isDefined(YAML::iterator it, std::string field);
 			static std::string getString(YAML::iterator it, std::string field);
 			static double getNumber(YAML::iterator it, std::string field);
+			static long getLongNumber(YAML::iterator it, std::string field);
 
 		private:
 	};

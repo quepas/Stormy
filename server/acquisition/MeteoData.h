@@ -19,7 +19,7 @@ namespace Stormy
 			std::string url;
 			std::string name;
 			std::string parserClass;
-			double refreshTime;
+			long refreshTime;
 		};
 
 		struct Measurement

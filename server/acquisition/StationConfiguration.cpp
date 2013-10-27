@@ -43,7 +43,7 @@ bool StationConfiguration::load(std::string filePath)
 		Station* meteoStation = new Station();
 		meteoStation->url = YAMLUtils::getString(it, "url");
 		meteoStation->parserClass = YAMLUtils::getString(it, "parserClass");
-		meteoStation->refreshTime = YAMLUtils::getNumber(it, "refreshTime");
+		meteoStation->refreshTime = YAMLUtils::getLongNumber(it, "refreshTime");
 
 		if(YAMLUtils::isDefined(it, "id"))
 			meteoStation -> id = YAMLUtils::getString(it, "id");

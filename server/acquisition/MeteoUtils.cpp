@@ -22,3 +22,15 @@ double MeteoUtils::extractTemperature( std::string text )
 	}
 	return 0.0;
 }
+
+long Stormy::MeteoUtils::convertSecondsToMiliseconds( long seconds )
+{
+	return (seconds > 0) ? seconds * 1000 : 0;
+}
+
+long MeteoUtils::convertMinutesToMiliseconds( long minutes )
+{
+	return convertSecondsToMiliseconds(minutes * 60);
+}
+
+

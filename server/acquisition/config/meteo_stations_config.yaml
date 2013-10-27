@@ -2,89 +2,89 @@
   id: WislaMalinka
   name: Wisła Malink
   url: http://stacjameteo.pl/dane/index.php?stacja=21
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: Brenna
   name: Brenna
   url: http://stacjameteo.pl/dane/index.php?stacja=23
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: MeteoNaJeziorze
   name: Meteo na Jeziorze
   url: http://stacjameteo.pl/dane/index.php?stacja=24
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: Frelichow
   name: Frelichów
   url: http://stacjameteo.pl/dane/index.php?stacja=25
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: WislaCzareZapora
   name: Wisła Czarne Zapora
   url: http://stacjameteo.pl/dane/index.php?stacja=26
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: WislaWielkaPrzystan
   name: Wisła Wielka Przystań
   url: http://stacjameteo.pl/dane/index.php?stacja=27
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: Skoczow
   name: Skoczów
   url: http://stacjameteo.pl/dane/index.php?stacja=28
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: WapienicaZapora
   name: Wapienica Zapora
   url: http://stacjameteo.pl/dane/index.php?stacja=29
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: GoraZar
   name: Góra Żar
   url: http://stacjameteo.pl/dane/index.php?stacja=30
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: Gubalowka
   name: Gubałówka
   url: http://stacjameteo.pl/dane/index.php?stacja=31
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: MiasteczkoSlaskie
   name: Miasteczko Śląskie
   url: http://stacjameteo.pl/dane/index.php?stacja=32
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: Szczecin
   name: Szczecin
   url: http://stacjameteo.pl/dane/index.php?stacja=33
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: Elblag
   name: Elbląg
   url: http://stacjameteo.pl/dane/index.php?stacja=34
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: Wloclawek
   name: Włocławek
   url: http://stacjameteo.pl/dane/index.php?stacja=35
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10
 -
   id: Biebrza
   name: Biebrza
   url: http://stacjameteo.pl/dane/index.php?stacja=37
-  parserClass: MeteoBDataParser
+  parserClass: MeteoBParser
   refreshTime: 10

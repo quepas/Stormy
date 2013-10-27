@@ -30,7 +30,6 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 	for(auto it = meteo.begin(); it != meteo.end(); ++it) {
 		content += prepareMeteoHTML(*it);
 	}
-
 	ostr << "<html><head><title>Meteo</title></head><body><h1>Meteo</h1>"
 		 << content << "</body></html>";
 }

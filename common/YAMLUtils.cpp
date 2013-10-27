@@ -16,3 +16,8 @@ double YAMLUtils::getNumber( YAML::iterator it, std::string field )
 {
 	return (*it)[field].as<double>();
 }
+
+long Stormy::YAMLUtils::getLongNumber( YAML::iterator it, std::string field )
+{
+	return (*it)[field].as<long>();
+}
