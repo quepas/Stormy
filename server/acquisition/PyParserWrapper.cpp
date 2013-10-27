@@ -29,8 +29,7 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 	PyObject* pURLValue = PyUnicode_FromString(url.c_str());
 	PyTuple_SetItem(pArgs, 0, pURLValue);	
 	
-	PyObject* pFuncResult = PyFunction(pyParserModuleName.c_str(), "run")(pArgs);
-	Py_DECREF(pURLValue);
+	PyObject* pFuncResult = PyFunction(pyParserModuleName.c_str(), "run")(pArgs);	
 	Py_DECREF(pArgs);
 
 	if(pFuncResult != nullptr)
@@ -53,11 +52,13 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 					result -> data[id] = value;	
 			}			
 		}
+		Py_DECREF(pFuncResult);
 		return result;
 	} 
 	else
 	{
 		std::cout << "No data at current URL" << std::endl;
+		Py_DECREF(pFuncResult);
 		return nullptr;
 	}			
 }

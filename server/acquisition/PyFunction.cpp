@@ -12,7 +12,7 @@ Stormy::PyFunction::PyFunction( std::string moduleName, std::string functionName
 
 Stormy::PyFunction::~PyFunction()
 {
-
+	Py_DECREF(pyFunction);
 }
 
 PyObject* Stormy::PyFunction::operator()( PyObject* pyArgs /*= nullptr*/ )
@@ -20,13 +20,15 @@ PyObject* Stormy::PyFunction::operator()( PyObject* pyArgs /*= nullptr*/ )
 	if(!Py_IsInitialized())
 	{
 		std::cout << "Call Py_ExecutorInit() first" << std::endl;
+		Py_DECREF(pyArgs);
 		return nullptr;
 	}
 
 	if(properInit)
-	{
-		return PyObject_CallObject(pyFunction, pyArgs);		
+	{		
+		return PyObject_CallObject(pyFunction, pyArgs);				 
 	}
+	Py_DECREF(pyArgs);
 	return nullptr;
 }
 
@@ -42,6 +44,7 @@ bool Stormy::PyFunction::init( std::string moduleName, std::string functionName 
 	if(!pyModuleName)
 	{
 		std::cout << "Module name is wrong" << std::endl;
+		Py_DECREF(pyModuleName);
 		return false;
 	}
 
@@ -50,6 +53,7 @@ bool Stormy::PyFunction::init( std::string moduleName, std::string functionName 
 	if(!pyModuleData)
 	{
 		std::cout << "Couldn't import given module" << std::endl;
+		Py_DECREF(pyModuleName);
 		return false;
 	}
 
