@@ -85,3 +85,12 @@ Type* TypeConfiguration::getFullTypeById( std::string id )
 	}
 	return nullptr;
 }
+
+std::string TypeConfiguration::getFirstEquivalentById( std::string id )
+{
+	Type* type = getFullTypeById(id);
+	if(type != nullptr && type -> equivalents.size() > 0) {
+		return type -> equivalents[0];
+	}
+	return "_none";
+}

@@ -2,7 +2,10 @@
 
 #include "MongoDBHandler.h"
 #include "Utils.h"
+#include "TypeConfiguration.h"
+
 #include <boost/any.hpp>
+#include <boost/lexical_cast.hpp>
 
 using namespace Stormy;
 using namespace Meteo;
@@ -34,10 +37,28 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 
 std::string GetMeteoRequest::prepareMeteoHTML(Measurement* meteo)
 {
+	TypeConfiguration* typesCfg = 
+		new TypeConfiguration("config/meteo_data_type_config.yaml");
+
 	std::string header = "<h2>Meteo station</h2>";
-	std::string content = 
-		"<ul><li>Air temperature: " + boost::any_cast<std::string>(meteo -> data["airTemperature"]) + "</li>" +
-		"<li>Air humidity: " + boost::any_cast<std::string>(meteo -> data["airHumidity"]) + "</li></ul>";
+	std::string content = "<ul>";
+	
+	auto data = meteo -> data;
+	for(auto it = data.begin(); it != data.end(); ++it) {
+		std::string id = it -> first;
+		Type* type = typesCfg->getFullTypeById(id);
+		std::string rowContent = "<li>";
+		rowContent.append(typesCfg -> getFirstEquivalentById(id));
+		rowContent.append(": ");
+		if(type -> valueType == "number")
+			rowContent.append(boost::lexical_cast<std::string>(
+				boost::any_cast<double>(it -> second)));
+		else if(type ->valueType == "text")
+			rowContent.append(boost::any_cast<std::string>(it -> second));
+		rowContent.append("</li>");
+		content.append(rowContent);
+	}	
+	content.append("</ul>");
 	return header + content;
 }
 

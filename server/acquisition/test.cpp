@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	dbHandler -> clearStationsData();
 	dbHandler -> insertStationsData(meteoStationsCfg->getConfiguration());
 	
-	std::vector<Stormy::Meteo::Station*> stations = meteoStationsCfg->getConfiguration();
+	/*std::vector<Stormy::Meteo::Station*> stations = meteoStationsCfg->getConfiguration();
 	for(auto it = stations.begin(); it != stations.end(); ++it)
 	{
 		std::cout << "=== Parsing from station " << (*it) -> name 
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 		dbHandler -> insertMeteoData(meteoBParser -> parseFromStation(*it));		
 		std::cout << "--------------------------------------------------------------------------" << std::endl;
 		std::cout << std::endl;
-	}
+	}*/
 
 	Stormy::HttpServer httpServer;
 	return httpServer.run(argc, argv);	

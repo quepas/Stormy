@@ -26,9 +26,10 @@ void Stormy::GetStationRequest::handleRequest( HTTPServerRequest& request, HTTPS
 	for(auto it = stations.begin(); it != stations.end(); ++it)
 		content += prepareStationHTML(*it);	
 
-	/*ostr << "<html><head><title>Stations</title></head><body><h1>Stations</h1>"
-		 << content << "</body></html>";*/
-	ostr << "{\"content\": [{\"name\": \"ASD\"},{\"name\": \"DSA\"}]}\r\n";
+	ostr << "<html><head><title>Stations</title></head><body><h1>Stations</h1>"
+		 << content << "</body></html>";
+	// JSON test: 
+	// ostr << "{\"content\": [{\"name\": \"ASD\"},{\"name\": \"DSA\"}]}\r\n";
 }
 
 std::string Stormy::GetStationRequest::prepareStationHTML( Station* station )

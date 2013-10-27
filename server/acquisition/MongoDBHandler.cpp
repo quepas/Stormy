@@ -3,9 +3,11 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/any.hpp>
 
+#include "TypeConfiguration.h"
+#include "MeteoUtils.h"
+
 using namespace Stormy;
-using Meteo::Station;
-using Meteo::Measurement;
+using namespace Meteo;
 
 MongoDBHandler::MongoDBHandler( std::string dbAddress /*= ""*/ )
 	:	connected(false),	
@@ -111,19 +113,30 @@ std::vector<Measurement*> MongoDBHandler::getMeteoData()
 	auto result = std::vector<Measurement*>();
 	if(!connected) return result;
 	
+	TypeConfiguration* typesCfg = 
+		new TypeConfiguration("config/meteo_data_type_config.yaml");
+	std::vector<Type*> types = typesCfg -> getConfiguration();
 	std::auto_ptr<mongo::DBClientCursor> cursor =
 		connection.query("test.meteo", mongo::BSONObj());
-	/*while( cursor -> more() ) {
+	while( cursor -> more() ) {
 		mongo::BSONObj current = cursor -> next();
-		MeteoData* meteoData = new MeteoData();
-		// for tests
-		SingleMeteoData* airTemp = new SingleMeteoData();
-		airTemp->text = new std::string(current.getStringField("AIR_TEMPERATURE"));
-		meteoData -> data.insert(std::make_pair(AIR_TEMPERATURE, airTemp));
-		SingleMeteoData* airHum = new SingleMeteoData();
-		airHum -> text = new std::string(current.getStringField("AIR_HUMIDITY"));
-		meteoData -> data.insert(std::make_pair(AIR_HUMIDITY, airHum));
-		result.push_back(meteoData);
-	}*/
+		std::set<std::string> availableFields;
+		current.getFieldNames(availableFields);		
+
+		Measurement* measurement = new Measurement();		
+		for(auto it = types.begin(); it != types.end(); ++it) {
+			std::string id = (*it) -> id;			
+			if(availableFields.find(id) != availableFields.end()) {
+				Type* type = typesCfg -> getFullTypeById(id);
+				std::string value = current.getStringField(id.c_str());
+
+				if(type -> valueType == "number")
+					measurement -> data[id]= MeteoUtils::extractTemperature(value);
+				else if(type ->valueType == "text")
+					measurement -> data[id]= value;
+			}			
+		}
+		result.push_back(measurement);
+	}
 	return result;
 }
