@@ -18,7 +18,7 @@ using namespace Stormy;
 using namespace Meteo;
 
 int main(int argc, char** argv) 
-{	
+{		
 	std::cout << "++++++++++++++++ Acquisition Module Test ++++++++++++++++" << std::endl;	
 	Py_ExecutorInit();		
 	StationConfiguration* meteoStationsCfg = new StationConfiguration("config/meteo_stations_config.yaml");

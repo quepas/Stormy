@@ -80,7 +80,7 @@ void MongoDBHandler::insertStationData( Station* data )
 	if(!connected || !data) return;	
 
 	mongo::BSONObjBuilder bsonBuilder;
-	bsonBuilder.append("_id", data -> id);
+	bsonBuilder.append("_id", data -> stationId);
 	bsonBuilder.append("name", data -> name);
 	bsonBuilder.append("parserClass", data -> parserClass);
 	bsonBuilder.append("refreshTime", data -> refreshTime);
@@ -98,7 +98,7 @@ std::vector<Station*> MongoDBHandler::getStationsData()
 	while( cursor -> more() ) {
 		mongo::BSONObj current = cursor -> next();
 		Station* station = new Station();
-		station -> id = current.getStringField("_id");
+		station -> stationId = current.getStringField("_id");
 		station -> name = current.getStringField("name");
 		station -> parserClass = current.getStringField("parserClass");
 		station -> refreshTime = current.getIntField("refreshTime");

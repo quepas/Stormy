@@ -26,8 +26,7 @@ std::vector<PyObject*> PyObjectMapper::extractItemsFromSequence( PyObject* seque
 PyObject* PyObjectMapper::extractKeyFromSingleDict( PyObject* dict )
 {
 	PyObject* result = nullptr;
-	if(PyDict_Check(dict) && PyDict_Size(dict) == 1)
-	{
+	if(PyDict_Check(dict) && PyDict_Size(dict) == 1) {
 		return PySequence_GetItem(PyDict_Keys(dict), 0);
 	}
 	return result;
@@ -36,8 +35,7 @@ PyObject* PyObjectMapper::extractKeyFromSingleDict( PyObject* dict )
 PyObject* PyObjectMapper::extractValueFromSingleDict( PyObject* dict )
 {
 	PyObject* result = nullptr;
-	if(PyDict_Check(dict) && PyDict_Size(dict) == 1)
-	{
+	if(PyDict_Check(dict) && PyDict_Size(dict) == 1) {
 		return PySequence_GetItem(PyDict_Values(dict), 0);
 	}
 	return result;
@@ -66,7 +64,7 @@ std::map<std::string, std::string> PyObjectMapper::extractDictsFromDictSequence(
 	return result;
 }
 
-Measurement* PyObjectMapper::mapToMeteoDataWithRules( std::map<std::string, std::string> map, TypeConfiguration* rules )
+Measurement* PyObjectMapper::mapToMeteoMeasurementWithRules( std::map<std::string, std::string>& map, TypeConfiguration* rules )
 {
 	Measurement* result = new Measurement();
 	for(auto it = map.begin(); it != map.end(); ++it)

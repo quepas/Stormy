@@ -65,5 +65,9 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 
 Measurement* PyParserWrapper::parseFromStation( Station* station )
 {	
-	return parseFromURL(station -> url);
+	Measurement* result = parseFromURL(station -> url);
+	if(result) {
+		result -> data["stationID"] = station -> stationId;
+	}
+	return result;
 }

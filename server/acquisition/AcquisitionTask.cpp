@@ -21,9 +21,9 @@ AcquisitionTask::~AcquisitionTask()
 
 void AcquisitionTask::run()
 {
-	std::cout << "=== Acquisition weather from" 
-		<< station -> name << " ===\n\tEvery " 
-		<< station -> refreshTime << " seconds." << std::endl;
+	std::cout << "Acquisition weather from " 
+		<< station -> stationId << " (Every " 
+		<< station -> refreshTime << " minutes.)" << std::endl;
 
-	dbHandler -> insertMeteoData(pyParser -> parseFromURL(station -> url));	
+	dbHandler -> insertMeteoData(pyParser -> parseFromStation(station));	
 }

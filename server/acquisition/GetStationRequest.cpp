@@ -35,7 +35,7 @@ std::string Stormy::GetStationRequest::prepareStationHTML( Station* station )
 {
 	std::string header = "<h2>" + station -> name + "</h2>";
 	std::string content =
-		"<ul><li>Id: " + station -> id + "</li>" +
+		"<ul><li>Id: " + station -> stationId + "</li>" +
 		"<li>Name: " + station -> name + "</li>" +
 		"<li>Refresh time: " + 
 		lexical_cast<std::string>(station -> refreshTime) + 

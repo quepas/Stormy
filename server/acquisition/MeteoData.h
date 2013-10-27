@@ -15,11 +15,11 @@ namespace Stormy
 	{
 		struct Station
 		{
-			std::string id;
+			std::string stationId;			
 			std::string url;
 			std::string name;
 			std::string parserClass;
-			long refreshTime;
+			long refreshTime;	
 		};
 
 		struct Measurement

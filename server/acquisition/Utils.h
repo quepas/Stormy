@@ -19,7 +19,8 @@ namespace Stormy
 	class Utils
 	{
 		public:
-			static double stringToDouble(std::string);
-			static bool isNumber(std::string);
+			static double stringToDouble(std::string number);
+			static bool isNumber(std::string number);
+			static std::string md5(std::string text);			
 	};
 }

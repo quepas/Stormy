@@ -1,5 +1,6 @@
 #include "StationConfiguration.h"
 #include "../../common/YAMLUtils.h"
+#include "Utils.h"
 
 using namespace Stormy::Meteo;
 
@@ -41,12 +42,11 @@ bool StationConfiguration::load(std::string filePath)
 		}
 
 		Station* meteoStation = new Station();
-		meteoStation->url = YAMLUtils::getString(it, "url");
-		meteoStation->parserClass = YAMLUtils::getString(it, "parserClass");
-		meteoStation->refreshTime = YAMLUtils::getLongNumber(it, "refreshTime");
-
-		if(YAMLUtils::isDefined(it, "id"))
-			meteoStation -> id = YAMLUtils::getString(it, "id");
+		meteoStation -> url = YAMLUtils::getString(it, "url");
+		meteoStation -> stationId = Utils::md5(meteoStation -> url);
+		meteoStation -> parserClass = YAMLUtils::getString(it, "parserClass");
+		meteoStation -> refreshTime = YAMLUtils::getLongNumber(it, "refreshTime");
+		
 		if(YAMLUtils::isDefined(it, "name"))
 			meteoStation -> name = YAMLUtils::getString(it, "name");
 
