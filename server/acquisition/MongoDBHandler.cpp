@@ -5,11 +5,12 @@
 
 #include "TypeConfiguration.h"
 #include "MeteoUtils.h"
+#include "MeteoConst.h"
 
 using namespace Stormy;
 using namespace Meteo;
 
-MongoDBHandler::MongoDBHandler( std::string dbAddress /*= ""*/ )
+MongoDBHandler::MongoDBHandler( std::string dbAddress /*= "localhost"*/ )
 	:	connected(false),	
 		connection(mongo::DBClientConnection())
 {
@@ -37,7 +38,7 @@ void MongoDBHandler::connect( std::string dbAddress )
 void Stormy::MongoDBHandler::clearMeteosData()
 {
 	if(!connected) return;
-	connection.dropCollection("test.meteo");		
+	connection.dropCollection(MeteoUtils::getMeteoDb());		
 }
 
 void MongoDBHandler::insertMeteoData( Measurement* measurement )
@@ -59,13 +60,15 @@ void MongoDBHandler::insertMeteoData( Measurement* measurement )
 			value = boost::any_cast<std::string>(it ->second);
 		bsonBuilder.append(key, value);						
 	}	
-	connection.insert("test.meteo", bsonBuilder.obj());
+	std::string stationId = measurement -> station -> stationId;
+	connection.insert(MeteoUtils::getMeteoDb() + Const::stationIdPrefix 
+		+ stationId, bsonBuilder.obj());
 }
 
 void MongoDBHandler::clearStationsData()
 {
 	if(!connected) return;
-	connection.dropCollection("test.stations");		
+	connection.dropCollection(MeteoUtils::getStatioDb());		
 }
 
 void MongoDBHandler::insertStationsData( std::vector<Station*>& data )
@@ -78,14 +81,13 @@ void MongoDBHandler::insertStationsData( std::vector<Station*>& data )
 void MongoDBHandler::insertStationData( Station* data )
 {
 	if(!connected || !data) return;	
-
 	mongo::BSONObjBuilder bsonBuilder;
-	bsonBuilder.append("_id", data -> stationId);
-	bsonBuilder.append("name", data -> name);
-	bsonBuilder.append("parserClass", data -> parserClass);
-	bsonBuilder.append("refreshTime", data -> refreshTime);
-	bsonBuilder.append("url", data -> url);
-	connection.insert("test.stations", bsonBuilder.obj());
+	bsonBuilder.append(Const::mongoId, data -> stationId);
+	bsonBuilder.append(Const::name, data -> name);
+	bsonBuilder.append(Const::parserClass, data -> parserClass);
+	bsonBuilder.append(Const::refreshTime, data -> refreshTime);
+	bsonBuilder.append(Const::url, data -> url);	
+	connection.insert(MeteoUtils::getStatioDb(), bsonBuilder.obj());
 }
 
 std::vector<Station*> MongoDBHandler::getStationsData()
@@ -94,15 +96,15 @@ std::vector<Station*> MongoDBHandler::getStationsData()
 	if(!connected) return result;	
 
 	std::auto_ptr<mongo::DBClientCursor> cursor = 
-		connection.query("test.stations", mongo::BSONObj());
+		connection.query(MeteoUtils::getStatioDb(), mongo::BSONObj());
 	while( cursor -> more() ) {
 		mongo::BSONObj current = cursor -> next();
 		Station* station = new Station();
-		station -> stationId = current.getStringField("_id");
-		station -> name = current.getStringField("name");
-		station -> parserClass = current.getStringField("parserClass");
-		station -> refreshTime = current.getIntField("refreshTime");
-		station -> url = current.getStringField("url");
+		station -> stationId = current.getStringField(Const::mongoId.c_str());
+		station -> name = current.getStringField(Const::name.c_str());
+		station -> parserClass = current.getStringField(Const::parserClass.c_str());
+		station -> refreshTime = current.getIntField(Const::refreshTime.c_str());
+		station -> url = current.getStringField(Const::url.c_str());
 		result.push_back(station);
 	}
 	return result;
@@ -117,7 +119,7 @@ std::vector<Measurement*> MongoDBHandler::getMeteoData()
 		new TypeConfiguration("config/meteo_data_type_config.yaml");
 	std::vector<Type*> types = typesCfg -> getConfiguration();
 	std::auto_ptr<mongo::DBClientCursor> cursor =
-		connection.query("test.meteo", mongo::BSONObj());
+		connection.query(MeteoUtils::getMeteoDb(), mongo::BSONObj());
 	while( cursor -> more() ) {
 		mongo::BSONObj current = cursor -> next();
 		std::set<std::string> availableFields;
@@ -130,9 +132,9 @@ std::vector<Measurement*> MongoDBHandler::getMeteoData()
 				Type* type = typesCfg -> getFullTypeById(id);
 				std::string value = current.getStringField(id.c_str());
 
-				if(type -> valueType == "number")
+				if(type -> valueType == Const::number)
 					measurement -> data[id]= MeteoUtils::extractTemperature(value);
-				else if(type ->valueType == "text")
+				else if(type ->valueType == Const::text)
 					measurement -> data[id]= value;
 			}			
 		}

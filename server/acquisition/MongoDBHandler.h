@@ -10,7 +10,7 @@ namespace Stormy
 	class MongoDBHandler
 	{
 		public:
-			MongoDBHandler(std::string dbAddress = "");
+			MongoDBHandler(std::string dbAddress = "localhost");
 			~MongoDBHandler();
 
 			void connect(std::string dbAddress);

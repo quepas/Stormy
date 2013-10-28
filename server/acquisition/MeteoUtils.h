@@ -10,5 +10,9 @@ namespace Stormy
 			static double extractTemperature(std::string text);			
 			static long convertMinutesToMiliseconds(long minutes);
 			static long convertSecondsToMiliseconds(long seconds);
+
+			// db
+			static std::string getMeteoDb();
+			static std::string getStatioDb();
 	};
 }

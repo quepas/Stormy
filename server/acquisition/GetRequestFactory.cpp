@@ -24,7 +24,7 @@ HTTPRequestHandler* GetRequestFactory::createRequestHandler
 	boost::to_lower(URI);
 	std::cout << "Request URI: " << URI << std::endl;
 	
-	if(boost::contains(URI, "stations"))
+	if(boost::contains(URI, "station"))
 		return new GetStationRequest();
 	if(boost::contains(URI, "meteo"))
 		return new GetMeteoRequest();
