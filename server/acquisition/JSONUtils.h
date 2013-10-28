@@ -7,12 +7,13 @@ namespace Stormy
 	class JSONUtils
 	{
 		public:
-			std::string prepareJSONForStation(Meteo::Station* station);
-			std::string prepareJSONForStations(const std::vector<Meteo::Station*>& stations);
+			static std::string prepareJSONForStation(Meteo::Station* station);
+			static std::string prepareJSONForStations(const std::vector<Meteo::Station*>& stations);
 
-			std::string prepareJSONForMeasurement(Meteo::Measurement* measurement);
-			std::string prepareJSONForMeasurements(const std::vector<Meteo::Measurement*>& measurements);
+			static std::string prepareJSONForMeasurement(Meteo::Measurement* measurement);
+			static std::string prepareJSONForMeasurements(const std::vector<Meteo::Measurement*>& measurements);
 
 		private:
+			static std::string wrapAsJSONString(std::string label);
 	};
 }

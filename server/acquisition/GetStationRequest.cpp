@@ -2,6 +2,7 @@
 
 #include "MongoDBHandler.h"
 #include "Utils.h"
+#include "JSONUtils.h"
 
 using namespace Stormy;
 using Meteo::Station;
@@ -21,14 +22,11 @@ void Stormy::GetStationRequest::handleRequest( HTTPServerRequest& request, HTTPS
 	std::ostream& ostr = response.send();
 
 	MongoDBHandler dbHandler("localhost");
-	std::vector<Station*> stations = dbHandler.getStationsData();
-	std::string content;
-	for(auto it = stations.begin(); it != stations.end(); ++it)
-		content += prepareStationHTML(*it);	
+	std::vector<Station*> stations = dbHandler.getStationsData();	
 
-	ostr << "<html><head><title>Stations</title></head><body><h1>Stations</h1>"
-		 << content << "</body></html>";
-	// JSON test: ostr << "{\"content\": [{\"name\": \"ASD\"},{\"name\": \"DSA\"}]}\r\n";
+	ostr << JSONUtils::prepareJSONForStations(stations);
+	/*ostr << "<html><head><title>Stations</title></head><body><h1>Stations</h1>"
+		 << content << "</body></html>";	*/
 }
 
 std::string Stormy::GetStationRequest::prepareStationHTML( Station* station )
