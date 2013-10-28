@@ -23,12 +23,12 @@ int main(int argc, char** argv)
 	Py_ExecutorInit();		
 	StationConfiguration* meteoStationsCfg = new StationConfiguration("config/meteo_stations_config.yaml");
 	MongoDBHandler* dbHandler = new MongoDBHandler("localhost");
-
+	
 	dbHandler -> clearStationsData();
 	dbHandler -> insertStationsData(meteoStationsCfg->getConfiguration());
 	AcquisitionScheduler* acqSecheduler = new AcquisitionScheduler();
 	acqSecheduler -> scheduleManyAcquisition(meteoStationsCfg->getConfiguration());
 	
 	Stormy::HttpServer httpServer;
-	return httpServer.run(argc, argv);	
+	return httpServer.run(argc, argv);
 }

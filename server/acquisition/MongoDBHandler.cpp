@@ -6,6 +6,7 @@
 #include "TypeConfiguration.h"
 #include "MeteoUtils.h"
 #include "MeteoConst.h"
+#include "Utils.h"
 
 using namespace Stormy;
 using namespace Meteo;
@@ -50,18 +51,11 @@ void MongoDBHandler::insertMeteoData( Measurement* measurement )
 	for(auto it = data.begin(); it != data.end(); ++it) 
 	{		
 		std::string key = it -> first;
-		std::string value;
-		boost::any anyValue = it -> second;
-		
-		if(anyValue.type() == typeid(double))
-			value = boost::lexical_cast<std::string>(
-				boost::any_cast<double>(it -> second));		
-		else
-			value = boost::any_cast<std::string>(it ->second);
+		std::string value = Utils::getStringFromAny(it -> second);		
 		bsonBuilder.append(key, value);						
 	}	
 	std::string stationId = measurement -> station -> stationId;
-	connection.insert(MeteoUtils::getMeteoDb() + Const::stationIdPrefix 
+	connection.insert(MeteoUtils::getMeteoDb() + "." + Const::stationIdPrefix 
 		+ stationId, bsonBuilder.obj());
 }
 

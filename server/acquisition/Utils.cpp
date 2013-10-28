@@ -3,9 +3,12 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 #include <Poco/MD5Engine.h>
+#include <typeinfo>
 
 using namespace Stormy;
 using Poco::MD5Engine;
+using boost::any;
+using boost::any_cast;
 
 double Utils::stringToDouble( std::string number )
 {
@@ -45,4 +48,15 @@ bool Utils::checkTextWithRegex( std::string text, std::string regex )
 {
 	boost::regex regexPattern(regex);
 	return boost::regex_match(text, regexPattern);
+}
+
+std::string Utils::getStringFromAny( any value )
+{		
+	if(typeid(double) == value.type()) {
+		return lexical_cast<std::string>(any_cast<double>(value));
+	} 
+	else if(typeid(std::string) == value.type()) {
+		return any_cast<std::string>(value);
+	}
+	return "_none";
 }
