@@ -2,15 +2,19 @@
 
 #include "MongoDBHandler.h"
 #include "Utils.h"
+#include "JSONUtils.h"
 #include "TypeConfiguration.h"
+#include "RESTConst.h"
 
 #include <boost/any.hpp>
 #include <boost/lexical_cast.hpp>
 
 using namespace Stormy;
 using namespace Meteo;
+using REST::Const;
 
-GetMeteoRequest::GetMeteoRequest()
+GetMeteoRequest::GetMeteoRequest(std::string _stationId)
+	:	stationId(_stationId)
 {
 
 }
@@ -25,13 +29,12 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 	std::ostream& ostr = response.send();
 
 	MongoDBHandler dbHandler("localhost");
-	std::vector<Measurement*> meteo = dbHandler.getMeteoData();
-	std::string content;
-	for(auto it = meteo.begin(); it != meteo.end(); ++it) {
-		content += prepareMeteoHTML(*it);
+	if(stationId != Const::none) {	
+		std::vector<Measurement*> meteo = dbHandler.getMeteoData(stationId);		
+		ostr << JSONUtils::prepareJSONForMeasurements(meteo);
+	} else {
+		ostr << Const::emptyJSON;
 	}
-	ostr << "<html><head><title>Meteo</title></head><body><h1>Meteo</h1>"
-		 << content << "</body></html>";
 }
 
 std::string GetMeteoRequest::prepareMeteoHTML(Measurement* meteo)

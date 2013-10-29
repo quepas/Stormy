@@ -1,11 +1,15 @@
 #include "GetRequestFactory.h"
 
 #include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
+#include <iostream>
 #include "GetStationRequest.h"
 #include "GetMeteoRequest.h"
-#include <iostream>
+#include "Utils.h"
+#include "RESTConst.h"
 
 using namespace Stormy;
+using REST::Const;
 
 Stormy::GetRequestFactory::GetRequestFactory()
 {
@@ -24,10 +28,17 @@ HTTPRequestHandler* GetRequestFactory::createRequestHandler
 	boost::to_lower(URI);
 	std::cout << "Request URI: " << URI << std::endl;
 	
-	if(boost::contains(URI, "station"))
+	if(Utils::checkTextWithRegex(URI, Const::stationPattern))
 		return new GetStationRequest();
-	if(boost::contains(URI, "meteo"))
-		return new GetMeteoRequest();
+	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdPattern)) {
+		boost::regex regex("[0-9a-f]{32}");
+		boost::smatch match;
+		std::string stationId = Const::none;
+		if(boost::regex_search(URI, match, regex)) {
+			stationId = match[0];
+		}		
+		return new GetMeteoRequest(stationId);
+	}
 
 	return nullptr;
 }

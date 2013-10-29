@@ -104,7 +104,7 @@ std::vector<Station*> MongoDBHandler::getStationsData()
 	return result;
 }
 
-std::vector<Measurement*> MongoDBHandler::getMeteoData()
+std::vector<Measurement*> MongoDBHandler::getMeteoData(std::string stationId)
 {
 	auto result = std::vector<Measurement*>();
 	if(!connected) return result;
@@ -113,25 +113,27 @@ std::vector<Measurement*> MongoDBHandler::getMeteoData()
 		new TypeConfiguration("config/meteo_data_type_config.yaml");
 	std::vector<Type*> types = typesCfg -> getConfiguration();
 	std::auto_ptr<mongo::DBClientCursor> cursor =
-		connection.query(MeteoUtils::getMeteoDb(), mongo::BSONObj());
+		connection.query(MeteoUtils::getMeteoDb() + "." + 
+			Const::stationIdPrefix + stationId, mongo::BSONObj());
 	while( cursor -> more() ) {
 		mongo::BSONObj current = cursor -> next();
 		std::set<std::string> availableFields;
-		current.getFieldNames(availableFields);		
+		current.getFieldNames(availableFields);			
 
 		Measurement* measurement = new Measurement();		
 		for(auto it = types.begin(); it != types.end(); ++it) {
 			std::string id = (*it) -> id;			
 			if(availableFields.find(id) != availableFields.end()) {
 				Type* type = typesCfg -> getFullTypeById(id);
-				std::string value = current.getStringField(id.c_str());
-
+				std::string value = current.getStringField(id.c_str());				
 				if(type -> valueType == Const::number)
 					measurement -> data[id]= MeteoUtils::extractTemperature(value);
 				else if(type ->valueType == Const::text)
 					measurement -> data[id]= value;
 			}			
 		}
+		measurement -> data[Const::mongoId] = 
+			std::string(current.getStringField(Const::mongoId.c_str()));
 		result.push_back(measurement);
 	}
 	return result;

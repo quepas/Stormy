@@ -29,15 +29,17 @@ std::string JSONUtils::prepareJSONForStations( const std::vector<Station*>& stat
 	Utils::forEach(stations, [&](Station* station) {
 		content += prepareJSONForStation(station) + ",";
 	});
-	content.pop_back();	// remove unnecessary comma
+	if(stations.size() > 0)
+		content.pop_back();	// remove unnecessary comma
 	content += "]}";
 	return content;
 }
 
-std::string Stormy::JSONUtils::prepareJSONForMeasurement( Meteo::Measurement* measurement )
+std::string JSONUtils::prepareJSONForMeasurement( Meteo::Measurement* measurement )
 {
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(wrapAsJSONString(Const::id), any_cast<std::string>(measurement -> data[Const::mongoId]));
+	bsonBuilder.append(wrapAsJSONString(Const::id), 
+		Utils::getStringFromAny(measurement -> data[Const::mongoId]));
 	Utils::forEach(measurement -> data, [&](std::pair<std::string, any> pair) {
 		if(pair.first != Const::mongoId) {
 			bsonBuilder.append(wrapAsJSONString(pair.first), Utils::getStringFromAny(pair.second));
@@ -46,13 +48,14 @@ std::string Stormy::JSONUtils::prepareJSONForMeasurement( Meteo::Measurement* me
 	return bsonBuilder.obj().toString();
 }
 
-std::string Stormy::JSONUtils::prepareJSONForMeasurements( const std::vector<Meteo::Measurement*>& measurements )
+std::string JSONUtils::prepareJSONForMeasurements( const std::vector<Meteo::Measurement*>& measurements )
 {
 	std::string content = "{\"meteo\":[";
-	Utils::forEach(measurements, [&](Measurement* measurement) {
+	Utils::forEach(measurements, [&](Measurement* measurement) {		
 		content += prepareJSONForMeasurement(measurement) + ",";
 	});
-	content.pop_back();	// remove unnecessary comma
+	if(measurements.size() > 0)
+		content.pop_back();	// remove unnecessary comma
 	content += "]}";
 	return content;
 }
