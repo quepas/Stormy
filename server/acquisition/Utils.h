@@ -26,6 +26,8 @@ namespace Stormy
 			static double stringToDouble(std::string number);
 			static bool isNumber(std::string number);
 			static std::string md5(std::string text);	
+			static bool checkIfHexMD5(std::string text);
+			static std::string extractMD5FromText(std::string text);
 			static std::string getStringFromAny(boost::any any);
 
 			// date & time
@@ -37,6 +39,12 @@ namespace Stormy
 			static void forEach(const std::vector<T>& data, V func);
 			template<typename T, typename U, typename V>
 			static void forEach(const std::map<T, U>& data, V func);
+
+			// const
+			static std::string numberPattern;
+			static std::string standardDatePattern;
+			static std::string standardTimePattern;
+			static std::string hexMD5Pattern;
 		public:
 			static bool checkTextWithRegex(std::string text, std::string regex);
 	};

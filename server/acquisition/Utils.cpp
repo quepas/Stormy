@@ -9,6 +9,9 @@ using namespace Stormy;
 using Poco::MD5Engine;
 using boost::any;
 using boost::any_cast;
+using boost::regex;
+using boost::smatch;
+using boost::regex_search;
 
 double Utils::stringToDouble( std::string number )
 {
@@ -23,7 +26,7 @@ double Utils::stringToDouble( std::string number )
 
 bool Utils::isNumber( std::string text )
 {
-	boost::regex numberRegex("-?[0-9]+([.][0-9]+)?");
+	boost::regex numberRegex(Utils::numberPattern);
 	return boost::regex_match(text, numberRegex);
 }
 
@@ -36,12 +39,12 @@ std::string Utils::md5( std::string text )
 
 bool Utils::checkIfStandardDate( std::string date )
 {
-	return checkTextWithRegex(date, "[0-9]{4}-[0-9]{2}-[0-9]{2}");
+	return checkTextWithRegex(date, Utils::standardDatePattern);
 }
 
 bool Utils::checkIfStandardTime( std::string time )
 {
-	return checkTextWithRegex(time, "[0-9]{1, 2}:[0-9]{1, 2}");
+	return checkTextWithRegex(time, Utils::standardTimePattern);
 }
 
 bool Utils::checkTextWithRegex( std::string text, std::string regex )
@@ -60,3 +63,23 @@ std::string Utils::getStringFromAny( any value )
 	}
 	return "_none";
 }
+
+bool Utils::checkIfHexMD5( std::string text )
+{
+	return checkTextWithRegex(text, Utils::hexMD5Pattern);
+}
+
+std::string Utils::extractMD5FromText( std::string text )
+{
+	regex regex(Utils::hexMD5Pattern);
+	smatch match;
+	if(regex_search(text, match, regex)) {
+		return match[0];
+	}
+	return "_none";
+}
+
+std::string Utils::numberPattern = "-?[0-9]+([.][0-9]+)?";
+std::string Utils::standardDatePattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+std::string Utils::standardTimePattern = "[0-9]{1, 2}:[0-9]{1, 2}";
+std::string Utils::hexMD5Pattern = "[0-9a-f]{32}";
