@@ -72,9 +72,8 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 	} 
 	else
 	{
-		std::cout << "No data at current URL" << std::endl;
-		Py_DECREF(pFuncResult);
-		return nullptr;
+		std::cout << "No data at current URL" << std::endl;		
+		return new Measurement(Const::reasonNoData);
 	}
 }
 
@@ -83,7 +82,8 @@ Measurement* PyParserWrapper::parseFromStation( Station* station )
 	Measurement* result = parseFromURL(station -> url);
 	result -> station = station;
 	if(result) {
-		auto data = result -> data;
+		auto data = std::map<std::string, boost::any>();
+		data = result -> data;
 		result -> data[Const::stationId] = station -> stationId;
 
 		Timestamp timestamp;

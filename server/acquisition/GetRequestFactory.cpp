@@ -30,14 +30,8 @@ HTTPRequestHandler* GetRequestFactory::createRequestHandler
 	
 	if(Utils::checkTextWithRegex(URI, Const::stationPattern))
 		return new GetStationRequest();
-	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdPattern)) {
-		boost::regex regex("[0-9a-f]{32}");
-		boost::smatch match;
-		std::string stationId = Const::none;
-		if(boost::regex_search(URI, match, regex)) {
-			stationId = match[0];
-		}		
-		return new GetMeteoRequest(stationId);
+	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdPattern)) {		
+		return new GetMeteoRequest(Utils::extractMD5FromText(URI));
 	}
 
 	return nullptr;

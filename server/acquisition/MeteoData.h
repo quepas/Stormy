@@ -3,11 +3,12 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <limits>
 
 #include <Poco/Timestamp.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/any.hpp>
+
+#include "MeteoConst.h"
 
 namespace Stormy
 {
@@ -24,12 +25,24 @@ namespace Stormy
 
 		struct Measurement
 		{
+			Measurement() 
+				:	timestamp(),
+					station(new Station()),
+					data()	{}
+
+			Measurement(std::string reason)
+				:	timestamp(),
+					station(new Station()),
+					data() {
+				data[Const::reasonKey] = reason;
+			}
+
 			Poco::Timestamp timestamp;
 			Station* station;
 			std::map<std::string, boost::any> data;
 		};		
 
-		struct Type
+		struct Type	
 		{
 			std::string id;
 			std::string valueType;
