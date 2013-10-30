@@ -134,6 +134,10 @@ std::vector<Measurement*> MongoDBHandler::getMeteoData(std::string stationId)
 		}
 		measurement -> data[Const::mongoId] = 
 			std::string(current.getStringField(Const::mongoId.c_str()));
+		if(current.hasField(Const::reasonKey.c_str())) {
+			measurement -> data[Const::reasonKey] =
+				std::string(current.getStringField(Const::reasonKey.c_str()));
+		}
 		result.push_back(measurement);
 	}
 	return result;
