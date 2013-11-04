@@ -25,8 +25,6 @@ void Stormy::GetStationRequest::handleRequest( HTTPServerRequest& request, HTTPS
 	std::vector<Station*> stations = dbHandler.getStationsData();	
 
 	ostr << JSONUtils::prepareJSONForStations(stations);
-	/*ostr << "<html><head><title>Stations</title></head><body><h1>Stations</h1>"
-		 << content << "</body></html>";	*/
 }
 
 std::string Stormy::GetStationRequest::prepareStationHTML( Station* station )

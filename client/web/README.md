@@ -6,9 +6,9 @@ Web-based client for weather data visualization acquired by Stormy Acquisition S
 Installation
 ------------
 
-[] Install node.js, then install npm modules: 'ejs', 'express'.
-[] Download latest Bootstrap Minimal CSS (bootstrap.min.css). Copy it to 'stylesheets' directory.
-[] Download latest Chart.js (Chart.min.js) and Angular.js (angular.min.js). Copy it to 'javascripts' directory.
+Install node.js, then install npm modules: 'ejs', 'express'.
+Download latest Bootstrap Minimal CSS (bootstrap.min.css). Copy it to 'stylesheets' directory.
+Download latest Chart.js (Chart.min.js) and Angular.js (angular.min.js). Copy it to 'javascripts' directory.
 
 Running
 -------

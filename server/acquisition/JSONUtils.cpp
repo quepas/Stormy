@@ -35,7 +35,7 @@ std::string JSONUtils::prepareJSONForStations( const std::vector<Station*>& stat
 	return content;
 }
 
-std::string JSONUtils::prepareJSONForMeasurement( Meteo::Measurement* measurement )
+std::string JSONUtils::prepareJSONForMeasurement( Measurement* measurement )
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::id), 
@@ -63,4 +63,24 @@ std::string JSONUtils::prepareJSONForMeasurements( const std::vector<Meteo::Meas
 std::string JSONUtils::wrapAsJSONString( std::string label )
 {
 	return "\"" + label + "\"";
+}
+
+std::string JSONUtils::prepareJSONForAvailableType( Type* type )
+{
+	BSONObjBuilder bsonBuilder;
+	bsonBuilder.append(wrapAsJSONString(Const::id), type -> id);
+	bsonBuilder.append(wrapAsJSONString(Const::name), type -> equivalents[0]);
+	return bsonBuilder.obj().toString();
+}
+
+std::string JSONUtils::prepareJSONForAvailableTypes( const std::vector<Meteo::Type*>& types )
+{
+	std::string content = "{\"availableTypes\":[";
+	Utils::forEach(types, [&](Type* type) {
+		content += prepareJSONForAvailableType(type);
+	});
+	if(types.size() > 0)
+		content.pop_back();	// remove unnecessary coma
+	content += "]}";
+	return content;
 }
