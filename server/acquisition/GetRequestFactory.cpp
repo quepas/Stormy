@@ -26,7 +26,7 @@ HTTPRequestHandler* GetRequestFactory::createRequestHandler
 {
 	std::string URI = request.getURI();
 	boost::to_lower(URI);
-	std::cout << "Request URI: " << URI << std::endl;
+	std::cout << "[INFO] Requested REST API: " << URI << std::endl;
 	
 	if(Utils::checkTextWithRegex(URI, Const::stationPattern))
 		return new GetStationRequest();
