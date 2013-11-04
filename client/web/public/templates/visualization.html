@@ -1,0 +1,9 @@
+<script src="Chart.js"></script>
+<h3>Visualization</h3>
+<select ng-model="currentStation" ng-options="c.name for c in stations"></select>
+<div><u>Station data: </u>
+	</br><strong>Name:</strong> {{currentStation.name}}
+	</br><strong>URL:</strong> {{currentStation.url}}
+	</br><strong>Refresh time:</strong> {{currentStation.refreshTime}}	
+</div>
+<a href='#/' class="btn btn-danger">Back</a>

@@ -1,0 +1,54 @@
+var express = require('express')
+var http = require('http')
+var app = express()
+
+var host = '127.0.0.1'//'192.168.90.1'
+var port = 1337;
+
+var acqHost = ''
+var acqPort = ''
+
+app.use(express.bodyParser());
+app.use(express.static(__dirname + '/public'))
+
+app.post('/app', function(req, res) {
+	acqHost = req.body.address
+	acqPort = req.body.port
+
+	console.log('[INFO]: Loggin into app on server ' + acqHost + ':' + acqPort)
+	return res.redirect('#' + req.url)
+})
+
+// AcqREST mappings
+app.get('/acq/station', function(req, res) {
+	console.log('[INFO]: Get stations data')
+	
+	http.get(prepareConnectOptions('/station'), function(rawData) {
+		rawData.on('data', function(data) {
+			res.send(data)
+		})
+	})
+})
+
+app.get('/acq/meteo/:stationId', function(req, res) {
+	console.log("[INFO]: Get meteo for stationId")
+	//TODO ~~
+})
+
+process.on('uncaughtException', function (err) {
+  console.error((new Date).toUTCString() + ' UncaughtException: ', err.message)
+  console.error(err.stack) 
+})
+
+app.listen(port, host)
+console.log('Stormy Web Client is running at http://' + host + ':' + port)
+
+///////////////////////////////// help functions /////////////////////////////////
+function prepareConnectOptions(path) {
+	var result = {
+		host: acqHost,
+		port: acqPort,
+		path: path
+	}
+	return result
+}
