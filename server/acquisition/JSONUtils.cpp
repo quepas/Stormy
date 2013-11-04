@@ -77,7 +77,7 @@ std::string JSONUtils::prepareJSONForAvailableTypes( const std::vector<Meteo::Ty
 {
 	std::string content = "{\"availableTypes\":[";
 	Utils::forEach(types, [&](Type* type) {
-		content += prepareJSONForAvailableType(type);
+		content += prepareJSONForAvailableType(type) + ",";
 	});
 	if(types.size() > 0)
 		content.pop_back();	// remove unnecessary coma

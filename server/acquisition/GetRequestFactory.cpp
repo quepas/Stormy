@@ -34,7 +34,7 @@ HTTPRequestHandler* GetRequestFactory::createRequestHandler
 	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdPattern))
 		return new GetMeteoRequest(Utils::extractMD5FromText(URI));	
 	if(Utils::checkTextWithRegex(URI, Const::infoPattern))
-		return new GetInfoRequest(Utils::extractMD5FromText(URI));
+		return new GetInfoRequest("");
 
 	return nullptr;
 }

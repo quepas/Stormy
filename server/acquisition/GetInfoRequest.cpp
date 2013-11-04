@@ -1,6 +1,11 @@
 #include "GetInfoRequest.h"
 
+#include "TypeConfiguration.h"
+#include "RESTConst.h"
+#include "JSONUtils.h"
+
 using namespace Stormy;
+using Meteo::TypeConfiguration;
 
 Stormy::GetInfoRequest::GetInfoRequest( std::string _stationId /*= ""*/ )
 	:	stationId(_stationId)
@@ -21,8 +26,8 @@ void Stormy::GetInfoRequest::handleRequest( HTTPServerRequest& request, HTTPServ
 		TypeConfiguration* typesCfg = 
 			new TypeConfiguration("config/meteo_data_type_config.yaml");
 
-
-	}
-
-	//ostr << data
+		ostr << JSONUtils::prepareJSONForAvailableTypes(typesCfg -> getConfiguration());
+	} else {
+		ostr << REST::Const::emptyJSON;
+	}	
 }
