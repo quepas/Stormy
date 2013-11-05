@@ -125,6 +125,28 @@ Measurement* MongoDBHandler::getCurrentMeteoTypeData( std::string stationId, std
 	return result;
 }
 
+std::vector<Measurement*> MongoDBHandler::getCurrentMeteoTypeDatas( std::string stationId, std::string typeId )
+{
+	auto result = std::vector<Measurement*>();
+	if(!connected) return result;
+
+	std::auto_ptr<mongo::DBClientCursor> cursor =
+		connection.query(MeteoUtils::getMeteoDb() + "." + 
+			Const::stationIdPrefix + stationId, mongo::BSONObj());
+	while(cursor -> more()) {
+		mongo::BSONObj current = cursor -> next();		
+		Measurement* measurement = new Measurement();
+		measurement -> timestamp = Timestamp::fromEpochTime(
+			lexical_cast<long>(current.getStringField(Const::mongoId.c_str())));
+		if(current.hasField(typeId)) {
+			measurement -> data[typeId] = 
+				std::string(current.getStringField(typeId.c_str()));
+			result.push_back(measurement);
+		}		
+	}
+	return result;
+}
+
 std::vector<Measurement*> MongoDBHandler::getMeteoData(std::string stationId)
 {
 	auto result = std::vector<Measurement*>();

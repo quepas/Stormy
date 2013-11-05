@@ -97,3 +97,16 @@ std::string JSONUtils::prepareJSONForSingleMeasurement( Meteo::Measurement* meas
 	bsonBuilder.append(wrapAsJSONString(Const::data), Utils::getStringFromAny(pair -> second));	
 	return bsonBuilder.obj().toString();
 }
+
+std::string JSONUtils::prepareJSONForSingleMeasurements( const std::vector<Meteo::Measurement*>& measurements )
+{	
+	std::string content = "{\"measurements\":[";
+	Utils::forEach(measurements, [&](Measurement* measurement) {
+		if(!measurement -> data.empty())
+			content += prepareJSONForSingleMeasurement(measurement) + ",";
+	});
+	if(measurements.size() > 0)
+		content.pop_back();	// remove unnecessary coma
+	content += "]}";
+	return content;
+}

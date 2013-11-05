@@ -13,8 +13,8 @@ using namespace Stormy;
 using namespace Meteo;
 using REST::Const;
 
-GetMeteoRequest::GetMeteoRequest(std::string _stationId, std::string _type /* ="" */)
-	:	stationId(_stationId), type(_type)
+GetMeteoRequest::GetMeteoRequest(std::string _stationId, std::string _typeId /* ="" */)
+	:	stationId(_stationId), typeId(_typeId)
 {
 
 }
@@ -30,12 +30,12 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 
 	MongoDBHandler dbHandler("localhost");
 	if(stationId != REST::Const::none) {	
-		if(type.empty()) {
+		if(typeId.empty()) {
 			std::vector<Measurement*> meteo = dbHandler.getMeteoData(stationId);
 			ostr << JSONUtils::prepareJSONForMeasurements(meteo);
-		} else {
-			Measurement* measurement = dbHandler.getCurrentMeteoTypeData(stationId, type);
-			ostr << JSONUtils::prepareJSONForSingleMeasurement(measurement);			
+		} else {			
+			std::vector<Measurement*> singleMeteo = dbHandler.getCurrentMeteoTypeDatas(stationId, typeId);
+			ostr << JSONUtils::prepareJSONForSingleMeasurements(singleMeteo);
 		}		
 	} else {
 		ostr << REST::Const::emptyJSON;
