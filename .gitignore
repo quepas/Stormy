@@ -51,5 +51,5 @@ Release/
 test/
 client/web/node_modules
 client/web/public/javascripts/angular.min.js
-client/web/public/javascripts/Chart.min.js
+client/web/public/javascripts/Chart.js
 client/web/public/stylesheets/bootstrap.min.css
