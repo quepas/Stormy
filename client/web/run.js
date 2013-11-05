@@ -2,7 +2,7 @@ var express = require('express')
 var http = require('http')
 var app = express()
 
-var host = '127.0.0.1'//'192.168.90.1'
+var host = '127.0.0.1'
 var port = 1337;
 
 var acqHost = ''
@@ -23,32 +23,29 @@ app.post('/app', function(req, res) {
 app.get('/acq/station', function(req, res) {
 	console.log('[INFO]: Get stations data')
 	
-	http.get(prepareConnectOptions('/station'), function(rawData) {
-		rawData.on('data', function(data) {
-			res.send(data)
-		})
-	})
+	http.get(prepareConnectOptions('/station'), 
+		function(rawData) {
+			collectAndSendRawData(res, rawData)
+		}
+	)
 })
 
 app.get('/acq/meteo/:stationId', function(req, res) {
 	console.log("[INFO]: Get meteo for stationId")
 	
-	http.get(prepareConnectOptions('/meteo/' + req.params.stationId), function(rawData) {
-		rawData.on('data', function(data) {
-			res.send(data)
-		})
-	})
+	http.get(prepareConnectOptions('/meteo/' + req.params.stationId), 
+		function(rawData) {
+			collectAndSendRawData(res, rawData)
+		}
+	)
 })
 
 app.get('/acq/meteo/:stationId/:typeId', function(req, res) {
 	console.log("[INFO]: Get current type meteo for stationId")
 
-	http.get(prepareConnectOptions('/meteo/' + req.params.stationId + '/' + req.params.typeId),		
-		
+	http.get(prepareConnectOptions('/meteo/' + req.params.stationId + '/' + req.params.typeId),				
 		function(rawData) {
-			rawData.on('data', function(data) {				
-				res.send(data)
-			})
+			collectAndSendRawData(res, rawData)
 		}
 	)
 })
@@ -56,11 +53,11 @@ app.get('/acq/meteo/:stationId/:typeId', function(req, res) {
 app.get('/acq/info', function(req, res) {
 	console.log("[INFO]: Get info from server")
 
-	http.get(prepareConnectOptions('/info'), function(rawData) {
-		rawData.on('data', function(data) {
-			res.send(data)
-		})
-	})
+	http.get(prepareConnectOptions('/info'), 
+		function(rawData) {
+			collectAndSendRawData(res, rawData)
+		}
+	)
 })
 
 process.on('uncaughtException', function (err) {
@@ -79,4 +76,14 @@ function prepareConnectOptions(path) {
 		path: path
 	}
 	return result
+}
+
+function collectAndSendRawData(res, rawData) {
+	var data = '';
+	rawData.on('data', function(chunk) {				
+		data += chunk;
+	})
+	rawData.on('end', function() {
+		res.send(data)
+	})
 }
