@@ -7,5 +7,5 @@
 	</br><strong>Refresh time:</strong> {{currentStation.refreshTime}}	
 </div>
 <select ng-model="currentType" ng-options="c.name for c in availableTypes" ng-change="updateMeteo()"></select>
-<div><u>{{currentType.name}}: {{value}}</u>
+<div><u>{{currentType.name}}: {{currentValue}}</u>
 <div><a href='#/' class="btn btn-danger">Back</a></div>

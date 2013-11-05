@@ -46,8 +46,7 @@ app.get('/acq/meteo/:stationId/:typeId', function(req, res) {
 	http.get(prepareConnectOptions('/meteo/' + req.params.stationId + '/' + req.params.typeId),		
 		
 		function(rawData) {
-			rawData.on('data', function(data) {
-				console.log(data.data)
+			rawData.on('data', function(data) {				
 				res.send(data)
 			})
 		}
