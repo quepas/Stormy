@@ -22,7 +22,7 @@ void Stormy::GetStationRequest::handleRequest( HTTPServerRequest& request, HTTPS
 	std::ostream& ostr = response.send();
 
 	MongoDBHandler dbHandler("localhost");
-	std::vector<Station*> stations = dbHandler.getStationsData();	
+	std::vector<Station*> stations = dbHandler.getStationsData();
 
 	ostr << JSONUtils::prepareJSONForStations(stations);
 }
@@ -33,8 +33,8 @@ std::string Stormy::GetStationRequest::prepareStationHTML( Station* station )
 	std::string content =
 		"<ul><li>Id: " + station -> stationId + "</li>" +
 		"<li>Name: " + station -> name + "</li>" +
-		"<li>Refresh time: " + 
-		lexical_cast<std::string>(station -> refreshTime) + 
+		"<li>Refresh time: " +
+		lexical_cast<std::string>(station -> refreshTime) +
 		"</li>" + "<li>URL: " + station -> url + "</li></ul>";
 	return header + content;
 }

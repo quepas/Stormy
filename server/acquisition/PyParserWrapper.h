@@ -12,7 +12,7 @@ namespace Stormy
 			~PyParserWrapper();
 
 			Meteo::Measurement* parseFromStation(Meteo::Station* station);
-		private:			
+		private:
 			Meteo::Measurement* parseFromURL(std::string url);
 
 			std::string pyParserModuleName;

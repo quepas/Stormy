@@ -11,7 +11,7 @@ Stormy::PyExecutor::PyExecutor()
 			std::cout << "PyExecutor already initialized" << std::endl;
 		else
 			std::cout << "Couldn't init PyExecutor" << std::endl;
-	}		
+	}
 }
 
 Stormy::PyExecutor::~PyExecutor()
@@ -20,11 +20,11 @@ Stormy::PyExecutor::~PyExecutor()
 }
 
 bool Stormy::PyExecutor::init()
-{	
+{
 	if(!Py_IsInitialized())
 	{
 		Py_Initialize();
 		return true;
-	}	
+	}
 	return false;
 }

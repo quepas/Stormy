@@ -55,10 +55,10 @@ std::map<std::string, std::string> PyObjectMapper::extractDictsFromDictSequence(
 
 			if(pyKey != nullptr && pyValue != nullptr)
 			{
-				std::string key = PyUnicode_AsUTF8(pyKey);				
-				std::string value = PyUnicode_AsUTF8(pyValue);				
+				std::string key = PyUnicode_AsUTF8(pyKey);
+				std::string value = PyUnicode_AsUTF8(pyValue);
 				result.insert(std::make_pair(key, value));
-			}					
+			}
 		}
 	}
 	return result;
@@ -70,7 +70,7 @@ Measurement* PyObjectMapper::mapToMeteoMeasurementWithRules( std::map<std::strin
 	for(auto it = map.begin(); it != map.end(); ++it)
 	{
 		std::string key = it -> first;
-		std::string value = it -> second;		
+		std::string value = it -> second;
 	}
 	return result;
 }

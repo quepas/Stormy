@@ -34,7 +34,7 @@ bool StationConfiguration::load(std::string filePath)
 		{
 			std::cout << "Field parserClass is not defined" << std::endl;
 			return false;
-		}			
+		}
 		if(!YAMLUtils::isDefined(it, "refreshTime"))
 		{
 			std::cout << "Field refreshTime is not defined" << std::endl;
@@ -46,7 +46,7 @@ bool StationConfiguration::load(std::string filePath)
 		meteoStation -> stationId = Utils::md5(meteoStation -> url);
 		meteoStation -> parserClass = YAMLUtils::getString(it, "parserClass");
 		meteoStation -> refreshTime = YAMLUtils::getLongNumber(it, "refreshTime");
-		
+
 		if(YAMLUtils::isDefined(it, "name"))
 			meteoStation -> name = YAMLUtils::getString(it, "name");
 

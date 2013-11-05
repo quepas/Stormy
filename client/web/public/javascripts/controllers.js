@@ -7,26 +7,26 @@ mainModule.config(function($routeProvider) {
 		.otherwise({redirectTo: '/'})
 })
 
-function ConnectCtrl() {	
+function ConnectCtrl() {
 }
 
-function AppCtrl($scope, $http) {	
+function AppCtrl($scope, $http) {
 	$scope.updateMeteo = function() {
 		$http.get('/acq/meteo/' + $scope.currentStation.id + '/' + $scope.currentType.id)
-			.success(function(data) {								
-				$scope.currentMeteo = data.measurements							
+			.success(function(data) {
+				$scope.currentMeteo = data.measurements
 				var context = document.getElementById("meteoChart").getContext("2d");
 				var meteoChart = new Chart(context).Line(prepareData($scope.currentMeteo));
-			})	
-	}	
+			})
+	}
 
 	$http.get('/acq/station').success(function(data) {
-		$scope.stations = data.stations		
+		$scope.stations = data.stations
 		$scope.currentStation = $scope.stations[0]
-	})	
+	})
 
 	$http.get('/acq/info').success(function(data) {
-		$scope.availableTypes = data.availableTypes	
+		$scope.availableTypes = data.availableTypes
 	})
 }
 

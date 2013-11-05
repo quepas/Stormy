@@ -36,7 +36,7 @@ std::string Utils::md5( std::string text )
 {
 	MD5Engine md5Engine;
 	md5Engine.update(text);
-	return MD5Engine::digestToHex(md5Engine.digest());	
+	return MD5Engine::digestToHex(md5Engine.digest());
 }
 
 bool Utils::checkIfStandardDate( std::string date )
@@ -56,10 +56,10 @@ bool Utils::checkTextWithRegex( std::string text, std::string regex )
 }
 
 std::string Utils::getStringFromAny( any value )
-{		
+{
 	if(typeid(double) == value.type()) {
 		return lexical_cast<std::string>(any_cast<double>(value));
-	} 
+	}
 	else if(typeid(std::string) == value.type()) {
 		return any_cast<std::string>(value);
 	}

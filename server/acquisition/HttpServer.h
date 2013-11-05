@@ -11,12 +11,12 @@ namespace Stormy
 	{
 		public:
 			HttpServer(unsigned int _port = 8080);
-			~HttpServer();			
-			
+			~HttpServer();
+
 		protected:
 
 			void initialized(Application& self);
-			void unitialized();			
+			void unitialized();
 			int main(const std::vector<std::string>& args);
 
 		private:

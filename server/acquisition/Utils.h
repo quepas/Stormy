@@ -25,7 +25,7 @@ namespace Stormy
 		public:
 			static double stringToDouble(std::string number);
 			static bool isNumber(std::string number);
-			static std::string md5(std::string text);	
+			static std::string md5(std::string text);
 			static bool checkIfHexMD5(std::string text);
 			static std::string extractMD5FromText(std::string text);
 			static std::string extractEndIdFromRestURI(std::string URI);
@@ -63,7 +63,7 @@ namespace Stormy
 	{
 		std::for_each(data.begin(), data.end(), func);
 	}
-	
+
 	template<typename T, typename V>
 	T Stormy::Utils::getLast( V seq )
 	{

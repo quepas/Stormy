@@ -23,10 +23,10 @@ void Stormy::GetInfoRequest::handleRequest( HTTPServerRequest& request, HTTPServ
 	std::ostream& ostr = response.send();
 
 	if(stationId.empty()) {
-		TypeConfiguration* typesCfg = 
+		TypeConfiguration* typesCfg =
 			new TypeConfiguration("config/meteo_data_type_config.yaml");
 		ostr << JSONUtils::prepareJSONForAvailableTypes(typesCfg -> getConfiguration());
 	} else {
 		ostr << REST::Const::emptyJSON;
-	}	
+	}
 }

@@ -29,29 +29,29 @@ using Poco::DateTime;
 
 PyParserWrapper::PyParserWrapper( std::string _pyParserModuleName )
 	:	pyParserModuleName(_pyParserModuleName)
-{	
+{
 }
 
 PyParserWrapper::~PyParserWrapper()
-{	
+{
 }
 
 Measurement* PyParserWrapper::parseFromURL( std::string url )
-{	
+{
 	PyObject* pArgs = PyTuple_New(1);
 	PyObject* pURLValue = PyUnicode_FromString(url.c_str());
-	PyTuple_SetItem(pArgs, 0, pURLValue);	
-	
-	PyObject* pFuncResult = PyFunction(pyParserModuleName.c_str(), "run")(pArgs);	
+	PyTuple_SetItem(pArgs, 0, pURLValue);
+
+	PyObject* pFuncResult = PyFunction(pyParserModuleName.c_str(), "run")(pArgs);
 	Py_DECREF(pArgs);
 
 	if(pFuncResult != nullptr)
-	{						
-		std::map<std::string, std::string> data = 
-			PyObjectMapper::extractDictsFromDictSequence(pFuncResult);		
-		TypeConfiguration* types = 
+	{
+		std::map<std::string, std::string> data =
+			PyObjectMapper::extractDictsFromDictSequence(pFuncResult);
+		TypeConfiguration* types =
 			new TypeConfiguration("config/meteo_data_type_config.yaml");
-		
+
 		// ~TODO: move to PyObjectMapper
 		Measurement* result = new Measurement();
 		for(auto it = data.begin(); it != data.end(); ++it) {
@@ -60,25 +60,25 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 			std::string valueType = to_lower_copy(type -> valueType);
 			std::string value = trim_copy(it -> second);
 
-			if(value != "-") {				
+			if(value != "-") {
 				if(valueType == Const::number)
 					result -> data[id] = MeteoUtils::extractTemperature(value);
 				else if(valueType == Const::text)
-					result -> data[id] = value;	
-			}			
-		}		
+					result -> data[id] = value;
+			}
+		}
 		Py_DECREF(pFuncResult);
 		return result;
-	} 
+	}
 	else
 	{
-		std::cout << "No data at current URL" << std::endl;		
+		std::cout << "No data at current URL" << std::endl;
 		return new Measurement(Const::reasonNoData);
 	}
 }
 
 Measurement* PyParserWrapper::parseFromStation( Station* station )
-{	
+{
 	Measurement* result = parseFromURL(station -> url);
 	result -> station = station;
 	if(result) {
@@ -104,7 +104,7 @@ Measurement* PyParserWrapper::parseFromStation( Station* station )
 			}
 		}
 		result -> timestamp = timestamp;
-		result -> data[Const::mongoId] = 
+		result -> data[Const::mongoId] =
 			boost::lexical_cast<std::string>(timestamp.epochTime());
 	}
 	return result;

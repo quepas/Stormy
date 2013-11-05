@@ -29,14 +29,14 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 	std::ostream& ostr = response.send();
 
 	MongoDBHandler dbHandler("localhost");
-	if(stationId != REST::Const::none) {	
+	if(stationId != REST::Const::none) {
 		if(typeId.empty()) {
 			std::vector<Measurement*> meteo = dbHandler.getMeteoData(stationId);
 			ostr << JSONUtils::prepareJSONForMeasurements(meteo);
-		} else {			
+		} else {
 			std::vector<Measurement*> singleMeteo = dbHandler.getCurrentMeteoTypeDatas(stationId, typeId);
 			ostr << JSONUtils::prepareJSONForSingleMeasurements(singleMeteo);
-		}		
+		}
 	} else {
 		ostr << REST::Const::emptyJSON;
 	}
@@ -44,12 +44,12 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 
 std::string GetMeteoRequest::prepareMeteoHTML(Measurement* meteo)
 {
-	TypeConfiguration* typesCfg = 
+	TypeConfiguration* typesCfg =
 		new TypeConfiguration("config/meteo_data_type_config.yaml");
 
 	std::string header = "<h2>Meteo station</h2>";
 	std::string content = "<ul>";
-	
+
 	auto data = meteo -> data;
 	for(auto it = data.begin(); it != data.end(); ++it) {
 		std::string id = it -> first;
@@ -64,7 +64,7 @@ std::string GetMeteoRequest::prepareMeteoHTML(Measurement* meteo)
 			rowContent.append(boost::any_cast<std::string>(it -> second));
 		rowContent.append("</li>");
 		content.append(rowContent);
-	}	
+	}
 	content.append("</ul>");
 	return header + content;
 }

@@ -15,7 +15,7 @@ namespace Stormy
 		public:
 			GetRequestFactory();
 			~GetRequestFactory();
-			
+
 			HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request);
 
 		private:

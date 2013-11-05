@@ -17,14 +17,14 @@ namespace Stormy
 			static std::string reasonKey;
 			static std::string reasonNoData;
 			static std::string data;
-			
+
 			// station
 			static std::string stationId;
 			static std::string stationIdPrefix;
 			static std::string url;
 			static std::string name;
 			static std::string parserClass;
-			static std::string refreshTime;			
+			static std::string refreshTime;
 
 			// measurement
 			static std::string date;
@@ -38,6 +38,6 @@ namespace Stormy
 			// rest
 			static std::string restMeteo;
 			static std::string restStation;
-		};		
+		};
 	}
 }

@@ -43,7 +43,7 @@ bool TypeConfiguration::load( std::string filepath )
 				std::cout << "For " << id << " equivalents is not defined" << std::endl;
 				continue;
 			}
-			std::string equivalents = YAMLUtils::getString(it, "equivalents");			
+			std::string equivalents = YAMLUtils::getString(it, "equivalents");
 			std::vector<std::string> splitedEquivalents;
 			boost::split(splitedEquivalents, equivalents, boost::is_any_of(";,"));
 
@@ -62,7 +62,7 @@ bool TypeConfiguration::load( std::string filepath )
 			type -> equivalents = splitedEquivalents;
 			type -> valueFormat = valueFormat;
 			type -> isMeteo = isMeteo;
-			types.push_back(type);			
+			types.push_back(type);
 		}
 	}
 	return true;

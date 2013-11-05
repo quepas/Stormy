@@ -10,7 +10,7 @@ using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 
-namespace Stormy 
+namespace Stormy
 {
 	class GetInfoRequest : public HTTPRequestHandler
 	{
@@ -18,7 +18,7 @@ namespace Stormy
 			GetInfoRequest(std::string _stationId = "");
 			~GetInfoRequest();
 
-			void handleRequest(HTTPServerRequest& request, 
+			void handleRequest(HTTPServerRequest& request,
 				HTTPServerResponse& response);
 
 		private:

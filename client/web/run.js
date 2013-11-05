@@ -22,8 +22,8 @@ app.post('/app', function(req, res) {
 // AcqREST mappings
 app.get('/acq/station', function(req, res) {
 	console.log('[INFO]: Get stations data')
-	
-	http.get(prepareConnectOptions('/station'), 
+
+	http.get(prepareConnectOptions('/station'),
 		function(rawData) {
 			collectAndSendRawData(res, rawData)
 		}
@@ -32,8 +32,8 @@ app.get('/acq/station', function(req, res) {
 
 app.get('/acq/meteo/:stationId', function(req, res) {
 	console.log("[INFO]: Get meteo for stationId")
-	
-	http.get(prepareConnectOptions('/meteo/' + req.params.stationId), 
+
+	http.get(prepareConnectOptions('/meteo/' + req.params.stationId),
 		function(rawData) {
 			collectAndSendRawData(res, rawData)
 		}
@@ -43,7 +43,7 @@ app.get('/acq/meteo/:stationId', function(req, res) {
 app.get('/acq/meteo/:stationId/:typeId', function(req, res) {
 	console.log("[INFO]: Get current type meteo for stationId")
 
-	http.get(prepareConnectOptions('/meteo/' + req.params.stationId + '/' + req.params.typeId),				
+	http.get(prepareConnectOptions('/meteo/' + req.params.stationId + '/' + req.params.typeId),
 		function(rawData) {
 			collectAndSendRawData(res, rawData)
 		}
@@ -53,7 +53,7 @@ app.get('/acq/meteo/:stationId/:typeId', function(req, res) {
 app.get('/acq/info', function(req, res) {
 	console.log("[INFO]: Get info from server")
 
-	http.get(prepareConnectOptions('/info'), 
+	http.get(prepareConnectOptions('/info'),
 		function(rawData) {
 			collectAndSendRawData(res, rawData)
 		}
@@ -62,7 +62,7 @@ app.get('/acq/info', function(req, res) {
 
 process.on('uncaughtException', function (err) {
   console.error((new Date).toUTCString() + ' UncaughtException: ', err.message)
-  console.error(err.stack) 
+  console.error(err.stack)
 })
 
 app.listen(port, host)
@@ -80,7 +80,7 @@ function prepareConnectOptions(path) {
 
 function collectAndSendRawData(res, rawData) {
 	var data = '';
-	rawData.on('data', function(chunk) {				
+	rawData.on('data', function(chunk) {
 		data += chunk;
 	})
 	rawData.on('end', function() {

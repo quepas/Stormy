@@ -18,9 +18,9 @@ AcquisitionScheduler::~AcquisitionScheduler()
 }
 
 void AcquisitionScheduler::scheduleAcquisition( Station* station )
-{	
-	schedule(new AcquisitionTask(station), 0, 
-		MeteoUtils::convertMinutesToMiliseconds(station -> refreshTime));	
+{
+	schedule(new AcquisitionTask(station), 0,
+		MeteoUtils::convertMinutesToMiliseconds(station -> refreshTime));
 }
 
 void Stormy::AcquisitionScheduler::scheduleManyAcquisition( std::vector<Meteo::Station*> stations )

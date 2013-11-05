@@ -7,7 +7,7 @@ namespace Stormy
 	class PyExecutor
 	{
 		public:
-						
+
 			static PyExecutor& getInstance()
 			{
 				static PyExecutor instance;

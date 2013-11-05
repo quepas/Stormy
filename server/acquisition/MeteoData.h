@@ -12,20 +12,20 @@
 
 namespace Stormy
 {
-	namespace Meteo 
+	namespace Meteo
 	{
 		struct Station
 		{
-			std::string stationId;			
+			std::string stationId;
 			std::string url;
 			std::string name;
 			std::string parserClass;
-			long refreshTime;	
+			long refreshTime;
 		};
 
 		struct Measurement
 		{
-			Measurement() 
+			Measurement()
 				:	timestamp(),
 					station(new Station()),
 					data()	{}
@@ -40,9 +40,9 @@ namespace Stormy
 			Poco::Timestamp timestamp;
 			Station* station;
 			std::map<std::string, boost::any> data;
-		};		
+		};
 
-		struct Type	
+		struct Type
 		{
 			std::string id;
 			std::string valueType;
@@ -50,6 +50,6 @@ namespace Stormy
 			std::string valueFormat;
 			std::vector<std::string> equivalents;
 			bool isMeteo;
-		};		
+		};
 	}
 }

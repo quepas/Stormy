@@ -25,8 +25,8 @@ PyObject* Stormy::PyFunction::operator()( PyObject* pyArgs /*= nullptr*/ )
 	}
 
 	if(properInit)
-	{		
-		return PyObject_CallObject(pyFunction, pyArgs);				 
+	{
+		return PyObject_CallObject(pyFunction, pyArgs);
 	}
 	Py_DECREF(pyArgs);
 	return nullptr;
@@ -37,7 +37,7 @@ bool Stormy::PyFunction::init( std::string moduleName, std::string functionName 
 	if(!Py_IsInitialized())
 	{
 		std::cout << "Call Py_ExecutorInit() first" << std::endl;
-		return false;		
+		return false;
 	}
 
 	PyObject* pyModuleName = PyUnicode_FromString(moduleName.c_str());

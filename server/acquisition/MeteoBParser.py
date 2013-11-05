@@ -24,9 +24,9 @@ class MeteoBDataParser(HTMLParser):
 
     def parseFromHtml(self, url, encoding="UTF-8"):
         sock = request.urlopen(url)
-        htmlSource = str(sock.read(), encoding)        
+        htmlSource = str(sock.read(), encoding)
         self.parseText(htmlSource)
-        sock.close()        
+        sock.close()
 
     def parseText(self, text):
         text = self.prepareProperHtml(text)
@@ -53,7 +53,7 @@ class MeteoBDataParser(HTMLParser):
 
     def parseSingleRow(self, tr):
         if len(tr) == 2:
-            dictItem = {tr[0][0].text : tr[1][0].text}            
+            dictItem = {tr[0][0].text : tr[1][0].text}
             #print(dictItem)
             return dictItem
 
