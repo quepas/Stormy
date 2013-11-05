@@ -1,0 +1,17 @@
+div.wrapper {
+	width: 1000px;
+    overflow: auto;
+}
+
+div.left {
+	width: 650px;
+    float: left;
+}
+
+div.right {
+    overflow: hidden;
+}
+
+#floating {
+	float: left;
+}

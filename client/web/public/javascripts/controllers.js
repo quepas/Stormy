@@ -27,6 +27,7 @@ function AppCtrl($scope, $http) {
 
 	$http.get('/acq/info').success(function(data) {
 		$scope.availableTypes = data.availableTypes
+		$scope.currentType = $scope.availableTypes[0]
 	})
 }
 

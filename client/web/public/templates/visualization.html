@@ -1,11 +1,16 @@
-<h3>Visualization</h3>
-<div><canvas id="meteoChart" width="600" height="400"></canvas></div>
-<select ng-model="currentStation" ng-options="c.name for c in stations" ng-change="updateMeteo()"></select>
-<select ng-model="currentType" ng-options="c.name for c in availableTypes" ng-change="updateMeteo()"></select>
-<a href='#/' class="btn btn-danger">Back</a>
-<div><u>Station data: </u>
-	</br><strong>Name:</strong> {{currentStation.name}}
-	</br><strong>URL:</strong> <a href="{{currentStation.url}}">{{currentStation.url}}</a>
-	</br><strong>Refresh time:</strong> {{currentStation.refreshTime}}
+<div class="wrapper">
+	<div class="left"><canvas id="meteoChart" width="600" height="400"></canvas></div>
+	<div class="right">
+		<select ng-model="currentStation" ng-options="c.name for c in stations" ng-change="updateMeteo()"></select>
+		<select ng-model="currentType" ng-options="c.name for c in availableTypes" ng-change="updateMeteo()"></select>
+		<div>
+			</br><strong>ID:</strong> {{currentStation.id}}
+			</br><strong>URL:</strong> <a href="{{currentStation.url}}">{{currentStation.url}}</a>
+			</br><strong>Refresh time:</strong> {{currentStation.refreshTime}}
+		</div>
+		<a href='#/' class="btn btn-danger">Back</a>
+		<a class="btn btn-success" ng-click="updateMeteo()">Refresh</a>
+	</div>
 </div>
+
 
