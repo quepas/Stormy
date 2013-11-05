@@ -1,10 +1,10 @@
 div.wrapper {
-	width: 1000px;
+	width: 1300px;
     overflow: auto;
 }
 
 div.left {
-	width: 650px;
+	width: 1000px;
     float: left;
 }
 

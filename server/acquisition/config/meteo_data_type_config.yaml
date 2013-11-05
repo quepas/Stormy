@@ -23,7 +23,7 @@
   valueUnit: celsius
   equivalents: Temperatura odczuwalna
 -
-  id: airHumidity  
+  id: airHumidity
   valueType: number
   valueUnit: percent
   equivalents: Wilgotność powietrza

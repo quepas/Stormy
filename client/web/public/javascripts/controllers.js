@@ -35,21 +35,29 @@ function AppCtrl($scope, $http) {
 function prepareData(meteoData) {
 	var meteoLabels = []
 	var meteoValues = []
-	var fixedLength = 15
-	var length = (meteoData.length > fixedLength) ? fixedLength : meteoData.length
+	var startIndex = 0;
+	var fixedLength = 30
+	var length = meteoData.length
 
-	for(var i = 0; i < length; i++) {
-		meteoLabels[i] = formatTimestamp(meteoData[i].timestamp)
-		meteoValues[i] = meteoData[i].data
+	if(length > fixedLength) {
+		startIndex = length - fixedLength;
+	}
+
+	for(var i = 0; i < fixedLength; i++) {
+		meteoLabels[i] = formatTimestamp(meteoData[startIndex + i].timestamp)
+		meteoValues[i] = meteoData[startIndex + i].data
+		if(i == 0) {
+			meteoValues[i] -= 0.00001 // HACK for: https://github.com/nnnick/Chart.js/issues/242
+		}
 	}
 
 	var data = {
 	labels : meteoLabels,
 	datasets : [
 		{
-			fillColor : "rgba(220,220,220,0.5)",
-			strokeColor : "rgba(220,220,220,1)",
-			pointColor : "rgba(220,220,220,1)",
+			fillColor : "rgba(107,149,145,0.5)",
+			strokeColor : "rgba(36,61,60,1)",
+			pointColor : "rgba(36,61,60,1)",
 			pointStrokeColor : "#fff",
 			data : meteoValues
 		}
@@ -59,5 +67,5 @@ function prepareData(meteoData) {
 
 function formatTimestamp(timestamp) {
 	var currentDate = new Date(timestamp * 1000)
-	return currentDate.getHours() + ':' + currentDate.getMinutes()
+	return currentDate.getUTCHours() + ':' + currentDate.getUTCMinutes() + ' '
 }

@@ -1,5 +1,5 @@
 <div class="wrapper">
-	<div class="left"><canvas id="meteoChart" width="600" height="400"></canvas></div>
+	<div class="left"><canvas id="meteoChart" width="1000" height="500"></canvas></div>
 	<div class="right">
 		<select ng-model="currentStation" ng-options="c.name for c in stations" ng-change="updateMeteo()"></select>
 		<select ng-model="currentType" ng-options="c.name for c in availableTypes" ng-change="updateMeteo()"></select>
