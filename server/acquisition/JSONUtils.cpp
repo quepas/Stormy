@@ -4,6 +4,7 @@
 #include <boost/any.hpp>
 #include "MeteoConst.h"
 #include "Utils.h"
+#include "RESTConst.h"
 
 using namespace Stormy;
 using namespace Meteo;
@@ -77,10 +78,22 @@ std::string JSONUtils::prepareJSONForAvailableTypes( const std::vector<Meteo::Ty
 {
 	std::string content = "{\"availableTypes\":[";
 	Utils::forEach(types, [&](Type* type) {
-		content += prepareJSONForAvailableType(type) + ",";
+		if(type -> isMeteo) 
+			content += prepareJSONForAvailableType(type) + ",";
 	});
 	if(types.size() > 0)
 		content.pop_back();	// remove unnecessary coma
 	content += "]}";
 	return content;
+}
+
+std::string JSONUtils::prepareJSONForSingleMeasurement( Meteo::Measurement* measurement )
+{
+	if(!measurement || measurement -> data.empty()) return REST::Const::emptyJSON;
+	BSONObjBuilder bsonBuilder;
+	bsonBuilder.append(wrapAsJSONString(Const::timestamp), 
+		lexical_cast<std::string>(measurement -> timestamp.epochTime()));
+	auto pair = measurement -> data.begin();	
+	bsonBuilder.append(wrapAsJSONString(Const::data), Utils::getStringFromAny(pair -> second));	
+	return bsonBuilder.obj().toString();
 }

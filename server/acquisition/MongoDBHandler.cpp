@@ -2,6 +2,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/any.hpp>
+#include <Poco/Timestamp.h>
 
 #include "TypeConfiguration.h"
 #include "MeteoUtils.h"
@@ -10,6 +11,7 @@
 
 using namespace Stormy;
 using namespace Meteo;
+using Poco::Timestamp;
 
 MongoDBHandler::MongoDBHandler( std::string dbAddress /*= "localhost"*/ )
 	:	connected(false),	
@@ -100,6 +102,25 @@ std::vector<Station*> MongoDBHandler::getStationsData()
 		station -> refreshTime = current.getIntField(Const::refreshTime.c_str());
 		station -> url = current.getStringField(Const::url.c_str());
 		result.push_back(station);
+	}
+	return result;
+}
+
+Measurement* MongoDBHandler::getCurrentMeteoTypeData( std::string stationId, std::string typeId )
+{
+	auto result = new Measurement();
+	if(!connected) return result;
+
+	std::auto_ptr<mongo::DBClientCursor> cursor = 
+		connection.query(MeteoUtils::getMeteoDb() + "." + 
+			Const::stationIdPrefix + stationId, mongo::Query().sort("_id", 0), 1);
+	if(cursor -> more()) {
+		mongo::BSONObj current = cursor -> next();		
+		result -> timestamp = Timestamp::fromEpochTime(
+			lexical_cast<long>(current.getStringField(Const::mongoId.c_str())));		
+		if(current.hasField(typeId)) {
+			result -> data[typeId] = std::string(current.getStringField(typeId.c_str()));
+		}
 	}
 	return result;
 }

@@ -49,6 +49,7 @@ namespace Stormy
 			std::string valueUnit;
 			std::string valueFormat;
 			std::vector<std::string> equivalents;
+			bool isMeteo;
 		};		
 	}
 }

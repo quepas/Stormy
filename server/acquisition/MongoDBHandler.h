@@ -18,6 +18,7 @@ namespace Stormy
 			void clearMeteosData();			
 			void insertMeteoData(Meteo::Measurement* meteoData);
 			std::vector<Meteo::Measurement*> getMeteoData(std::string stationId);
+			Meteo::Measurement* getCurrentMeteoTypeData(std::string stationId, std::string typeId);
 
 			void clearStationsData();
 			void insertStationsData(std::vector<Meteo::Station*>& data);			

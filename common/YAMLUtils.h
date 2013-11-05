@@ -12,6 +12,7 @@ namespace Stormy
 			static std::string getString(YAML::iterator it, std::string field);
 			static double getNumber(YAML::iterator it, std::string field);
 			static long getLongNumber(YAML::iterator it, std::string field);
+			static bool getBoolFromString(YAML::iterator it, std::string field);
 
 		private:
 	};

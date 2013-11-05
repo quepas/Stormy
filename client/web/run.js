@@ -32,7 +32,36 @@ app.get('/acq/station', function(req, res) {
 
 app.get('/acq/meteo/:stationId', function(req, res) {
 	console.log("[INFO]: Get meteo for stationId")
-	//TODO ~~
+	
+	http.get(prepareConnectOptions('/meteo/' + req.params.stationId), function(rawData) {
+		rawData.on('data', function(data) {
+			res.send(data)
+		})
+	})
+})
+
+app.get('/acq/meteo/:stationId/:typeId', function(req, res) {
+	console.log("[INFO]: Get current type meteo for stationId")
+
+	http.get(prepareConnectOptions('/meteo/' + req.params.stationId + '/' + req.params.typeId),		
+		
+		function(rawData) {
+			rawData.on('data', function(data) {
+				console.log(data.data)
+				res.send(data)
+			})
+		}
+	)
+})
+
+app.get('/acq/info', function(req, res) {
+	console.log("[INFO]: Get info from server")
+
+	http.get(prepareConnectOptions('/info'), function(rawData) {
+		rawData.on('data', function(data) {
+			res.send(data)
+		})
+	})
 })
 
 process.on('uncaughtException', function (err) {

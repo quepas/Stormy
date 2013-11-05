@@ -25,14 +25,17 @@ Stormy::GetRequestFactory::~GetRequestFactory()
 HTTPRequestHandler* GetRequestFactory::createRequestHandler
 	( const HTTPServerRequest& request )
 {
-	std::string URI = request.getURI();
-	boost::to_lower(URI);
-	std::cout << "[INFO] Requested REST API: " << URI << std::endl;
+	std::string URI = request.getURI();	
+	std::cout << "[INFO]: Requested REST API: " << URI << std::endl;
 	
 	if(Utils::checkTextWithRegex(URI, Const::stationPattern))
 		return new GetStationRequest();
 	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdPattern))
 		return new GetMeteoRequest(Utils::extractMD5FromText(URI));	
+	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdTypePattern)) {		
+		return new GetMeteoRequest(Utils::extractMD5FromText(URI), 
+			Utils::extractEndIdFromRestURI(URI));
+	}
 	if(Utils::checkTextWithRegex(URI, Const::infoPattern))
 		return new GetInfoRequest("");
 

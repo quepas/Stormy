@@ -15,13 +15,13 @@ namespace Stormy
 	class GetMeteoRequest : public HTTPRequestHandler
 	{
 		public:
-			GetMeteoRequest(std::string _stationId);
+			GetMeteoRequest(std::string _stationId, std::string _type = "");			
 			~GetMeteoRequest();
 			
 			void handleRequest(HTTPServerRequest& request, 
 				HTTPServerResponse& response);
 		private:
 			std::string prepareMeteoHTML(Meteo::Measurement* meteo);
-			std::string stationId;
+			std::string stationId, type;
 	};
 }

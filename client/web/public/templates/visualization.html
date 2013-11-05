@@ -1,9 +1,11 @@
 <script src="Chart.js"></script>
 <h3>Visualization</h3>
-<select ng-model="currentStation" ng-options="c.name for c in stations"></select>
+<select ng-model="currentStation" ng-options="c.name for c in stations" ng-change="updateMeteo()"></select>
 <div><u>Station data: </u>
 	</br><strong>Name:</strong> {{currentStation.name}}
 	</br><strong>URL:</strong> <a href="{{currentStation.url}}">{{currentStation.url}}</a>
 	</br><strong>Refresh time:</strong> {{currentStation.refreshTime}}	
 </div>
-<a href='#/' class="btn btn-danger">Back</a>
+<select ng-model="currentType" ng-options="c.name for c in availableTypes" ng-change="updateMeteo()"></select>
+<div><u>{{currentType.name}}: {{value}}</u>
+<div><a href='#/' class="btn btn-danger">Back</a></div>

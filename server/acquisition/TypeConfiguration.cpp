@@ -51,12 +51,17 @@ bool TypeConfiguration::load( std::string filepath )
 			if(YAMLUtils::isDefined(it, "valueFormat")) {
 				valueFormat = YAMLUtils::getString(it, "valueFormat");
 			}
+			bool isMeteo = true;
+			if(YAMLUtils::isDefined(it, "isMeteo")) {
+				isMeteo = YAMLUtils::getBoolFromString(it, "isMeteo");
+			}
 			Type* type = new Type();
 			type -> id = id;
 			type -> valueType = valueType;
 			type -> valueUnit = valueUnit;
 			type -> equivalents = splitedEquivalents;
 			type -> valueFormat = valueFormat;
+			type -> isMeteo = isMeteo;
 			types.push_back(type);			
 		}
 	}

@@ -2,6 +2,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
+#include <boost/algorithm/string.hpp>
 #include <Poco/MD5Engine.h>
 #include <typeinfo>
 
@@ -12,6 +13,7 @@ using boost::any_cast;
 using boost::regex;
 using boost::smatch;
 using boost::regex_search;
+using boost::split;
 
 double Utils::stringToDouble( std::string number )
 {
@@ -77,6 +79,15 @@ std::string Utils::extractMD5FromText( std::string text )
 		return match[0];
 	}
 	return "_none";
+}
+
+std::string Stormy::Utils::extractEndIdFromRestURI( std::string URI )
+{
+	if(URI.empty()) return "";
+	if(getLast<char>(URI) == '/') URI.pop_back();
+	std::vector<std::string> splitted;
+	split(splitted, URI, boost::is_any_of("/"));
+	return getLast<std::string>(splitted);
 }
 
 std::string Utils::numberPattern = "-?[0-9]+([.][0-9]+)?";

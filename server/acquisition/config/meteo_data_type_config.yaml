@@ -4,12 +4,14 @@
   valueUnit: date
   valueFormat: YYYY-MM-DD
   equivalents: Data
+  isMeteo: false
 -
   id: time
   valueType: text
   valueUnit: time
   valueFormat: HH:MM
   equivalents: Czas
+  isMeteo: false
 -
   id: airTemperature
   valueType: number

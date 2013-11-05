@@ -1,6 +1,10 @@
 #include "YAMLUtils.h"
 
+#include <boost/algorithm/string.hpp>
+
 using namespace Stormy;
+using boost::to_lower;
+using boost::contains;
 
 bool YAMLUtils::isDefined( YAML::iterator it, std::string field )
 {
@@ -20,4 +24,11 @@ double YAMLUtils::getNumber( YAML::iterator it, std::string field )
 long Stormy::YAMLUtils::getLongNumber( YAML::iterator it, std::string field )
 {
 	return (*it)[field].as<long>();
+}
+
+bool Stormy::YAMLUtils::getBoolFromString( YAML::iterator it, std::string field )
+{
+	std::string result = getString(it, field);
+	to_lower(result);
+	return (result != "false" && result != "0");	
 }

@@ -16,6 +16,7 @@ namespace Stormy
 			static std::string id;
 			static std::string reasonKey;
 			static std::string reasonNoData;
+			static std::string data;
 			
 			// station
 			static std::string stationId;
@@ -28,6 +29,7 @@ namespace Stormy
 			// measurement
 			static std::string date;
 			static std::string time;
+			static std::string timestamp;
 
 			// value type
 			static std::string number;

@@ -16,6 +16,8 @@ namespace Stormy
 			static std::string prepareJSONForAvailableType(Meteo::Type* type);
 			static std::string prepareJSONForAvailableTypes(const std::vector<Meteo::Type*>& type);
 
+			static std::string prepareJSONForSingleMeasurement(Meteo::Measurement* measurement);
+
 		private:
 			static std::string wrapAsJSONString(std::string label);
 	};
