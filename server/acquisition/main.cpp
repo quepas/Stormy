@@ -19,13 +19,13 @@ using namespace Meteo;
 
 int main(int argc, char** argv)
 {
-	std::cout << "++++++++++++++++ Acquisition Module Test ++++++++++++++++" << std::endl;
+	std::cout << "++++++++++++++++ Acquisition Module ++++++++++++++++" << std::endl;
 	Py_ExecutorInit();
 	StationConfiguration* meteoStationsCfg = new StationConfiguration("config/meteo_stations_config.yaml");
-	MongoDBHandler* dbHandler = new MongoDBHandler("localhost");
+	MongoDBHandler& dbHandler = MongoDBHandler::get();
 
-	dbHandler -> clearStationsData();
-	dbHandler -> insertStationsData(meteoStationsCfg->getConfiguration());
+	dbHandler.clearStationsData();
+	dbHandler.insertStationsData(meteoStationsCfg->getConfiguration());
 	AcquisitionScheduler* acqSecheduler = new AcquisitionScheduler();
 	acqSecheduler -> scheduleManyAcquisition(meteoStationsCfg->getConfiguration());
 

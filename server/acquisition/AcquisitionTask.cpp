@@ -9,9 +9,9 @@ using namespace Meteo;
 AcquisitionTask::AcquisitionTask(Station* _station)
 	:	station(_station),
 		pyParser(new PyParserWrapper(station -> parserClass)),
-		dbHandler(new MongoDBHandler("localhost"))
+		dbHandler(MongoDBHandler::get())
 {
-
+	
 }
 
 AcquisitionTask::~AcquisitionTask()
@@ -25,5 +25,5 @@ void AcquisitionTask::run()
 		<< station -> stationId << " (Every "
 		<< station -> refreshTime << " minutes.)" << std::endl;
 
-	dbHandler -> insertMeteoData(pyParser -> parseFromStation(station));
+	dbHandler.insertMeteoData(pyParser -> parseFromStation(station));
 }

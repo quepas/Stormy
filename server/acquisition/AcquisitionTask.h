@@ -17,6 +17,6 @@ namespace Stormy
 		private:
 			Meteo::Station* station;
 			PyParserWrapper* pyParser;
-			MongoDBHandler* dbHandler;
+			MongoDBHandler& dbHandler;
 	};
 }

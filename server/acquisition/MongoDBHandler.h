@@ -9,12 +9,7 @@ namespace Stormy
 {
 	class MongoDBHandler
 	{
-		public:
-			MongoDBHandler(std::string dbAddress = "localhost");
-			~MongoDBHandler();
-
-			void connect(std::string dbAddress);
-
+		public:						
 			void clearMeteosData();
 			void insertMeteoData(Meteo::Measurement* meteoData);
 			std::vector<Meteo::Measurement*> getMeteoData(std::string stationId);
@@ -26,7 +21,18 @@ namespace Stormy
 			void insertStationData(Meteo::Station* data);
 			std::vector<Meteo::Station*> getStationsData();
 
+			static MongoDBHandler& get() {
+				static MongoDBHandler instance;
+				return instance;
+			}
 		private:
+			MongoDBHandler(std::string dbAddress = "localhost");
+			MongoDBHandler(const MongoDBHandler&) {}
+			MongoDBHandler& operator=(const MongoDBHandler&) {}
+			~MongoDBHandler();
+
+			void connect(std::string dbAddress);
+
 			bool connected;
 			mongo::DBClientConnection connection;
 	};

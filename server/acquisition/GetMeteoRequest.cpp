@@ -28,7 +28,7 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 {
 	std::ostream& ostr = response.send();
 
-	MongoDBHandler dbHandler("localhost");
+	MongoDBHandler& dbHandler = MongoDBHandler::get();	
 	if(stationId != REST::Const::none) {
 		if(typeId.empty()) {
 			std::vector<Measurement*> meteo = dbHandler.getMeteoData(stationId);

@@ -15,8 +15,8 @@ function AppCtrl($scope, $http) {
 		$http.get('/acq/meteo/' + $scope.currentStation.id + '/' + $scope.currentType.id)
 			.success(function(data) {
 				$scope.currentMeteo = data.measurements
-				var context = document.getElementById("meteoChart").getContext("2d");
-				var meteoChart = new Chart(context).Line(prepareData($scope.currentMeteo));
+				var context = document.getElementById("meteoChart").getContext("2d")
+				var meteoChart = new Chart(context).Line(prepareData($scope.currentMeteo))
 			})
 	}
 
