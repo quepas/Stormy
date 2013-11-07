@@ -6,7 +6,7 @@ Web-based client for weather data visualization acquired by Stormy Acquisition S
 Installation
 ------------
 
-Install node.js, then install npm module: 'express'.
+Install node.js, then install npm module: 'express' (type: 'npm install express' for local installation in 'client/web' directory or 'npm install -g express' for global installation).
 Download latest Bootstrap Minimal CSS (bootstrap.min.css). Copy it to 'stylesheets' directory.
 Download latest Chart.js (Chart.js) and Angular.js (angular.min.js). Copy it to 'javascripts' directory.
 
