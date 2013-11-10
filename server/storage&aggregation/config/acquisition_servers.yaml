@@ -1,0 +1,8 @@
+-
+  name: 'Quepas Acquisition Server #1'
+  url:	'localhost'
+  port: 8080
+-
+  name: 'Quepas Acquisition Server #2'
+  url:	'192.168.90.2'
+  port: 8080
