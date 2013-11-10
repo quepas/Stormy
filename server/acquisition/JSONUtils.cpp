@@ -3,7 +3,7 @@
 #include <mongo/client/dbclient.h>
 #include <boost/any.hpp>
 #include "MeteoConst.h"
-#include "Utils.h"
+#include "../../common/Utils.h"
 #include "RESTConst.h"
 
 using namespace Stormy;

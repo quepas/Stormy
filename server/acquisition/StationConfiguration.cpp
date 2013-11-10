@@ -1,6 +1,6 @@
 #include "StationConfiguration.h"
 #include "../../common/YAMLUtils.h"
-#include "Utils.h"
+#include "../../common/Utils.h"
 
 using namespace Stormy::Meteo;
 

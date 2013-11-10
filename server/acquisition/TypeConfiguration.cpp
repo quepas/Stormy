@@ -25,7 +25,7 @@ bool TypeConfiguration::load( std::string filepath )
 	YAML::Node root = YAML::LoadFile(filepath);
 
 	for(auto it = root.begin(); it != root.end(); ++it)
-	{
+	{		
 		if(YAMLUtils::isDefined(it, "id"))
 		{
 			std::string id = YAMLUtils::getString(it, "id");
