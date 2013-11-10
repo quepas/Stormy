@@ -2,6 +2,7 @@
 
 #include <string>
 #include <yaml-cpp/yaml.h>
+#include <algorithm>
 
 namespace Stormy
 {
@@ -14,6 +15,15 @@ namespace Stormy
 			static long getLongNumber(YAML::iterator it, std::string field);
 			static bool getBoolFromString(YAML::iterator it, std::string field);
 
-		private:
+			template<typename T>
+			static void forEach(YAML::Node& node, T func);
+		
 	};
+
+	template<typename T>
+	void Stormy::YAMLUtils::forEach( YAML::Node& node, T func )
+	{
+		std::for_each(node.begin(), node.end(), func);
+	}
+
 }

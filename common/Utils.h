@@ -30,6 +30,7 @@ namespace Stormy
 			static std::string extractMD5FromText(std::string text);
 			static std::string extractEndIdFromRestURI(std::string URI);
 			static std::string getStringFromAny(boost::any any);
+			static bool asBool(std::string text);
 
 			// date & time
 			static bool checkIfStandardDate(std::string date);	// YYYY-MM-DD
@@ -59,13 +60,13 @@ namespace Stormy
 	}
 
 	template<typename T, typename U, typename V>
-	void Stormy::Utils::forEach( const std::map<T, U>& data, V func )
+	void Utils::forEach( const std::map<T, U>& data, V func )
 	{
 		std::for_each(data.begin(), data.end(), func);
 	}
 
 	template<typename T, typename V>
-	T Stormy::Utils::getLast( V seq )
+	T Utils::getLast( V seq )
 	{
 		if(seq.empty()) return T();
 		return *(--seq.end());

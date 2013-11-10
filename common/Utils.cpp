@@ -14,6 +14,7 @@ using boost::regex;
 using boost::smatch;
 using boost::regex_search;
 using boost::split;
+using boost::to_lower;
 
 double Utils::stringToDouble( std::string number )
 {
@@ -81,13 +82,19 @@ std::string Utils::extractMD5FromText( std::string text )
 	return "_none";
 }
 
-std::string Stormy::Utils::extractEndIdFromRestURI( std::string URI )
+std::string Utils::extractEndIdFromRestURI( std::string URI )
 {
 	if(URI.empty()) return "";
 	if(getLast<char>(URI) == '/') URI.pop_back();
 	std::vector<std::string> splitted;
 	split(splitted, URI, boost::is_any_of("/"));
 	return getLast<std::string>(splitted);
+}
+
+bool Utils::asBool( std::string text )
+{
+	to_lower(text);
+	return text == "true" || text == "1";
 }
 
 std::string Utils::numberPattern = "-?[0-9]+([.][0-9]+)?";

@@ -30,5 +30,5 @@ bool Stormy::YAMLUtils::getBoolFromString( YAML::iterator it, std::string field 
 {
 	std::string result = getString(it, field);
 	to_lower(result);
-	return (result != "false" && result != "0");	
+	return result == "true" || result == "1";	
 }
