@@ -5,6 +5,7 @@
 #include <map>
 #include <algorithm>
 #include <boost/any.hpp>
+#include <sstream>
 
 namespace Stormy
 {

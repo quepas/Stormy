@@ -15,9 +15,9 @@ namespace Stormy
 			std::vector<AcquisitionServer*>& getConfiguration() {
 				return configuration;
 			}
-
+			
 		private:
 			std::vector<AcquisitionServer*> configuration;
-			void load();
+			void mapIntoConfiguration();			
 	};
 }

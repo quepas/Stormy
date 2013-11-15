@@ -9,7 +9,7 @@ using namespace YAML;
 
 YAMLConfig::YAMLConfig( string path )	
 {
-	openFromFile(path);
+	openFromFile(path);	
 }
 
 YAMLConfig::~YAMLConfig()

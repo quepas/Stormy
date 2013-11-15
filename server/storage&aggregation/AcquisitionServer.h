@@ -12,12 +12,12 @@ namespace Stormy
 		std::string host;
 		unsigned int port;
 
-		std::string formatData() {
+		std::string toString() {
 			std::string result;
-			result.append("\tid: " + id);
-			result.append("\n\tname: " + name);
-			result.append("\n\thost: " + host);
-			result.append("\n\tport: " + lexical_cast<std::string>(port));
+			result.append("[id: " + id + ", ");
+			result.append("name: " + name + ", ");
+			result.append("host: " + host + ", ");
+			result.append("port: " + lexical_cast<std::string>(port) + "]");
 			return result;
 		}
 	};

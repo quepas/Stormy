@@ -8,7 +8,7 @@ AcquisitionServersConfig::AcquisitionServersConfig( std::string path )
 	:	YAMLConfig(path),
 		configuration()
 {
-	load();
+	mapIntoConfiguration();
 }
 
 AcquisitionServersConfig::~AcquisitionServersConfig()
@@ -16,7 +16,7 @@ AcquisitionServersConfig::~AcquisitionServersConfig()
 
 }
 
-void AcquisitionServersConfig::load()
+void AcquisitionServersConfig::mapIntoConfiguration()
 {
 	for(unsigned int i = 0; i < Size(); ++i) {
 		AcquisitionServer* serverCfg = new AcquisitionServer();
