@@ -18,9 +18,10 @@ namespace Stormy
 			DBStorage(StorageDatabase* storageDB);
 			~DBStorage();
 
-			unsigned int countStation();
+			unsigned int countAllStation();
 			void insertStation(Data::Station* station);
 			void clearAllStation();
+			bool existsStationByUID(std::string uid);
 			Data::Station* getStationByUID(std::string uid);
 
 			void connect();

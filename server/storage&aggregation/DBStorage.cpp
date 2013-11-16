@@ -28,7 +28,7 @@ void DBStorage::connect()
 	CATCH_MSG("[StorageDB] Connect exception: ")
 }
 
-unsigned int DBStorage::countStation()
+unsigned int DBStorage::countAllStation()
 {
 	unsigned int count = 0;
 	TRY
@@ -65,4 +65,14 @@ Station* DBStorage::getStationByUID( string uid )
 		into(result -> refreshTime), use(uid);
 	CATCH_MSG("[StorageDB] Get station by UID: ")
 	return result;
+}
+
+bool DBStorage::existsStationByUID( string uid )
+{
+	unsigned int count = 0;
+	TRY
+	sql << "SELECT count(*) FROM station WHERE uid = :uid",
+		into(count), use(uid);
+	CATCH_MSG("[StorageDB] Exists station by UID: ")
+	return count > 0;
 }

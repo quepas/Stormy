@@ -3,6 +3,7 @@
 #include "AcquisitionServersConfig.h"
 #include "StorageDatabaseConfig.h"
 #include "DBStorage.h"
+#include "AcquisitionScheduler.h"
 #include "../../common/Utils.h"
 #include "../../common/data/Station.h"
 
@@ -22,15 +23,12 @@ int main() {
 	cout << storageDBcfg.getConfiguration()->toString() << endl;
 	
 	DBStorage storage(storageDBcfg.getConfiguration());	
+	
+	cout << "Before: " << storage.countAllStation() << endl;
+	storage.clearAllStation();
+	cout << "After: " << storage.countAllStation() << endl;
 
-	Data::Station* station = new Data::Station();
-	station->id = "testID";
-	station->name = "testName";
-	station -> url = "testURL";
-	station -> refreshTime = 11;
-
-	storage.insertStation(station);
-	cout << storage.countStation() << endl;
+	AcquistionScheduler scheduler(&storage, acquisitionServersCfg.getConfiguration());
 
 	getchar();
 }
