@@ -4,6 +4,7 @@
 #include "StorageDatabaseConfig.h"
 #include "DBStorage.h"
 #include "../../common/Utils.h"
+#include "../../common/data/Station.h"
 
 using namespace Stormy;
 using namespace std;
@@ -20,8 +21,16 @@ int main() {
 	});
 	cout << storageDBcfg.getConfiguration()->toString() << endl;
 	
-	DBStorage storage(storageDBcfg.getConfiguration());
-	storage.connect();
+	DBStorage storage(storageDBcfg.getConfiguration());	
+
+	Data::Station* station = new Data::Station();
+	station->id = "testID";
+	station->name = "testName";
+	station -> url = "testURL";
+	station -> refreshTime = 11;
+
+	storage.insertStation(station);
+	cout << storage.countStation() << endl;
 
 	getchar();
 }
