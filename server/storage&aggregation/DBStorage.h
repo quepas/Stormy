@@ -20,6 +20,8 @@ namespace Stormy
 
 			unsigned int countStation();
 			void insertStation(Data::Station* station);
+			void clearAllStation();
+			Data::Station* getStationByUID(std::string uid);
 
 			void connect();
 		private:

@@ -33,7 +33,7 @@ unsigned int DBStorage::countStation()
 	unsigned int count = 0;
 	TRY
 	sql << "SELECT count(*) FROM station", into(count);
-	CATCH
+	CATCH_MSG("[StorageDB] Count station: ")
 	return count;
 }
 
@@ -45,6 +45,24 @@ void DBStorage::insertStation( Station* station )
 			"values(:uid, :name, :url, :refresh)",
 			use(station -> id), use(station -> name), 
 			use(station -> url), use(station -> refreshTime);
-		CATCH		
+		CATCH_MSG("[StorageDB] Insert station: ")		
 	}
+}
+
+void DBStorage::clearAllStation()
+{
+	TRY
+	sql << "DELETE FROM station";
+	CATCH_MSG("[StorageDB] Clear all station: ")
+}
+
+Station* DBStorage::getStationByUID( string uid )
+{
+	Station* result = new Station();
+	TRY
+	sql << "SELECT uid, name, url, refresh FROM station WHERE uid = :uid",
+		into(result -> id), into(result -> name), into(result -> url),
+		into(result -> refreshTime), use(uid);
+	CATCH_MSG("[StorageDB] Get station by UID: ")
+	return result;
 }
