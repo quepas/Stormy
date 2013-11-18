@@ -52,7 +52,8 @@ void DBStorage::insertStation( Station* station )
 void DBStorage::insertStations( const vector<Station*>& stations )
 {
 	Utils::forEach(stations, [&](Station* station) {
-		insertStation(station);
+		if(!existsStationByUID(station -> id))
+			insertStation(station);
 	});
 }
 
