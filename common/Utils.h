@@ -7,6 +7,10 @@
 #include <boost/any.hpp>
 #include <sstream>
 
+#define TRY try {
+#define CATCH }catch(const exception& ex){cout << ex.what() << endl;}
+#define CATCH_MSG(msg) }catch(const exception& ex){cout << msg << ex.what() << endl;}
+
 namespace Stormy
 {
 	template<typename Out, typename In>
@@ -39,9 +43,7 @@ namespace Stormy
 
 			// stl
 			template<typename T, typename V>
-			static void forEach(const std::vector<T>& data, V func);
-			template<typename T, typename U, typename V>
-			static void forEach(const std::map<T, U>& data, V func);
+			static void forEach(const T& data, V func);			
 			template<typename T, typename V>
 			static T getLast(V seq);
 
@@ -55,13 +57,7 @@ namespace Stormy
 	};
 
 	template<typename T, typename V>
-	void Utils::forEach( const std::vector<T>& data, V func )
-	{
-		std::for_each(data.begin(), data.end(), func);
-	}
-
-	template<typename T, typename U, typename V>
-	void Utils::forEach( const std::map<T, U>& data, V func )
+	void Utils::forEach( const T& data, V func )
 	{
 		std::for_each(data.begin(), data.end(), func);
 	}
