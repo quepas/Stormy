@@ -1,7 +1,7 @@
 #include "GetMeteoRequest.h"
 
 #include "MongoDBHandler.h"
-#include "Utils.h"
+#include "../../common/Utils.h"
 #include "JSONUtils.h"
 #include "TypeConfiguration.h"
 #include "RESTConst.h"

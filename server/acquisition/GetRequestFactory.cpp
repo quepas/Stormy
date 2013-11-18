@@ -6,7 +6,7 @@
 #include "GetStationRequest.h"
 #include "GetMeteoRequest.h"
 #include "GetInfoRequest.h"
-#include "Utils.h"
+#include "../../common/Utils.h"
 #include "RESTConst.h"
 
 using namespace Stormy;
