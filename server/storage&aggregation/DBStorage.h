@@ -5,10 +5,7 @@
 
 #include "StorageDatabase.h"
 #include "../../common/data/Station.h"
-
-#define TRY try {
-#define CATCH }catch(const exception& ex){cout << ex.what() << endl;}
-#define CATCH_MSG(msg) }catch(const exception& ex){cout << msg << ex.what() << endl;}
+#include "../../common/Utils.h"
 
 namespace Stormy
 {
@@ -20,6 +17,7 @@ namespace Stormy
 
 			unsigned int countAllStation();
 			void insertStation(Data::Station* station);
+			void insertStations(const std::vector<Data::Station*>& stations);
 			void clearAllStation();
 			bool existsStationByUID(std::string uid);
 			Data::Station* getStationByUID(std::string uid);
