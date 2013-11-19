@@ -32,7 +32,7 @@ CREATE TABLE measurement (
 	id_station integer,
 	value_text text,
 	value_number real,
-	timestamp timestamp with time zone,
+	timestamp timestamp,
 	PRIMARY KEY(id),
 	FOREIGN KEY(id_metrics) REFERENCES metrics(id),
 	FOREIGN KEY(id_station) REFERENCES station(id)
