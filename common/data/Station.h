@@ -2,17 +2,15 @@
 
 #include <string>
 
-namespace Stormy
-{
-	namespace Data
-	{
+namespace Stormy {
+	namespace Data {
 		struct Station
 		{
-			std::string id;
-			std::string url;
+			std::string uid;			
 			std::string name;
-			std::string parserClass;
+			std::string url;
 			long refreshTime;
+			std::string parserClass;			
 		};
 	}
 }
