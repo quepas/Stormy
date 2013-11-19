@@ -9,8 +9,10 @@
 #include <Poco/Exception.h>
 
 #include "../../common/Utils.h"
+#include "JSONUtils.h"
 
 using namespace Stormy;
+using namespace Stormy::Data;
 using namespace Poco;
 using namespace Poco::Net;
 using namespace std;
@@ -25,10 +27,12 @@ AcquisitionHTTPConnector::~AcquisitionHTTPConnector()
 
 }
 
-string AcquisitionHTTPConnector::getDataAt( string host, unsigned port, string resource )
+string AcquisitionHTTPConnector::getDataAsStringAt( string host, unsigned port, string resource )
 {
 	string content;
 	TRY			
+	cout << "[HTTPConnector] Try to reach: " << host 
+		<< ":" << port << resource << endl;
 	HTTPClientSession session;
 	session.setHost(host);
 	session.setPort(port);	
@@ -49,4 +53,20 @@ string AcquisitionHTTPConnector::getDataAt( string host, unsigned port, string r
 	}
 	CATCH_MSG("[HTTPConnector] getDataAt(): ")
 	return content;
+}
+
+vector<shared_ptr<Station>> AcquisitionHTTPConnector::getStationsAt( 
+	string host, unsigned port )
+{
+	string resource = "/station";
+	string content = getDataAsStringAt(host, port, resource);
+	return JSONUtils::extractStationsFromJSON(content);
+}
+
+vector<shared_ptr<Measurement>> AcquisitionHTTPConnector::getMeasurementsForStationAt( 
+	string host, unsigned port, string stationId )
+{
+	string resource = "/meteo/" + stationId;
+	string content = getDataAsStringAt(host, port, resource);
+	return JSONUtils::extractMeasurementsFromJSON(content);
 }

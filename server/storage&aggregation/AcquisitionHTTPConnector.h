@@ -1,6 +1,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
+#include "../../common/data/Station.h"
+#include "../../common/data/Measurement.h"
 
 namespace Stormy
 {
@@ -10,7 +14,11 @@ namespace Stormy
 			AcquisitionHTTPConnector();
 			~AcquisitionHTTPConnector();
 
-			static std::string getDataAt(std::string host, unsigned port, std::string resource);			
+			static std::string getDataAsStringAt(std::string host, unsigned port, std::string resource);
+			static std::vector<std::shared_ptr<Data::Station>> 
+				getStationsAt(std::string host, unsigned port);
+			static std::vector<std::shared_ptr<Data::Measurement>> 
+				getMeasurementsForStationAt(std::string host, unsigned port, std::string stationId);
 		private:
 
 	};

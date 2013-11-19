@@ -23,11 +23,6 @@ int main() {
 	cout << storageDBcfg.getConfiguration()->toString() << endl;
 	
 	DBStorage storage(storageDBcfg.getConfiguration());	
-	
-	cout << "Before: " << storage.countAllStation() << endl;
-	storage.clearAllStation();
-	cout << "After: " << storage.countAllStation() << endl;
-
 	AcquistionScheduler scheduler(&storage, acquisitionServersCfg.getConfiguration());
 
 	getchar();
