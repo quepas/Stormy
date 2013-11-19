@@ -15,3 +15,25 @@ CREATE TABLE station (
 	PRIMARY KEY(id),
 	UNIQUE(uid)
 );
+
+CREATE TABLE metrics (
+	id serial,
+	code text,
+	equivalents text,
+	type text,
+	unit text,
+	format text,
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE measurement (
+	id serial,
+	id_metrics integer,
+	id_station integer,
+	value_text text,
+	value_number real,
+	timestamp timestamp with time zone,
+	PRIMARY KEY(id),
+	FOREIGN KEY(id_metrics) REFERENCES metrics(id),
+	FOREIGN KEY(id_station) REFERENCES station(id)
+)
