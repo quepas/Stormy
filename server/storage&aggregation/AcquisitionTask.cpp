@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <Poco/NumberFormatter.h>
+#include <Poco/Stopwatch.h>
 
 #include "../../common/data/Station.h"
 #include "AcquisitionHTTPConnector.h"
@@ -25,9 +26,13 @@ AcquistionTask::~AcquistionTask()
 
 void AcquistionTask::run()
 {
+	Stopwatch stopwatch;
+	stopwatch.start();
 	std::string host = server -> host;
 	unsigned port = server -> port;
 	
+	cout << "[AcquisitionTask] Start fetching data from " 
+		<< server -> name << endl;
 	// metrics
 	auto metrics = 
 		AcquisitionHTTPConnector::getMetricsAt(host, port);
@@ -51,5 +56,7 @@ void AcquistionTask::run()
 		dbStorage -> insertMeasurements(measurements);		
 	});
 	cout << "[AcquisitionTask] Fetched " << measurementCounter 
-		<< " measurements from " <<	server -> name << endl;
+		<< " measurements. It took: " << stopwatch.elapsed() / 1000.0
+		<< "ms." << endl;
+	stopwatch.stop();
 }

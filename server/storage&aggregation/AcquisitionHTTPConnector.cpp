@@ -42,7 +42,8 @@ string AcquisitionHTTPConnector::getDataAsStringAt( string host, unsigned port, 
 	HTTPResponse response;
 	istream& receiveStream = session.receiveResponse(response);
 	StreamCopier::copyToString(receiveStream, content);	
-	CATCH_MSG("[HTTPConnector] Exception at getDataAsStringAt(): ")
+	CATCH_MSG("[HTTPConnector] Exception while reaching "
+		<< host << ":" << port << resource << ": ")
 	return content;
 }
 
