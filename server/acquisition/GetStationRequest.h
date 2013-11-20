@@ -19,8 +19,6 @@ namespace Stormy
 			~GetStationRequest();
 
 			void handleRequest(HTTPServerRequest& request,
-				HTTPServerResponse& response);
-		private:
-			std::string prepareStationHTML(Meteo::Station* station);
+				HTTPServerResponse& response);			
 	};
 }

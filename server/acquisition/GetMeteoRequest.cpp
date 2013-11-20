@@ -48,32 +48,3 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 		ostr << REST::Const::emptyJSON;
 	}
 }
-
-string GetMeteoRequest::prepareMeteoHTML(Measurement* meteo)
-{
-	TypeConfiguration* typesCfg =
-		new TypeConfiguration("config/meteo_data_type_config.yaml");
-
-	string header = "<h2>Meteo station</h2>";
-	string content = "<ul>";
-
-	auto data = meteo -> data;
-	for(auto it = data.begin(); it != data.end(); ++it) {
-		string id = it -> first;
-		TypePtr type = typesCfg->getFullTypeById(id);
-		string rowContent = "<li>";
-		rowContent.append(typesCfg -> getFirstEquivalentById(id));
-		rowContent.append(": ");
-		if(type -> valueType == "number")
-			rowContent.append(boost::lexical_cast<string>(
-				boost::any_cast<double>(it -> second)));
-		else if(type ->valueType == "text")
-			rowContent.append(boost::any_cast<string>(it -> second));
-		rowContent.append("</li>");
-		content.append(rowContent);
-	}
-	content.append("</ul>");
-	return header + content;
-}
-
-
