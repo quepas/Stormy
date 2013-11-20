@@ -37,6 +37,10 @@ namespace Stormy
 				data[Const::reasonKey] = reason;
 			}
 
+			~Measurement() {
+				delete station;
+			}
+
 			Poco::Timestamp timestamp;
 			Station* station;
 			std::map<std::string, boost::any> data;

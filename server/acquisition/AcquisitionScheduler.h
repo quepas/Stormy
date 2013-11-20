@@ -13,9 +13,9 @@ namespace Stormy
 			AcquisitionScheduler();
 			~AcquisitionScheduler();
 
-			void scheduleAcquisition(Meteo::Station* station);
-			void scheduleManyAcquisition(std::vector<Meteo::Station*> stations);
+			void scheduleAcquisition(StationPtr station);
+			void scheduleManyAcquisition(const StationPtrVector& stations);
 		private:
-			std::vector<Meteo::Station*> acquiredStations;
+			StationPtrVector acquiredStations;
 	};
 }

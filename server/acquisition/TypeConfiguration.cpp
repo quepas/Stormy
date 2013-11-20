@@ -6,11 +6,12 @@
 
 using namespace Stormy;
 using namespace Meteo;
+using namespace std;
 
-TypeConfiguration::TypeConfiguration( std::string filepath )
+TypeConfiguration::TypeConfiguration( string filepath )
 {
 	if(!load(filepath)) {
-		std::cout << "Couldn't load file properly: " << filepath << std::endl;
+		cout << "Couldn't load file properly: " << filepath << endl;
 		types.clear();
 	}
 }
@@ -20,7 +21,7 @@ TypeConfiguration::~TypeConfiguration()
 
 }
 
-bool TypeConfiguration::load( std::string filepath )
+bool TypeConfiguration::load( string filepath )
 {
 	YAML::Node root = YAML::LoadFile(filepath);
 
@@ -28,26 +29,26 @@ bool TypeConfiguration::load( std::string filepath )
 	{		
 		if(YAMLUtils::isDefined(it, "id"))
 		{
-			std::string id = YAMLUtils::getString(it, "id");
+			string id = YAMLUtils::getString(it, "id");
 			if(!YAMLUtils::isDefined(it, "valueType")) {
-				std::cout << "For " << id << " valueType is not defined" << std::endl;
+				cout << "For " << id << " valueType is not defined" << endl;
 				continue;
 			}
-			std::string valueType = YAMLUtils::getString(it, "valueType");
+			string valueType = YAMLUtils::getString(it, "valueType");
 			if(!YAMLUtils::isDefined(it, "valueUnit")) {
-				std::cout << "For " << id << " valueUnit is not defined" << std::endl;
+				cout << "For " << id << " valueUnit is not defined" << endl;
 				continue;
 			}
-			std::string valueUnit = YAMLUtils::getString(it, "valueUnit");
+			string valueUnit = YAMLUtils::getString(it, "valueUnit");
 			if(!YAMLUtils::isDefined(it, "equivalents")) {
-				std::cout << "For " << id << " equivalents is not defined" << std::endl;
+				cout << "For " << id << " equivalents is not defined" << endl;
 				continue;
 			}
-			std::string equivalents = YAMLUtils::getString(it, "equivalents");
-			std::vector<std::string> splitedEquivalents;
+			string equivalents = YAMLUtils::getString(it, "equivalents");
+			vector<string> splitedEquivalents;
 			boost::split(splitedEquivalents, equivalents, boost::is_any_of(";,"));
 
-			std::string valueFormat = "";
+			string valueFormat = "";
 			if(YAMLUtils::isDefined(it, "valueFormat")) {
 				valueFormat = YAMLUtils::getString(it, "valueFormat");
 			}
@@ -68,11 +69,11 @@ bool TypeConfiguration::load( std::string filepath )
 	return true;
 }
 
-std::string TypeConfiguration::getTypeIdByEquivalent( std::string equivalent )
+string TypeConfiguration::getTypeIdByEquivalent( string equivalent )
 {
 	for(auto it = types.begin(); it != types.end(); ++it) {
-		std::string id = (*it) -> id;
-		std::vector<std::string> equivalents = (*it) -> equivalents;
+		string id = (*it) -> id;
+		vector<string> equivalents = (*it) -> equivalents;
 		for(auto it = equivalents.begin(); it != equivalents.end(); ++it) {
 			if(boost::equal(equivalent, *it))
 				return id;
@@ -81,7 +82,7 @@ std::string TypeConfiguration::getTypeIdByEquivalent( std::string equivalent )
 	return "_none";
 }
 
-TypePtr TypeConfiguration::getFullTypeById( std::string id )
+TypePtr TypeConfiguration::getFullTypeById( string id )
 {
 	for(auto it = types.begin(); it != types.end(); ++it) {
 		TypePtr result = *it;
@@ -91,11 +92,21 @@ TypePtr TypeConfiguration::getFullTypeById( std::string id )
 	return TypePtr(nullptr);
 }
 
-std::string TypeConfiguration::getFirstEquivalentById( std::string id )
+string TypeConfiguration::getFirstEquivalentById( string id )
 {
 	TypePtr type = getFullTypeById(id);
 	if(type != nullptr && type -> equivalents.size() > 0) {
 		return type -> equivalents[0];
 	}
 	return "_none";
+}
+
+TypePtr TypeConfiguration::getTypeById( string id, TypePtrVector types )
+{
+	for(auto it = types.begin(); it != types.end(); ++it) {
+		if((*it) -> id == id) {
+			return *it;
+		}
+	}
+	return TypePtr(nullptr);
 }

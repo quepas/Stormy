@@ -21,17 +21,17 @@ int main(int argc, char** argv)
 {
 	std::cout << "++++++++++++++++ Acquisition Module ++++++++++++++++" << std::endl;
 	Py_ExecutorInit();
-	StationConfiguration* meteoStationsCfg = new StationConfiguration("config/meteo_stations_config.yaml");
-	TypeConfiguration* meteoTypeCfg = new TypeConfiguration("config/meteo_data_type_config.yaml");
+	StationConfiguration meteoStationsCfg("config/meteo_stations_config.yaml");
+	TypeConfiguration meteoTypeCfg("config/meteo_data_type_config.yaml");
 
 	MongoDBHandler& dbHandler = MongoDBHandler::get();
 	dbHandler.clearStationsData();
-	dbHandler.insertStationsData(meteoStationsCfg->getConfiguration());
+	dbHandler.insertStationsData(meteoStationsCfg.getConfiguration());
 	dbHandler.clearTypesData();
-	dbHandler.insertTypesData(meteoTypeCfg -> getConfiguration());
+	dbHandler.insertTypesData(meteoTypeCfg.getConfiguration());
 	
-	AcquisitionScheduler* acqSecheduler = new AcquisitionScheduler();
-	acqSecheduler -> scheduleManyAcquisition(meteoStationsCfg -> getConfiguration());
+	AcquisitionScheduler acqSecheduler;
+	acqSecheduler.scheduleManyAcquisition(meteoStationsCfg.getConfiguration());
 
 	Stormy::HttpServer httpServer;
 	return httpServer.run(argc, argv);

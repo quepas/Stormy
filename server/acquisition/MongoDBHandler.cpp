@@ -14,10 +14,11 @@ using namespace Stormy;
 using namespace Meteo;
 using namespace Poco;
 using namespace std;
+using namespace mongo;
 
 MongoDBHandler::MongoDBHandler( string dbAddress /*= "localhost"*/ )
 	:	connected(false),
-		connection(mongo::DBClientConnection())
+		connection(DBClientConnection())
 {
 	if(!dbAddress.empty())
 		connect(dbAddress);
@@ -34,23 +35,23 @@ void MongoDBHandler::connect( string dbAddress )
 		connection.connect(dbAddress);
 		cout << "Connected to MongoDB database: " << dbAddress << endl;
 		connected = true;
-	} catch (const mongo::DBException& e) {
+	} catch (const DBException& e) {
 		cout << "[ERROR]: " << e.what() << endl;
 		connected = false;
 	}
 }
 
-void Stormy::MongoDBHandler::clearMeteosData()
+void MongoDBHandler::clearMeteosData()
 {
 	if(!connected) return;
 	connection.dropCollection(MeteoUtils::getMeteoDb());
 }
 
-void MongoDBHandler::insertMeteoData( Measurement* measurement )
+void MongoDBHandler::insertMeteoData( MeasurementPtr measurement )
 {
 	if(!connected || !measurement) return;
 
-	mongo::BSONObjBuilder bsonBuilder;
+	BSONObjBuilder bsonBuilder;
 	auto data = measurement -> data;
 	for(auto it = data.begin(); it != data.end(); ++it)
 	{
@@ -69,17 +70,17 @@ void MongoDBHandler::clearStationsData()
 	connection.dropCollection(MeteoUtils::getStatioDb());
 }
 
-void MongoDBHandler::insertStationsData( vector<Station*>& data )
+void MongoDBHandler::insertStationsData( const StationPtrVector& data )
 {
 	if(!connected) return;
 	for(auto it = data.begin(); it != data.end(); ++it)
 		insertStationData(*it);
 }
 
-void MongoDBHandler::insertStationData( Station* data )
+void MongoDBHandler::insertStationData( StationPtr data )
 {
 	if(!connected || !data) return;
-	mongo::BSONObjBuilder bsonBuilder;
+	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(Const::mongoId, data -> stationId);
 	bsonBuilder.append(Const::name, data -> name);
 	bsonBuilder.append(Const::parserClass, data -> parserClass);
@@ -88,16 +89,16 @@ void MongoDBHandler::insertStationData( Station* data )
 	connection.insert(MeteoUtils::getStatioDb(), bsonBuilder.obj());
 }
 
-vector<Station*> MongoDBHandler::getStationsData()
+StationPtrVector MongoDBHandler::getStationsData()
 {
-	auto result = vector<Station*>();
+	auto result = StationPtrVector();
 	if(!connected) return result;
 
-	auto_ptr<mongo::DBClientCursor> cursor =
-		connection.query(MeteoUtils::getStatioDb(), mongo::BSONObj());
+	auto_ptr<DBClientCursor> cursor =
+		connection.query(MeteoUtils::getStatioDb(), BSONObj());
 	while( cursor -> more() ) {
-		mongo::BSONObj current = cursor -> next();
-		Station* station = new Station();
+		BSONObj current = cursor -> next();
+		StationPtr station(new Station());
 		station -> stationId = current.getStringField(Const::mongoId.c_str());
 		station -> name = current.getStringField(Const::name.c_str());
 		station -> parserClass = current.getStringField(Const::parserClass.c_str());
@@ -108,16 +109,16 @@ vector<Station*> MongoDBHandler::getStationsData()
 	return result;
 }
 
-Measurement* MongoDBHandler::getCurrentMeteoTypeData( string stationId, string typeId )
+MeasurementPtr MongoDBHandler::getCurrentMeteoTypeData( string stationId, string typeId )
 {
-	auto result = new Measurement();
+	auto result = MeasurementPtr(new Measurement());
 	if(!connected) return result;
 
-	auto_ptr<mongo::DBClientCursor> cursor =
+	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
-			Const::stationIdPrefix + stationId, mongo::Query().sort("_id", 0), 1);
+			Const::stationIdPrefix + stationId, Query().sort("_id", 0), 1);
 	if(cursor -> more()) {
-		mongo::BSONObj current = cursor -> next();
+		BSONObj current = cursor -> next();
 		result -> timestamp = Timestamp::fromEpochTime(
 			lexical_cast<long>(current.getStringField(Const::mongoId.c_str())));
 		if(current.hasField(typeId)) {
@@ -127,17 +128,17 @@ Measurement* MongoDBHandler::getCurrentMeteoTypeData( string stationId, string t
 	return result;
 }
 
-vector<Measurement*> MongoDBHandler::getCurrentMeteoTypeDatas( string stationId, string typeId )
+MeasurementPtrVector MongoDBHandler::getCurrentMeteoTypeDatas( string stationId, string typeId )
 {
-	auto result = vector<Measurement*>();
+	auto result = MeasurementPtrVector();
 	if(!connected) return result;
 
-	auto_ptr<mongo::DBClientCursor> cursor =
+	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
-			Const::stationIdPrefix + stationId, mongo::BSONObj());
+			Const::stationIdPrefix + stationId, BSONObj());
 	while(cursor -> more()) {
-		mongo::BSONObj current = cursor -> next();
-		Measurement* measurement = new Measurement();
+		BSONObj current = cursor -> next();
+		MeasurementPtr measurement(new Measurement());
 		measurement -> timestamp = Timestamp::fromEpochTime(
 			lexical_cast<long>(current.getStringField(Const::mongoId.c_str())));
 		if(current.hasField(typeId)) {
@@ -149,27 +150,25 @@ vector<Measurement*> MongoDBHandler::getCurrentMeteoTypeDatas( string stationId,
 	return result;
 }
 
-vector<Measurement*> MongoDBHandler::getMeteoData(string stationId)
+MeasurementPtrVector MongoDBHandler::getMeteoData(string stationId)
 {
-	auto result = vector<Measurement*>();
+	auto result = MeasurementPtrVector();
 	if(!connected) return result;
-
-	TypeConfiguration* typesCfg =
-		new TypeConfiguration("config/meteo_data_type_config.yaml");
-	TypePtrVector types = typesCfg -> getConfiguration();
-	auto_ptr<mongo::DBClientCursor> cursor =
+	
+	TypePtrVector types = getTypesData();
+	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
-			Const::stationIdPrefix + stationId, mongo::BSONObj());
+			Const::stationIdPrefix + stationId, BSONObj());
 	while( cursor -> more() ) {
-		mongo::BSONObj current = cursor -> next();
+		BSONObj current = cursor -> next();
 		set<string> availableFields;
 		current.getFieldNames(availableFields);
 
-		Measurement* measurement = new Measurement();
+		MeasurementPtr measurement(new Measurement());
 		for(auto it = types.begin(); it != types.end(); ++it) {
 			string id = (*it) -> id;
 			if(availableFields.find(id) != availableFields.end()) {
-				TypePtr type = typesCfg -> getFullTypeById(id);
+				TypePtr type = TypeConfiguration::getTypeById(id, types);
 				string value = current.getStringField(id.c_str());
 				if(type -> valueType == Const::number)
 					measurement -> data[id]= MeteoUtils::extractTemperature(value);
@@ -188,27 +187,25 @@ vector<Measurement*> MongoDBHandler::getMeteoData(string stationId)
 	return result;
 }
 
-vector<Meteo::Measurement*> Stormy::MongoDBHandler::getMeteoDataNewerThan( string stationId, string timestamp )
+MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, string timestamp )
 {
-	auto result = vector<Measurement*>();
+	auto result = MeasurementPtrVector();
 	if(!connected) return result;
-
-	TypeConfiguration* typesCfg =
-		new TypeConfiguration("config/meteo_data_type_config.yaml");
-	TypePtrVector types = typesCfg -> getConfiguration();
-	auto_ptr<mongo::DBClientCursor> cursor =
+	
+	TypePtrVector types = getTypesData();
+	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
-		Const::stationIdPrefix + stationId, mongo::BSONObj());
+		Const::stationIdPrefix + stationId, BSONObj());
 	while( cursor -> more() ) {
-		mongo::BSONObj current = cursor -> next();
+		BSONObj current = cursor -> next();
 		set<string> availableFields;
 		current.getFieldNames(availableFields);
 
-		Measurement* measurement = new Measurement();
+		MeasurementPtr measurement(new Measurement());
 		for(auto it = types.begin(); it != types.end(); ++it) {
 			string id = (*it) -> id;
 			if(availableFields.find(id) != availableFields.end()) {
-				TypePtr type = typesCfg -> getFullTypeById(id);
+				TypePtr type = TypeConfiguration::getTypeById(id, types);
 				string value = current.getStringField(id.c_str());
 				if(type -> valueType == Const::number)
 					measurement -> data[id]= MeteoUtils::extractTemperature(value);
@@ -228,13 +225,34 @@ vector<Meteo::Measurement*> Stormy::MongoDBHandler::getMeteoDataNewerThan( strin
 	return result;
 }
 
+TypePtrVector MongoDBHandler::getTypesData()
+{
+	TypePtrVector result;
+	if(!connected) return result;
+
+	auto_ptr<DBClientCursor> cursor =
+		connection.query(MeteoUtils::getTypeDb(), BSONObj());
+	while( cursor -> more() ) {
+		BSONObj current = cursor -> next();
+		TypePtr type(new Type());
+		type -> id = current.getStringField(Const::id.c_str());
+		type -> equivalents.push_back(current.getStringField(Const::equivalents.c_str()));
+		type -> valueType = current.getStringField(Const::type.c_str());
+		type -> valueUnit = current.getStringField(Const::unit.c_str());
+		type -> valueFormat = current.getStringField(Const::format.c_str());
+		type -> isMeteo = current.getBoolField(Const::isMeteo.c_str());		
+		result.push_back(type);
+	}
+	return result;
+}
+
 bool MongoDBHandler::insertTypesData( const TypePtrVector& data )
 {
 	if(!connected || data.empty()) return false;
 	Utils::forEach(data, [&](TypePtr type) {		
-		mongo::BSONObjBuilder bsonBuilder;
+		BSONObjBuilder bsonBuilder;
 		bsonBuilder.append(Const::id, type -> id);
-		bsonBuilder.append(Const::equivalents, type -> equivalents);
+		bsonBuilder.append(Const::equivalents, type -> equivalents[0]);
 		bsonBuilder.append(Const::type, type -> valueType);
 		bsonBuilder.append(Const::unit, type -> valueUnit);
 		bsonBuilder.append(Const::format, type -> valueFormat);
@@ -250,4 +268,3 @@ bool MongoDBHandler::clearTypesData()
 	connection.dropCollection(MeteoUtils::getTypeDb());
 	return true;
 }
-

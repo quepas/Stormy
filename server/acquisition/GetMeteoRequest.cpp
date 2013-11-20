@@ -34,14 +34,14 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 	if(stationId != REST::Const::none) {
 		if(typeId.empty()) {
 			if(timestamp.empty()) {				
-				vector<Measurement*> meteo = dbHandler.getMeteoData(stationId);
+				MeasurementPtrVector meteo = dbHandler.getMeteoData(stationId);
 				ostr << JSONUtils::prepareJSONForMeasurements(meteo);
 			} else {				
-				vector<Measurement*> meteo = dbHandler.getMeteoDataNewerThan(stationId, timestamp);
+				MeasurementPtrVector meteo = dbHandler.getMeteoDataNewerThan(stationId, timestamp);
 				ostr << JSONUtils::prepareJSONForMeasurements(meteo);
 			}			
 		} else {
-			vector<Measurement*> singleMeteo = dbHandler.getCurrentMeteoTypeDatas(stationId, typeId);
+			MeasurementPtrVector singleMeteo = dbHandler.getCurrentMeteoTypeDatas(stationId, typeId);
 			ostr << JSONUtils::prepareJSONForSingleMeasurements(singleMeteo);
 		}
 	} else {

@@ -36,7 +36,7 @@ PyParserWrapper::~PyParserWrapper()
 {
 }
 
-Measurement* PyParserWrapper::parseFromURL( std::string url )
+MeasurementPtr PyParserWrapper::parseFromURL( std::string url )
 {
 	PyObject* pArgs = PyTuple_New(1);
 	PyObject* pURLValue = PyUnicode_FromString(url.c_str());
@@ -44,7 +44,8 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 
 	PyObject* pFuncResult = PyFunction(pyParserModuleName.c_str(), "run")(pArgs);
 	Py_DECREF(pArgs);
-
+	
+	MeasurementPtr result(new Measurement());
 	if(pFuncResult != nullptr)
 	{
 		std::map<std::string, std::string> data =
@@ -52,8 +53,7 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 		TypeConfiguration* types =
 			new TypeConfiguration("config/meteo_data_type_config.yaml");
 
-		// ~TODO: move to PyObjectMapper
-		Measurement* result = new Measurement();
+		// ~TODO: move to PyObjectMapper		
 		for(auto it = data.begin(); it != data.end(); ++it) {
 			std::string id = types -> getTypeIdByEquivalent(it -> first);
 			TypePtr type = types -> getFullTypeById(id);
@@ -67,20 +67,21 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 					result -> data[id] = value;
 			}
 		}
+		delete types;
 		Py_DECREF(pFuncResult);
 		return result;
 	}
 	else
 	{
 		std::cout << "No data at current URL" << std::endl;
-		return new Measurement(Const::reasonNoData);
+		return result;
 	}
 }
 
-Measurement* PyParserWrapper::parseFromStation( Station* station )
+MeasurementPtr PyParserWrapper::parseFromStation( StationPtr station )
 {
-	Measurement* result = parseFromURL(station -> url);
-	result -> station = station;
+	MeasurementPtr result = parseFromURL(station -> url);
+	result -> station = station.get();
 	if(result) {
 		auto data = std::map<std::string, boost::any>();
 		data = result -> data;

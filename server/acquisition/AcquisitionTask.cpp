@@ -6,7 +6,7 @@
 using namespace Stormy;
 using namespace Meteo;
 
-AcquisitionTask::AcquisitionTask(Station* _station)
+AcquisitionTask::AcquisitionTask(StationPtr _station)
 	:	station(_station),
 		pyParser(new PyParserWrapper(station -> parserClass)),
 		dbHandler(MongoDBHandler::get())
@@ -16,7 +16,7 @@ AcquisitionTask::AcquisitionTask(Station* _station)
 
 AcquisitionTask::~AcquisitionTask()
 {
-
+	delete pyParser;
 }
 
 void AcquisitionTask::run()

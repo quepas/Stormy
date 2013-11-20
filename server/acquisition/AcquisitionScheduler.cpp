@@ -17,13 +17,13 @@ AcquisitionScheduler::~AcquisitionScheduler()
 
 }
 
-void AcquisitionScheduler::scheduleAcquisition( Station* station )
+void AcquisitionScheduler::scheduleAcquisition( StationPtr station )
 {
 	schedule(new AcquisitionTask(station), 0,
 		MeteoUtils::convertMinutesToMiliseconds(station -> refreshTime));
 }
 
-void Stormy::AcquisitionScheduler::scheduleManyAcquisition( std::vector<Meteo::Station*> stations )
+void Stormy::AcquisitionScheduler::scheduleManyAcquisition( const StationPtrVector& stations )
 {
 	for(auto it = stations.begin(); it != stations.end(); ++it) {
 		scheduleAcquisition(*it);

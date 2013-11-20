@@ -5,7 +5,7 @@
 using namespace Stormy::Meteo;
 
 StationConfiguration::StationConfiguration( std::string filePath )
-	:	configuration(std::vector<Station*>())
+	:	configuration()
 {
 	if(!load(filePath))
 	{
@@ -41,7 +41,7 @@ bool StationConfiguration::load(std::string filePath)
 			return false;
 		}
 
-		Station* meteoStation = new Station();
+		StationPtr meteoStation(new Station());
 		meteoStation -> url = YAMLUtils::getString(it, "url");
 		meteoStation -> stationId = Utils::md5(meteoStation -> url);
 		meteoStation -> parserClass = YAMLUtils::getString(it, "parserClass");

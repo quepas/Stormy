@@ -20,6 +20,8 @@ namespace Stormy
 			std::string getTypeIdByEquivalent(std::string equivalent);
 			std::string getFirstEquivalentById(std::string id);
 			TypePtr getFullTypeById(std::string id);
+
+			static TypePtr getTypeById(std::string id, TypePtrVector types);
 		private:
 			bool load(std::string filepath);
 

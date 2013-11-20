@@ -15,7 +15,7 @@ using mongo::BSONObjBuilder;
 using boost::any_cast;
 using boost::any;
 
-string JSONUtils::prepareJSONForStation( Station* station )
+string JSONUtils::prepareJSONForStation( StationPtr station )
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::id), station -> stationId);
@@ -25,10 +25,10 @@ string JSONUtils::prepareJSONForStation( Station* station )
 	return bsonBuilder.obj().toString();
 }
 
-string JSONUtils::prepareJSONForStations( const vector<Station*>& stations )
+string JSONUtils::prepareJSONForStations( const StationPtrVector& stations )
 {
 	string content = "{\"stations\":[";
-	Utils::forEach(stations, [&](Station* station) {
+	Utils::forEach(stations, [&](StationPtr station) {
 		content += prepareJSONForStation(station) + ",";
 	});
 	if(stations.size() > 0)
@@ -37,7 +37,7 @@ string JSONUtils::prepareJSONForStations( const vector<Station*>& stations )
 	return content;
 }
 
-string JSONUtils::prepareJSONForMeasurement( Measurement* measurement )
+string JSONUtils::prepareJSONForMeasurement( MeasurementPtr measurement )
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::id),
@@ -50,10 +50,10 @@ string JSONUtils::prepareJSONForMeasurement( Measurement* measurement )
 	return bsonBuilder.obj().toString();
 }
 
-string JSONUtils::prepareJSONForMeasurements( const vector<Meteo::Measurement*>& measurements )
+string JSONUtils::prepareJSONForMeasurements( const MeasurementPtrVector& measurements )
 {
 	string content = "{\"meteo\":[";
-	Utils::forEach(measurements, [&](Measurement* measurement) {
+	Utils::forEach(measurements, [&](MeasurementPtr measurement) {
 		content += prepareJSONForMeasurement(measurement) + ",";
 	});
 	if(measurements.size() > 0)
@@ -93,7 +93,7 @@ string JSONUtils::prepareJSONForAvailableTypes( const TypePtrVector& types )
 	return content;
 }
 
-string JSONUtils::prepareJSONForSingleMeasurement( Meteo::Measurement* measurement )
+string JSONUtils::prepareJSONForSingleMeasurement( MeasurementPtr measurement )
 {
 	if(!measurement || measurement -> data.empty()) return REST::Const::emptyJSON;
 	BSONObjBuilder bsonBuilder;
@@ -104,10 +104,10 @@ string JSONUtils::prepareJSONForSingleMeasurement( Meteo::Measurement* measureme
 	return bsonBuilder.obj().toString();
 }
 
-string JSONUtils::prepareJSONForSingleMeasurements( const vector<Meteo::Measurement*>& measurements )
+string JSONUtils::prepareJSONForSingleMeasurements( const MeasurementPtrVector& measurements )
 {
 	string content = "{\"measurements\":[";
-	Utils::forEach(measurements, [&](Measurement* measurement) {
+	Utils::forEach(measurements, [&](MeasurementPtr measurement) {
 		if(!measurement -> data.empty())
 			content += prepareJSONForSingleMeasurement(measurement) + ",";
 	});

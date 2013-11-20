@@ -15,13 +15,13 @@ namespace Stormy
 			StationConfiguration(std::string filePath);
 			~StationConfiguration();
 
-			std::vector<Station*> getConfiguration()
+			StationPtrVector getConfiguration()
 			{ return configuration; }
 
 		private:
 			bool load(std::string filePath);
 
-			std::vector<Station*> configuration;
+			StationPtrVector configuration;
 		};
 	}
 
