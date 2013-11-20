@@ -49,9 +49,16 @@ void AcquistionTask::run()
 		auto newestMeasureForStation =
 			dbStorage -> findNewestMeasureTimeByStationUID(station -> uid);
 
-		auto measurements =
-			AcquisitionHTTPConnector::getMeasurementsForStationNewerThanAt(
-				host, port, station -> uid, newestMeasureForStation);
+		MeasurementPtrVector measurements;		
+		if(newestMeasureForStation.epochMicroseconds() != 0) {
+			measurements = 
+				AcquisitionHTTPConnector::getMeasurementsForStationNewerThanAt(
+					host, port, station -> uid, newestMeasureForStation);
+		} else {
+			measurements = 
+				AcquisitionHTTPConnector::getMeasurementsForStationAt(
+				host, port, station -> uid);
+		}
 		measurementCounter += measurements.size();
 		dbStorage -> insertMeasurements(measurements);		
 	});

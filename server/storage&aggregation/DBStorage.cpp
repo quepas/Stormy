@@ -124,7 +124,7 @@ bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
 Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 {	
 	unsigned long resultLong = 0;
-	if(!uid.empty()) {
+	if(!uid.empty() && existsAnyMeasurementFromStation(uid)) {
 		TRY
 		sql << "SELECT EXTRACT(EPOCH FROM ("
 			"SELECT max(timestamp) FROM measurement WHERE "
@@ -168,6 +168,17 @@ bool DBStorage::existsMetricsByCode( const string& code )
 	sql << "SELECT count(*) FROM metrics WHERE code = :code",
 		into(count), use(code);
 	CATCH_MSG("[StorageDB] existsStationByUID(): ")
+	return count > 0;
+}
+
+bool DBStorage::existsAnyMeasurementFromStation( string uid )
+{
+	uint32 count = 0;
+	TRY
+	sql << "SELECT count(*) FROM measurement WHERE "
+		"id_station = (SELECT id FROM station WHERE uid = :uid)",
+		into(count), use(uid);
+	CATCH_MSG("[StorageDB] existsAnyMeasurementFromStation(): ")
 	return count > 0;
 }
 
