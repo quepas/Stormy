@@ -86,6 +86,18 @@ bool DBStorage::existsStationByUID( string uid )
 	return count > 0;
 }
 
+
+uint32 DBStorage::getStationIdByUID( string uid )
+{
+	uint32 id = 0;
+	TRY
+	sql << "SELECT id FROM station WHERE uid = :uid",
+		into(id), use(uid);
+	CATCH_MSG("[StorageDB] getStationIdByUID(): ")
+	return id;
+}
+
+
 bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
 {
 	if(!measurements.empty()) {
@@ -93,11 +105,13 @@ bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
 		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
 			std::string metricsCode = (*it) -> metrics -> code;
 			metricsCode = existsMetricsByCode(metricsCode) ? metricsCode : "unknown";
+			uint32 stationId = getStationIdByUID((*it) -> station -> uid);
 
-			sql << "INSERT INTO measurement(code, value_text, timestamp)"
-				"values(:code, :value_text, to_timestamp(:timestamp))", 
+			sql << "INSERT INTO measurement(code, value_text, id_station, timestamp)"
+				"values(:code, :value_text, :id_station, to_timestamp(:timestamp))", 
 				use(metricsCode),
 				use(boost::any_cast<std::string>((*it) -> value)), 
+				use(stationId),
 				use((*it) -> timestamp.epochMicroseconds());
 		}
 		return true;
@@ -110,9 +124,11 @@ bool DBStorage::insertOneMetrics( const MetricsPtr& metrics )
 {
 	if(metrics) {
 		TRY
-		sql << "INSERT INTO metrics(code, equivalents)"
-			"values(:code, :equivalents)",
-			use(metrics -> code), use(metrics -> equivalents);
+		sql << "INSERT INTO metrics(code, equivalents, type, unit, format)"
+			"values(:code, :equivalents, :type, :unit, :format)",
+			use(metrics -> code), use(metrics -> equivalents),
+			use(metrics -> value_type), use(metrics -> value_unit),
+			use(metrics -> value_format);
 		return true;
 		CATCH			
 	}

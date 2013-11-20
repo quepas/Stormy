@@ -78,8 +78,10 @@ MetricsPtrVector JSONUtils::extractMetricsFromJSON( string content )
 		Utils::forEach(metrics, [&](Value entry) {
 			MetricsPtr metric(new Metrics());
 			metric -> code = entry["code"].asString();
-			metric -> equivalents = entry["name"].asString();		
-			// TODO: fill this up!
+			metric -> equivalents = entry["name"].asString();	
+			metric -> value_type = entry["type"].asString();
+			metric -> value_unit = entry["unit"].asString();
+			metric -> value_format = entry["format"].asString();
 			result.push_back(metric);
 		});
 	}

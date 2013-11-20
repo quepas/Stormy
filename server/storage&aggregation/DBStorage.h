@@ -24,6 +24,7 @@ namespace Stormy
 			void clearAllStation();
 			bool existsStationByUID(std::string uid);
 			Data::Station* getStationByUID(std::string uid);
+			uint32 getStationIdByUID(std::string uid);
 
 			// measurements
 			bool insertMeasurements(

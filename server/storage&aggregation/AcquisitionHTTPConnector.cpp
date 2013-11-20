@@ -68,7 +68,13 @@ vector<shared_ptr<Measurement>> AcquisitionHTTPConnector::getMeasurementsForStat
 {
 	string resource = "/meteo/" + stationId;
 	string content = getDataAsStringAt(host, port, resource);
-	return JSONUtils::extractMeasurementsFromJSON(content);
+	auto measurements = JSONUtils::extractMeasurementsFromJSON(content);
+
+	Utils::forEach(measurements, [&](MeasurementPtr entry) {
+		entry -> station = new Station(stationId);
+	});
+
+	return measurements;
 }
 
 MetricsPtrVector AcquisitionHTTPConnector::getMetricsAt( string host, uint32 port )
