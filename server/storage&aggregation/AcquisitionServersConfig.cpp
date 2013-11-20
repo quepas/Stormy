@@ -38,6 +38,11 @@ void AcquisitionServersConfig::mapIntoConfiguration()
 				<< "th configuration." << std::endl;
 			continue;
 		}
+		if(hasField("acquisitionInterval", i)) {
+			serverCfg -> acquisitionInterval = asInt("acquisitionInterval", i);
+		} else {
+			serverCfg -> acquisitionInterval = 30; // seconds
+		}
 		std::string strHost = serverCfg -> host;
 		std::string strPort = asString("port", i);
 		serverCfg -> id = Utils::md5(strHost + ":" + strPort);

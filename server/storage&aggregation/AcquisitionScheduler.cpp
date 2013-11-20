@@ -21,7 +21,7 @@ AcquistionScheduler::~AcquistionScheduler()
 
 void AcquistionScheduler::scheduleAcquisition( AcquisitionServer* server )
 {
-	schedule(new AcquistionTask(dbStorage, server), 0, 300000);
+	schedule(new AcquistionTask(dbStorage, server), 0, server -> acquisitionInterval * 1000);
 }
 
 void AcquistionScheduler::scheduleManyAcquisition( 
