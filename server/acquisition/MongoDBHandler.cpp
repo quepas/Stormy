@@ -32,7 +32,7 @@ void MongoDBHandler::connect( string dbAddress )
 {
 	try {
 		connection.connect(dbAddress);
-		cout << "[INFO]: Connected to databases on address: " << dbAddress << endl;
+		cout << "Connected to MongoDB database: " << dbAddress << endl;
 		connected = true;
 	} catch (const mongo::DBException& e) {
 		cout << "[ERROR]: " << e.what() << endl;

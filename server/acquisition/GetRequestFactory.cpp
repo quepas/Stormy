@@ -29,7 +29,7 @@ HTTPRequestHandler* GetRequestFactory::createRequestHandler
 	( const HTTPServerRequest& request )
 {
 	string URI = request.getURI();
-	cout << "[INFO]: Requested REST API: " << URI << endl;
+	cout << "REST: " << URI << endl;
 
 	if(Utils::checkTextWithRegex(URI, Const::stationPattern))
 		return new GetStationRequest();
