@@ -28,12 +28,15 @@ CREATE TABLE metrics (
 
 CREATE TABLE measurement (
 	id serial,
-	id_metrics text,
+	code text,
 	id_station integer,
 	value_text text,
 	value_number real,
 	timestamp timestamp,
 	PRIMARY KEY(id),
-	FOREIGN KEY(id_metrics) REFERENCES metrics(code),
+	FOREIGN KEY(code) REFERENCES metrics(code),
 	FOREIGN KEY(id_station) REFERENCES station(id)
-)
+);
+
+-- Fill with default data
+INSERT INTO metrics VALUES('unknown', 'none', 'none', 'none', 'none');
