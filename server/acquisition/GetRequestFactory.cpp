@@ -6,10 +6,12 @@
 #include "GetStationRequest.h"
 #include "GetMeteoRequest.h"
 #include "GetInfoRequest.h"
+#include "GetMetricsRequest.h"
 #include "../../common/Utils.h"
 #include "RESTConst.h"
 
 using namespace Stormy;
+using namespace Stormy::REST;
 using REST::Const;
 
 Stormy::GetRequestFactory::GetRequestFactory()
@@ -32,6 +34,8 @@ HTTPRequestHandler* GetRequestFactory::createRequestHandler
 		return new GetStationRequest();
 	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdPattern))
 		return new GetMeteoRequest(Utils::extractMD5FromText(URI));
+	if(Utils::checkTextWithRegex(URI, Const::metricsPattern))
+		return new GetMetricsRequest();
 	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdTypePattern)) {
 		return new GetMeteoRequest(Utils::extractMD5FromText(URI),
 			Utils::extractEndIdFromRestURI(URI));

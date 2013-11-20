@@ -22,6 +22,7 @@ namespace Stormy
 			static std::string stationPattern;			// api: /station
 			static std::string infoPattern;				// api: /info
 			static std::string infoStationPattern;		// api: /info/:stationId
+			static std::string metricsPattern;			// api: /metrics
 		};
 	}
 }

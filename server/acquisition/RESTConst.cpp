@@ -12,3 +12,4 @@ std::string Const::meteoStationIdTypePattern = "/meteo/[0-9a-f]{32}/[0-9a-zA-z]{
 std::string Const::stationPattern = "/station/{0, 1}";
 std::string Const::infoPattern = "/info/{0, 1}";
 std::string Const::infoStationPattern = "/info/[0-9a-f]{32}/{0, 1}";
+std::string Const::metricsPattern = "/metrics/{0, 1}";

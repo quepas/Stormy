@@ -69,14 +69,14 @@ std::string JSONUtils::wrapAsJSONString( std::string label )
 std::string JSONUtils::prepareJSONForAvailableType( Type* type )
 {
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(wrapAsJSONString(Const::id), type -> id);
-	bsonBuilder.append(wrapAsJSONString(Const::name), type -> equivalents[0]);
+	bsonBuilder.append(wrapAsJSONString(Const::code), type -> id);
+	bsonBuilder.append(wrapAsJSONString(Const::name), type -> equivalents[0]);	
 	return bsonBuilder.obj().toString();
 }
 
 std::string JSONUtils::prepareJSONForAvailableTypes( const std::vector<Meteo::Type*>& types )
 {
-	std::string content = "{\"availableTypes\":[";
+	std::string content = "{\"metrics\":[";
 	Utils::forEach(types, [&](Type* type) {
 		if(type -> isMeteo)
 			content += prepareJSONForAvailableType(type) + ",";

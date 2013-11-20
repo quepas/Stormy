@@ -8,6 +8,7 @@ std::string Const::mongoDb = "test";
 std::string Const::mongoMeteo = "meteo";
 std::string Const::mongoStation = "station";
 std::string Const::id = "id";
+std::string Const::code = "code";
 std::string Const::reasonKey = "reason";
 std::string Const::reasonNoData = "no data";
 std::string Const::data = "data";

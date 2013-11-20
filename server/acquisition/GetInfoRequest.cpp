@@ -5,6 +5,7 @@
 #include "JSONUtils.h"
 
 using namespace Stormy;
+using namespace Meteo;
 using Meteo::TypeConfiguration;
 
 Stormy::GetInfoRequest::GetInfoRequest( std::string _stationId /*= ""*/ )
