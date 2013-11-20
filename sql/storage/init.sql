@@ -17,23 +17,23 @@ CREATE TABLE station (
 );
 
 CREATE TABLE metrics (
-	id serial,
 	code text,
 	equivalents text,
 	type text,
 	unit text,
 	format text,
-	PRIMARY KEY(id)
+	PRIMARY KEY(code),
+	UNIQUE(code)
 );
 
 CREATE TABLE measurement (
 	id serial,
-	id_metrics integer,
+	id_metrics text,
 	id_station integer,
 	value_text text,
 	value_number real,
 	timestamp timestamp,
 	PRIMARY KEY(id),
-	FOREIGN KEY(id_metrics) REFERENCES metrics(id),
+	FOREIGN KEY(id_metrics) REFERENCES metrics(code),
 	FOREIGN KEY(id_station) REFERENCES station(id)
 )
