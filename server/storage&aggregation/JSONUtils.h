@@ -2,17 +2,14 @@
 
 #include <string>
 #include <vector>
-#include "../../common/data/Station.h"
-#include "../../common/data/Measurement.h"
+#include "../../common/Types.h"
 
 namespace Stormy
 {
-	class JSONUtils
+	class JSONUtils 
 	{
-		public:			
-			static std::vector<std::shared_ptr<Data::Station>> 
-				extractStationsFromJSON(std::string content);
-			static std::vector<std::shared_ptr<Data::Measurement>>
-				extractMeasurementsFromJSON(std::string content);
+	public:			
+		static StationPtrVector extractStationsFromJSON(std::string content);
+		static MeasurementPtrVector	extractMeasurementsFromJSON(std::string content);
 	};
 }

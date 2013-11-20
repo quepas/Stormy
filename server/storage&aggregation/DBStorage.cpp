@@ -37,7 +37,7 @@ unsigned int DBStorage::countAllStation()
 	return count;
 }
 
-void DBStorage::insertStation( Station* station )
+void DBStorage::insertStation( StationPtr station )
 {
 	if(station) {
 		TRY
@@ -49,9 +49,9 @@ void DBStorage::insertStation( Station* station )
 	}
 }
 
-void DBStorage::insertStations( const vector<Station*>& stations )
+void DBStorage::insertStations( const StationPtrVector& stations )
 {
-	Utils::forEach(stations, [&](Station* station) {
+	Utils::forEach(stations, [&](StationPtr station) {
 		if(!existsStationByUID(station -> uid))
 			insertStation(station);
 	});
@@ -86,7 +86,7 @@ bool DBStorage::existsStationByUID( string uid )
 	return count > 0;
 }
 
-bool DBStorage::insertMeasurements( const vector<shared_ptr<Measurement>>& measurements )
+bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
 {
 	if(!measurements.empty()) {
 		TRY		

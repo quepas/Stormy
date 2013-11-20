@@ -33,6 +33,7 @@ void AcquistionTask::run()
 	
 	auto stations = 
 		AcquisitionHTTPConnector::getStationsAt(host, port);
+	dbStorage -> insertStations(stations);
 
 	Utils::forEach(stations, [&](shared_ptr<Station> station) {
 		cout << station -> uid << endl;

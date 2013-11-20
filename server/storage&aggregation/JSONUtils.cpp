@@ -12,9 +12,9 @@ using namespace Poco;
 using namespace std;
 using namespace Json;
 
-vector<shared_ptr<Station>> JSONUtils::extractStationsFromJSON( string content )
+StationPtrVector JSONUtils::extractStationsFromJSON( string content )
 {
-	auto result = vector<shared_ptr<Station>>();	
+	auto result = vector<StationPtr>();	
 	Reader reader;
 	Value root;
 	reader.parse(content, root, false);
@@ -23,7 +23,7 @@ vector<shared_ptr<Station>> JSONUtils::extractStationsFromJSON( string content )
 	{
 		Value stations = root["stations"];
 		Utils::forEach(stations, [&](Value entry) {
-			shared_ptr<Station> station(new Station());			
+			StationPtr station(new Station());			
 			station -> uid = entry["id"].asString();
 			station -> name = entry["name"].asString();
 			station -> url = entry["url"].asString();
@@ -34,9 +34,9 @@ vector<shared_ptr<Station>> JSONUtils::extractStationsFromJSON( string content )
 	return result;
 }
 
-vector<shared_ptr<Measurement>> JSONUtils::extractMeasurementsFromJSON( string content )
+MeasurementPtrVector JSONUtils::extractMeasurementsFromJSON( string content )
 {
-	auto result = vector<shared_ptr<Measurement>>();
+	auto result = vector<MeasurementPtr>();
 	Reader reader;
 	Value root;
 	reader.parse(content, root, false);
@@ -53,7 +53,7 @@ vector<shared_ptr<Measurement>> JSONUtils::extractMeasurementsFromJSON( string c
 				std::string key = *it;				
 				std::string value = stationEntry[key].asString();
 			
-				shared_ptr<Measurement> measurement(new Measurement());
+				MeasurementPtr measurement(new Measurement());
 				measurement -> timestamp = Timestamp(timestamp);
 				measurement -> metrics = new Metrics(key);
 				measurement -> value = value;								
