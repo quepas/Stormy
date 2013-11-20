@@ -11,5 +11,6 @@ namespace Stormy
 	public:			
 		static StationPtrVector extractStationsFromJSON(std::string content);
 		static MeasurementPtrVector	extractMeasurementsFromJSON(std::string content);
+		static MetricsPtrVector extractMetricsFromJSON(std::string content);
 	};
 }

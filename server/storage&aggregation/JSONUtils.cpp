@@ -14,7 +14,7 @@ using namespace Json;
 
 StationPtrVector JSONUtils::extractStationsFromJSON( string content )
 {
-	auto result = vector<StationPtr>();	
+	auto result = StationPtrVector();	
 	Reader reader;
 	Value root;
 	reader.parse(content, root, false);
@@ -30,13 +30,13 @@ StationPtrVector JSONUtils::extractStationsFromJSON( string content )
 			station -> refreshTime = entry["refreshTime"].asInt();
 			result.push_back(station);
 		});
-	}	
+	}
 	return result;
 }
 
 MeasurementPtrVector JSONUtils::extractMeasurementsFromJSON( string content )
 {
-	auto result = vector<MeasurementPtr>();
+	auto result = MeasurementPtrVector();
 	Reader reader;
 	Value root;
 	reader.parse(content, root, false);
@@ -60,6 +60,28 @@ MeasurementPtrVector JSONUtils::extractMeasurementsFromJSON( string content )
 				result.push_back(measurement);
 			}			
 		});		
+	}
+	return result;
+}
+
+MetricsPtrVector JSONUtils::extractMetricsFromJSON( string content )
+{
+	auto result = MetricsPtrVector();
+
+	Reader reader;
+	Value root;
+	reader.parse(content, root, false);
+
+	if(root["metrics"].isArray()) 
+	{
+		Value metrics = root["metrics"];
+		Utils::forEach(metrics, [&](Value entry) {
+			MetricsPtr metric(new Metrics());
+			metric -> code = entry["code"].asString();
+			metric -> equivalents = entry["name"].asString();		
+			// TODO: fill this up!
+			result.push_back(metric);
+		});
 	}
 	return result;
 }

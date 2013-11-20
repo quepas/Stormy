@@ -14,11 +14,13 @@ namespace Stormy
 			~AcquisitionHTTPConnector();
 
 			static std::string getDataAsStringAt
-				(std::string host, unsigned port, std::string resource);
+				(std::string host, uint32 port, std::string resource);
 			static StationPtrVector getStationsAt(
-				std::string host, unsigned port);
+				std::string host, uint32 port);
 			static MeasurementPtrVector getMeasurementsForStationAt(
-				std::string host, unsigned port, std::string stationId);
+				std::string host, uint32 port, std::string stationId);
+			static MetricsPtrVector getMetricsAt(
+				std::string host, uint32 port);
 		private:
 
 	};

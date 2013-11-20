@@ -91,12 +91,52 @@ bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
 	if(!measurements.empty()) {
 		TRY		
 		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
-			sql << "INSERT INTO measurement(value_text, timestamp)"
-				"values(:value_text, to_timestamp(:timestamp))", 
+			std::string metricsCode = (*it) -> metrics -> code;
+			metricsCode = existsMetricsByCode(metricsCode) ? metricsCode : "unknown";
+
+			sql << "INSERT INTO measurement(code, value_text, timestamp)"
+				"values(:code, :value_text, to_timestamp(:timestamp))", 
+				use(metricsCode),
 				use(boost::any_cast<std::string>((*it) -> value)), 
 				use((*it) -> timestamp.epochMicroseconds());
 		}
+		return true;
 		CATCH_MSG("[StorageDB] insertMeasurements(): ")			
 	}	
 	return false;
 }
+
+bool DBStorage::insertOneMetrics( const MetricsPtr& metrics )
+{
+	if(metrics) {
+		TRY
+		sql << "INSERT INTO metrics(code, equivalents)"
+			"values(:code, :equivalents)",
+			use(metrics -> code), use(metrics -> equivalents);
+		return true;
+		CATCH			
+	}
+	return false;	
+}
+
+bool DBStorage::insertMetrics( const MetricsPtrVector& metrics )
+{
+	if(!metrics.empty()) {
+		Utils::forEach(metrics, [&](MetricsPtr metric) {
+			if(!existsMetricsByCode(metric -> code))
+				insertOneMetrics(metric);
+		});
+	}
+	return true;
+}
+
+bool DBStorage::existsMetricsByCode( const string& code )
+{
+	uint32 count = 0;
+	TRY
+	sql << "SELECT count(*) FROM metrics WHERE code = :code",
+		into(count), use(code);
+	CATCH_MSG("[StorageDB] existsStationByUID(): ")
+	return count > 0;
+}
+

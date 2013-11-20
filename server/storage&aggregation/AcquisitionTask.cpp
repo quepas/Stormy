@@ -31,10 +31,17 @@ void AcquistionTask::run()
 	cout << "[AcquisitionTask] Fetch data from server:\n\t" 
 		<<	server -> toString() << endl;	
 	
+	// metrics
+	auto metrics = 
+		AcquisitionHTTPConnector::getMetricsAt(host, port);
+	dbStorage -> insertMetrics(metrics);
+
+	// stations
 	auto stations = 
 		AcquisitionHTTPConnector::getStationsAt(host, port);
 	dbStorage -> insertStations(stations);
 
+	// data
 	Utils::forEach(stations, [&](shared_ptr<Station> station) {
 		cout << station -> uid << endl;
 		auto measurements = 

@@ -70,3 +70,10 @@ vector<shared_ptr<Measurement>> AcquisitionHTTPConnector::getMeasurementsForStat
 	string content = getDataAsStringAt(host, port, resource);
 	return JSONUtils::extractMeasurementsFromJSON(content);
 }
+
+MetricsPtrVector AcquisitionHTTPConnector::getMetricsAt( string host, uint32 port )
+{
+	string resource = "/metrics";
+	string content = getDataAsStringAt(host, port, resource);
+	return JSONUtils::extractMetricsFromJSON(content);
+}

@@ -29,6 +29,11 @@ namespace Stormy
 			bool insertMeasurements(
 				const MeasurementPtrVector& measurements);
 
+			// metrics
+			bool insertOneMetrics(const MetricsPtr& metrics);
+			bool insertMetrics(const MetricsPtrVector& metrics);
+			bool existsMetricsByCode(const std::string& code);
+
 			void connect();
 		private:
 			StorageDatabase* configuration;
