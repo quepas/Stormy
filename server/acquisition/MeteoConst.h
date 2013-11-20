@@ -13,6 +13,7 @@ namespace Stormy
 			static std::string mongoDb;
 			static std::string mongoMeteo;
 			static std::string mongoStation;
+			static std::string mongoType;
 			static std::string id;
 			static std::string code;
 			static std::string reasonKey;
@@ -38,6 +39,8 @@ namespace Stormy
 			static std::string type;
 			static std::string unit;
 			static std::string format;
+			static std::string equivalents;
+			static std::string isMeteo;
 
 			// rest
 			static std::string restMeteo;

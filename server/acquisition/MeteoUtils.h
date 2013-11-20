@@ -14,5 +14,6 @@ namespace Stormy
 			// db
 			static std::string getMeteoDb();
 			static std::string getStatioDb();
+			static std::string getTypeDb();
 	};
 }

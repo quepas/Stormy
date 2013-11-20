@@ -8,13 +8,14 @@
 
 namespace Stormy
 {	
-	typedef std::vector<std::shared_ptr<Data::Measurement>> MeasurementPtrVector;
-	typedef std::vector<std::shared_ptr<Data::Station>> StationPtrVector;
-	typedef std::vector<std::shared_ptr<Data::Metrics>> MetricsPtrVector;
-
 	typedef std::shared_ptr<Data::Measurement> MeasurementPtr;
+	typedef std::vector<MeasurementPtr> MeasurementPtrVector;
+
 	typedef std::shared_ptr<Data::Station> StationPtr;
+	typedef std::vector<StationPtr> StationPtrVector;
+
 	typedef std::shared_ptr<Data::Metrics> MetricsPtr;
+	typedef std::vector<MetricsPtr> MetricsPtrVector;
 
 	typedef unsigned int uint32;	
 }

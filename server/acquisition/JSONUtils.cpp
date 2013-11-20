@@ -67,7 +67,7 @@ string JSONUtils::wrapAsJSONString( string label )
 	return "\"" + label + "\"";
 }
 
-string JSONUtils::prepareJSONForAvailableType( Type* type )
+string JSONUtils::prepareJSONForAvailableType( TypePtr type )
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::code), type -> id);
@@ -80,10 +80,10 @@ string JSONUtils::prepareJSONForAvailableType( Type* type )
 	return bsonBuilder.obj().toString();
 }
 
-string JSONUtils::prepareJSONForAvailableTypes( const vector<Meteo::Type*>& types )
+string JSONUtils::prepareJSONForAvailableTypes( const TypePtrVector& types )
 {
 	string content = "{\"metrics\":[";
-	Utils::forEach(types, [&](Type* type) {
+	Utils::forEach(types, [&](TypePtr type) {
 		if(type -> isMeteo)
 			content += prepareJSONForAvailableType(type) + ",";
 	});

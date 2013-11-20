@@ -55,7 +55,7 @@ bool TypeConfiguration::load( std::string filepath )
 			if(YAMLUtils::isDefined(it, "isMeteo")) {
 				isMeteo = YAMLUtils::getBoolFromString(it, "isMeteo");
 			}
-			Type* type = new Type();
+			TypePtr type(new Type());
 			type -> id = id;
 			type -> valueType = valueType;
 			type -> valueUnit = valueUnit;
@@ -81,19 +81,19 @@ std::string TypeConfiguration::getTypeIdByEquivalent( std::string equivalent )
 	return "_none";
 }
 
-Type* TypeConfiguration::getFullTypeById( std::string id )
+TypePtr TypeConfiguration::getFullTypeById( std::string id )
 {
 	for(auto it = types.begin(); it != types.end(); ++it) {
-		Type* result = *it;
+		TypePtr result = *it;
 		if(boost::equal(id, result -> id))
 			return result;
 	}
-	return nullptr;
+	return TypePtr(nullptr);
 }
 
 std::string TypeConfiguration::getFirstEquivalentById( std::string id )
 {
-	Type* type = getFullTypeById(id);
+	TypePtr type = getFullTypeById(id);
 	if(type != nullptr && type -> equivalents.size() > 0) {
 		return type -> equivalents[0];
 	}

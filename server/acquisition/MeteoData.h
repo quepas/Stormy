@@ -52,4 +52,13 @@ namespace Stormy
 			bool isMeteo;
 		};
 	}
+
+	typedef std::shared_ptr<Meteo::Measurement> MeasurementPtr;
+	typedef std::vector<MeasurementPtr> MeasurementPtrVector;
+
+	typedef std::shared_ptr<Meteo::Station> StationPtr;
+	typedef std::vector<StationPtr> StationPtrVector;
+
+	typedef std::shared_ptr<Meteo::Type> TypePtr;
+	typedef std::vector<TypePtr> TypePtrVector;
 }

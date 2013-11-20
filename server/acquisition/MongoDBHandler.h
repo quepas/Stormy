@@ -22,6 +22,9 @@ namespace Stormy
 			void insertStationData(Meteo::Station* data);
 			std::vector<Meteo::Station*> getStationsData();
 
+			bool clearTypesData();
+			bool insertTypesData(const TypePtrVector& data);
+
 			static MongoDBHandler& get() {
 				static MongoDBHandler instance;
 				return instance;

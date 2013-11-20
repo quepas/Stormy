@@ -44,3 +44,8 @@ std::string MeteoUtils::getStatioDb()
 {
 	return Const::mongoDb + "." + Const::mongoStation;
 }
+
+std::string Stormy::MeteoUtils::getTypeDb()
+{
+	return Const::mongoDb + "." + Const::mongoType;
+}

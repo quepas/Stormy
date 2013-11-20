@@ -156,7 +156,7 @@ vector<Measurement*> MongoDBHandler::getMeteoData(string stationId)
 
 	TypeConfiguration* typesCfg =
 		new TypeConfiguration("config/meteo_data_type_config.yaml");
-	vector<Type*> types = typesCfg -> getConfiguration();
+	TypePtrVector types = typesCfg -> getConfiguration();
 	auto_ptr<mongo::DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
 			Const::stationIdPrefix + stationId, mongo::BSONObj());
@@ -169,7 +169,7 @@ vector<Measurement*> MongoDBHandler::getMeteoData(string stationId)
 		for(auto it = types.begin(); it != types.end(); ++it) {
 			string id = (*it) -> id;
 			if(availableFields.find(id) != availableFields.end()) {
-				Type* type = typesCfg -> getFullTypeById(id);
+				TypePtr type = typesCfg -> getFullTypeById(id);
 				string value = current.getStringField(id.c_str());
 				if(type -> valueType == Const::number)
 					measurement -> data[id]= MeteoUtils::extractTemperature(value);
@@ -195,7 +195,7 @@ vector<Meteo::Measurement*> Stormy::MongoDBHandler::getMeteoDataNewerThan( strin
 
 	TypeConfiguration* typesCfg =
 		new TypeConfiguration("config/meteo_data_type_config.yaml");
-	vector<Type*> types = typesCfg -> getConfiguration();
+	TypePtrVector types = typesCfg -> getConfiguration();
 	auto_ptr<mongo::DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
 		Const::stationIdPrefix + stationId, mongo::BSONObj());
@@ -208,7 +208,7 @@ vector<Meteo::Measurement*> Stormy::MongoDBHandler::getMeteoDataNewerThan( strin
 		for(auto it = types.begin(); it != types.end(); ++it) {
 			string id = (*it) -> id;
 			if(availableFields.find(id) != availableFields.end()) {
-				Type* type = typesCfg -> getFullTypeById(id);
+				TypePtr type = typesCfg -> getFullTypeById(id);
 				string value = current.getStringField(id.c_str());
 				if(type -> valueType == Const::number)
 					measurement -> data[id]= MeteoUtils::extractTemperature(value);
@@ -226,5 +226,28 @@ vector<Meteo::Measurement*> Stormy::MongoDBHandler::getMeteoDataNewerThan( strin
 			result.push_back(measurement);		
 	}
 	return result;
+}
+
+bool MongoDBHandler::insertTypesData( const TypePtrVector& data )
+{
+	if(!connected || data.empty()) return false;
+	Utils::forEach(data, [&](TypePtr type) {		
+		mongo::BSONObjBuilder bsonBuilder;
+		bsonBuilder.append(Const::id, type -> id);
+		bsonBuilder.append(Const::equivalents, type -> equivalents);
+		bsonBuilder.append(Const::type, type -> valueType);
+		bsonBuilder.append(Const::unit, type -> valueUnit);
+		bsonBuilder.append(Const::format, type -> valueFormat);
+		bsonBuilder.append(Const::isMeteo, type -> isMeteo);
+		connection.insert(MeteoUtils::getTypeDb(), bsonBuilder.obj());
+	});
+	return true;
+}
+
+bool MongoDBHandler::clearTypesData()
+{
+	if(!connected) return false;
+	connection.dropCollection(MeteoUtils::getTypeDb());
+	return true;
 }
 

@@ -60,7 +60,7 @@ string GetMeteoRequest::prepareMeteoHTML(Measurement* meteo)
 	auto data = meteo -> data;
 	for(auto it = data.begin(); it != data.end(); ++it) {
 		string id = it -> first;
-		Type* type = typesCfg->getFullTypeById(id);
+		TypePtr type = typesCfg->getFullTypeById(id);
 		string rowContent = "<li>";
 		rowContent.append(typesCfg -> getFirstEquivalentById(id));
 		rowContent.append(": ");

@@ -56,7 +56,7 @@ Measurement* PyParserWrapper::parseFromURL( std::string url )
 		Measurement* result = new Measurement();
 		for(auto it = data.begin(); it != data.end(); ++it) {
 			std::string id = types -> getTypeIdByEquivalent(it -> first);
-			Type* type = types -> getFullTypeById(id);
+			TypePtr type = types -> getFullTypeById(id);
 			std::string valueType = to_lower_copy(type -> valueType);
 			std::string value = trim_copy(it -> second);
 
