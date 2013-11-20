@@ -7,6 +7,7 @@
 #include <Poco/Net/HTTPResponse.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/Exception.h>
+#include <Poco/NumberFormatter.h>
 
 #include "../../common/Utils.h"
 #include "JSONUtils.h"
@@ -30,9 +31,7 @@ AcquisitionHTTPConnector::~AcquisitionHTTPConnector()
 string AcquisitionHTTPConnector::getDataAsStringAt( string host, unsigned port, string resource )
 {
 	string content;
-	TRY			
-	cout << "[HTTPConnector] Try to reach: " << host 
-		<< ":" << port << resource << endl;
+	TRY				
 	HTTPClientSession session;
 	session.setHost(host);
 	session.setPort(port);	
@@ -42,16 +41,8 @@ string AcquisitionHTTPConnector::getDataAsStringAt( string host, unsigned port, 
 
 	HTTPResponse response;
 	istream& receiveStream = session.receiveResponse(response);
-	StreamCopier::copyToString(receiveStream, content);
-
-	if(content.empty()) {
-		cout << "[HTTPConnector] No data at " << host
-			<< ":" << port << resource << endl;
-	} else {
-		cout << "[HTTPConnector] Fetch data from " << host
-			<< ":" << port << resource << endl;
-	}
-	CATCH_MSG("[HTTPConnector] getDataAt(): ")
+	StreamCopier::copyToString(receiveStream, content);	
+	CATCH_MSG("[HTTPConnector] Exception at getDataAsStringAt(): ")
 	return content;
 }
 
@@ -77,9 +68,24 @@ vector<shared_ptr<Measurement>> AcquisitionHTTPConnector::getMeasurementsForStat
 	return measurements;
 }
 
+MeasurementPtrVector AcquisitionHTTPConnector::getMeasurementsForStationNewerThanAt( 
+	string host, uint32 port, string stationId, Timestamp timestamp )
+{
+	string resource = "/meteo/" + stationId + "/" + 
+		NumberFormatter::format(timestamp.epochMicroseconds());
+	string content = getDataAsStringAt(host, port, resource);
+	auto measurements = JSONUtils::extractMeasurementsFromJSON(content);
+
+	Utils::forEach(measurements, [&](MeasurementPtr entry) {
+		entry -> station = new Station(stationId);
+	});
+	return measurements;
+}
+
 MetricsPtrVector AcquisitionHTTPConnector::getMetricsAt( string host, uint32 port )
 {
 	string resource = "/metrics";
 	string content = getDataAsStringAt(host, port, resource);
 	return JSONUtils::extractMetricsFromJSON(content);
 }
+

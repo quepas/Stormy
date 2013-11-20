@@ -2,6 +2,7 @@
 
 #include <string>
 #include <soci.h>
+#include <Poco/Timestamp.h>
 
 #include "StorageDatabase.h"
 #include "../../common/data/Station.h"
@@ -29,6 +30,7 @@ namespace Stormy
 			// measurements
 			bool insertMeasurements(
 				const MeasurementPtrVector& measurements);
+			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);
 
 			// metrics
 			bool insertOneMetrics(const MetricsPtr& metrics);

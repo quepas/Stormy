@@ -27,9 +27,6 @@ void AcquistionTask::run()
 {
 	std::string host = server -> host;
 	unsigned port = server -> port;
-
-	cout << "[AcquisitionTask] Fetch data from server:\n\t" 
-		<<	server -> toString() << endl;	
 	
 	// metrics
 	auto metrics = 
@@ -41,11 +38,18 @@ void AcquistionTask::run()
 		AcquisitionHTTPConnector::getStationsAt(host, port);
 	dbStorage -> insertStations(stations);
 
+	uint32 measurementCounter = 0;
 	// data
 	Utils::forEach(stations, [&](shared_ptr<Station> station) {
-		cout << station -> uid << endl;
-		auto measurements = 
-			AcquisitionHTTPConnector::getMeasurementsForStationAt(host, port, station -> uid);
-		dbStorage -> insertMeasurements(measurements);	
+		auto newestMeasureForStation =
+			dbStorage -> findNewestMeasureTimeByStationUID(station -> uid);
+
+		auto measurements =
+			AcquisitionHTTPConnector::getMeasurementsForStationNewerThanAt(
+				host, port, station -> uid, newestMeasureForStation);
+		measurementCounter += measurements.size();
+		dbStorage -> insertMeasurements(measurements);		
 	});
+	cout << "[AcquisitionTask] Fetched " << measurementCounter 
+		<< " measurements from " <<	server -> name << endl;
 }

@@ -9,6 +9,7 @@ using namespace Stormy;
 using namespace Stormy::Data;
 using namespace std;
 using namespace soci;
+using namespace Poco;
 
 DBStorage::DBStorage( StorageDatabase* storageDB )
 	:	configuration(storageDB)
@@ -118,6 +119,20 @@ bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
 		CATCH_MSG("[StorageDB] insertMeasurements(): ")			
 	}	
 	return false;
+}
+
+Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
+{	
+	unsigned long resultLong = 0;
+	if(!uid.empty()) {
+		TRY
+		sql << "SELECT EXTRACT(EPOCH FROM ("
+			"SELECT max(timestamp) FROM measurement WHERE "
+			"id_station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
+			into(resultLong), use(uid);
+		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
+	}
+	return Timestamp(resultLong);
 }
 
 bool DBStorage::insertOneMetrics( const MetricsPtr& metrics )
