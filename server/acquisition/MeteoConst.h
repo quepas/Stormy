@@ -35,6 +35,9 @@ namespace Stormy
 			// value type
 			static std::string number;
 			static std::string text;
+			static std::string type;
+			static std::string unit;
+			static std::string format;
 
 			// rest
 			static std::string restMeteo;

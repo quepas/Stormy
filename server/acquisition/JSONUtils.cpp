@@ -8,13 +8,14 @@
 
 using namespace Stormy;
 using namespace Meteo;
+using namespace std;
 
 using mongo::BSONObj;
 using mongo::BSONObjBuilder;
 using boost::any_cast;
 using boost::any;
 
-std::string JSONUtils::prepareJSONForStation( Station* station )
+string JSONUtils::prepareJSONForStation( Station* station )
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::id), station -> stationId);
@@ -24,9 +25,9 @@ std::string JSONUtils::prepareJSONForStation( Station* station )
 	return bsonBuilder.obj().toString();
 }
 
-std::string JSONUtils::prepareJSONForStations( const std::vector<Station*>& stations )
+string JSONUtils::prepareJSONForStations( const vector<Station*>& stations )
 {
-	std::string content = "{\"stations\":[";
+	string content = "{\"stations\":[";
 	Utils::forEach(stations, [&](Station* station) {
 		content += prepareJSONForStation(station) + ",";
 	});
@@ -36,12 +37,12 @@ std::string JSONUtils::prepareJSONForStations( const std::vector<Station*>& stat
 	return content;
 }
 
-std::string JSONUtils::prepareJSONForMeasurement( Measurement* measurement )
+string JSONUtils::prepareJSONForMeasurement( Measurement* measurement )
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::id),
 		Utils::getStringFromAny(measurement -> data[Const::mongoId]));
-	Utils::forEach(measurement -> data, [&](std::pair<std::string, any> pair) {
+	Utils::forEach(measurement -> data, [&](pair<string, any> pair) {
 		if(pair.first != Const::mongoId) {
 			bsonBuilder.append(wrapAsJSONString(pair.first), Utils::getStringFromAny(pair.second));
 		}
@@ -49,9 +50,9 @@ std::string JSONUtils::prepareJSONForMeasurement( Measurement* measurement )
 	return bsonBuilder.obj().toString();
 }
 
-std::string JSONUtils::prepareJSONForMeasurements( const std::vector<Meteo::Measurement*>& measurements )
+string JSONUtils::prepareJSONForMeasurements( const vector<Meteo::Measurement*>& measurements )
 {
-	std::string content = "{\"meteo\":[";
+	string content = "{\"meteo\":[";
 	Utils::forEach(measurements, [&](Measurement* measurement) {
 		content += prepareJSONForMeasurement(measurement) + ",";
 	});
@@ -61,22 +62,27 @@ std::string JSONUtils::prepareJSONForMeasurements( const std::vector<Meteo::Meas
 	return content;
 }
 
-std::string JSONUtils::wrapAsJSONString( std::string label )
+string JSONUtils::wrapAsJSONString( string label )
 {
 	return "\"" + label + "\"";
 }
 
-std::string JSONUtils::prepareJSONForAvailableType( Type* type )
+string JSONUtils::prepareJSONForAvailableType( Type* type )
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::code), type -> id);
-	bsonBuilder.append(wrapAsJSONString(Const::name), type -> equivalents[0]);	
+	bsonBuilder.append(wrapAsJSONString(Const::name), type -> equivalents[0]);
+	bsonBuilder.append(wrapAsJSONString(Const::type), type -> valueType);
+	bsonBuilder.append(wrapAsJSONString(Const::unit), type -> valueUnit);
+	string format = type -> valueFormat;
+	if(!format.empty())
+		bsonBuilder.append(wrapAsJSONString(Const::format), type -> valueFormat);
 	return bsonBuilder.obj().toString();
 }
 
-std::string JSONUtils::prepareJSONForAvailableTypes( const std::vector<Meteo::Type*>& types )
+string JSONUtils::prepareJSONForAvailableTypes( const vector<Meteo::Type*>& types )
 {
-	std::string content = "{\"metrics\":[";
+	string content = "{\"metrics\":[";
 	Utils::forEach(types, [&](Type* type) {
 		if(type -> isMeteo)
 			content += prepareJSONForAvailableType(type) + ",";
@@ -87,20 +93,20 @@ std::string JSONUtils::prepareJSONForAvailableTypes( const std::vector<Meteo::Ty
 	return content;
 }
 
-std::string JSONUtils::prepareJSONForSingleMeasurement( Meteo::Measurement* measurement )
+string JSONUtils::prepareJSONForSingleMeasurement( Meteo::Measurement* measurement )
 {
 	if(!measurement || measurement -> data.empty()) return REST::Const::emptyJSON;
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::timestamp),
-		lexical_cast<std::string>(measurement -> timestamp.epochTime()));
+		lexical_cast<string>(measurement -> timestamp.epochTime()));
 	auto pair = measurement -> data.begin();
 	bsonBuilder.append(wrapAsJSONString(Const::data), Utils::getStringFromAny(pair -> second));
 	return bsonBuilder.obj().toString();
 }
 
-std::string JSONUtils::prepareJSONForSingleMeasurements( const std::vector<Meteo::Measurement*>& measurements )
+string JSONUtils::prepareJSONForSingleMeasurements( const vector<Meteo::Measurement*>& measurements )
 {
-	std::string content = "{\"measurements\":[";
+	string content = "{\"measurements\":[";
 	Utils::forEach(measurements, [&](Measurement* measurement) {
 		if(!measurement -> data.empty())
 			content += prepareJSONForSingleMeasurement(measurement) + ",";

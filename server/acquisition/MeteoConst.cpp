@@ -25,3 +25,6 @@ std::string Const::number = "number";
 std::string Const::text = "text";
 std::string Const::restMeteo = "meteo";
 std::string Const::restStation = "station";
+std::string Const::type = "type";
+std::string Const::unit = "unit";
+std::string Const::format = "format";
