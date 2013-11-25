@@ -49,6 +49,7 @@ Release/
 
 # Stormy related files & folders
 test/
+bin/
 client/web/node_modules
 client/web/public/javascripts/angular.min.js
 client/web/public/javascripts/Chart.js
