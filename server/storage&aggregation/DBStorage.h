@@ -32,6 +32,7 @@ namespace Stormy
 				const MeasurementPtrVector& measurements);
 			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);
 			bool existsAnyMeasurementFromStation(std::string uid);
+			uint32 countAllMeasurements();
 
 			// metrics
 			bool insertOneMetrics(const MetricsPtr& metrics);

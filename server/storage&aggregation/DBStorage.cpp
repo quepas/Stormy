@@ -182,3 +182,12 @@ bool DBStorage::existsAnyMeasurementFromStation( string uid )
 	return count > 0;
 }
 
+uint32 DBStorage::countAllMeasurements()
+{
+	uint32 count = 0;
+	TRY
+	sql << "SELECT count(*) FROM measurement", into(count);
+	CATCH_MSG("[StorageDB] countAllMeasurements(): ")
+	return count;
+}
+

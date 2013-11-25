@@ -41,11 +41,11 @@ void AcquistionTask::run()
 	// stations
 	auto stations = 
 		AcquisitionHTTPConnector::getStationsAt(host, port);
-	dbStorage -> insertStations(stations);
+	dbStorage -> insertStations(stations);	
 
 	uint32 measurementCounter = 0;
 	// data
-	Utils::forEach(stations, [&](shared_ptr<Station> station) {
+	Utils::forEach(stations, [&](StationPtr station) {
 		auto newestMeasureForStation =
 			dbStorage -> findNewestMeasureTimeByStationUID(station -> uid);
 
@@ -61,9 +61,13 @@ void AcquistionTask::run()
 		}
 		measurementCounter += measurements.size();
 		dbStorage -> insertMeasurements(measurements);		
+		measurements.clear();
 	});
 	cout << "[AcquisitionTask] Fetched " << measurementCounter 
 		<< " measurements. It took: " << stopwatch.elapsed() / 1000.0
 		<< "ms." << endl;
+
+	metrics.clear();
+	stations.clear();
 	stopwatch.stop();
 }
