@@ -47,6 +47,14 @@ CREATE TABLE aggregate_period (
 	UNIQUE(name)
 );
 
+CREATE TABLE aggregate_operation (	
+	name text,
+	formula text,
+	analysisMethod text,
+	PRIMARY KEY(name),
+	UNIQUE(name)
+);
+
 CREATE TABLE aggregate_task (
 	id serial,
 	period text,
@@ -54,19 +62,13 @@ CREATE TABLE aggregate_task (
 	station integer,
 	refresh integer,
 	PRIMARY KEY(id),
-	FOREIGN KEY(period) REFERENCES aggregate_period(name)
-	FOREIGN KEY(operation) REFERENCES aggregate_operation(name)
+	FOREIGN KEY(period) REFERENCES aggregate_period(name),
+	FOREIGN KEY(operation) REFERENCES aggregate_operation(name),
 	FOREIGN KEY(station) REFERENCES station(id)
-);
-
-CREATE TABLE aggregate_operation (	
-	name text,
-	formula text,
-	analysisMethod text
-	PRIMARY KEY(name),
-	UNIQUE(name)
 );
 
 -- Fill with default data
 -- Metrics
 INSERT INTO metrics VALUES('unknown', 'none', 'none', 'none', 'none');
+-- Operation
+INSERT INTO aggregate_operation VALUES('mean', 'mean(x)', 'mean()');
