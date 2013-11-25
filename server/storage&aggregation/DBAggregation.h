@@ -17,11 +17,11 @@ namespace Stormy
 			DBAggregation(Database* db, DBStorage* _dbStorage);
 			~DBAggregation();
 
-			bool insertAggregationPeriod(AggregationSettings aggregation);
-			bool prepareAggregationTimesForPeriod(std::string period);
+			bool insertPeriod(AggregationSettings setting);
+			bool insertPeriods(std::vector<AggregationSettings> settings);
 			
 			// add param - startYear!?
-			bool createAggregationTask(AggregationSettings aggregation, Data::Station station);
+			bool createTask(AggregationSettings aggregation, Data::Station station);
 			
 		private:
 			void connect();

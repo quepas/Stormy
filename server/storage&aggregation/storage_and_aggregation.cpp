@@ -43,6 +43,7 @@ int main() {
 	cout << "\t" << aggregationDBcfg.getConfiguration()->toString() << endl;
 	cout << "-------------------------------------------------------------"
 		"-------------------------------------------------------------"<< endl;
+	aggregation.insertPeriods(aggregationCfg.getConfiguration());
 	AcquistionScheduler scheduler(&storage, acquisitionServersCfg.getConfiguration());
 
 	getchar();
