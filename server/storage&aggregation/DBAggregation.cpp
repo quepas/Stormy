@@ -9,8 +9,9 @@ using namespace Stormy::Data;
 using namespace soci;
 using namespace std;
 
-DBAggregation::DBAggregation( Database* db )
-	:	configuration(db)
+DBAggregation::DBAggregation( Database* _dbAggregation, DBStorage* _dbStorage )
+	:	dbAggregation(_dbAggregation),
+		dbStorage(_dbStorage)
 {
 
 }
@@ -23,7 +24,7 @@ DBAggregation::~DBAggregation()
 void DBAggregation::connect()
 {
 	TRY
-	sql.open(postgresql, configuration -> asConnectionString());
+	sql.open(postgresql, dbAggregation -> asConnectionString());
 	CATCH_MSG("[AggregationDB] connect(): ")
 }
 

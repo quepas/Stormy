@@ -6,6 +6,7 @@
 
 #include "../../common/data/Station.h"
 #include "Database.h"
+#include "DBStorage.h"
 #include "AggregationSettings.h"
 
 namespace Stormy
@@ -13,7 +14,7 @@ namespace Stormy
 	class DBAggregation
 	{
 		public:
-			DBAggregation(Database* db);
+			DBAggregation(Database* db, DBStorage* _dbStorage);
 			~DBAggregation();
 
 			bool insertAggregationPeriod(AggregationSettings aggregation);
@@ -25,7 +26,8 @@ namespace Stormy
 		private:
 			void connect();
 
-			Database* configuration;
+			Database* dbAggregation;
+			DBStorage* dbStorage;
 			soci::session sql;
 	};
 }
