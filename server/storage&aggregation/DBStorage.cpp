@@ -11,7 +11,7 @@ using namespace std;
 using namespace soci;
 using namespace Poco;
 
-DBStorage::DBStorage( StorageDatabase* storageDB )
+DBStorage::DBStorage( Database* storageDB )
 	:	configuration(storageDB)
 {	
 	connect();

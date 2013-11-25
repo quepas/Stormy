@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "AcquisitionServersConfig.h"
-#include "StorageDatabaseConfig.h"
+#include "DatabaseConfig.h"
 #include "DBStorage.h"
 #include "AcquisitionScheduler.h"
 #include "../../common/Utils.h"
@@ -13,7 +13,7 @@ using namespace std;
 int main() {
 	cout << "==== Storage & Aggregation started. ====" << endl;
 	AcquisitionServersConfig acquisitionServersCfg("config/acquisition_servers.yaml");
-	StorageDatabaseConfig storageDBcfg("config/storage_database.yaml");
+	DatabaseConfig storageDBcfg("config/storage_database.yaml");
 	DBStorage storage(storageDBcfg.getConfiguration());		
 	cout << "Measurements in storage: " << storage.countAllMeasurements() << endl;
 

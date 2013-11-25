@@ -5,7 +5,7 @@
 
 namespace Stormy
 {
-	struct StorageDatabase
+	struct Database
 	{
 		std::string name;
 		std::string host;

@@ -4,7 +4,7 @@
 #include <soci.h>
 #include <Poco/Timestamp.h>
 
-#include "StorageDatabase.h"
+#include "Database.h"
 #include "../../common/data/Station.h"
 #include "../../common/data/Measurement.h"
 #include "../../common/Utils.h"
@@ -15,7 +15,7 @@ namespace Stormy
 	class DBStorage
 	{
 		public:
-			DBStorage(StorageDatabase* storageDB);
+			DBStorage(Database* storageDB);
 			~DBStorage();
 
 			// stations
@@ -41,7 +41,7 @@ namespace Stormy
 
 			void connect();
 		private:
-			StorageDatabase* configuration;
+			Database* configuration;
 			soci::session sql;
 	};
 }

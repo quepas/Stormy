@@ -1,23 +1,23 @@
-#include "StorageDatabaseConfig.h"
+#include "DatabaseConfig.h"
 
 using namespace Stormy;
 using namespace std;
 
-StorageDatabaseConfig::StorageDatabaseConfig( string path )
+DatabaseConfig::DatabaseConfig( string path )
 	:	YAMLConfig(path),
-		configuration(new StorageDatabase())
+		configuration(new Database())
 {
 	mapIntoConfiguration();
 }
 
-StorageDatabaseConfig::~StorageDatabaseConfig()
+DatabaseConfig::~DatabaseConfig()
 {
 
 }
 
-void StorageDatabaseConfig::mapIntoConfiguration()
+void DatabaseConfig::mapIntoConfiguration()
 {
-	configuration = new StorageDatabase();
+	configuration = new Database();
 	if(hasField("name")) {
 		configuration -> name = asString("name");
 	}
@@ -32,8 +32,8 @@ void StorageDatabaseConfig::mapIntoConfiguration()
 		configuration -> port = asInt("port");
 	} else {
 		cout << "[StorageDB] No port data. Using default (" 
-			 << StorageDatabase::defaultPort << ")." << endl;
-		configuration -> port = StorageDatabase::defaultPort;
+			 << Database::defaultPort << ")." << endl;
+		configuration -> port = Database::defaultPort;
 	}
 	if(hasField("database")) {
 		configuration -> database = asString("database");
