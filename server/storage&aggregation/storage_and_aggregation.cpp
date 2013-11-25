@@ -45,8 +45,10 @@ int main() {
 	cout << "-------------------------------------------------------------"
 		"-------------------------------------------------------------"<< endl;
 	aggregation.insertPeriods(aggregationCfg.getConfiguration());
-	AcquistionScheduler scheduler(&storage, acquisitionServersCfg.getConfiguration());
+	AcquistionScheduler scheduler(&storage);
+	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());
 	AggregationScheduler aggregationScheduler(&aggregation);
+	aggregationScheduler.scheduleManyAggregations(aggregationCfg.getConfiguration());		
 
 	getchar();
 }

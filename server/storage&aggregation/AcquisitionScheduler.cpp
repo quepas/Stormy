@@ -5,11 +5,10 @@
 using namespace Stormy;
 using namespace std;
 
-AcquistionScheduler::AcquistionScheduler( 
-	DBStorage* _dbStorage, const std::vector<AcquisitionServer*>& servers )
+AcquistionScheduler::AcquistionScheduler( DBStorage* _dbStorage )
 		:	dbStorage(_dbStorage)
 {
-	scheduleManyAcquisition(servers);
+
 }
 
 AcquistionScheduler::~AcquistionScheduler()

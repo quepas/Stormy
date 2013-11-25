@@ -108,8 +108,8 @@ bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
 			metricsCode = existsMetricsByCode(metricsCode) ? metricsCode : "unknown";
 			uint32 stationId = getStationIdByUID((*it) -> station -> uid);
 
-			sql << "INSERT INTO measurement(code, value_text, id_station, timestamp)"
-				"values(:code, :value_text, :id_station, to_timestamp(:timestamp))", 
+			sql << "INSERT INTO measurement(code, value_text, station, timestamp)"
+				"values(:code, :value_text, :station, to_timestamp(:timestamp))", 
 				use(metricsCode),
 				use(boost::any_cast<std::string>((*it) -> value)), 
 				use(stationId),
@@ -129,7 +129,7 @@ Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 		// TODO: fix time zone
 		sql << "SELECT EXTRACT(EPOCH FROM ("
 			"SELECT max(timestamp) FROM measurement WHERE "
-			"id_station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
+			"station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
 			into(resultLong), use(uid);
 		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
 	}
@@ -144,7 +144,7 @@ Timestamp DBStorage::findOldestMeasureTimeByStationUID( string uid )
 		// TODO: fix time zone
 		sql << "SELECT EXTRACT(EPOCH FROM ("
 			"SELECT min(timestamp) FROM measurement WHERE "
-			"id_station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
+			"station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
 			into(resultLong), use(uid);
 		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
 	}
@@ -193,7 +193,7 @@ bool DBStorage::existsAnyMeasurementFromStation( string uid )
 	uint32 count = 0;
 	TRY
 	sql << "SELECT count(*) FROM measurement WHERE "
-		"id_station = (SELECT id FROM station WHERE uid = :uid)",
+		"station = (SELECT id FROM station WHERE uid = :uid)",
 		into(count), use(uid);
 	CATCH_MSG("[StorageDB] existsAnyMeasurementFromStation(): ")
 	return count > 0;
@@ -205,5 +205,23 @@ uint32 DBStorage::countAllMeasurements()
 	TRY
 	sql << "SELECT count(*) FROM measurement", into(count);
 	CATCH_MSG("[StorageDB] countAllMeasurements(): ")
+	return count;
+}
+
+vector<uint32> DBStorage::getStationIds()
+{
+	vector<uint32> result(countStation());
+	TRY
+	sql << "SELECT id FROM station", into(result);
+	CATCH_MSG("[StorageDB] getStationIds()")
+	return result;
+}
+
+uint32 DBStorage::countStation()
+{
+	uint32 count = 0;
+	TRY
+	sql << "SELECT count(*) FROM station", into(count);
+	CATCH_MSG("[StorageDB] countStation(): ")
 	return count;
 }

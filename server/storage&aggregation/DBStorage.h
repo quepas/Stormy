@@ -26,6 +26,8 @@ namespace Stormy
 			bool existsStationByUID(std::string uid);
 			Data::Station* getStationByUID(std::string uid);
 			uint32 getStationIdByUID(std::string uid);
+			std::vector<uint32> getStationIds();
+			uint32 countStation();
 
 			// measurements
 			bool insertMeasurements(

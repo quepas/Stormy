@@ -19,9 +19,11 @@ namespace Stormy
 
 			bool insertPeriod(AggregationSetting setting);
 			bool insertPeriods(std::vector<AggregationSetting> settings);
+			std::vector<std::string> getPeriodNames();
+			uint32 countPeriod();
 			
 			// add param - startYear!?
-			bool createTask(AggregationSetting aggregation, Data::Station station);
+			uint32 createTask(AggregationSetting aggregation, Data::Station station);
 			
 		private:
 			void connect();

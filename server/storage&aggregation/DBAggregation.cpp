@@ -48,7 +48,25 @@ bool DBAggregation::insertPeriods( vector<AggregationSetting> settings )
 	return result;
 }
 
-bool DBAggregation::createTask( AggregationSetting aggregation, Station station )
+uint32 DBAggregation::createTask( AggregationSetting aggregation, Station station )
 {
-	return false;
+	return 0;
+}
+
+vector<string> DBAggregation::getPeriodNames()
+{
+	vector<string> result(countPeriod());
+	TRY
+	sql << "SELECT name FROM aggregate_period", into(result);
+	CATCH_MSG("[AggregationDB] getPeriodNames(): ")
+	return result;
+}
+
+uint32 DBAggregation::countPeriod()
+{
+	uint32 count = 0;
+	TRY
+	sql << "SELECT count(*) FROM aggregate_period", into(count);
+	CATCH_MSG("[AggregationDB] countPeriod(): ")
+	return count;
 }

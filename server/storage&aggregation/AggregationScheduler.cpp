@@ -16,12 +16,15 @@ AggregationScheduler::~AggregationScheduler()
 
 void AggregationScheduler::scheduleAggregation( AggregationSetting setting )
 {
-	// add aggregation settings
+	// create task in db
 
 	// scheduler aggregation
 }
 
-void AggregationScheduler::scheduleManyAggregations( vector<AggregationSetting> const& settings )
+void AggregationScheduler::scheduleManyAggregations( 
+	vector<AggregationSetting> const& settings )
 {
-
+	Utils::forEach(settings, [&](AggregationSetting setting) {
+		scheduleAggregation(setting);
+	});
 }

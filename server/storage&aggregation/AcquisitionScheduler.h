@@ -12,7 +12,7 @@ namespace Stormy
 	class AcquistionScheduler : public Poco::Util::Timer
 	{
 		public:			
-			AcquistionScheduler(DBStorage* _dbStorage, const std::vector<AcquisitionServer*>& servers);
+			AcquistionScheduler(DBStorage* _dbStorage);
 			~AcquistionScheduler();
 
 			void setDBStorage(DBStorage* dbStorage);
