@@ -34,5 +34,7 @@ int main(int argc, char** argv)
 	acqSecheduler.scheduleManyAcquisition(meteoStationsCfg.getConfiguration());
 
 	Stormy::HttpServer httpServer;
-	return httpServer.run(argc, argv);
+	httpServer.run(argc, argv);
+
+	getchar();
 }

@@ -19,7 +19,7 @@ AcquisitionScheduler::~AcquisitionScheduler()
 
 void AcquisitionScheduler::scheduleAcquisition( StationPtr station )
 {
-	schedule(new AcquisitionTask(station), 0,
+	schedule(new AcquisitionTask(*(station.get())), 0,
 		MeteoUtils::convertMinutesToMiliseconds(station -> refreshTime));
 }
 

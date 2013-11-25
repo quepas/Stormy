@@ -49,7 +49,7 @@ void MongoDBHandler::clearMeteosData()
 
 void MongoDBHandler::insertMeteoData( MeasurementPtr measurement )
 {
-	if(!connected || !measurement) return;
+	if(!connected || !measurement.get()) return;
 
 	BSONObjBuilder bsonBuilder;
 	auto data = measurement -> data;
@@ -79,7 +79,7 @@ void MongoDBHandler::insertStationsData( const StationPtrVector& data )
 
 void MongoDBHandler::insertStationData( StationPtr data )
 {
-	if(!connected || !data) return;
+	if(!connected || !data.get()) return;
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(Const::mongoId, data -> stationId);
 	bsonBuilder.append(Const::name, data -> name);

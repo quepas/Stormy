@@ -10,12 +10,12 @@ namespace Stormy
 	class AcquisitionTask : public Poco::Util::TimerTask
 	{
 		public:
-			AcquisitionTask(StationPtr _station);
+			AcquisitionTask(Meteo::Station _station);
 			~AcquisitionTask();
 
 			void run();
 		private:
-			StationPtr station;
+			Meteo::Station station;
 			PyParserWrapper* pyParser;
 			MongoDBHandler& dbHandler;
 	};

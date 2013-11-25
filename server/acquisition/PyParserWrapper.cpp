@@ -38,6 +38,7 @@ PyParserWrapper::~PyParserWrapper()
 
 MeasurementPtr PyParserWrapper::parseFromURL( std::string url )
 {
+	std::cout << "Parsing from: " << url << std::endl;
 	PyObject* pArgs = PyTuple_New(1);
 	PyObject* pURLValue = PyUnicode_FromString(url.c_str());
 	PyTuple_SetItem(pArgs, 0, pURLValue);
@@ -78,14 +79,15 @@ MeasurementPtr PyParserWrapper::parseFromURL( std::string url )
 	}
 }
 
-MeasurementPtr PyParserWrapper::parseFromStation( StationPtr station )
+MeasurementPtr PyParserWrapper::parseFromStation( Station station )
 {
-	MeasurementPtr result = parseFromURL(station -> url);
-	result -> station = station.get();
+	MeasurementPtr result = parseFromURL(station.url);
+	result -> station = new Station(station);
+	
 	if(result) {
 		auto data = std::map<std::string, boost::any>();
 		data = result -> data;
-		result -> data[Const::stationId] = station -> stationId;
+		result -> data[Const::stationId] = station.stationId;
 
 		Timestamp timestamp;
 		if(data.find(Const::date) != data.end()
