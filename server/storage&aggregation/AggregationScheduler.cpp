@@ -1,8 +1,10 @@
 #include "AggregationScheduler.h"
 
 using namespace Stormy;
+using namespace std;
 
-AggregationScheduler::AggregationScheduler( DBStorage* _dbStorage )
+AggregationScheduler::AggregationScheduler( DBAggregation* _dbAggregation )
+	:	dbAggregation(_dbAggregation)
 {
 
 }
@@ -12,9 +14,14 @@ AggregationScheduler::~AggregationScheduler()
 
 }
 
-void AggregationScheduler::scheduleAggregation( AggregationSettings* settings )
+void AggregationScheduler::scheduleAggregation( AggregationSetting setting )
 {
 	// add aggregation settings
 
 	// scheduler aggregation
+}
+
+void AggregationScheduler::scheduleManyAggregations( vector<AggregationSetting> const& settings )
+{
+
 }

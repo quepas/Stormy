@@ -2,19 +2,20 @@
 
 #include <Poco/Util/Timer.h>
 
-#include "DBStorage.h"
-#include "AggregationSettings.h"
+#include "DBAggregation.h"
+#include "AggregationSetting.h"
 
 namespace Stormy 
 {
 	class AggregationScheduler	: public Poco::Util::Timer
 	{
 	public:
-		AggregationScheduler(DBStorage* _dbStorage);
+		AggregationScheduler(DBAggregation* _dbAggregation);
 		~AggregationScheduler();
 
-		void scheduleAggregation(AggregationSettings* settings);
+		void scheduleAggregation(AggregationSetting setting);
+		void scheduleManyAggregations(std::vector<AggregationSetting> const& settings);
 	private:
-		DBStorage* dbStorage;
+		DBAggregation* dbAggregation;
 	};
 }

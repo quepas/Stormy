@@ -7,8 +7,9 @@ using namespace Stormy;
 using namespace Poco;
 using namespace std;
 
-AggregationTask::AggregationTask( DBStorage* _storage )
-	:	storage(_storage)
+AggregationTask::AggregationTask( DBStorage* _storage, AggregationSetting _setting )
+	:	storage(_storage),
+		setting(_setting)
 {
 
 }

@@ -2,7 +2,7 @@
 
 #include <string>
 #include "../../common/YAMLConfig.h"
-#include "AggregationSettings.h"
+#include "AggregationSetting.h"
 
 namespace Stormy
 {
@@ -12,11 +12,11 @@ namespace Stormy
 		AggregationConfig(std::string path);
 		~AggregationConfig();
 
-		std::vector<AggregationSettings>& getConfiguration() {
+		std::vector<AggregationSetting>& getConfiguration() {
 			return configuration;
 		}
 	private:
-		std::vector<AggregationSettings> configuration;
+		std::vector<AggregationSetting> configuration;
 		void mapIntoConfiguration();
 	};
 }

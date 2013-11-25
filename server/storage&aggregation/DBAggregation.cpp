@@ -28,7 +28,7 @@ void DBAggregation::connect()
 	CATCH_MSG("[AggregationDB] connect(): ")
 }
 
-bool DBAggregation::insertPeriod( AggregationSettings aggregation )
+bool DBAggregation::insertPeriod( AggregationSetting aggregation )
 {
 	TRY
 	sql << "INSERT INTO aggregate_period VALUES(:name, :period)",
@@ -38,17 +38,17 @@ bool DBAggregation::insertPeriod( AggregationSettings aggregation )
 	return false;
 }
 
-bool DBAggregation::insertPeriods( vector<AggregationSettings> settings )
+bool DBAggregation::insertPeriods( vector<AggregationSetting> settings )
 {
 	bool result = true;
-	Utils::forEach(settings, [&](AggregationSettings setting) {
+	Utils::forEach(settings, [&](AggregationSetting setting) {
 		if(!insertPeriod(setting))
 			result = false;
 	});
 	return result;
 }
 
-bool DBAggregation::createTask( AggregationSettings aggregation, Station station )
+bool DBAggregation::createTask( AggregationSetting aggregation, Station station )
 {
 	return false;
 }

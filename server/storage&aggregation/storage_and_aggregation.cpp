@@ -1,12 +1,13 @@
 #include <iostream>
 
 #include "AggregationConfig.h"
-#include "AggregationSettings.h"
+#include "AggregationSetting.h"
 #include "AcquisitionServersConfig.h"
 #include "DatabaseConfig.h"
 #include "DBStorage.h"
 #include "DBAggregation.h"
 #include "AcquisitionScheduler.h"
+#include "AggregationScheduler.h"
 #include "../../common/Utils.h"
 #include "../../common/data/Station.h"
 
@@ -34,7 +35,7 @@ int main() {
 	});
 	cout << "=== Available aggregates: " << endl;
 	Utils::forEach(aggregationCfg.getConfiguration(),
-		[](AggregationSettings setting) {
+		[](AggregationSetting setting) {
 			cout << "\t" << setting.toString() << endl;
 	});
 	cout << "=== Storage database: " << endl;
@@ -45,6 +46,7 @@ int main() {
 		"-------------------------------------------------------------"<< endl;
 	aggregation.insertPeriods(aggregationCfg.getConfiguration());
 	AcquistionScheduler scheduler(&storage, acquisitionServersCfg.getConfiguration());
+	AggregationScheduler aggregationScheduler(&aggregation);
 
 	getchar();
 }

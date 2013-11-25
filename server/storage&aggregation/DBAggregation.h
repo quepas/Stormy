@@ -7,7 +7,7 @@
 #include "../../common/data/Station.h"
 #include "Database.h"
 #include "DBStorage.h"
-#include "AggregationSettings.h"
+#include "AggregationSetting.h"
 
 namespace Stormy
 {
@@ -17,11 +17,11 @@ namespace Stormy
 			DBAggregation(Database* db, DBStorage* _dbStorage);
 			~DBAggregation();
 
-			bool insertPeriod(AggregationSettings setting);
-			bool insertPeriods(std::vector<AggregationSettings> settings);
+			bool insertPeriod(AggregationSetting setting);
+			bool insertPeriods(std::vector<AggregationSetting> settings);
 			
 			// add param - startYear!?
-			bool createTask(AggregationSettings aggregation, Data::Station station);
+			bool createTask(AggregationSetting aggregation, Data::Station station);
 			
 		private:
 			void connect();

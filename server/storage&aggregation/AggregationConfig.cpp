@@ -18,27 +18,27 @@ AggregationConfig::~AggregationConfig()
 void AggregationConfig::mapIntoConfiguration()
 {
 	for(uint16 i = 0; i < Size(); ++i) {
-		AggregationSettings settings;
+		AggregationSetting setting;
 
 		if(hasField("name", i)) {
-			settings.name = asString("name", i);
+			setting.name = asString("name", i);
 		} else {
 			cout << "No aggregation name. Try next..." << endl;
 			continue;
 		}
 		if(hasField("interval", i)) {
-			settings.interval = asString("interval", i);
+			setting.interval = asString("interval", i);
 		} else {
 			cout << "No aggregation interval. Try next..." << endl;
 			continue;
 		}
 		if(hasField("taskRefresh", i)) {
-			settings.taskRefresh = asInt("taskRefresh", i);
+			setting.taskRefresh = asInt("taskRefresh", i);
 		} else {
 			cout << "No aggregation task refresh time. Try next..." 
 				<< endl;
 			continue;
 		}
-		configuration.push_back(settings);
+		configuration.push_back(setting);
 	}
 }

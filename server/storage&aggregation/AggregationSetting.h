@@ -5,7 +5,7 @@
 
 namespace Stormy
 {
-	struct AggregationSettings
+	struct AggregationSetting
 	{
 		std::string name;		
 		std::string interval;	// postgresql specifed
