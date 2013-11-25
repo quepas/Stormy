@@ -1,0 +1,6 @@
+name: "StormyDB Aggregation"
+host: localhost
+port: 5432
+database: stormy
+user: quepas
+password: quepas

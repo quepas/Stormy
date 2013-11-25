@@ -17,5 +17,6 @@ namespace Stormy
 	typedef std::shared_ptr<Data::Metrics> MetricsPtr;
 	typedef std::vector<MetricsPtr> MetricsPtrVector;
 
-	typedef unsigned int uint32;	
+	typedef unsigned int uint32;
+	typedef unsigned short int uint16;
 }

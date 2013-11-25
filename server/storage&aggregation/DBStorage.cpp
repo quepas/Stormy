@@ -126,6 +126,7 @@ Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 	unsigned long resultLong = 0;
 	if(!uid.empty() && existsAnyMeasurementFromStation(uid)) {
 		TRY
+		// TODO: fix time zone
 		sql << "SELECT EXTRACT(EPOCH FROM ("
 			"SELECT max(timestamp) FROM measurement WHERE "
 			"id_station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
@@ -134,6 +135,22 @@ Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 	}
 	return Timestamp(resultLong);
 }
+
+Timestamp DBStorage::findOldestMeasureTimeByStationUID( string uid )
+{
+	unsigned long resultLong = 0;
+	if(!uid.empty() && existsAnyMeasurementFromStation(uid)) {
+		TRY
+		// TODO: fix time zone
+		sql << "SELECT EXTRACT(EPOCH FROM ("
+			"SELECT min(timestamp) FROM measurement WHERE "
+			"id_station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
+			into(resultLong), use(uid);
+		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
+	}
+	return Timestamp(resultLong);
+}
+
 
 bool DBStorage::insertOneMetrics( const MetricsPtr& metrics )
 {
@@ -190,4 +207,3 @@ uint32 DBStorage::countAllMeasurements()
 	CATCH_MSG("[StorageDB] countAllMeasurements(): ")
 	return count;
 }
-

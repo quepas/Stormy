@@ -1,0 +1,16 @@
+-
+  name: 'hourly'
+  interval: '1 hour'
+  taskRefresh: 5
+-
+  name: 'daily'
+  interval: '1 day'
+  taskRefresh: 15
+-
+  name: 'weekly'
+  interval: '1 week'
+  taskRefresh: 30
+-
+  name: 'monthly'
+  interval: '1 month'
+  taskRefresh: 60

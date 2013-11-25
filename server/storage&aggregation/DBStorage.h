@@ -31,6 +31,7 @@ namespace Stormy
 			bool insertMeasurements(
 				const MeasurementPtrVector& measurements);
 			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);
+			Poco::Timestamp findOldestMeasureTimeByStationUID(std::string uid);
 			bool existsAnyMeasurementFromStation(std::string uid);
 			uint32 countAllMeasurements();
 
@@ -38,9 +39,10 @@ namespace Stormy
 			bool insertOneMetrics(const MetricsPtr& metrics);
 			bool insertMetrics(const MetricsPtrVector& metrics);
 			bool existsMetricsByCode(const std::string& code);
-
-			void connect();
+			
 		private:
+			void connect();
+
 			Database* configuration;
 			soci::session sql;
 	};
