@@ -5,7 +5,8 @@ CREATE DATABASE stormy
 
 \connect stormy
 
--- Creating tables
+-- Creating tables --
+-- Tables for raw data
 CREATE TABLE station (
 	id serial,
 	uid text,
@@ -29,14 +30,43 @@ CREATE TABLE metrics (
 CREATE TABLE measurement (
 	id serial,
 	code text,
-	id_station integer,
+	station integer,
 	value_text text,
 	value_number real,
 	timestamp timestamp,
 	PRIMARY KEY(id),
 	FOREIGN KEY(code) REFERENCES metrics(code),
-	FOREIGN KEY(id_station) REFERENCES station(id)
+	FOREIGN KEY(station) REFERENCES station(id)
+);
+
+-- Create tables for aggregated data
+CREATE TABLE aggregate_period (	
+	name text,
+	period interval,
+	PRIMARY KEY(name),
+	UNIQUE(name)
+);
+
+CREATE TABLE aggregate_task (
+	id serial,
+	period text,
+	operation text,
+	station integer,
+	refresh integer,
+	PRIMARY KEY(id),
+	FOREIGN KEY(period) REFERENCES aggregate_period(name)
+	FOREIGN KEY(operation) REFERENCES aggregate_operation(name)
+	FOREIGN KEY(station) REFERENCES station(id)
+);
+
+CREATE TABLE aggregate_operation (	
+	name text,
+	formula text,
+	analysisMethod text
+	PRIMARY KEY(name),
+	UNIQUE(name)
 );
 
 -- Fill with default data
+-- Metrics
 INSERT INTO metrics VALUES('unknown', 'none', 'none', 'none', 'none');
