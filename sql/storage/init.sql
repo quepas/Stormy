@@ -40,14 +40,14 @@ CREATE TABLE measurement (
 );
 
 -- Create tables for aggregated data
-CREATE TABLE aggregate_period (	
+CREATE TABLE aggregate_period (
 	name text,
 	period interval,
 	PRIMARY KEY(name),
 	UNIQUE(name)
 );
 
-CREATE TABLE aggregate_operation (	
+CREATE TABLE aggregate_operation (
 	name text,
 	formula text,
 	analysisMethod text,
@@ -57,14 +57,13 @@ CREATE TABLE aggregate_operation (
 
 CREATE TABLE aggregate_task (
 	id serial,
-	period text,
-	operation text,
-	station integer,
+	period_name text,
+	station_id integer,
 	refresh integer,
+	current_ts timestamp,
 	PRIMARY KEY(id),
-	FOREIGN KEY(period) REFERENCES aggregate_period(name),
-	FOREIGN KEY(operation) REFERENCES aggregate_operation(name),
-	FOREIGN KEY(station) REFERENCES station(id)
+	FOREIGN KEY(period_name) REFERENCES aggregate_period(name),
+	FOREIGN KEY(station_id) REFERENCES station(id)
 );
 
 -- Fill with default data
