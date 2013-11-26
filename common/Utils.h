@@ -46,6 +46,8 @@ namespace Stormy
 			static void forEach(const T& data, V func);			
 			template<typename T, typename V>
 			static T getLast(V seq);
+			template<typename T, typename V>
+			static bool contains(T seq, V key);
 
 			// const
 			static std::string numberPattern;
@@ -55,6 +57,12 @@ namespace Stormy
 		public:
 			static bool checkTextWithRegex(std::string text, std::string regex);
 	};
+
+	template<typename T, typename V>
+	bool Utils::contains( T seq, V key )
+	{
+		return find(seq.begin(), seq.end(), key) != seq.end();
+	}
 
 	template<typename T, typename V>
 	void Utils::forEach( const T& data, V func )

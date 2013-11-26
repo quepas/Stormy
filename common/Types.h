@@ -19,4 +19,5 @@ namespace Stormy
 
 	typedef unsigned int uint32;
 	typedef unsigned short int uint16;
+	typedef unsigned long ulong;
 }
