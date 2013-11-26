@@ -29,15 +29,6 @@ void DBStorage::connect()
 	CATCH_MSG("[StorageDB] connect(): ")
 }
 
-unsigned int DBStorage::countAllStation()
-{
-	unsigned int count = 0;
-	TRY
-	sql << "SELECT count(*) FROM station", into(count);
-	CATCH_MSG("[StorageDB] countAllStation(): ")
-	return count;
-}
-
 void DBStorage::insertStation( StationPtr station )
 {
 	if(station) {
@@ -210,10 +201,13 @@ uint32 DBStorage::countAllMeasurements()
 
 vector<uint32> DBStorage::getStationIds()
 {
-	vector<uint32> result(countStation());
-	TRY
-	sql << "SELECT id FROM station", into(result);
-	CATCH_MSG("[StorageDB] getStationIds()")
+	uint16 count = countStation();
+	vector<uint32> result(count);
+	if(count > 0) {
+		TRY
+		sql << "SELECT id FROM station", into(result);
+		CATCH_MSG("[StorageDB] getStationIds()")
+	}	
 	return result;
 }
 

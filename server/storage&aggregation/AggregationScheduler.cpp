@@ -1,5 +1,8 @@
 #include "AggregationScheduler.h"
 
+#include <iostream>
+#include "AggregationTask.h"
+
 using namespace Stormy;
 using namespace std;
 
@@ -16,9 +19,25 @@ AggregationScheduler::~AggregationScheduler()
 
 void AggregationScheduler::scheduleAggregation( AggregationSetting setting )
 {
-	// create task in db
+	DBStorage* storage = dbAggregation -> getStorageDatabase();
+	// now only for mean()
+	auto stationIds = storage -> getStationIds();
 
-	// scheduler aggregation
+	for(uint32 i = 0; i < stationIds.size(); ++i) {
+		cout << "StationID :" << stationIds[i] << endl;
+		uint32 id = dbAggregation -> createTask(stationIds[i], setting);
+		cout << "StationID :" << id << endl;
+		if(id > 0) {
+			cout << "[AggregationScheduler] Create task " << setting.name
+				<< " for station ID: " << stationIds[i] << endl;
+
+			if(id != 0) {
+				// scheduler aggregation
+				schedule(new AggregationTask(dbAggregation, setting, id), 
+					0, setting.taskRefresh * 1000);
+			}
+		}		
+	}	
 }
 
 void AggregationScheduler::scheduleManyAggregations( 

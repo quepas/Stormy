@@ -18,8 +18,7 @@ namespace Stormy
 			DBStorage(Database* storageDB);
 			~DBStorage();
 
-			// stations
-			unsigned int countAllStation();
+			// stations			
 			void insertStation(StationPtr station);
 			void insertStations(const StationPtrVector& stations);
 			void clearAllStation();

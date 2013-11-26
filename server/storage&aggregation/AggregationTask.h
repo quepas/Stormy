@@ -2,7 +2,8 @@
 
 #include <Poco/Util/TimerTask.h>
 
-#include "DBStorage.h"
+#include "DBAggregation.h"
+#include "AggregationTask.h"
 #include "AggregationSetting.h"
 
 namespace Stormy
@@ -10,12 +11,13 @@ namespace Stormy
 	class AggregationTask : public Poco::Util::TimerTask
 	{
 	public:
-		AggregationTask(DBStorage* _storage, AggregationSetting _setting);
+		AggregationTask(DBAggregation* _storage, AggregationSetting _setting, uint32 _taskId);
 		~AggregationTask();
 
 		void run();
 	private:
-		DBStorage* storage;
+		DBAggregation* aggregation;
 		AggregationSetting setting;
+		uint32 taskId;
 	};
 }

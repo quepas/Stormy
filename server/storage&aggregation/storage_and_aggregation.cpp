@@ -24,6 +24,7 @@ int main() {
 	DBStorage storage(storageDBcfg.getConfiguration());
 	DBAggregation aggregation(aggregationDBcfg.getConfiguration(), &storage);
 	cout << "Measurements in storage: " << storage.countAllMeasurements() << endl;
+	cout << "Available stations: " << storage.countStation() << endl;
 
 	cout << "-------------------------------------------------------------"
 		"-------------------------------------------------------------"<< endl;
