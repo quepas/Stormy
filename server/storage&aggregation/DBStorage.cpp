@@ -112,34 +112,49 @@ bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
 	return false;
 }
 
+Timestamp DBStorage::findNewestMeasureTimeFromStation( uint32 id )
+{
+	ulong time = 0;
+	if(countMeasurementFromStation(id) > 0) {
+		TRY
+		// TODO: fix time zone
+		sql << "SELECT EXTRACT(EPOCH FROM ("
+			"SELECT max(timestamp) FROM measurement "
+			"WHERE station = :id) - interval '1 hour')",
+			into(time), use(id);
+		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
+	}
+	return Timestamp(time);
+}
+
 Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 {	
-	unsigned long resultLong = 0;
+	unsigned long time = 0;
 	if(!uid.empty() && existsAnyMeasurementFromStation(uid)) {
 		TRY
 		// TODO: fix time zone
 		sql << "SELECT EXTRACT(EPOCH FROM ("
 			"SELECT max(timestamp) FROM measurement WHERE "
 			"station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
-			into(resultLong), use(uid);
+			into(time), use(uid);
 		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
 	}
-	return Timestamp(resultLong);
+	return Timestamp(time);
 }
 
-Timestamp DBStorage::findOldestMeasureTimeByStationUID( string uid )
+Timestamp DBStorage::findOldestMeasureTimeByStationUID( uint32 id )
 {
-	unsigned long resultLong = 0;
-	if(!uid.empty() && existsAnyMeasurementFromStation(uid)) {
-		TRY
-		// TODO: fix time zone
+	ulong time = 0;
+	if(countMeasurementFromStation(id) > 0) {
+		TRY		
+		// TODO: fix acquisition 'time zone' time respect
 		sql << "SELECT EXTRACT(EPOCH FROM ("
-			"SELECT min(timestamp) FROM measurement WHERE "
-			"station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
-			into(resultLong), use(uid);
+			"SELECT min(timestamp) FROM measurement "
+			"WHERE station = :id) - interval '1 hour')",
+			into(time), use(id);
 		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
 	}
-	return Timestamp(resultLong);
+	return Timestamp(time);
 }
 
 
@@ -219,3 +234,24 @@ uint32 DBStorage::countStation()
 	CATCH_MSG("[StorageDB] countStation(): ")
 	return count;
 }
+
+string DBStorage::getStationName( uint32 id )
+{
+	string result;
+	TRY
+	sql << "SELECT name FROM station WHERE id = :id",
+		use(id), into(result);
+	CATCH_MSG("[StorageDB] getStationName(): ")
+	return result;
+}
+
+ulong DBStorage::countMeasurementFromStation( uint32 id )
+{
+	ulong count = 0;
+	TRY
+	sql << "SELECT count(*) FROM measurement "
+		"WHERE id = :id", use(id), into(count);
+	CATCH_MSG("[StorageDB] countMeasurementFromStation() ")
+	return count;
+}
+

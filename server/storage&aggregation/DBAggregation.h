@@ -20,15 +20,17 @@ namespace Stormy
 			bool insertPeriod(AggregationSetting setting);
 			bool insertPeriods(std::vector<AggregationSetting> settings);
 			std::vector<std::string> getPeriodNames();
+			Poco::Timestamp getPeriodAsSecond(std::string period_name);
 			uint32 countPeriod();
 			std::string getPeriodCorrectInterval(std::string name);
 						
-			uint32 createTask(uint32 station_id, AggregationSetting aggregation);			
+			uint32 createOrRefreshTask(uint32 station_id, AggregationSetting aggregation);			
 			Poco::Timestamp taskCurrentTime(uint32 id);
 			bool taskExsist(uint32 station_id, AggregationSetting aggregation);
 			uint32 getTaskId(uint32 station_id, std::string period_name);
-			//
-			void increaseTaskTime(std::string periodName, uint32 id);
+			uint32 getStationIdFromTask(uint32 id);
+			bool setTaskTime(uint32 id, Poco::Timestamp time);			
+			bool increaseTaskTimeBySeconds(uint32 id, ulong time);			
 			
 			DBStorage* getStorageDatabase() {
 				return dbStorage;

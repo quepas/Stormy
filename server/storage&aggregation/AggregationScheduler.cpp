@@ -19,23 +19,18 @@ AggregationScheduler::~AggregationScheduler()
 
 void AggregationScheduler::scheduleAggregation( AggregationSetting setting )
 {
-	DBStorage* storage = dbAggregation -> getStorageDatabase();
-	// now only for mean()
+	DBStorage* storage = dbAggregation -> getStorageDatabase();	
 	auto stationIds = storage -> getStationIds();
 
-	for(uint32 i = 0; i < stationIds.size(); ++i) {
-		cout << "StationID :" << stationIds[i] << endl;
-		uint32 id = dbAggregation -> createTask(stationIds[i], setting);
-		cout << "StationID :" << id << endl;
+	for(uint32 i = 0; i < stationIds.size(); ++i) {		
+		uint32 id = dbAggregation -> createOrRefreshTask(stationIds[i], setting);		
 		if(id > 0) {
-			cout << "[AggregationScheduler] Create task " << setting.name
-				<< " for station ID: " << stationIds[i] << endl;
-
-			if(id != 0) {
-				// scheduler aggregation
-				schedule(new AggregationTask(dbAggregation, setting, id), 
-					0, setting.taskRefresh * 1000);
-			}
+			cout << "[AggregationScheduler] Create task \"" << setting.name
+				<< "\" for station: " 
+				<< storage -> getStationName(stationIds[i]) << endl;
+			
+			schedule(new AggregationTask(dbAggregation, setting, id), 
+				0, setting.taskRefresh * 1000);
 		}		
 	}	
 }

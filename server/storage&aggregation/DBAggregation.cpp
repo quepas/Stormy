@@ -85,40 +85,32 @@ uint32 DBAggregation::insertTask( uint32 station_id, AggregationSetting aggregat
 	uint32 id = 0;
 	TRY
 	sql << "INSERT INTO aggregate_task "
-		"(station_id, period_name, refresh) "
-		"VALUES(:station_id, :period_name, :refresh) RETURNING id",
+		"(station_id, period_name, refresh, current_ts) "
+		"VALUES(:station_id, :period_name, :refresh, to_timestamp(0)) RETURNING id",
 		use(station_id), use(aggregation.name),
 		use(aggregation.taskRefresh), into(id);
 	CATCH_MSG("[AggregationDB] insertTask(): ")
 	return id;
 }
 
-uint32 DBAggregation::createTask( uint32 station_id, AggregationSetting aggregation )
+uint32 DBAggregation::createOrRefreshTask( uint32 station_id, AggregationSetting aggregation )
 {
 	uint32 task_id = 0;
 	if(!taskExsist(station_id, aggregation)) {
 		task_id = insertTask(station_id, aggregation);
 	} else {
-		task_id = getTaskId(station_id, aggregation.name);
-		// refresh old (check for new or missed data)
+		task_id = getTaskId(station_id, aggregation.name);		
 	}
-	// check for oldest measure time for station and set time
-	// ~~
+	// task never run over some data
+	if(3600 == taskCurrentTime(task_id).epochMicroseconds()) {		
+		if(getStorageDatabase() -> 
+			countMeasurementFromStation(station_id) > 0) {
+				// TODO: count proper start time for other intervals
+				setTaskTime(task_id, getStorageDatabase() -> 
+					findOldestMeasureTimeByStationUID(station_id));
+		}
+	}	
 	return task_id;
-
-	/*uint32 id = 0;
-	TRY			
-	Timestamp nowTS(1325376000);	// TODO: repair this
-	cout << "Time: " << nowTS.epochMicroseconds() << endl;
-	sql << "INSERT INTO aggregate_task"
-		"(period, station, refresh, currenttime)"
-		"VALUES(:period, :station, :refresh, to_timestamp(:currenttime))"
-		"RETURNING id",
-		use(aggregation.name), use(station_id),
-		use(aggregation.taskRefresh),
-		use(nowTS.epochMicroseconds()), into(id);
-	CATCH_MSG("[AggregationDB] createTask(): ")
-	return id;*/
 }
 
 vector<string> DBAggregation::getPeriodNames()
@@ -131,6 +123,18 @@ vector<string> DBAggregation::getPeriodNames()
 		CATCH_MSG("[AggregationDB] getPeriodNames(): ")
 	}	
 	return result;
+}
+
+Timestamp DBAggregation::getPeriodAsSecond( string period_name )
+{
+	ulong time = 0;
+	TRY	
+	sql << "SELECT date_part('epoch', ("
+		"SELECT period FROM aggregate_period "
+		"WHERE name = :name)::interval)", 
+		use(period_name), into(time);
+	CATCH_MSG("[AggregationDB] getPeriodAsSecond(): ")
+	return Timestamp(time);
 }
 
 uint32 DBAggregation::countPeriod()
@@ -154,23 +158,51 @@ string DBAggregation::getPeriodCorrectInterval( string name )
 
 Timestamp DBAggregation::taskCurrentTime( uint32 id )
 {
-	ulong resultLong = 0;
+	ulong time = 0;
 	TRY
 	sql << "SELECT EXTRACT(EPOCH FROM ("
-		"SELECT current_ts FROM aggregate_task WHERE id = :id))",
-		use(id), into(resultLong);
+		"SELECT current_ts FROM aggregate_task "
+		"WHERE id = :id))",
+		use(id), into(time);
 	CATCH_MSG("[AggregationDB]: taskCurrentTime(): ")
-	return Timestamp(resultLong);
+	return Timestamp(time);
 }
 
-void DBAggregation::increaseTaskTime( string periodName, uint32 id )
+bool DBAggregation::setTaskTime( uint32 id, Timestamp time )
 {
 	TRY
-	/*sql << "UPDATE aggregate_task SET currenttime = currenttime + "
-		"(SELECT period FROM aggregate_period WHERE name = :name)"
-		"WHERE id = :id", use(periodName), use(id);*/
-	sql << "UPDATE aggregate_task SET currenttime = currenttime + interval '1 hour' "
-		"WHERE id = :id", use(id);
-	CATCH_MSG("[AggregationDB]: increaseTaskTime(): ")
+	sql << "UPDATE aggregate_task "
+		"SET current_ts = to_timestamp(:time) "
+		"WHERE id = :id",
+		use(time.epochMicroseconds()), use(id);
+	return true;
+	CATCH_MSG("[AggregationDB] setTaskTime(): ")
+	return false;
+	
+}
+
+bool DBAggregation::increaseTaskTimeBySeconds( uint32 id, ulong time )
+{
+	string timeAsSeconds("\'");	
+	timeAsSeconds.append(lexical_cast<std::string>(time));
+	timeAsSeconds.append(" seconds\'");
+	TRY
+	sql << "UPDATE aggregate_task "
+	"SET current_ts = current_ts + :time ::interval  "
+		"WHERE id = :id",
+		use(timeAsSeconds), use(id);
+	return true;
+	CATCH_MSG("[AggregationDB] increaseTaskTimeBySeconds(): ")
+	return false;
+}
+
+uint32 Stormy::DBAggregation::getStationIdFromTask( uint32 id )
+{
+	uint32 station_id = 0;
+	TRY
+	sql << "SELECT station_id FROM aggregate_task "
+		"WHERE id = :id", use(id), into(station_id);
+	CATCH_MSG("[AggregationDB] getStationIdFromTask(): ")
+	return station_id;
 }
 
