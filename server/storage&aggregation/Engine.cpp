@@ -80,7 +80,7 @@ bool Engine::VerifyTasks()
 			}
 		}
 	}  
-  if(count > 0) 
+  if(count > 0)
     logger_.warning("[aggregate::Engine] Number of NONEEXISTENT task: " + NumberFormatter::format(count));
 	// check tasks for useless	
   count = 0;
@@ -118,17 +118,15 @@ bool Engine::FixTasks()
 
 		switch (it->first) {
 		case NONEEXISTENT:
-			logger_.warning("[aggregate::Engine] Task for \'" + period_name + 
-				"\' period and station \'" + station_uid + 
-				"\' doesn't exists. Creating...");
-			if(!CreateMissingTask(period_name, station_uid))
+			logger_.warning("[aggregate::Engine] Creating task for \'" + 
+        period_name + "\' period and station \'" + station_uid);
+      if(!CreateMissingTask(period_name, station_uid))
 				return false;
 			break;
 		case USELESS:
-			logger_.warning("[aggregate::Engine] Task for \'" + period_name +
-				"\' period and station \'" + station_uid +
-				"\' is useless. Deleting...");
-			if(!DeleteUselessTask(period_name, station_uid))
+			logger_.warning("[aggregate::Engine] Deleting useless task for \'" + 
+        period_name + "\' period and station \'" + station_uid);
+      if(!DeleteUselessTask(period_name, station_uid))
 				return false;
 			break;
 		}

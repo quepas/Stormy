@@ -61,7 +61,7 @@ namespace stormy
 			std::vector<entity::Period> available_periods_;
 
 			// verification data
-			std::map<BadTaskReason, 
+			std::multimap<BadTaskReason, 
 				std::pair<std::string, std::string>> bad_tasks_reason_;
 			std::vector<std::pair<std::string, std::string>> verified_period_station_;
 
