@@ -14,7 +14,7 @@
 #include "AggregationScheduler.h"
 #include "../../common/Utils.h"
 #include "../../common/data/Station.h"
-#include "Engine.h"
+#include "aggregate/Engine.h"
 
 using namespace Stormy;
 using namespace std;

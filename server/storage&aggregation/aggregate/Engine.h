@@ -3,12 +3,12 @@
 #include <string>
 #include <Poco/Logger.h>
 
-#include "../../common/data/Station.h"
-#include "../../common/data/Metrics.h"
+#include "../../../common/data/Station.h"
+#include "../../../common/data/Metrics.h"
 #include "Task.h"
-#include "aggregate/entity/Task.h"
-#include "aggregate/entity/Period.h"
-#include "DBStorage.h"
+#include "entity/Task.h"
+#include "entity/Period.h"
+#include "../DBStorage.h"
 
 namespace stormy
 {
