@@ -2,9 +2,7 @@
 
 #include <map>
 #include <Poco/NumberFormatter.h>
-// !DEBUG
-#include <iostream>
-// ~~
+#include "task/InitialAggregation.h"
 
 using std::map;
 using std::string;
@@ -24,28 +22,28 @@ Scheduler::Scheduler()
 
 Scheduler::~Scheduler()
 {
-  Clear();
+  Cancel();
 }
 
 void Scheduler::Schedule( std::vector<entity::Task> task_entites )
 {  
-  logger_.information("[aggregate::Schedule] Launching " + 
-    NumberFormatter::format(task_entites.size()) + " tasks.");
+  logger_.information("[aggregate::Scheduler] Launching " + 
+    NumberFormatter::format(task_entites.size()) + " initial aggregation tasks.");
   cancelled_ = false;    
   for (auto it = task_entites.begin(); it != task_entites.end(); ++it) {     
-    Task* new_task = new Task(*it);
+    task::InitialAggregation* new_task = new task::InitialAggregation(*it);
     scheduled_tasks_.push_back(new_task);
     schedule(new_task, 0, GetTaskRefreshTime(it->period_name) * 1000);
   }
+  logger_.information("[aggregate::Scheduler] Launchin regular aggregation tasks.");
 }
 
 void Scheduler::Cancel()
 {  
-  logger_.information("[aggregate::Schedule] Tasks cancelled.");
+  cancel();
   cancelled_ = true;
-  for (auto it = scheduled_tasks_.begin(); it != scheduled_tasks_.end(); ++it) {
-    (*it)->cancel();
-  }
+  logger_.information("[aggregate::Schedule] Number of tasks cancelled: "
+    + NumberFormatter::format(scheduled_tasks_.size()));   
   Clear();
 }
 
@@ -64,9 +62,6 @@ int Scheduler::GetTaskRefreshTime( string period_name )
 
 void Scheduler::Clear()
 {  
-  for (auto it = scheduled_tasks_.begin(); it != scheduled_tasks_.end(); ++it) {
-    delete *it;
-  }
   scheduled_tasks_.clear();
 }
 

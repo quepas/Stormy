@@ -56,11 +56,10 @@ int main() {
 		"-------------------------------------------------------------"<< endl;
 	aggregation.insertPeriods(aggregationCfg.getConfiguration());
 	AcquistionScheduler scheduler(&storage);
-	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());
-	//AggregationScheduler aggregationScheduler(&aggregation);
-	//aggregationScheduler.scheduleManyAggregations(aggregationCfg.getConfiguration());		
+	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
 	stormy::aggregate::Engine aggregation_engine(storage);
-	aggregation_engine.Start();
+	aggregation_engine.Start(); 
 
 	getchar();
+  
 }

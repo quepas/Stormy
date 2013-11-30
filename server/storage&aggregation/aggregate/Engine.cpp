@@ -33,7 +33,7 @@ void Engine::Start()
     logger_.critical("[aggregate::Engine] Initialization failed.");
     return;
   }
-  Schedule();
+  Schedule();  
 }
 
 void Engine::Restart()

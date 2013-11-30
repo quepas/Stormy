@@ -1,4 +1,4 @@
-#include "Task.h"
+#include "InitialAggregation.h"
 
 #include <ctime>
 #include <string>
@@ -11,29 +11,26 @@ using Poco::NumberFormatter;
 
 namespace stormy {
   namespace aggregate {
+    namespace task {
 
-Task::Task( entity::Task task )
-  : logger_(Logger::get("aggregation")),
-    task_entity_(task)
+InitialAggregation::InitialAggregation( entity::Task task_data )
+  : BaseTask(task_data)
+{
+}
+
+InitialAggregation::~InitialAggregation()
 {
 
 }
 
-Task::~Task()
-{
-
-}
-
-void Task::run()
+void InitialAggregation::run()
 {
   string current_ts = asctime(&task_entity_.current_ts);
   current_ts.erase(current_ts.length()-1);  // Erase '\n' from end
 
-  logger_.information("[aggregate::Task#" + 
+  logger_.information("[aggregate::InitialAggregation#" + 
     NumberFormatter::format(task_entity_.id) + 
     "] Running. Aggregated period [" + current_ts + " - ...]");
 }
-
-// ~~ stormy::aggregation::Task
-}}
-
+// ~~ stormy::aggregate::task::InitialAggregation
+}}}

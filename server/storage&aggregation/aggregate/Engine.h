@@ -5,7 +5,6 @@
 
 #include "../../../common/data/Station.h"
 #include "../../../common/data/Metrics.h"
-#include "Task.h"
 #include "Scheduler.h"
 #include "entity/Task.h"
 #include "entity/Period.h"

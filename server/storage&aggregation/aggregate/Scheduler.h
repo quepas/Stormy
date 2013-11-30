@@ -4,8 +4,8 @@
 #include <Poco/Logger.h>
 #include <Poco/Util/Timer.h> 
 
-#include "Task.h"
 #include "entity/Task.h"
+#include "task/BaseTask.h"
 
 namespace stormy
 {
@@ -25,7 +25,7 @@ namespace stormy
     private:
       void Clear();
     
-      std::vector<Task*> scheduled_tasks_;
+      std::vector<task::BaseTask*> scheduled_tasks_;
       Poco::Logger& logger_;
       bool cancelled_;
 		};
