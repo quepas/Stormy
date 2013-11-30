@@ -14,5 +14,5 @@ struct Task
 	std::tm current_ts;
 };
 
-// ~~ stormy::aggregation::entity
+// ~~ stormy::aggregation::entity::Task
 }}}

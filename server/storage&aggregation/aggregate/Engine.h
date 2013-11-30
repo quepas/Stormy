@@ -6,6 +6,7 @@
 #include "../../../common/data/Station.h"
 #include "../../../common/data/Metrics.h"
 #include "Task.h"
+#include "Scheduler.h"
 #include "entity/Task.h"
 #include "entity/Period.h"
 #include "../DBStorage.h"
@@ -26,11 +27,12 @@ namespace stormy
 			~Engine();
 		
 			void Start();
-			void Pause();
+			void Restart();
 			void Stop();
 						
 		private:
-      void Init();			
+      bool Init();			
+      void Schedule();
 
 			bool VerifyTasks();	
 			void ClearVerificationData();
@@ -53,6 +55,7 @@ namespace stormy
 				std::pair<std::string, std::string>> bad_tasks_reason_;
 			std::vector<std::pair<std::string, std::string>> verified_period_station_;
 
+      Scheduler scheduler_;
 			Poco::Logger& logger_;
 
 			// Temporary handler

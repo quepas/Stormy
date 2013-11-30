@@ -15,7 +15,9 @@ namespace stormy {
 	namespace aggregate {
 
 Engine::Engine( Stormy::DBStorage& storage )
-	:	storage_(storage), logger_(Logger::get("aggregation"))
+	:	storage_(storage), 
+    logger_(Logger::get("aggregation")),
+    scheduler_()
 {
 }
 
@@ -26,21 +28,29 @@ Engine::~Engine()
 
 void Engine::Start()
 {
-	Init();
+  logger_.information("[aggregate::Engine] Start.");
+	if(!Init()) {
+    logger_.critical("[aggregate::Engine] Initialization failed.");
+    return;
+  }
+  Schedule();
 }
 
-void Engine::Pause()
+void Engine::Restart()
 {
-
+  logger_.warning("[aggregate::Engine] Restart.");
+  Stop();
+  Start();
 }
 
 void Engine::Stop()
 {
-
+  logger_.warning("[aggregate::Engine] Stop.");
+  scheduler_.Cancel();
 }
 
 // ~~ private ~~
-void Engine::Init()
+bool Engine::Init()
 {
 	FetchAvailableData();
 
@@ -55,9 +65,16 @@ void Engine::Init()
     logger_.warning("[aggregate::Engine] Some tasks are invalid. Fixing...");
 		if(!FixTasks()) {
 			logger_.error("[aggregate::Engine] Error while fixing invalid tasks.");
+      return false;
 		}
 		FetchAvailableData();    
 	}
+  return true;
+}
+
+void Engine::Schedule()
+{
+  scheduler_.Schedule(available_tasks_);
 }
 
 bool Engine::VerifyTasks()
