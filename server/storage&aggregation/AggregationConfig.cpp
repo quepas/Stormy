@@ -39,6 +39,11 @@ void AggregationConfig::mapIntoConfiguration()
 				<< endl;
 			continue;
 		}
+		if(hasField("turnOn", i)) {
+			setting.turnOn = asBool("turnOn", i);
+		} else {
+			setting.turnOn = false;
+		}
 		configuration.push_back(setting);
 	}
 }

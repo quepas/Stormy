@@ -13,7 +13,8 @@ namespace Stormy {
 			std::string uid;			
 			std::string name;
 			std::string url;
-			long refreshTime;
+			long refresh_time;
+			std::tm last_update;
 			std::string parserClass;			
 		};
 	}

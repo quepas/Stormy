@@ -36,7 +36,7 @@ void DBStorage::insertStation( StationPtr station )
 		sql << "INSERT INTO station(uid, name, url, refresh)"
 			"values(:uid, :name, :url, :refresh)",
 			use(station -> uid), use(station -> name), 
-			use(station -> url), use(station -> refreshTime);
+			use(station -> url), use(station -> refresh_time);
 		CATCH_MSG("[StorageDB] insertStation(): ")		
 	}
 }
@@ -63,7 +63,7 @@ Station* DBStorage::getStationByUID( string uid )
 	TRY
 	sql << "SELECT uid, name, url, refresh FROM station WHERE uid = :uid",
 		into(result -> uid), into(result -> name), into(result -> url),
-		into(result -> refreshTime), use(uid);
+		into(result -> refresh_time), use(uid);
 	CATCH_MSG("[StorageDB] getStationByUID(): ")
 	return result;
 }
@@ -255,3 +255,112 @@ ulong DBStorage::countMeasurementFromStation( uint32 id )
 	return count;
 }
 
+vector<Station> DBStorage::GetStations()
+{
+	auto stations = vector<Station>();
+	TRY
+	rowset<row> rs = (sql.prepare << "SELECT * FROM station");
+	for (auto it = rs.begin(); it != rs.end(); ++it) {
+		row const& row = *it;
+		Station element;
+		element.uid = row.get<string>(0);
+		element.name = row.get<string>(1);
+		element.url = row.get<string>(2);
+		element.refresh_time = row.get<int>(3);
+		element.last_update = row.get<tm>(4);
+		stations.push_back(element);
+	}
+	CATCH_MSG("[Storage] Exception at GetStations():\n\t")
+	return stations;
+}
+
+vector<Metrics> DBStorage::GetMetrics()
+{
+	auto metrics = vector<Metrics>();
+	TRY
+	rowset<row> rs = (sql.prepare << "SELECT * FROM metrics");
+	for (auto it = rs.begin(); it != rs.end(); ++it) {
+		row const& row = *it;
+		Metrics element;
+		element.code = row.get<string>(0);
+		element.equivalents = row.get<string>(1);
+		element.value_type = row.get<string>(2);
+		element.value_unit = row.get<string>(3);
+		element.value_format = row.get<string>(4);
+		metrics.push_back(element);
+	}
+	CATCH_MSG("[Storage] Exception at GetMetrics():\n\t")
+	return metrics;
+}
+
+// TODO: move to DBAggregate?
+vector<stormy::aggregate::entity::Task> DBStorage::GetTasks()
+{
+	auto tasks = vector<stormy::aggregate::entity::Task>();
+	TRY
+	rowset<row> rs = (sql.prepare << "SELECT * FROM aggregate_task");
+	for (auto it = rs.begin(); it != rs.end(); ++it) {
+		row const& row = *it;
+		stormy::aggregate::entity::Task element;
+		element.id = row.get<int>(0);
+		element.period_name = row.get<string>(1);
+		element.station_uid = row.get<string>(2);		
+		element.current_ts = row.get<tm>(3);
+		tasks.push_back(element);
+	}
+	CATCH_MSG("[Storage] Exception at GetTasks():\n\t")
+	return tasks;
+}
+
+// TODO: move to DBAggregate?
+vector<stormy::aggregate::entity::Period> DBStorage::GetPeriods()
+{
+	auto periods = vector<stormy::aggregate::entity::Period>();
+	TRY
+	int count = 0;
+	sql << "SELECT count(*) FROM aggregate_period", into(count);
+	auto periods_name = vector<string>(count);
+	sql << "SELECT name FROM aggregate_period", into(periods_name);
+	for (auto it = periods_name.begin(); it != periods_name.end(); ++it) {
+		stormy::aggregate::entity::Period element;
+		element.name = *it;
+		// TODO: SOCI doesn't support Postgres interval type
+		element.interval = tm();
+		periods.push_back(element);
+	}	
+	CATCH_MSG("[Storage] Exception at GetPeriods():\n\t")
+	return periods;
+}
+
+bool DBStorage::DeleteTask( int id )
+{
+	TRY
+	sql << "DELETE FROM aggregate_task WHERE id = :id", use(id);
+	return true;
+	CATCH_MSG("[Storage] Exception at DeleteTask():\n\t")
+	return false;
+}
+
+bool Stormy::DBStorage::DeleteTask( std::string period_name, std::string station_uid )
+{
+	TRY
+	sql << "DELETE FROM aggregate_task "
+		"WHERE period_name = :period_name "
+		"AND station_uid = :station_uid",
+		use(period_name), use(station_uid);
+	return true;
+	CATCH_MSG("[Storage] Exception at DeleteTask(period, station):\n\t")
+	return false;
+}
+
+bool DBStorage::CreateTask( string period_name, string station_uid )
+{
+	TRY
+	sql << "INSERT INTO aggregate_task "
+		"(period_name, station_uid, current_ts)"
+		"VALUES(:period_name, :station_uid, to_timestamp(0))",
+		use(period_name), use(station_uid);
+	return true;
+	CATCH_MSG("[Storage] CreateTask(period, station):\n\t")
+	return false;
+}

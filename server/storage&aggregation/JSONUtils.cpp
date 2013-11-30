@@ -27,7 +27,7 @@ StationPtrVector JSONUtils::extractStationsFromJSON( string content )
 			station -> uid = entry["id"].asString();
 			station -> name = entry["name"].asString();
 			station -> url = entry["url"].asString();
-			station -> refreshTime = entry["refreshTime"].asInt();
+			station -> refresh_time = entry["refreshTime"].asInt();
 			result.push_back(station);
 		});
 	}

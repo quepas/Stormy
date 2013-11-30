@@ -1,4 +1,8 @@
 #include <iostream>
+#include <Poco/Logger.h>
+#include <Poco/ConsoleChannel.h>
+#include <Poco/WindowsConsoleChannel.h>
+#include <Poco/AutoPtr.h>
 
 #include "AggregationConfig.h"
 #include "AggregationSetting.h"
@@ -10,12 +14,17 @@
 #include "AggregationScheduler.h"
 #include "../../common/Utils.h"
 #include "../../common/data/Station.h"
+#include "Engine.h"
 
 using namespace Stormy;
 using namespace std;
+using namespace Poco;
 
 int main() {
-	cout << "==== Storage & Aggregation started. ====" << endl;
+	cout << "==== Storage & Aggregation started. ====" << endl;	
+	AutoPtr<ConsoleChannel> channel(new ConsoleChannel);
+	Logger::root().setChannel(channel);
+	Logger& logger = Logger::get("aggregation");
 	AcquisitionServersConfig acquisitionServersCfg("config/acquisition_servers.yaml");
 	AggregationConfig aggregationCfg("config/aggregation.yaml");
 	DatabaseConfig storageDBcfg("config/storage_database.yaml");
@@ -48,8 +57,10 @@ int main() {
 	aggregation.insertPeriods(aggregationCfg.getConfiguration());
 	AcquistionScheduler scheduler(&storage);
 	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());
-	AggregationScheduler aggregationScheduler(&aggregation);
-	aggregationScheduler.scheduleManyAggregations(aggregationCfg.getConfiguration());		
+	//AggregationScheduler aggregationScheduler(&aggregation);
+	//aggregationScheduler.scheduleManyAggregations(aggregationCfg.getConfiguration());		
+	stormy::aggregate::Engine aggregation_engine(storage);
+	aggregation_engine.Start();
 
 	getchar();
 }

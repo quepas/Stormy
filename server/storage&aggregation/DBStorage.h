@@ -10,6 +10,9 @@
 #include "../../common/Utils.h"
 #include "../../common/Types.h"
 
+#include "aggregate/entity/Task.h"
+#include "aggregate/entity/Period.h"
+
 namespace Stormy
 {
 	class DBStorage
@@ -18,7 +21,17 @@ namespace Stormy
 			DBStorage(Database* storageDB);
 			~DBStorage();
 
-			// stations			
+			// new style
+			std::vector<Data::Station> GetStations();
+			std::vector<Data::Metrics> GetMetrics();
+			std::vector<stormy::aggregate::entity::Task> GetTasks();
+			std::vector<stormy::aggregate::entity::Period> GetPeriods();	
+
+			bool DeleteTask(int id);
+			bool DeleteTask(std::string period_name, std::string station_uid);
+			bool CreateTask(std::string period_name, std::string station_uid);
+
+			// stations					 
 			void insertStation(StationPtr station);
 			void insertStations(const StationPtrVector& stations);
 			void clearAllStation();

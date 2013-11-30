@@ -8,13 +8,12 @@ CREATE DATABASE stormy
 -- Creating tables --
 -- Tables for raw data
 CREATE TABLE station (
-	id serial,
 	uid text,
 	name text,
 	url text,
-	refresh integer,
-	PRIMARY KEY(id),
-	UNIQUE(uid)
+	refresh_time integer,
+	last_update timestamp,
+	PRIMARY KEY(uid)
 );
 
 CREATE TABLE metrics (
@@ -30,13 +29,13 @@ CREATE TABLE metrics (
 CREATE TABLE measurement (
 	id serial,
 	code text,
-	station integer,
+	station_uid text,
 	value_text text,
 	value_number real,
 	timestamp timestamp,
 	PRIMARY KEY(id),
 	FOREIGN KEY(code) REFERENCES metrics(code),
-	FOREIGN KEY(station) REFERENCES station(id)
+	FOREIGN KEY(station_uid) REFERENCES station(uid)
 );
 
 -- Create tables for aggregated data
@@ -58,12 +57,11 @@ CREATE TABLE aggregate_operation (
 CREATE TABLE aggregate_task (
 	id serial,
 	period_name text,
-	station_id integer,
-	refresh integer,
+	station_uid text,
 	current_ts timestamp,
 	PRIMARY KEY(id),
 	FOREIGN KEY(period_name) REFERENCES aggregate_period(name),
-	FOREIGN KEY(station_id) REFERENCES station(id)
+	FOREIGN KEY(station_uid) REFERENCES station(uid)
 );
 
 -- Fill with default data
@@ -71,3 +69,7 @@ CREATE TABLE aggregate_task (
 INSERT INTO metrics VALUES('unknown', 'none', 'none', 'none', 'none');
 -- Operation
 INSERT INTO aggregate_operation VALUES('mean', 'mean(x)', 'mean()');
+-- Period
+INSERT INTO aggregate_period VALUES('hourly', '1 hour'::interval);
+--INSERT INTO aggregate_period VALUES('daily', '1 day'::interval);
+--INSERT INTO aggregate_period VALUES('monthly', '1 month'::interval);
