@@ -14,12 +14,12 @@ namespace stormy
 {
 	namespace aggregate
 	{
-		enum BadTaskReason {
+    enum BadTaskReason {
 			USELESS,
-			NONEEXISTENT	
+			MISSING
 		};
 
-		class Engine
+    class Engine
 		{
 		public:
 			explicit Engine(Stormy::DBStorage& storage);
@@ -30,44 +30,32 @@ namespace stormy
 			void Stop();
 						
 		private:
-			/*
-			 *	Verify if all tasks have existing station_id, period_name etc.
-			 */
+      void Init();			
+
 			bool VerifyTasks();	
 			void ClearVerificationData();
-			bool IsPeriodStationVerified(std::string period_name, std::string station_uid);
-			/*
-			 *	Fix bad tasks based on ids from bad_tasks_
-			 */
+			bool IsPeriodStationVerified(std::string period_name, std::string station_uid);			
 			bool FixTasks();
-			/*
-			 *	Load data from database (storage & aggregate)
-			 */
-			void FetchAvailableData();
-			void ClearAvailableData();
+      void FetchAvailableData();
+      void ClearAvailableData();								
+      int FindAvailableTask(std::string period_name, std::string station_uid);
+      bool CreateMissingTask(std::string period_name, std::string station_uid);
+      bool DeleteUselessTask(std::string period_name, std::string station_uid);				
 
-			int FindAvailableTask(std::string period_name, std::string station_uid);
-
-			bool CreateMissingTask(std::string period_name, std::string station_uid);
-			bool DeleteUselessTask(std::string period_name, std::string station_uid);
-			
-			void Init();
-			void Clear();
-
-			// available data
+			// Available data
 			std::vector<Stormy::Data::Station> available_stations_;
 			std::vector<Stormy::Data::Metrics> available_metrics_;
 			std::vector<entity::Task> available_tasks_;
 			std::vector<entity::Period> available_periods_;
 
-			// verification data
+			// Verification data
 			std::multimap<BadTaskReason, 
 				std::pair<std::string, std::string>> bad_tasks_reason_;
 			std::vector<std::pair<std::string, std::string>> verified_period_station_;
 
 			Poco::Logger& logger_;
 
-			// temp handler
+			// Temporary handler
 			Stormy::DBStorage& storage_;
 		};
 	}

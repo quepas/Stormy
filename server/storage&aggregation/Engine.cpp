@@ -12,11 +12,11 @@ using std::string;
 using std::make_pair;
 
 namespace stormy {
-	namespace aggregate {	
+	namespace aggregate {
 
 Engine::Engine( Stormy::DBStorage& storage )
 	:	storage_(storage), logger_(Logger::get("aggregation"))
-{	
+{
 }
 
 Engine::~Engine()
@@ -41,7 +41,7 @@ void Engine::Stop()
 
 // ~~ private ~~
 void Engine::Init()
-{	
+{
 	FetchAvailableData();
 
 	// !DEBUG
@@ -50,13 +50,13 @@ void Engine::Init()
 	std::cout << "Tasks: " << available_tasks_.size() << std::endl;
 	std::cout << "Periods: " << available_periods_.size() << std::endl;
 	// !~~
-	
+
 	if (!VerifyTasks()) {
     logger_.warning("[aggregate::Engine] Some tasks are invalid. Fixing...");
 		if(!FixTasks()) {
 			logger_.error("[aggregate::Engine] Error while fixing invalid tasks.");
 		}
-		FetchAvailableData();
+		FetchAvailableData();    
 	}
 }
 
@@ -67,30 +67,30 @@ bool Engine::VerifyTasks()
   int count = 0;
 	// check tasks for existence
 	for (auto period_it = available_periods_.begin(); period_it != available_periods_.end(); ++period_it) {
-    string period_name = period_it->name;		
+    string period_name = period_it->name;
 
-		for (auto station_it = available_stations_.begin(); station_it != available_stations_.end(); ++station_it) {      
+		for (auto station_it = available_stations_.begin(); station_it != available_stations_.end(); ++station_it) {
       string station_uid = station_it->uid;
 
 			verified_period_station_.push_back(make_pair(period_name, station_uid));
 			if(FindAvailableTask(period_name, station_uid) == -1) {
         ++count;
 				bad_tasks_reason_.insert(
-					make_pair(NONEEXISTENT, make_pair(period_name, station_uid)));				
+					make_pair(MISSING, make_pair(period_name, station_uid)));
 			}
 		}
-	}  
+	}
   if(count > 0)
-    logger_.warning("[aggregate::Engine] Number of NONEEXISTENT task: " + NumberFormatter::format(count));
-	// check tasks for useless	
+    logger_.warning("[aggregate::Engine] Number of MISSING task: " + NumberFormatter::format(count));
+	// check tasks for useless
   count = 0;
 	for (auto task_it = available_tasks_.begin(); task_it != available_tasks_.end(); ++task_it) {
 		if(!IsPeriodStationVerified(task_it->period_name, task_it->station_uid)) {
       ++count;
       bad_tasks_reason_.insert(
         make_pair(USELESS, make_pair(task_it->period_name, task_it->station_uid)));
-    }			
-	}	
+    }
+	}
   if(count > 0)
     logger_.warning("[aggregate::Engine] Number of USELESS task: " + count);
 	return bad_tasks_reason_.size() == 0;
@@ -117,20 +117,21 @@ bool Engine::FixTasks()
 		string period_name = it->second.first, station_uid = it->second.second;
 
 		switch (it->first) {
-		case NONEEXISTENT:
-			logger_.warning("[aggregate::Engine] Creating task for \'" + 
+		case MISSING:
+			logger_.warning("[aggregate::Engine] Creating missing task for \'" +
         period_name + "\' period and station \'" + station_uid);
       if(!CreateMissingTask(period_name, station_uid))
 				return false;
 			break;
 		case USELESS:
-			logger_.warning("[aggregate::Engine] Deleting useless task for \'" + 
+			logger_.warning("[aggregate::Engine] Deleting useless task for \'" +
         period_name + "\' period and station \'" + station_uid);
       if(!DeleteUselessTask(period_name, station_uid))
 				return false;
 			break;
 		}
 	}
+  ClearVerificationData();
 	return true;
 }
 
@@ -153,7 +154,7 @@ void Engine::ClearAvailableData()
 
 int Engine::FindAvailableTask( std::string period_name, std::string station_uid )
 {
-	for (int i = 0; i < available_tasks_.size(); ++i) {		
+	for (int i = 0; i < available_tasks_.size(); ++i) {
 		if(available_tasks_[i].period_name == period_name &&
 				available_tasks_[i].station_uid == station_uid)
 			return i;
