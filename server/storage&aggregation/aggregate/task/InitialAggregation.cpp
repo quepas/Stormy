@@ -13,14 +13,17 @@ namespace stormy {
   namespace aggregate {
     namespace task {
 
-InitialAggregation::InitialAggregation( entity::Task task_data )
-  : BaseTask(task_data)
+InitialAggregation::InitialAggregation(entity::Task task_data, Scheduler* scheduler)
+  : BaseTask(task_data),
+    scheduler_(scheduler)
 {
 }
 
 InitialAggregation::~InitialAggregation()
 {
-
+  logger_.information("[aggregate::InitialAggregation#" + 
+    NumberFormatter::format(task_entity_.id) + 
+    "] Has died.");
 }
 
 void InitialAggregation::run()
@@ -31,6 +34,11 @@ void InitialAggregation::run()
   logger_.information("[aggregate::InitialAggregation#" + 
     NumberFormatter::format(task_entity_.id) + 
     "] Running. Aggregated period [" + current_ts + " - ...]");
+
+  scheduler_->ScheduleAsRegularTask(task_entity_);
+
+  logger_.information("[aggregate::InitialAggregation#" + 
+    NumberFormatter::format(task_entity_.id) + "] Task ended.");  
 }
 // ~~ stormy::aggregate::task::InitialAggregation
 }}}

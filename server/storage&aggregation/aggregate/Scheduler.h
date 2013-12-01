@@ -18,12 +18,14 @@ namespace stormy
 			~Scheduler();
 
       void Schedule(std::vector<entity::Task> task_entites);
+      void ScheduleAsInitialTask(entity::Task task);
+      void ScheduleAsRegularTask(entity::Task task);
       void Cancel();
       bool IsCancelled();
 
       static int GetTaskRefreshTime(std::string period_name);
     private:
-      void Clear();
+      void Clear();      
     
       std::vector<task::BaseTask*> scheduled_tasks_;
       Poco::Logger& logger_;

@@ -3,6 +3,7 @@
 #include <map>
 #include <Poco/NumberFormatter.h>
 #include "task/InitialAggregation.h"
+#include "task/RegularAggregation.h"
 
 using std::map;
 using std::string;
@@ -31,9 +32,7 @@ void Scheduler::Schedule( std::vector<entity::Task> task_entites )
     NumberFormatter::format(task_entites.size()) + " initial aggregation tasks.");
   cancelled_ = false;    
   for (auto it = task_entites.begin(); it != task_entites.end(); ++it) {     
-    task::InitialAggregation* new_task = new task::InitialAggregation(*it);
-    scheduled_tasks_.push_back(new_task);
-    schedule(new_task, 0, GetTaskRefreshTime(it->period_name) * 1000);
+    ScheduleAsInitialTask(*it);
   }
   logger_.information("[aggregate::Scheduler] Launchin regular aggregation tasks.");
 }
@@ -65,5 +64,18 @@ void Scheduler::Clear()
   scheduled_tasks_.clear();
 }
 
+void Scheduler::ScheduleAsInitialTask(entity::Task task_entity)
+{
+  auto scheduled_task = new task::InitialAggregation(task_entity, this);
+  scheduled_tasks_.push_back(scheduled_task);
+  schedule(scheduled_task, 0);
+}
+
+void Scheduler::ScheduleAsRegularTask(entity::Task task_entity)
+{
+  auto scheduled_task = new task::RegularAggregation(task_entity);
+  scheduled_tasks_.push_back(scheduled_task);
+  schedule(scheduled_task, 0, GetTaskRefreshTime(task_entity.period_name)*1000);
+}
 // ~~ stormy::aggregation::Scheduler
 }}

@@ -20,7 +20,6 @@ protected:
   entity::Task task_entity_;
   Poco::Timestamp task_ts;
   Poco::Logger& logger_;
-private:
 };
 // ~~ stormy::aggregate::task::BaseTask
 }}}

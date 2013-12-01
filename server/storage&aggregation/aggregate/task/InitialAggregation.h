@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseTask.h"
+#include "../Scheduler.h"
 
 namespace stormy {
   namespace aggregate {
@@ -9,11 +10,12 @@ namespace stormy {
 class InitialAggregation : public BaseTask
 {
 public:
-  InitialAggregation(entity::Task task_data);
+  InitialAggregation(entity::Task task_data, Scheduler* scheduler);
   ~InitialAggregation();
 
   void run();
 private:
+  Scheduler* scheduler_;
 };
 // ~~ stormy::aggregate::task::InitialAggregation
 }}}

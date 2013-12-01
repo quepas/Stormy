@@ -13,7 +13,6 @@ public:
   ~RegularAggregation();
 
   void run();
-private:
 };
 // ~~ stormy::aggregate::task::RegularAggregation
 }}}
