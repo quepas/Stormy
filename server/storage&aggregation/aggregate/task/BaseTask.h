@@ -15,7 +15,7 @@ public:
   explicit BaseTask(entity::Task task_data);
   virtual ~BaseTask();
 
-  void run() = 0;
+  void run() override = 0;
 protected:
   entity::Task task_entity_;
   Poco::Timestamp task_ts;

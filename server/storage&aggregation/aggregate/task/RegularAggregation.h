@@ -12,7 +12,7 @@ public:
   explicit RegularAggregation(entity::Task task_data);
   ~RegularAggregation();
 
-  void run();
+  void run() override;
 };
 // ~~ stormy::aggregate::task::RegularAggregation
 }}}

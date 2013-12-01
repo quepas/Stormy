@@ -13,7 +13,7 @@ public:
   InitialAggregation(entity::Task task_data, Scheduler* scheduler);
   ~InitialAggregation();
 
-  void run();
+  void run() override;
 private:
   Scheduler* scheduler_;
 };
