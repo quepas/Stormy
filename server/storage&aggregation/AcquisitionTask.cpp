@@ -60,7 +60,7 @@ void AcquistionTask::run()
 				host, port, station -> uid);
 		}
 		measurementCounter += measurements.size();
-		dbStorage -> insertMeasurements(measurements);		
+		dbStorage -> InsertMeasurements(measurements);		
 		measurements.clear();
 	});
 	cout << "[AcquisitionTask] Fetched " << measurementCounter 

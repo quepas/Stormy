@@ -90,7 +90,7 @@ uint32 DBStorage::getStationIdByUID( string uid )
 }
 
 
-bool DBStorage::insertMeasurements( const MeasurementPtrVector& measurements )
+bool DBStorage::InsertMeasurements( const MeasurementPtrVector& measurements )
 {
 	if(!measurements.empty()) {
 		TRY		
@@ -341,7 +341,7 @@ bool DBStorage::DeleteTask( int id )
 	return false;
 }
 
-bool Stormy::DBStorage::DeleteTask( std::string period_name, std::string station_uid )
+bool Stormy::DBStorage::DeleteTask(std::string period_name, std::string station_uid)
 {
 	TRY
 	sql << "DELETE FROM aggregate_task "
@@ -353,7 +353,22 @@ bool Stormy::DBStorage::DeleteTask( std::string period_name, std::string station
 	return false;
 }
 
-bool DBStorage::CreateTask( string period_name, string station_uid )
+bool DBStorage::UpdateStationLastUpdate(string station_uid, tm timestamp)
+{
+  //timestamp.
+}
+
+tm DBStorage::GetStationLastUpdate(string station_uid)
+{
+  time_t time = 0;
+  TRY
+  sql << "SELECT last_update FROM station "
+    "WHERE uid = :uid", use(station_uid), into(time);
+  CATCH_MSG("[Storage] Exception at GetStationLastDataUpdate(station_uid):\n\t")
+  return *gmtime(&time);
+}
+
+bool DBStorage::CreateTask(string period_name, string station_uid)
 {
 	TRY
 	sql << "INSERT INTO aggregate_task "

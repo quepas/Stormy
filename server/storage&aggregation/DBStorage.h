@@ -31,6 +31,13 @@ namespace Stormy
 			bool DeleteTask(std::string period_name, std::string station_uid);
 			bool CreateTask(std::string period_name, std::string station_uid);
 
+      bool UpdateStationLastUpdate(std::string station_uid, std::tm timestamp);
+      std::tm GetStationLastUpdate(std::string station_uid);
+
+      // TODO: refactor this
+      bool InsertMeasurements(
+        const MeasurementPtrVector& measurements);
+
 			// stations					 
 			void insertStation(StationPtr station);
 			void insertStations(const StationPtrVector& stations);
@@ -43,8 +50,7 @@ namespace Stormy
 			uint32 countStation();
 
 			// measurements
-			bool insertMeasurements(
-				const MeasurementPtrVector& measurements);
+			
 			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);
 			Poco::Timestamp findNewestMeasureTimeFromStation(uint32 id);
 			Poco::Timestamp findOldestMeasureTimeByStationUID(uint32 id);

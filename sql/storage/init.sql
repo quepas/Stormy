@@ -73,3 +73,9 @@ INSERT INTO aggregate_operation VALUES('mean', 'mean(x)', 'mean()');
 INSERT INTO aggregate_period VALUES('hourly', '1 hour'::interval);
 --INSERT INTO aggregate_period VALUES('daily', '1 day'::interval);
 --INSERT INTO aggregate_period VALUES('monthly', '1 month'::interval);
+
+
+-- test data --
+-- station
+INSERT INTO station VALUES('uid#1', 'Station#1', 'http://station1.pl', 1, to_timestamp(0));
+--
