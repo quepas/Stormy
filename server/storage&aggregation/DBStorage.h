@@ -47,15 +47,12 @@ namespace Stormy
 			void insertStations(const StationPtrVector& stations);
 			void clearAllStation();
 			bool existsStationByUID(std::string uid);
-			Data::Station* getStationByUID(std::string uid);
-			std::string getStationName(uint32 id);
+			Data::Station* getStationByUID(std::string uid);			
 			uint32 getStationIdByUID(std::string uid);			
 			uint32 countStation();
 
-			// measurements
-			
-			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);
-			//Poco::Timestamp findNewestMeasureTimeFromStation(uint32 id);
+			// measurements			
+			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);			
 			Poco::Timestamp findOldestMeasureTimeByStationUID(std::string uid);
 			bool existsAnyMeasurementFromStation(std::string uid);
 			ulong countMeasurementFromStation(std::string uid);

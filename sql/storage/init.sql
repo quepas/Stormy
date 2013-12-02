@@ -13,7 +13,8 @@ CREATE TABLE station (
 	url text,
 	refresh_time integer,
 	last_update timestamp,
-	PRIMARY KEY(uid)
+	PRIMARY KEY(uid),
+	UNIQUE(uid)
 );
 
 CREATE TABLE metrics (

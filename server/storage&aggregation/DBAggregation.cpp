@@ -85,10 +85,9 @@ uint32 DBAggregation::InsertTask(string station_uid, AggregationSetting aggregat
 	uint32 id = 0;
 	TRY
 	sql << "INSERT INTO aggregate_task "
-		"(station_uid, period_name, refresh, current_ts) "
-		"VALUES(:station_uid, :period_name, :refresh, to_timestamp(0)) RETURNING id",
-		use(station_uid), use(aggregation.name),
-		use(aggregation.taskRefresh), into(id);
+		"(station_uid, period_name, current_ts) "
+		"VALUES(:station_uid, :period_name, to_timestamp(0)) RETURNING id",
+		use(station_uid), use(aggregation.name), into(id);
 	CATCH_MSG("[AggregationDB] insertTask(): ")
 	return id;
 }

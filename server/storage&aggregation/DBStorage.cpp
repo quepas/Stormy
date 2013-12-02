@@ -61,7 +61,7 @@ Station* DBStorage::getStationByUID( string uid )
 {
 	Station* result = new Station();
 	TRY
-	sql << "SELECT uid, name, url, refresh FROM station WHERE uid = :uid",
+	sql << "SELECT uid, name, url, refresh_time FROM station WHERE uid = :uid",
 		into(result -> uid), into(result -> name), into(result -> url),
 		into(result -> refresh_time), use(uid);
 	CATCH_MSG("[StorageDB] getStationByUID(): ")
@@ -69,13 +69,13 @@ Station* DBStorage::getStationByUID( string uid )
 }
 
 bool DBStorage::existsStationByUID( string uid )
-{
-	unsigned int count = 0;
+{	
+  int count = 0;
 	TRY
-	sql << "SELECT count(*) FROM station WHERE uid = :uid",
-		into(count), use(uid);
-	CATCH_MSG("[StorageDB] existsStationByUID(): ")
-	return count > 0;
+  sql << "SELECT count(*) FROM station WHERE uid = :uid",
+    into(count), use(uid);
+	CATCH_MSG("[StorageDB] existsStationByUID(): ")	
+  return count > 0;
 }
 
 
@@ -96,23 +96,23 @@ bool DBStorage::InsertMeasurements( const MeasurementPtrVector& measurements )
 		TRY		
 		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
 			string metricsCode = (*it) -> metrics -> code;
-			metricsCode = existsMetricsByCode(metricsCode) ? metricsCode : "unknown";
-      string station_uid = (*it)->station->uid;
-			//uint32 stationId = getStationIdByUID(station_uid);
-
-      time_t current_ts = (*it) -> timestamp.epochMicroseconds();
-			sql << "INSERT INTO measurement(code, value_text, station_uid, timestamp)"
-				"values(:code, :value_text, :station_uid, to_timestamp(:timestamp))", 
-				use(metricsCode),
-				use(boost::any_cast<std::string>((*it) -> value)), 
-				use(station_uid),
-				use(current_ts);
+			if(existsMetricsByCode(metricsCode)) {
+        string station_uid = (*it)->station->uid;			
+        time_t current_ts = (*it) -> timestamp.epochMicroseconds();
+			  sql << "INSERT INTO measurement(code, value_text, station_uid, timestamp)"
+				  "values(:code, :value_text, :station_uid, to_timestamp(:timestamp))", 
+				  use(metricsCode),
+				  use(boost::any_cast<std::string>((*it) -> value)), 
+				  use(station_uid),
+				  use(current_ts);
       
-      auto station_last_update = &GetStationLastUpdate(station_uid);
-      if (current_ts > mktime(station_last_update)) {
-        cout << "Newer measure time for station uid: " << station_uid << endl;
-        cout << "\tInsertet data time: " << asctime(gmtime(&current_ts)) << endl;
-        cout << "\tStation last update: " << asctime(station_last_update) << endl;
+        auto station_last_update = &GetStationLastUpdate(station_uid);
+        if (current_ts > mktime(station_last_update)) {          
+          //cout << "Newer measure time for station uid: " << station_uid << endl;
+          //cout << "\tInsertet data time: " << asctime(gmtime(&current_ts)) << endl;
+          UpdateStationLastUpdate(station_uid, *gmtime(&current_ts));
+          //cout << "\tStation last update: " << asctime(station_last_update) << endl;
+        }
       }
 		}
 		return true;
@@ -120,21 +120,6 @@ bool DBStorage::InsertMeasurements( const MeasurementPtrVector& measurements )
 	}	
 	return false;
 }
-/*
-Timestamp DBStorage::findNewestMeasureTimeFromStation( uint32 id )
-{
-	ulong time = 0;
-	if(countMeasurementFromStation(id) > 0) {
-		TRY
-		// TODO: fix time zone
-		sql << "SELECT EXTRACT(EPOCH FROM ("
-			"SELECT max(timestamp) FROM measurement "
-			"WHERE station = :id) - interval '1 hour')",
-			into(time), use(id);
-		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
-	}
-	return Timestamp(time);
-}*/
 
 Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 {	
@@ -144,7 +129,7 @@ Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 		// TODO: fix time zone
 		sql << "SELECT EXTRACT(EPOCH FROM ("
 			"SELECT max(timestamp) FROM measurement WHERE "
-			"station = (SELECT id FROM station WHERE uid = :uid)) - interval '1 hour')",
+			"station_uid = :uid) - interval '1 hour')",
 			into(time), use(uid);
 		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
 	}
@@ -199,7 +184,7 @@ bool DBStorage::existsMetricsByCode( const string& code )
 	TRY
 	sql << "SELECT count(*) FROM metrics WHERE code = :code",
 		into(count), use(code);
-	CATCH_MSG("[StorageDB] existsStationByUID(): ")
+	CATCH_MSG("[StorageDB] existsMetricsByCode(): ")
 	return count > 0;
 }
 
@@ -208,7 +193,7 @@ bool DBStorage::existsAnyMeasurementFromStation( string uid )
 	uint32 count = 0;
 	TRY
 	sql << "SELECT count(*) FROM measurement WHERE "
-		"station = (SELECT id FROM station WHERE uid = :uid)",
+		"station_uid = :uid",
 		into(count), use(uid);
 	CATCH_MSG("[StorageDB] existsAnyMeasurementFromStation(): ")
 	return count > 0;
@@ -230,16 +215,6 @@ uint32 DBStorage::countStation()
 	sql << "SELECT count(*) FROM station", into(count);
 	CATCH_MSG("[StorageDB] countStation(): ")
 	return count;
-}
-
-string DBStorage::getStationName( uint32 id )
-{
-	string result;
-	TRY
-	sql << "SELECT name FROM station WHERE id = :id",
-		use(id), into(result);
-	CATCH_MSG("[StorageDB] getStationName(): ")
-	return result;
 }
 
 ulong DBStorage::countMeasurementFromStation(string uid)
@@ -385,8 +360,8 @@ tm DBStorage::GetStationLastUpdate(string station_uid)
 {
   time_t time = 0;
   TRY
-  sql << "SELECT last_update FROM station "
-    "WHERE uid = :uid", use(station_uid), into(time);
+  sql << "SELECT EXTRACT(EPOCH FROM (SELECT last_update FROM station "
+    "WHERE uid = :uid))", use(station_uid), into(time);
   CATCH_MSG("[Storage] Exception at GetStationLastDataUpdate(station_uid):\n\t")
   return *gmtime(&time);
 }
