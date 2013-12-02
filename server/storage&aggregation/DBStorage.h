@@ -34,6 +34,10 @@ namespace Stormy
       bool UpdateStationLastUpdate(std::string station_uid, std::tm timestamp);
       std::tm GetStationLastUpdate(std::string station_uid);
 
+      // station other methods
+      std::vector<std::string> GetStationUIDs();
+      std::string GetStationName(std::string uid);
+
       // TODO: refactor this
       bool InsertMeasurements(
         const MeasurementPtrVector& measurements);
@@ -45,17 +49,16 @@ namespace Stormy
 			bool existsStationByUID(std::string uid);
 			Data::Station* getStationByUID(std::string uid);
 			std::string getStationName(uint32 id);
-			uint32 getStationIdByUID(std::string uid);
-			std::vector<uint32> getStationIds();
+			uint32 getStationIdByUID(std::string uid);			
 			uint32 countStation();
 
 			// measurements
 			
 			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);
-			Poco::Timestamp findNewestMeasureTimeFromStation(uint32 id);
-			Poco::Timestamp findOldestMeasureTimeByStationUID(uint32 id);
+			//Poco::Timestamp findNewestMeasureTimeFromStation(uint32 id);
+			Poco::Timestamp findOldestMeasureTimeByStationUID(std::string uid);
 			bool existsAnyMeasurementFromStation(std::string uid);
-			ulong countMeasurementFromStation(uint32 id);
+			ulong countMeasurementFromStation(std::string uid);
 			uint32 countAllMeasurements();
 
 			// metrics

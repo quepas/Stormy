@@ -33,8 +33,8 @@ void DBStorage::insertStation( StationPtr station )
 {
 	if(station) {
 		TRY
-		sql << "INSERT INTO station(uid, name, url, refresh)"
-			"values(:uid, :name, :url, :refresh)",
+		sql << "INSERT INTO station(uid, name, url, refresh_time, last_update)"
+			"values(:uid, :name, :url, :refresh_time, to_timestamp(0))",
 			use(station -> uid), use(station -> name), 
 			use(station -> url), use(station -> refresh_time);
 		CATCH_MSG("[StorageDB] insertStation(): ")		
@@ -95,23 +95,32 @@ bool DBStorage::InsertMeasurements( const MeasurementPtrVector& measurements )
 	if(!measurements.empty()) {
 		TRY		
 		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
-			std::string metricsCode = (*it) -> metrics -> code;
+			string metricsCode = (*it) -> metrics -> code;
 			metricsCode = existsMetricsByCode(metricsCode) ? metricsCode : "unknown";
-			uint32 stationId = getStationIdByUID((*it) -> station -> uid);
+      string station_uid = (*it)->station->uid;
+			//uint32 stationId = getStationIdByUID(station_uid);
 
-			sql << "INSERT INTO measurement(code, value_text, station, timestamp)"
-				"values(:code, :value_text, :station, to_timestamp(:timestamp))", 
+      time_t current_ts = (*it) -> timestamp.epochMicroseconds();
+			sql << "INSERT INTO measurement(code, value_text, station_uid, timestamp)"
+				"values(:code, :value_text, :station_uid, to_timestamp(:timestamp))", 
 				use(metricsCode),
 				use(boost::any_cast<std::string>((*it) -> value)), 
-				use(stationId),
-				use((*it) -> timestamp.epochMicroseconds());
+				use(station_uid),
+				use(current_ts);
+      
+      auto station_last_update = &GetStationLastUpdate(station_uid);
+      if (current_ts > mktime(station_last_update)) {
+        cout << "Newer measure time for station uid: " << station_uid << endl;
+        cout << "\tInsertet data time: " << asctime(gmtime(&current_ts)) << endl;
+        cout << "\tStation last update: " << asctime(station_last_update) << endl;
+      }
 		}
 		return true;
 		CATCH_MSG("[StorageDB] insertMeasurements(): ")			
 	}	
 	return false;
 }
-
+/*
 Timestamp DBStorage::findNewestMeasureTimeFromStation( uint32 id )
 {
 	ulong time = 0;
@@ -125,7 +134,7 @@ Timestamp DBStorage::findNewestMeasureTimeFromStation( uint32 id )
 		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
 	}
 	return Timestamp(time);
-}
+}*/
 
 Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 {	
@@ -142,16 +151,16 @@ Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 	return Timestamp(time);
 }
 
-Timestamp DBStorage::findOldestMeasureTimeByStationUID( uint32 id )
+Timestamp DBStorage::findOldestMeasureTimeByStationUID( string uid )
 {
 	ulong time = 0;
-	if(countMeasurementFromStation(id) > 0) {
+	if(countMeasurementFromStation(uid) > 0) {
 		TRY		
 		// TODO: fix acquisition 'time zone' time respect
 		sql << "SELECT EXTRACT(EPOCH FROM ("
 			"SELECT min(timestamp) FROM measurement "
-			"WHERE station = :id) - interval '1 hour')",
-			into(time), use(id);
+			"WHERE station_uid = :station_uid) - interval '1 hour')",
+			into(time), use(uid);
 		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
 	}
 	return Timestamp(time);
@@ -214,18 +223,6 @@ uint32 DBStorage::countAllMeasurements()
 	return count;
 }
 
-vector<uint32> DBStorage::getStationIds()
-{
-	uint16 count = countStation();
-	vector<uint32> result(count);
-	if(count > 0) {
-		TRY
-		sql << "SELECT id FROM station", into(result);
-		CATCH_MSG("[StorageDB] getStationIds()")
-	}	
-	return result;
-}
-
 uint32 DBStorage::countStation()
 {
 	uint32 count = 0;
@@ -245,12 +242,12 @@ string DBStorage::getStationName( uint32 id )
 	return result;
 }
 
-ulong DBStorage::countMeasurementFromStation( uint32 id )
+ulong DBStorage::countMeasurementFromStation(string uid)
 {
 	ulong count = 0;
 	TRY
 	sql << "SELECT count(*) FROM measurement "
-		"WHERE id = :id", use(id), into(count);
+		"WHERE uid = :uid", use(uid), into(count);
 	CATCH_MSG("[StorageDB] countMeasurementFromStation() ")
 	return count;
 }
@@ -353,9 +350,35 @@ bool Stormy::DBStorage::DeleteTask(std::string period_name, std::string station_
 	return false;
 }
 
+std::vector<std::string> Stormy::DBStorage::GetStationUIDs()
+{
+  auto station_uids = vector<string>();
+  TRY
+  rowset<row> rs = (sql.prepare << "SELECT uid FROM station");
+  for (auto it = rs.begin(); it != rs.end(); ++it) {
+    station_uids.push_back(it->get<string>("uid"));
+  }
+  CATCH_MSG("[Storage] GetStationUIDs():\n\t")
+  return station_uids;
+}
+
+std::string Stormy::DBStorage::GetStationName( std::string uid )
+{
+  string result;
+  TRY
+  sql << "SELECT name FROM station WHERE uid = :uid", 
+    use(uid), into(result);
+  CATCH_MSG("[Storage] GetStationName():\n\t")
+  return result;
+}
+
 bool DBStorage::UpdateStationLastUpdate(string station_uid, tm timestamp)
 {
-  //timestamp.
+  TRY
+  sql << "UPDATE station SET last_update = :last_update", use(timestamp);
+  return true;
+  CATCH_MSG("[Storage] UpdateStationLastUpdate(station_uid, timestamp):\n\t")
+  return false;
 }
 
 tm DBStorage::GetStationLastUpdate(string station_uid)

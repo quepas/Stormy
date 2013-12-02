@@ -17,6 +17,11 @@ namespace Stormy
 			DBAggregation(Database* db, DBStorage* _dbStorage);
 			~DBAggregation();
 
+      // new style
+      uint32 GetTaskId(std::string station_uid, std::string period_name);
+      std::string GetStationUIDFromTask(uint32 id);
+
+      //
 			bool insertPeriod(AggregationSetting setting);
 			bool insertPeriods(std::vector<AggregationSetting> settings);
 			std::vector<std::string> getPeriodNames();
@@ -24,11 +29,11 @@ namespace Stormy
 			uint32 countPeriod();
 			std::string getPeriodCorrectInterval(std::string name);
 						
-			uint32 createOrRefreshTask(uint32 station_id, AggregationSetting aggregation);			
+			uint32 createOrRefreshTask(std::string station_uid, AggregationSetting aggregation);			
 			Poco::Timestamp taskCurrentTime(uint32 id);
-			bool taskExsist(uint32 station_id, AggregationSetting aggregation);
-			uint32 getTaskId(uint32 station_id, std::string period_name);
-			uint32 getStationIdFromTask(uint32 id);
+			bool taskExsist(std::string station_uid, AggregationSetting aggregation);
+			
+			
 			bool setTaskTime(uint32 id, Poco::Timestamp time);			
 			bool increaseTaskTimeBySeconds(uint32 id, ulong time);			
 			
@@ -36,9 +41,10 @@ namespace Stormy
 				return dbStorage;
 			}
 		private:
-			uint32 insertTask(uint32 station_id, AggregationSetting aggregation);
+      // new style
+			uint32 InsertTask(std::string station_uid, AggregationSetting aggregation);
 
-			void connect();
+			void Connect();
 
 			Database* dbAggregation;
 			DBStorage* dbStorage;

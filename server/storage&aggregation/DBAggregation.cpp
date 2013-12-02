@@ -16,7 +16,7 @@ DBAggregation::DBAggregation( Database* _dbAggregation, DBStorage* _dbStorage )
 	:	dbAggregation(_dbAggregation),
 		dbStorage(_dbStorage)
 {
-	connect();
+	Connect();
 }
 
 DBAggregation::~DBAggregation()
@@ -24,7 +24,7 @@ DBAggregation::~DBAggregation()
 
 }
 
-void DBAggregation::connect()
+void DBAggregation::Connect()
 {
 	TRY
 	sql.open(postgresql, dbAggregation -> asConnectionString());
@@ -55,59 +55,59 @@ bool DBAggregation::insertPeriods( vector<AggregationSetting> settings )
 }
 
 
-bool DBAggregation::taskExsist( uint32 station_id, AggregationSetting aggregation )
+bool DBAggregation::taskExsist( string station_uid, AggregationSetting aggregation )
 {
 	uint16 count = 0;
 	TRY
 	sql << "SELECT count(*) FROM aggregate_task "
-		"WHERE station_id = :station_id "
+		"WHERE station_uid = :station_uid "
 		"AND period_name = :period_name ", 
-		into(count), use(station_id), use(aggregation.name);		
+		into(count), use(station_uid), use(aggregation.name);		
 	CATCH_MSG("[AggregationDB] taskExsist(): ")
 	return count > 0;
 }
 
-uint32 DBAggregation::getTaskId( uint32 station_id, string period_name )
+uint32 DBAggregation::GetTaskId(string station_uid, string period_name)
 {
 	uint32 id = 0;
 	TRY
 	sql << "SELECT id FROM aggregate_task "
-		"WHERE station_id = :station_id "
+		"WHERE station_uid = :station_uid "
 		"AND period_name = :period_name "
 		"LIMIT 1",
-		use(station_id), use(period_name), into(id);
+		use(station_uid), use(period_name), into(id);
 	CATCH_MSG("[AggregationDB] getTaskId(): ")
 	return id;
 }
 
-uint32 DBAggregation::insertTask( uint32 station_id, AggregationSetting aggregation )
+uint32 DBAggregation::InsertTask(string station_uid, AggregationSetting aggregation)
 {
 	uint32 id = 0;
 	TRY
 	sql << "INSERT INTO aggregate_task "
-		"(station_id, period_name, refresh, current_ts) "
-		"VALUES(:station_id, :period_name, :refresh, to_timestamp(0)) RETURNING id",
-		use(station_id), use(aggregation.name),
+		"(station_uid, period_name, refresh, current_ts) "
+		"VALUES(:station_uid, :period_name, :refresh, to_timestamp(0)) RETURNING id",
+		use(station_uid), use(aggregation.name),
 		use(aggregation.taskRefresh), into(id);
 	CATCH_MSG("[AggregationDB] insertTask(): ")
 	return id;
 }
 
-uint32 DBAggregation::createOrRefreshTask( uint32 station_id, AggregationSetting aggregation )
+uint32 DBAggregation::createOrRefreshTask(string station_uid, AggregationSetting aggregation)
 {
 	uint32 task_id = 0;
-	if(!taskExsist(station_id, aggregation)) {
-		task_id = insertTask(station_id, aggregation);
+	if(!taskExsist(station_uid, aggregation)) {
+		task_id = InsertTask(station_uid, aggregation);
 	} else {
-		task_id = getTaskId(station_id, aggregation.name);		
+		task_id = GetTaskId(station_uid, aggregation.name);		
 	}
 	// task never run over some data
 	if(3600 == taskCurrentTime(task_id).epochMicroseconds()) {		
 		if(getStorageDatabase() -> 
-			countMeasurementFromStation(station_id) > 0) {
+			countMeasurementFromStation(station_uid) > 0) {
 				// TODO: count proper start time for other intervals
 				setTaskTime(task_id, getStorageDatabase() -> 
-					findOldestMeasureTimeByStationUID(station_id));
+					findOldestMeasureTimeByStationUID(station_uid));
 		}
 	}	
 	return task_id;
@@ -196,13 +196,13 @@ bool DBAggregation::increaseTaskTimeBySeconds( uint32 id, ulong time )
 	return false;
 }
 
-uint32 Stormy::DBAggregation::getStationIdFromTask( uint32 id )
+string Stormy::DBAggregation::GetStationUIDFromTask(uint32 id)
 {
-	uint32 station_id = 0;
+	string station_uid = 0;
 	TRY
-	sql << "SELECT station_id FROM aggregate_task "
-		"WHERE id = :id", use(id), into(station_id);
+	sql << "SELECT station_uid FROM aggregate_task "
+		"WHERE id = :id", use(id), into(station_uid);
 	CATCH_MSG("[AggregationDB] getStationIdFromTask(): ")
-	return station_id;
+	return station_uid;
 }
 

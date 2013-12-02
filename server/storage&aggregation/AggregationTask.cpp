@@ -32,7 +32,7 @@ void AggregationTask::run()
 		getPeriodAsSecond(setting.name);
 	Timestamp currentTime = aggregation -> taskCurrentTime(taskId);
 	Timestamp newestMeasure = aggregation -> getStorageDatabase() ->
-		findNewestMeasureTimeFromStation(aggregation -> getStationIdFromTask(taskId));
+		findNewestMeasureTimeByStationUID(aggregation -> GetStationUIDFromTask(taskId));
 
 	if(newestMeasure.epochMicroseconds() > 
 		(currentTime.epochMicroseconds() + periodInSecond)) {
