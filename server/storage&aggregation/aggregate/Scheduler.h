@@ -5,7 +5,8 @@
 #include <Poco/Util/Timer.h> 
 
 #include "entity/Task.h"
-#include "task/BaseTask.h"
+#include "task/Base.h"
+#include "task/Factory.h"
 
 namespace stormy
 {
@@ -14,7 +15,7 @@ namespace stormy
 		class Scheduler : public Poco::Util::Timer
 		{
     public:
-			Scheduler();
+      explicit Scheduler(task::Factory& factory);			
 			~Scheduler();
 
       void Schedule(std::vector<entity::Task> task_entites);
@@ -27,7 +28,8 @@ namespace stormy
     private:
       void Clear();      
     
-      std::vector<task::BaseTask*> scheduled_tasks_;
+      std::vector<task::Base*> scheduled_tasks_;
+      task::Factory& factory_;
       Poco::Logger& logger_;
       bool cancelled_;
 		};

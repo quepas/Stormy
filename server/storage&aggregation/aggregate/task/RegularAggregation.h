@@ -1,12 +1,12 @@
 #pragma once
 
-#include "BaseTask.h"
+#include "Base.h"
 
 namespace stormy {
   namespace aggregate {
     namespace task {
 
-class RegularAggregation : public BaseTask
+class RegularAggregation : public Base
 {
 public:
   explicit RegularAggregation(entity::Task task_data);

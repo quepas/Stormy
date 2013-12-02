@@ -1,7 +1,6 @@
 #include <iostream>
 #include <Poco/Logger.h>
 #include <Poco/ConsoleChannel.h>
-#include <Poco/WindowsConsoleChannel.h>
 #include <Poco/AutoPtr.h>
 
 #include "AggregationConfig.h"
@@ -57,9 +56,8 @@ int main() {
 	aggregation.insertPeriods(aggregationCfg.getConfiguration());
 	AcquistionScheduler scheduler(&storage);
 	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
-	stormy::aggregate::Engine aggregation_engine(storage);
+	stormy::aggregate::Engine aggregation_engine(&storage, &aggregation);
 	aggregation_engine.Start(); 
-
-	getchar();
   
+	getchar();  
 }

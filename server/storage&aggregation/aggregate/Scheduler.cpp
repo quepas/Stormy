@@ -13,8 +13,9 @@ using Poco::NumberFormatter;
 namespace stormy {
   namespace aggregate {
 
-Scheduler::Scheduler()
+Scheduler::Scheduler(task::Factory& factory)
   : logger_(Logger::get("aggregation")),
+    factory_(factory),
     scheduled_tasks_(),    
     cancelled_(false)
 {
@@ -27,7 +28,8 @@ Scheduler::~Scheduler()
 }
 
 void Scheduler::Schedule( std::vector<entity::Task> task_entites )
-{  
+{    
+  factory_.SetInnerScheduler(this);
   logger_.information("[aggregate::Scheduler] Launching " + 
     NumberFormatter::format(task_entites.size()) + " initial aggregation tasks.");
   cancelled_ = false;    
@@ -42,7 +44,7 @@ void Scheduler::Cancel()
   cancel();
   cancelled_ = true;
   logger_.information("[aggregate::Schedule] Number of tasks cancelled: "
-    + NumberFormatter::format(scheduled_tasks_.size()));   
+    + NumberFormatter::format(scheduled_tasks_.size()));  
   Clear();
 }
 
@@ -65,15 +67,15 @@ void Scheduler::Clear()
 }
 
 void Scheduler::ScheduleAsInitialTask(entity::Task task_entity)
-{
-  auto scheduled_task = new task::InitialAggregation(task_entity, this);
+{  
+  auto scheduled_task = factory_.createDynamicTask(task::INITIAL, task_entity);
   scheduled_tasks_.push_back(scheduled_task);
   schedule(scheduled_task, 0);
 }
 
 void Scheduler::ScheduleAsRegularTask(entity::Task task_entity)
-{
-  auto scheduled_task = new task::RegularAggregation(task_entity);
+{  
+  auto scheduled_task = factory_.createDynamicTask(task::REGULAR, task_entity);
   scheduled_tasks_.push_back(scheduled_task);
   schedule(scheduled_task, 0, GetTaskRefreshTime(task_entity.period_name)*1000);
 }

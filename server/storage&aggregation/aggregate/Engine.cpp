@@ -13,12 +13,15 @@ using std::make_pair;
 
 namespace stormy {
 	namespace aggregate {
-
-Engine::Engine( Stormy::DBStorage& storage )
-	:	storage_(storage), 
-    logger_(Logger::get("aggregation")),
-    scheduler_()
+    
+Engine::Engine(Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation)
+  : logger_(Logger::get("aggregation")),
+    storage_(storage),
+    aggregation_(aggregation),
+    factory_(storage, aggregation),
+    scheduler_(factory_)
 {
+
 }
 
 Engine::~Engine()
@@ -122,7 +125,7 @@ void Engine::ClearVerificationData()
 bool Engine::IsPeriodStationVerified(std::string period_name, std::string station_uid)
 {
 	for (auto it = verified_period_station_.begin(); it != verified_period_station_.end(); ++it) {
-		if(it -> first == period_name && it -> second == station_uid)
+		if(it->first == period_name && it->second == station_uid)
 			return true;
 	}
 	return false;
@@ -155,10 +158,10 @@ bool Engine::FixTasks()
 void Engine::FetchAvailableData()
 {
 	ClearAvailableData();
-	available_stations_ = storage_.GetStations();
-	available_metrics_ = storage_.GetMetrics();
-	available_tasks_ = storage_.GetTasks();
-	available_periods_ = storage_.GetPeriods();
+	available_stations_ = storage_->GetStations();
+	available_metrics_ = storage_->GetMetrics();
+	available_tasks_ = storage_->GetTasks();
+	available_periods_ = storage_->GetPeriods();
 }
 
 void Engine::ClearAvailableData()
@@ -181,12 +184,12 @@ int Engine::FindAvailableTask( std::string period_name, std::string station_uid 
 
 bool Engine::CreateMissingTask( std::string period_name, std::string station_uid )
 {
-	return storage_.CreateTask(period_name, station_uid);
+	return storage_->CreateTask(period_name, station_uid);
 }
 
 bool Engine::DeleteUselessTask( std::string period_name, std::string station_uid )
 {
-	return storage_.DeleteTask(period_name, station_uid);
+	return storage_->DeleteTask(period_name, station_uid);
 }
 
 // ~~ stormy::aggregation::Engine

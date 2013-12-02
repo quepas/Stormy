@@ -2,24 +2,23 @@
 
 #include <Poco/Logger.h>
 #include <Poco/Util/TimerTask.h>
-#include <Poco/Timestamp.h>
 #include "../entity/Task.h"
 
 namespace stormy {
   namespace aggregate {
     namespace task {
 
-class BaseTask : public Poco::Util::TimerTask
+class Base : public Poco::Util::TimerTask
 {
 public:
-  explicit BaseTask(entity::Task task_data);
-  virtual ~BaseTask();
+  explicit Base(entity::Task task_data);
+  virtual ~Base();
 
-  void run() override = 0;
+  void run() = 0;
 protected:
   entity::Task task_entity_;
-  Poco::Timestamp task_ts;
+  //std::tm task_ts; TODO: make use of this
   Poco::Logger& logger_;
 };
-// ~~ stormy::aggregate::task::BaseTask
+// ~~ stormy::aggregate::task::Base
 }}}

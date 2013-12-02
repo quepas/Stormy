@@ -6,9 +6,11 @@
 #include "../../../common/data/Station.h"
 #include "../../../common/data/Metrics.h"
 #include "Scheduler.h"
+#include "task/Factory.h"
 #include "entity/Task.h"
 #include "entity/Period.h"
 #include "../DBStorage.h"
+#include "../DBAggregation.h"
 
 namespace stormy
 {
@@ -22,9 +24,9 @@ namespace stormy
     class Engine
 		{
 		public:
-			explicit Engine(Stormy::DBStorage& storage);
+      Engine(Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation);			
 			~Engine();
-		
+
 			void Start();
 			void Restart();
 			void Stop();
@@ -54,11 +56,12 @@ namespace stormy
 				std::pair<std::string, std::string>> bad_tasks_reason_;
 			std::vector<std::pair<std::string, std::string>> verified_period_station_;
 
+      task::Factory factory_;
       Scheduler scheduler_;
 			Poco::Logger& logger_;
-
-			// Temporary handler
-			Stormy::DBStorage& storage_;
+				
+      Stormy::DBStorage* storage_;
+      Stormy::DBAggregation* aggregation_;
 		};
 	}
 }

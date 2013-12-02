@@ -1,4 +1,4 @@
-#include "BaseTask.h"
+#include "Base.h"
 
 using Poco::Logger;
 
@@ -6,15 +6,15 @@ namespace stormy {
   namespace aggregate {
     namespace task {
 
-BaseTask::BaseTask(entity::Task task_data)
+Base::Base(entity::Task task_data)
   : logger_(Logger::get("aggregation")),
     task_entity_(task_data)
 {
 }
 
-BaseTask::~BaseTask()
+Base::~Base()
 {
 
 }
-// ~~ stormy::aggregate::task::BaseTask
+// ~~ stormy::aggregate::task::Base
 }}}

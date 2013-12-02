@@ -13,9 +13,9 @@ namespace stormy {
   namespace aggregate {
     namespace task {
 
-InitialAggregation::InitialAggregation(entity::Task task_data, Scheduler* scheduler)
-  : BaseTask(task_data),
-    scheduler_(scheduler)
+InitialAggregation::InitialAggregation(entity::Task task_data, Scheduler* inner_scheduler)
+  : Base(task_data),
+    inner_scheduler_(inner_scheduler)
 {
 }
 
@@ -35,7 +35,13 @@ void InitialAggregation::run()
     NumberFormatter::format(task_entity_.id) + 
     "] Running. Aggregated period [" + current_ts + " - ...]");
 
-  scheduler_->ScheduleAsRegularTask(task_entity_);
+  if (inner_scheduler_) {
+    inner_scheduler_->ScheduleAsRegularTask(task_entity_);
+  }
+  else {
+    logger_.warning("Inner scheduler is not set. "
+      "Couldn't create RegularAggregation task.");
+  }
 
   logger_.information("[aggregate::InitialAggregation#" + 
     NumberFormatter::format(task_entity_.id) + "] Task ended.");  
