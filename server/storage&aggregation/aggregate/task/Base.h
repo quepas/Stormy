@@ -25,6 +25,8 @@ protected:
 
   //std::tm task_ts; TODO: make use of this
   Poco::Logger& logger_;
+
+  std::string prepareHeader(std::string task_type);
 };
 // ~~ stormy::aggregate::task::Base
 }}}

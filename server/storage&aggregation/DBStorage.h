@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstdint>
 #include <soci.h>
 #include <Poco/Timestamp.h>
 
@@ -30,6 +31,7 @@ namespace Stormy
 			bool DeleteTask(int id);
 			bool DeleteTask(std::string period_name, std::string station_uid);
 			bool CreateTask(std::string period_name, std::string station_uid);
+      bool UpdateTaskCurrentTime(uint32_t id, std::tm timestamp);
 
       bool UpdateStationLastUpdate(std::string station_uid, std::tm timestamp);
       std::tm GetStationLastUpdate(std::string station_uid);
@@ -37,6 +39,9 @@ namespace Stormy
       // station other methods
       std::vector<std::string> GetStationUIDs();
       std::string GetStationName(std::string uid);
+
+      std::tm GetOldestStationMeasureTime(std::string uid);
+      int CountStationMeasures(std::string uid);
 
       // TODO: refactor this
       bool InsertMeasurements(

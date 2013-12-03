@@ -5,6 +5,7 @@
 #include <Poco/NumberFormatter.h>
 
 using std::string;
+using std::tm;
 using std::asctime;
 using Poco::Logger;
 using Poco::NumberFormatter;
@@ -23,8 +24,7 @@ InitialAggregation::InitialAggregation(entity::Task task_data,
 
 InitialAggregation::~InitialAggregation()
 {
-  logger_.information("[aggregate::InitialAggregation#" + 
-    NumberFormatter::format(task_entity_.id) + 
+  logger_.information(prepareHeader("InitialAggregation") + 
     "] Has died.");
 }
 
@@ -33,9 +33,26 @@ void InitialAggregation::run()
   string current_ts = asctime(&task_entity_.current_ts);
   current_ts.erase(current_ts.length()-1);  // Erase '\n' from end
 
-  logger_.information("[aggregate::InitialAggregation#" + 
-    NumberFormatter::format(task_entity_.id) + 
+  logger_.information(prepareHeader("InitialAggregation") + 
     "] Running. Aggregated period [" + current_ts + " - ...]");
+
+  // check if any measurements exists
+  if(storage_->CountStationMeasures(task_entity_.station_uid) > 0) {
+    // find oldest measure for station_uid
+    tm oldest_measure = storage_->
+      GetOldestStationMeasureTime(task_entity_.station_uid);
+
+    logger_.information(prepareHeader("InitialAggregation") +
+      "Oldest measure from " + asctime(&oldest_measure));
+
+    time_t current_task_t = mktime(&task_entity_.current_ts);
+    time_t oldest_measure_t = mktime(&oldest_measure);
+
+    if (current_task_t < oldest_measure_t) {
+      storage_->UpdateTaskCurrentTime(task_entity_.id, oldest_measure);
+      task_entity_.current_ts = oldest_measure;
+    }
+  }  
 
   if (inner_scheduler_) {
     inner_scheduler_->ScheduleAsRegularTask(task_entity_);
@@ -45,8 +62,8 @@ void InitialAggregation::run()
       "Couldn't create RegularAggregation task.");
   }
 
-  logger_.information("[aggregate::InitialAggregation#" + 
-    NumberFormatter::format(task_entity_.id) + "] Task ended.");  
+  logger_.information(prepareHeader("InitialAggregation") + 
+    "] Task ended.");  
 }
 // ~~ stormy::aggregate::task::InitialAggregation
 }}}

@@ -347,10 +347,42 @@ std::string Stormy::DBStorage::GetStationName( std::string uid )
   return result;
 }
 
+std::tm Stormy::DBStorage::GetOldestStationMeasureTime( std::string uid )
+{
+  time_t time = 0;
+  TRY
+  sql << "SELECT EXTRACT(EPOCH FROM "
+    "(SELECT min(timestamp) FROM measurement WHERE station_uid = :uid))",
+    use(uid), into(time);
+  CATCH_MSG("[Storage] GetOldestStationMeasureTime():\n\t")
+  return *gmtime(&time);
+}
+
+int Stormy::DBStorage::CountStationMeasures( std::string uid )
+{
+  int count = 0;
+  TRY
+  sql << "SELECT count(*) FROM measurement WHERE station_uid = :uid",
+    use(uid), into(count);
+  CATCH_MSG("[Storage] CountStationMeasures():\n\t")
+  return count;
+}
+
+bool Stormy::DBStorage::UpdateTaskCurrentTime(uint32_t id, std::tm timestamp)
+{
+  TRY
+  sql << "UPDATE aggregate_task SET current_ts = :timestamp "
+    "WHERE id = :id", use(timestamp), use(id);
+  return true;
+  CATCH_MSG("[Storage] UpdateTaskCurrentTime():\n\t")
+  return false;
+}
+
 bool DBStorage::UpdateStationLastUpdate(string station_uid, tm timestamp)
 {
   TRY
-  sql << "UPDATE station SET last_update = :last_update", use(timestamp);
+  sql << "UPDATE station SET last_update = :last_update "
+    "WHERE uid = :uid", use(timestamp), use(station_uid);
   return true;
   CATCH_MSG("[Storage] UpdateStationLastUpdate(station_uid, timestamp):\n\t")
   return false;
