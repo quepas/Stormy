@@ -24,10 +24,12 @@ Base* Factory::createDynamicTask( TaskType task_type, entity::Task task_entity )
 {
     switch (task_type) {
       case INITIAL: {
-        return new InitialAggregation(task_entity, inner_scheduler_);        
+        return new InitialAggregation(task_entity, 
+          database_storage_, database_aggregation_, inner_scheduler_);        
       }
       case REGULAR: {
-        return new RegularAggregation(task_entity);
+        return new RegularAggregation(task_entity, 
+          database_storage_, database_aggregation_);
       }      
     }
     return nullptr;

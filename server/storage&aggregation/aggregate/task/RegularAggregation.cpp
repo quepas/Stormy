@@ -13,9 +13,11 @@ namespace stormy {
   namespace aggregate {
     namespace task {
 
-RegularAggregation::RegularAggregation(entity::Task task_data)
-  : Base(task_data)
+RegularAggregation::RegularAggregation( entity::Task task_data, 
+  Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation )
+  : Base(task_data, storage, aggregation)
 {
+
 }
 
 RegularAggregation::~RegularAggregation()

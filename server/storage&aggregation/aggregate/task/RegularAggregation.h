@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Base.h"
+#include "../../DBStorage.h"
+#include "../../DBAggregation.h"
 
 namespace stormy {
   namespace aggregate {
@@ -9,7 +11,8 @@ namespace stormy {
 class RegularAggregation : public Base
 {
 public:
-  explicit RegularAggregation(entity::Task task_data);
+  RegularAggregation(entity::Task task_data, 
+    Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation);
   ~RegularAggregation();
 
   void run() override;
