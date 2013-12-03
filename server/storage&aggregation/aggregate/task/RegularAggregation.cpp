@@ -2,10 +2,13 @@
 
 #include <ctime>
 #include <string>
+#include <iostream>
 #include <Poco/NumberFormatter.h>
 
 using std::string;
 using std::asctime;
+using std::cout;
+using std::endl;
 using Poco::Logger;
 using Poco::NumberFormatter;
 
@@ -34,12 +37,26 @@ void RegularAggregation::run()
   time_t intreval = 3600*2 + current_time;
   tm interval_end_time = *gmtime(&intreval);
 
-  int count = storage_->GetStationMeasure(task_entity_.station_uid, "airTemperature", task_entity_.current_ts, interval_end_time).size();
+  // for all 'measurement code' get once, do on all operations
+  auto values = storage_->GetStationMeasure(task_entity_.station_uid, "airTemperature", task_entity_.current_ts, interval_end_time);
+  int count = values.size();
 
   logger_.information(prepareHeader("RegularAggregation") + 
     "] Running. Aggregated period [" + current_ts + " - "
     + asctime(&interval_end_time) + ". Number of samples: " + NumberFormatter::format(count));
-  //asctime(&storage_->CalculateAggregateEndTime(task_entity_.period_name, task_entity_.current_ts))
+  
+  // !DEBUG
+  string str_values = "[";
+  for (auto it = values.begin(); it != values.end(); ++it) {
+    str_values.append(*it);
+    str_values.append(", ");
+  }
+  if(values.size() > 0)
+    str_values.erase(str_values.length()-2, 2);
+  str_values.append("]");
+  cout << str_values << endl;
+  // ~!DEBUG
+
   logger_.information(prepareHeader("RegularAggregation") + 
     "] Task ended.");  
 }

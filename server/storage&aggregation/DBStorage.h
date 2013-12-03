@@ -24,8 +24,11 @@ namespace Stormy
 
 			// new style
 			std::vector<Data::Station> GetStations();
+      uint32_t CountStations();
+
 			std::vector<Data::Metrics> GetMetrics();
       std::vector<std::string> GetMetricsCodes();
+
 			std::vector<stormy::aggregate::entity::Task> GetTasks();
 			std::vector<stormy::aggregate::entity::Period> GetPeriods();	
 
@@ -59,9 +62,8 @@ namespace Stormy
 			void insertStations(const StationPtrVector& stations);
 			void clearAllStation();
 			bool existsStationByUID(std::string uid);
-			Data::Station* getStationByUID(std::string uid);			
-			uint32 getStationIdByUID(std::string uid);			
-			uint32 countStation();
+			Data::Station* getStationByUID(std::string uid);								
+      
 
 			// measurements			
 			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);			

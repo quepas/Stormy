@@ -10,7 +10,6 @@
 #include "DBStorage.h"
 #include "DBAggregation.h"
 #include "AcquisitionScheduler.h"
-#include "AggregationScheduler.h"
 #include "../../common/Utils.h"
 #include "../../common/data/Station.h"
 #include "aggregate/Engine.h"
@@ -32,7 +31,7 @@ int main() {
 	DBStorage storage(storageDBcfg.getConfiguration());
 	DBAggregation aggregation(aggregationDBcfg.getConfiguration(), &storage);
 	cout << "Measurements in storage: " << storage.countAllMeasurements() << endl;
-	cout << "Available stations: " << storage.countStation() << endl;
+	cout << "Available stations: " << storage.CountStations() << endl;
 
 	cout << "-------------------------------------------------------------"
 		"-------------------------------------------------------------"<< endl;
@@ -53,11 +52,11 @@ int main() {
 	cout << "\t" << aggregationDBcfg.getConfiguration()->toString() << endl;
 	cout << "-------------------------------------------------------------"
 		"-------------------------------------------------------------"<< endl;
-	aggregation.insertPeriods(aggregationCfg.getConfiguration());
+
 	AcquistionScheduler scheduler(&storage);
 	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
 	stormy::aggregate::Engine aggregation_engine(&storage, &aggregation);
 	aggregation_engine.Start(); 
-  
+  //
 	getchar();  
 }

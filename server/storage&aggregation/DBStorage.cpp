@@ -78,18 +78,6 @@ bool DBStorage::existsStationByUID( string uid )
   return count > 0;
 }
 
-
-uint32 DBStorage::getStationIdByUID( string uid )
-{
-	uint32 id = 0;
-	TRY
-	sql << "SELECT id FROM station WHERE uid = :uid",
-		into(id), use(uid);
-	CATCH_MSG("[StorageDB] getStationIdByUID(): ")
-	return id;
-}
-
-
 bool DBStorage::InsertMeasurements( const MeasurementPtrVector& measurements )
 {
 	if(!measurements.empty()) {
@@ -209,7 +197,7 @@ uint32 DBStorage::countAllMeasurements()
 	return count;
 }
 
-uint32 DBStorage::countStation()
+uint32 DBStorage::CountStations()
 {
 	uint32 count = 0;
 	TRY
