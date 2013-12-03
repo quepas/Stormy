@@ -65,6 +65,22 @@ CREATE TABLE aggregate_task (
 	FOREIGN KEY(station_uid) REFERENCES station(uid)
 );
 
+CREATE TABLE aggregate (
+	id serial,
+	station_uid text,
+	metrics_code text,
+	operation_name text,
+	period_name text,
+	start_time timestamp,
+	value numeric,
+	sample_number integer,
+	PRIMARY KEY(id),
+	FOREIGN KEY(station_uid) REFERENCES station(uid),
+	FOREIGN KEY(metrics_code) REFERENCES metrics(code),
+	FOREIGN KEY(operation_name) REFERENCES aggregate_operation(name),
+	FOREIGN KEY(period_name) REFERENCES aggregate_period(name)
+);
+
 -- Fill with default data
 -- Metrics
 INSERT INTO metrics VALUES('unknown', 'none', 'none', 'none', 'none');

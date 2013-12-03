@@ -25,6 +25,7 @@ namespace Stormy
 			// new style
 			std::vector<Data::Station> GetStations();
 			std::vector<Data::Metrics> GetMetrics();
+      std::vector<std::string> GetMetricsCodes();
 			std::vector<stormy::aggregate::entity::Task> GetTasks();
 			std::vector<stormy::aggregate::entity::Period> GetPeriods();	
 
@@ -32,6 +33,7 @@ namespace Stormy
 			bool DeleteTask(std::string period_name, std::string station_uid);
 			bool CreateTask(std::string period_name, std::string station_uid);
       bool UpdateTaskCurrentTime(uint32_t id, std::tm timestamp);
+      std::tm CalculateAggregateEndTime(std::string period_name, std::tm start_time);
 
       bool UpdateStationLastUpdate(std::string station_uid, std::tm timestamp);
       std::tm GetStationLastUpdate(std::string station_uid);
@@ -42,6 +44,11 @@ namespace Stormy
 
       std::tm GetOldestStationMeasureTime(std::string uid);
       int CountStationMeasures(std::string uid);
+
+      // TODO: fix this! need entity::Measurement
+      std::vector<std::string> GetStationMeasure(
+        std::string station_uid, std::string metrics_code, 
+        std::tm begin_time, std::tm end_time);
 
       // TODO: refactor this
       bool InsertMeasurements(

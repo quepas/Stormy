@@ -96,7 +96,8 @@ bool DBStorage::InsertMeasurements( const MeasurementPtrVector& measurements )
 		TRY		
 		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
 			string metricsCode = (*it) -> metrics -> code;
-			if(existsMetricsByCode(metricsCode)) {
+      auto metrics = GetMetricsCodes();
+			if(Utils::contains(metrics, metricsCode)) {
         string station_uid = (*it)->station->uid;			
         time_t current_ts = (*it) -> timestamp.epochMicroseconds();
 			  sql << "INSERT INTO measurement(code, value_text, station_uid, timestamp)"
@@ -337,7 +338,37 @@ std::vector<std::string> Stormy::DBStorage::GetStationUIDs()
   return station_uids;
 }
 
-std::string Stormy::DBStorage::GetStationName( std::string uid )
+vector<string> DBStorage::GetMetricsCodes()
+{
+  static auto metrics = GetMetrics();
+  auto result = vector<string>(metrics.size());
+  for (auto it = metrics.begin(); it != metrics.end(); ++it) {
+    result.push_back(it->code);
+  }
+  return result;
+}
+
+vector<string> DBStorage::GetStationMeasure(string station_uid, 
+  string metrics_code, tm begin_time, tm end_time)
+{
+  auto result = vector<string>();
+  TRY
+  rowset<row> rs = (sql.prepare << "SELECT value_text FROM measurement "
+    "WHERE station_uid = :station_udi "
+    "AND code = :metrics_code AND "
+    "timestamp >= :begin_time AND "
+    "timestamp < :end_time", 
+    use(station_uid), use(metrics_code), 
+    use(begin_time), use(end_time));
+
+  for (auto it = rs.begin(); it != rs.end(); ++it) {
+    result.push_back(it->get<string>(0));
+  }
+  CATCH_MSG("[Storage] GetStationMeasure():\n\t")
+  return result;
+}
+
+string DBStorage::GetStationName(string uid)
 {
   string result;
   TRY
@@ -347,7 +378,7 @@ std::string Stormy::DBStorage::GetStationName( std::string uid )
   return result;
 }
 
-std::tm Stormy::DBStorage::GetOldestStationMeasureTime( std::string uid )
+tm DBStorage::GetOldestStationMeasureTime(std::string uid)
 {
   time_t time = 0;
   TRY
@@ -358,7 +389,7 @@ std::tm Stormy::DBStorage::GetOldestStationMeasureTime( std::string uid )
   return *gmtime(&time);
 }
 
-int Stormy::DBStorage::CountStationMeasures( std::string uid )
+int DBStorage::CountStationMeasures(std::string uid)
 {
   int count = 0;
   TRY
@@ -368,7 +399,7 @@ int Stormy::DBStorage::CountStationMeasures( std::string uid )
   return count;
 }
 
-bool Stormy::DBStorage::UpdateTaskCurrentTime(uint32_t id, std::tm timestamp)
+bool DBStorage::UpdateTaskCurrentTime(uint32_t id, std::tm timestamp)
 {
   TRY
   sql << "UPDATE aggregate_task SET current_ts = :timestamp "
@@ -376,6 +407,17 @@ bool Stormy::DBStorage::UpdateTaskCurrentTime(uint32_t id, std::tm timestamp)
   return true;
   CATCH_MSG("[Storage] UpdateTaskCurrentTime():\n\t")
   return false;
+}
+
+tm DBStorage::CalculateAggregateEndTime(string period_name, tm start_time)
+{  
+  time_t time = 0;
+  TRY
+  sql << "SELECT EXTRACT(EPOCH FROM (SELECT (:start_time) + (SELECT period FROM aggregate_period "
+    "WHERE name = :period_name)))", use(start_time),
+    use(period_name), into(time);
+  CATCH_MSG("[Storage] CalculateAggregateEndTime():\n\t")
+  return *gmtime(&time);
 }
 
 bool DBStorage::UpdateStationLastUpdate(string station_uid, tm timestamp)
