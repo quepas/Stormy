@@ -1,16 +1,13 @@
 #include "DBAggregation.h"
 
 #include <iostream>
-#include <algorithm>
 #include <postgresql/soci-postgresql.h>
 #include "../../common/Utils.h"
-#include <Poco/DateTime.h>
 
 using namespace Stormy;
 using namespace Data;
 using namespace soci;
 using namespace std;
-using namespace Poco;
 
 DBAggregation::DBAggregation( Database* database_setting, DBStorage* database_storage )
 	:	database_setting_(database_setting),
@@ -64,5 +61,32 @@ string Stormy::DBAggregation::GetStationUIDFromTask(uint32_t task_id)
 		"WHERE id = :id", use(task_id), into(station_uid);
 	CATCH_MSG("[AggregationDB] getStationIdFromTask(): ")
 	return station_uid;
+}
+
+tm DBAggregation::GetTaskCurrentTS(uint32_t task_id)
+{
+  tm timestamp;
+  TRY
+  sql << "SELECT current_ts FROM aggregate_task "
+    "WHERE id = :id", use(task_id), into(timestamp);
+  CATCH_MSG("[AggregationDB] GetTaskCurrentTS():\n\t")
+  return timestamp;
+}
+
+bool DBAggregation::InsertAggregate(stormy::aggregate::entity::Aggregate aggregate)
+{
+  TRY
+  sql << "INSERT INTO aggregate (station_uid, metrics_code, "
+    "operation_name, period_name, start_time, value, sample_number) "
+    "VALUES(:station_uid, "
+    ":metrics_code, :operation_name, :period_name, "
+    ":start_time, :value, :sample_number)",
+    use(aggregate.station_uid), use(aggregate.metrics_code),
+    use(aggregate.operation_name), use(aggregate.period_name),
+    use(aggregate.start_time), use(aggregate.value), 
+    use(aggregate.sample_number);
+  return true;
+  CATCH_MSG("[AggregationDB] InsertAggregate():\n\t")
+  return false;
 }
 

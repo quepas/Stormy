@@ -3,12 +3,12 @@
 #include <string>
 #include <cstdint>
 #include <soci.h>
-#include <Poco/Timestamp.h>
 
-#include "../../common/data/Station.h"
 #include "Database.h"
 #include "DBStorage.h"
 #include "AggregationSetting.h"
+
+#include "aggregate/entity/Aggregate.h"
 
 namespace Stormy
 {
@@ -17,9 +17,15 @@ namespace Stormy
 		public:
 			DBAggregation(Database* database_setting, DBStorage* database_storage);
 			~DBAggregation();
-     
+      
+      // tasks
       uint32_t GetTaskId(std::string station_uid, std::string period_name);
+
+      std::tm GetTaskCurrentTS(uint32_t task_id);
       std::string GetStationUIDFromTask(uint32_t task_id);     
+
+      // aggregate
+      bool InsertAggregate(stormy::aggregate::entity::Aggregate aggregate);
 																
 			DBStorage* database_storage() {
 				return database_storage_;

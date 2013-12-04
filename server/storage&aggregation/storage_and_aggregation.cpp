@@ -54,7 +54,7 @@ int main() {
 		"-------------------------------------------------------------"<< endl;
 
 	AcquistionScheduler scheduler(&storage);
-	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
+	//scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
 	stormy::aggregate::Engine aggregation_engine(&storage, &aggregation);
 	aggregation_engine.Start(); 
   //

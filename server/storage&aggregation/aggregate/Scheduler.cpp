@@ -52,7 +52,7 @@ void Scheduler::Cancel()
 int Scheduler::GetTaskRefreshTime( string period_name )
 {
   static map<string, int> tasks_refresh_time_;  // In seconds
-  tasks_refresh_time_["hourly"] = 10;
+  tasks_refresh_time_["hourly"] = 3;
   tasks_refresh_time_["daily"] = 3600;
   tasks_refresh_time_["monthly"] = 36000;
   
