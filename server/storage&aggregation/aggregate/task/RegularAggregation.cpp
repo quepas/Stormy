@@ -49,51 +49,57 @@ void RegularAggregation::run()
   // IMPORTANT!: check if end time is newer than last data in station
   if (station_last_update_time > intrval_end_time) {
     // for all 'measurement code' get once, do on all operations
-    auto values = storage_->GetStationMeasure(task_entity_.station_uid, "airTemperature", task_entity_.current_ts, interval_end_ts);
-    int count = values.size();
+    auto metrics_code = storage_->GetMetricsCodes();
 
-    logger_.information(prepareHeader("RegularAggregation") + 
-      "] Running. Aggregated period [" + current_ts + " - "
-      + asctime(&interval_end_ts) + ". Number of samples: " + NumberFormatter::format(count));
+    for (auto it = metrics_code.begin(); it != metrics_code.end(); ++it) {  
+      auto values = storage_->GetStationMeasure(task_entity_.station_uid, *it, task_entity_.current_ts, interval_end_ts);
+      int count = values.size();
+
+      // IMPORTANT!: if any measure exists
+      if (count > 0) {    
+        logger_.information(prepareHeader("RegularAggregation") + 
+          "] Running. Aggregated period [" + current_ts + " - "
+          + asctime(&interval_end_ts) + ". Number of samples: " + NumberFormatter::format(count));
   
-    // !DEBUG
-    string str_values = "[";
-    for (auto it = values.begin(); it != values.end(); ++it) {
-      str_values.append(*it);
-      str_values.append(", ");
-    }
-    if(values.size() > 0)
-      str_values.erase(str_values.length()-2, 2);
-    str_values.append("]");
-    cout << str_values << endl;
-    // ~!DEBUG
+        // !DEBUG
+        string str_values = "[";
+        for (auto it = values.begin(); it != values.end(); ++it) {
+          str_values.append(*it);
+          str_values.append(", ");
+        }
+        if(values.size() > 0)
+          str_values.erase(str_values.length()-2, 2);
+        str_values.append("]");
+        cout << str_values << endl;
+        // ~!DEBUG
 
-    // calculate mean(x)
-    double sum = 0.0;
-    count = 0;
-    for (auto it = values.begin(); it != values.end(); ++it) {
-      sum += NumberParser::parseFloat(*it); 
-      ++count;
-    }
-    double mean = sum / count;
-    cout << "\n\tMean: " << mean << "\n" << endl;
+        // calculate mean(x)
+        double sum = 0.0;
+        count = 0;
+        for (auto it = values.begin(); it != values.end(); ++it) {
+          sum += NumberParser::parseFloat(*it); 
+          ++count;
+        }
+        double mean = sum / count;
+        cout << "\n\tMean: " << mean << "\n" << endl;        
 
+        if (!values.empty()) {
+          entity::Aggregate aggregate;
+          aggregate.station_uid = task_entity_.station_uid;
+          aggregate.metrics_code = *it;
+          aggregate.operation_name = "mean";
+          aggregate.period_name = task_entity_.period_name;
+          aggregate.start_time = task_entity_.current_ts;
+          aggregate.value = mean;
+          aggregate.sample_number = values.size();
+
+          aggregation_->InsertAggregate(aggregate);
+          logger_.information(prepareHeader("RegularAggregation") +
+            "Aggregate created.");
+        }
+      }      
+    }
     storage_->UpdateTaskCurrentTime(task_entity_.id, interval_end_ts);
-
-    if (!values.empty()) {
-      entity::Aggregate aggregate;
-      aggregate.station_uid = task_entity_.station_uid;
-      aggregate.metrics_code = "airTemperature";
-      aggregate.operation_name = "mean";
-      aggregate.period_name = task_entity_.period_name;
-      aggregate.start_time = task_entity_.current_ts;
-      aggregate.value = mean;
-      aggregate.sample_number = values.size();
-
-      aggregation_->InsertAggregate(aggregate);
-      logger_.information(prepareHeader("RegularAggregation") +
-        "Aggregate created.");
-    }
   }
 
   logger_.information(prepareHeader("RegularAggregation") + 
