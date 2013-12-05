@@ -26,7 +26,8 @@ void DatabaseConfig::mapIntoConfiguration()
 	} else {
 		std::string defaultHost = "localhost";
 		cout << "[StorageDB] No host data. Using default (" 
-			 << defaultHost << ")." << endl;		
+			 << defaultHost << ")." << endl;	
+    configuration -> host = defaultHost;
 	}
 	if(hasField("port")) {
 		configuration -> port = asInt("port");
