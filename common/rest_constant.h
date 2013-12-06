@@ -7,6 +7,7 @@ namespace stormy {
     namespace rest {
       namespace constant {      
 
-std::string infoPattern = "/info/{0, 1}";
+std::string stationPattern = "/station/{0, 1}";   // api: /station
+std::string infoPattern = "/info/{0, 1}";         // api: /info
 // ~~ stormy::common::rest::const;
 }}}}

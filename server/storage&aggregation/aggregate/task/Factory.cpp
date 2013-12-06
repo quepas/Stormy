@@ -15,10 +15,10 @@ Factory::Factory( Stormy::DBStorage* database_storage, Stormy::DBAggregation* da
 
 }
 
-Factory::~Factory()
+/*Factory::~Factory()
 {
 
-}
+}*/
 
 Base* Factory::createDynamicTask( TaskType task_type, entity::Task task_entity )
 {

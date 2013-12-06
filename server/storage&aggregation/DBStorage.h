@@ -11,6 +11,8 @@
 #include "../../common/Utils.h"
 #include "../../common/Types.h"
 
+#include "../../common/entity_station.h"
+
 #include "aggregate/entity/Task.h"
 #include "aggregate/entity/Period.h"
 
@@ -23,7 +25,7 @@ namespace Stormy
 			~DBStorage();
 
 			// new style
-			std::vector<Data::Station> GetStations();
+			std::vector<stormy::common::entity::Station> GetStations();
       uint32_t CountStations();
 
 			std::vector<Data::Metrics> GetMetrics();
@@ -52,6 +54,10 @@ namespace Stormy
       std::vector<std::string> GetStationMeasure(
         std::string station_uid, std::string metrics_code, 
         std::tm begin_time, std::tm end_time);
+
+      std::map<std::time_t, std::string> GetMeasurement(
+        std::string station_uid, std::string metrics_code,
+        std::tm begin, std::tm end);
 
       // TODO: refactor this
       bool InsertMeasurements(

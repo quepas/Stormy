@@ -50,6 +50,7 @@ void RegularAggregation::run()
   if (station_last_update_time > intrval_end_time) {
     // for all 'measurement code' get once, do on all operations
     auto metrics_code = storage_->GetMetricsCodes();
+    // IMPORTANT! : check if measurement is numeric
 
     for (auto it = metrics_code.begin(); it != metrics_code.end(); ++it) {  
       auto values = storage_->GetStationMeasure(task_entity_.station_uid, *it, task_entity_.current_ts, interval_end_ts);

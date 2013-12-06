@@ -216,14 +216,14 @@ ulong DBStorage::countMeasurementFromStation(string uid)
 	return count;
 }
 
-vector<Station> DBStorage::GetStations()
+vector<stormy::common::entity::Station> DBStorage::GetStations()
 {
-	auto stations = vector<Station>();
+	auto stations = vector<stormy::common::entity::Station>();
 	TRY
 	rowset<row> rs = (sql.prepare << "SELECT * FROM station");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
-		Station element;
+		stormy::common::entity::Station element;
 		element.uid = row.get<string>(0);
 		element.name = row.get<string>(1);
 		element.url = row.get<string>(2);
@@ -324,6 +324,27 @@ std::vector<std::string> Stormy::DBStorage::GetStationUIDs()
   }
   CATCH_MSG("[Storage] GetStationUIDs():\n\t")
   return station_uids;
+}
+
+map<time_t, string> Stormy::DBStorage::GetMeasurement(
+  string station_uid, string metrics_code, tm begin, tm end)
+{
+  auto result = map<time_t, string>();
+  TRY
+    rowset<row> rs = 
+    (sql.prepare << "SELECT timestamp, value_text FROM measurement "
+      "WHERE station_uid = :station_udi "
+      "AND code = :metrics_code AND "
+      "timestamp >= :begin_time AND "
+      "timestamp < :end_time", 
+      use(station_uid), use(metrics_code), 
+      use(begin), use(end));
+
+  for (auto it = rs.begin(); it != rs.end(); ++it) {
+    result.insert(make_pair(it->get<time_t>(0), it->get<string>(1)));
+  }
+  CATCH_MSG("[Storage] GetMeasurement():\n\t")
+  return result;
 }
 
 vector<string> DBStorage::GetMetricsCodes()

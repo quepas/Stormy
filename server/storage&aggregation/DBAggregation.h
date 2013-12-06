@@ -26,6 +26,9 @@ namespace Stormy
 
       // aggregate
       bool InsertAggregate(stormy::aggregate::entity::Aggregate aggregate);
+
+      // operation
+      //bool InsertOperation(stormy::aggregate::entity::)
 																
 			DBStorage* database_storage() {
 				return database_storage_;

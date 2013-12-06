@@ -18,8 +18,9 @@ enum TaskType {
 class Factory
 {
 public:   
+  Factory() {};
   Factory(Stormy::DBStorage* database_storage, Stormy::DBAggregation* database_aggregation);
-  ~Factory();
+  ~Factory() {};
 
   Base* createDynamicTask(TaskType task_type, entity::Task task_entity);
   void SetInnerScheduler(Scheduler* inner_scheduler);

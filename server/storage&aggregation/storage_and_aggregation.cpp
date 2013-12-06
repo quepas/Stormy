@@ -13,12 +13,13 @@
 #include "../../common/Utils.h"
 #include "../../common/data/Station.h"
 #include "aggregate/Engine.h"
+#include "rest_service.h"
 
 using namespace Stormy;
 using namespace std;
 using namespace Poco;
 
-int main() {
+int main(int argc, char** argv) {
 	cout << "==== Storage & Aggregation started. ====" << endl;	
 	AutoPtr<ConsoleChannel> channel(new ConsoleChannel);
 	Logger::root().setChannel(channel);
@@ -55,8 +56,11 @@ int main() {
 
 	AcquistionScheduler scheduler(&storage);
 	//scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
+
 	stormy::aggregate::Engine aggregation_engine(&storage, &aggregation);
 	aggregation_engine.Start(); 
-  //
+  
+  auto& rest_service = stormy::rest::Service(&storage, &aggregation);
+  rest_service.run(argc, argv);
 	getchar();  
 }

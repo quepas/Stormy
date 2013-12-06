@@ -3,6 +3,7 @@
 #include <string>
 #include <Poco/Logger.h>
 
+#include "../../../common/entity_station.h"
 #include "../../../common/data/Station.h"
 #include "../../../common/data/Metrics.h"
 #include "Scheduler.h"
@@ -46,7 +47,7 @@ namespace stormy
       bool DeleteUselessTask(std::string period_name, std::string station_uid);				
 
 			// Available data
-			std::vector<Stormy::Data::Station> available_stations_;
+			std::vector<stormy::common::entity::Station> available_stations_;
 			std::vector<Stormy::Data::Metrics> available_metrics_;
 			std::vector<entity::Task> available_tasks_;
 			std::vector<entity::Period> available_periods_;

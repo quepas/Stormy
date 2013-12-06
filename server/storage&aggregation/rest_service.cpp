@@ -13,9 +13,12 @@ using Poco::Net::HTTPServerParams;
 namespace stormy {
   namespace rest {
 
-Service::Service(uint16_t port /* = 8070 */)
+    Service::Service(Stormy::DBStorage* db_storage, 
+      Stormy::DBAggregation* db_aggregation, uint16_t port /*= 8070*/)
   : port_(port),
-    logger_(Logger::get("rest"))
+    logger_(Logger::get("rest")),
+    db_storage_(db_storage),
+    db_aggregation_(db_aggregation_)
 {
   
 }
@@ -42,8 +45,8 @@ int Service::main(const std::vector<std::string>& args)
 {
   logger_.information("[rest/Service] Start");
   ServerSocket server_socket(port_);
-  HTTPServer http_server(new request::Factory(), server_socket, 
-    new HTTPServerParams);
+  HTTPServer http_server(new request::Factory(db_storage_, db_aggregation_), 
+    server_socket, new HTTPServerParams);
   http_server.start();
   waitForTerminationRequest();
   http_server.stop();

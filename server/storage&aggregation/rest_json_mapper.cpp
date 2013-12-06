@@ -17,6 +17,8 @@ string Mapper::prepareServerInfo()
   bson_builder.append(wrapAsJSONString("type"), "storage&acquisition");
   bson_builder.append(wrapAsJSONString("name"), "Stormy Main Server #1");
   bson_builder.append(wrapAsJSONString("status"), "UP");
+  bson_builder.append(wrapAsJSONString("locale"), "+1");
+  bson_builder.append(wrapAsJSONString("metrics"), "[code - description]");
   return bson_builder.obj().toString();
 }
 
