@@ -10,7 +10,8 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetStation::GetStation()
+GetStation::GetStation(Stormy::DBStorage* storage_database)
+  : storage_database_(storage_database)
 {
 
 }

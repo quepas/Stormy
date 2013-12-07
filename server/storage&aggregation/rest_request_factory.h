@@ -1,10 +1,5 @@
 #pragma once
 
-#include "rest_request_get_station.h"
-#include "rest_request_get_meteo.h"
-#include "rest_request_get_info.h"
-#include "rest_request_bad.h"
-
 #include "DBStorage.h"
 #include "DBAggregation.h"
 

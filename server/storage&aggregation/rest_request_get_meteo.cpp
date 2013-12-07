@@ -10,7 +10,8 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMeteo::GetMeteo()
+GetMeteo::GetMeteo(Stormy::DBStorage* storage_database)
+  : storage_database_(storage_database)
 {
 
 }
