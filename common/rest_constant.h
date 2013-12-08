@@ -26,5 +26,7 @@ const std::string json_uid = "uid";
 const std::string json_name = "name";
 const std::string json_url = "url";
 const std::string json_refresh_time = "refresh_time";
+const std::string json_stations_data_marker = "stations";
+const std::string json_empty = "{}";
 // ~~ stormy::common::rest::const;
 }}}}
