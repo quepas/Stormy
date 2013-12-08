@@ -3,6 +3,7 @@
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
+using std::string;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 
@@ -10,8 +11,9 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetAggregate::GetAggregate(Stormy::DBAggregation* aggregate_database)
-  : aggregate_database_(aggregate_database)
+GetAggregate::GetAggregate(string uri, Stormy::DBAggregation* aggregate_database)
+  : uri_parser_(uri),
+    aggregate_database_(aggregate_database)
 {
 
 }

@@ -3,7 +3,7 @@
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
-#include "rest_json_mapper.h"
+#include "rest_json_cookbook.h"
 
 using std::string;
 using std::ostream;
@@ -28,8 +28,8 @@ Bad::~Bad()
 void Bad::handleRequest(HTTPServerRequest& request, 
   HTTPServerResponse& response)
 {
-  ostream& stream_resposne = response.send();
-  stream_resposne << json::Mapper::prepareBadResponse(URI_);
+  ostream& stream_response = response.send();
+  stream_response << json::Cookbook::prepareBadResponse(URI_);
 }
 // ~~ stormy::rest::request::Bad
 }}}

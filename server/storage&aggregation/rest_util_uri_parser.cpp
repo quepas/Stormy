@@ -38,7 +38,7 @@ std::map<std::string, std::string> URIParser::getQuerySegments()
   auto parameters_with_values = vector<string>();
   auto query_segments = map<string, string>();
 
-  split(segments, uri_.getQuery(), is_any_of("&"));  
+  split(segments, uri_.getQuery(), is_any_of("&"));
   if(!segments.empty()) {
     parameters_with_values.reserve(2);
     for (auto it = segments.begin(); it != segments.end(); ++it) {
@@ -50,7 +50,7 @@ std::map<std::string, std::string> URIParser::getQuerySegments()
           make_pair(parameters_with_values[0], parameters_with_values[1]));
       }
     }
-  }  
+  }
   return query_segments;
 }
 // ~~ stormy::rest::util::URIParser

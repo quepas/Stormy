@@ -3,7 +3,7 @@
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
-#include "rest_json_mapper.h"
+#include "rest_json_cookbook.h"
 
 using std::ostream;
 using Poco::Net::HTTPServerRequest;
@@ -25,9 +25,9 @@ GetInfo::~GetInfo()
 
 void GetInfo::handleRequest(HTTPServerRequest& request, 
   HTTPServerResponse& response)
-{
+{  
   ostream& stream_response = response.send();
-  stream_response << json::Mapper::prepareServerInfo();
+  stream_response << json::Cookbook::prepareServerInfo();
 }
 // ~~ stormy::rest::request::GetInfo
 }}}
