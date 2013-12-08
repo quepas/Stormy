@@ -8,12 +8,23 @@ namespace stormy {
       namespace constant {      
 
 // api: /aggregate/:station_id
-std::string aggregate_request_pattern = "/aggregate/[0-9a-f]{32}/{0, 1}";        
+const std::string aggregate_request_pattern = "/aggregate/[0-9a-f]{32}/?";        
 // api: /meteo/:station_id
-std::string meteo_request_pattern = "/meteo/[0-9a-f]{32}/{0, 1}";
+const std::string meteo_request_pattern = "/meteo/[0-9a-f]{32}/?";
 // api: /station
-std::string station_request_pattern = "/station/{0, 1}";   
+const std::string station_request_pattern = "/station/?";   
 // api: /info
-std::string info_request_pattern = "/info/{0, 1}";
+const std::string info_request_pattern = "/info/?";
+// api query: ?param_one=value1&param_two=value2 (...)
+const std::string uri_query_vars_pattern = ".([a-zA-Z]+=[a-zA-Z0-9]+&?)*";
+
+/*
+ *  JSON constants
+ */
+const std::string json_id = "id";
+const std::string json_uid = "uid";
+const std::string json_name = "name";
+const std::string json_url = "url";
+const std::string json_refresh_time = "refresh_time";
 // ~~ stormy::common::rest::const;
 }}}}
