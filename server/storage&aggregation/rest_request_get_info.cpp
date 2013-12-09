@@ -27,7 +27,7 @@ void GetInfo::handleRequest(HTTPServerRequest& request,
   HTTPServerResponse& response)
 {  
   ostream& stream_response = response.send();
-  stream_response << json::Cookbook::prepareServerInfo();
+  stream_response << json::Cookbook::PrepareServerInfo();
 }
 // ~~ stormy::rest::request::GetInfo
 }}}

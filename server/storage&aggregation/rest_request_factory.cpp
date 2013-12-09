@@ -45,7 +45,7 @@ HTTPRequestHandler* Factory::createRequestHandler(
     return new GetStation(db_storage_);
   } else if (Stormy::Utils::checkTextWithRegex(URI, constant::aggregate_request_pattern)) {
     return new GetAggregate(URI, db_aggregation_);
-  } else if (Stormy::Utils::checkTextWithRegex(URI, constant::meteo_request_pattern + ".([a-zA-Z]+=[a-zA-Z0-9]+&?)*")) {
+  } else if (Stormy::Utils::checkTextWithRegex(URI, constant::meteo_request_pattern + constant::uri_query_vars_pattern)) {
     return new GetMeteo(URI, db_storage_);
   } else if (Stormy::Utils::checkTextWithRegex(URI, constant::info_request_pattern)) {
     return new GetInfo();

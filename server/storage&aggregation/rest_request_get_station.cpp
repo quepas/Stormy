@@ -29,7 +29,7 @@ void GetStation::handleRequest(HTTPServerRequest& request,
 { 
   ostream& stream_response = response.send();
   stream_response << 
-    json::Cookbook::prepareStations(storage_database_->GetStations());
+    json::Cookbook::PrepareStations(storage_database_->GetStations());
 }
 // ~~ stormy::rest::request::GetStation
 }}}

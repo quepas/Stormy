@@ -19,7 +19,7 @@ public:
 
   Poco::Net::HTTPRequestHandler* createRequestHandler(
     const Poco::Net::HTTPServerRequest& request) override;
-
+  
 private:
   Poco::Logger& logger_;
 
