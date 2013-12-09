@@ -59,6 +59,10 @@ namespace Stormy
         std::string station_uid, std::string metrics_code,
         std::tm begin, std::tm end);
 
+      std::map<std::time_t, std::string> GetMeasurementFromLast(
+        std::string station_uid, std::string metrics_code, 
+        uint16_t from_last_hours);
+
       // TODO: refactor this
       bool InsertMeasurements(
         const MeasurementPtrVector& measurements);
@@ -69,7 +73,6 @@ namespace Stormy
 			void clearAllStation();
 			bool existsStationByUID(std::string uid);
 			Data::Station* getStationByUID(std::string uid);								
-      
 
 			// measurements			
 			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);			

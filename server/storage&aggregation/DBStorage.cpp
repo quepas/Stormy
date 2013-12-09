@@ -333,18 +333,28 @@ map<time_t, string> Stormy::DBStorage::GetMeasurement(
   TRY
     rowset<row> rs = 
     (sql.prepare << "SELECT timestamp, value_text FROM measurement "
-      "WHERE station_uid = :station_udi "
+      "WHERE station_uid = :station_uid "
       "AND code = :metrics_code AND "
       "timestamp >= :begin_time AND "
       "timestamp < :end_time", 
       use(station_uid), use(metrics_code), 
       use(begin), use(end));
-
+  
   for (auto it = rs.begin(); it != rs.end(); ++it) {
-    result.insert(make_pair(it->get<time_t>(0), it->get<string>(1)));
+    result.insert(make_pair(mktime(&it->get<tm>(0)), it->get<string>(1)));
   }
   CATCH_MSG("[Storage] GetMeasurement():\n\t")
   return result;
+}
+
+map<time_t, string> DBStorage::GetMeasurementFromLast(
+  string station_uid, string metrics_code, uint16_t from_last_hours )
+{
+  time_t time_data = time(nullptr);
+  tm to_time = *localtime(&time_data);
+  time_data -= from_last_hours * 3600;
+  tm from_time = *localtime(&time_data);
+  return GetMeasurement(station_uid, metrics_code, from_time, to_time);
 }
 
 vector<string> DBStorage::GetMetricsCodes()
