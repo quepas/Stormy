@@ -26,7 +26,7 @@ void Stormy::GetInfoRequest::handleRequest( HTTPServerRequest& request, HTTPServ
 	if(stationId.empty()) {
 		TypeConfiguration* typesCfg =
 			new TypeConfiguration("config/meteo_data_type_config.yaml");
-		ostr << JSONUtils::prepareJSONForAvailableTypes(typesCfg -> getConfiguration());
+		ostr << JSONUtils::prepareJSONForInfo("A", typesCfg -> getConfiguration());
 	} else {
 		ostr << REST::Const::emptyJSON;
 	}

@@ -116,3 +116,20 @@ string JSONUtils::prepareJSONForSingleMeasurements( const MeasurementPtrVector& 
 	content += "]}";
 	return content;
 }
+
+string JSONUtils::prepareJSONForInfo(const std::string& server_type, const TypePtrVector& types)
+{
+  string server_info = "{" + wrapAsJSONString("server") + ":{";
+  server_info += wrapAsJSONString("type") + ":";
+  server_info += wrapAsJSONString(server_type) + "},";
+
+  string content = server_info + "\"metrics\":[";
+  Utils::forEach(types, [&](TypePtr type) {
+    if(type -> isMeteo)
+      content += prepareJSONForAvailableType(type) + ",";
+  });
+  if(types.size() > 0)
+    content.pop_back();	// remove unnecessary coma
+  content += "]}";
+  return content;
+}
