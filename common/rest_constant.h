@@ -31,12 +31,16 @@ const uint16_t default_from_last_hours = 24;
 const std::string json_id = "id";
 const std::string json_uid = "uid";
 const std::string json_name = "name";
+const std::string json_code = "code";
 const std::string json_url = "url";
+const std::string json_seconds = "seconds";
 const std::string json_refresh_time = "refresh_time";
 const std::string json_stations_data_marker = "stations";
 const std::string json_measurement_size_marker = "size";
 const std::string json_measurement_data_marker = "measurements";
 const std::string json_measurement_time_marker = "times";
+const std::string json_available_metrics_marker = "available_metrics";
+const std::string json_available_periods_marker = "available_periods";
 const std::string json_empty = "{}";
 
 // ~~ stormy::common::rest::const;

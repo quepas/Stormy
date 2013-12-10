@@ -197,11 +197,11 @@ uint32 DBStorage::countAllMeasurements()
 	return count;
 }
 
-uint32 DBStorage::CountStations()
+uint32_t DBStorage::CountStations()
 {
-	uint32 count = 0;
+	uint32_t count = 0;
 	TRY
-	sql << "SELECT count(*) FROM station", into(count);
+	sql << "SELECT count(uid) FROM station", into(count);
 	CATCH_MSG("[StorageDB] countStation(): ")
 	return count;
 }
@@ -235,19 +235,19 @@ vector<stormy::common::entity::Station> DBStorage::GetStations()
 	return stations;
 }
 
-vector<Metrics> DBStorage::GetMetrics()
+vector<stormy::common::entity::Metrics> DBStorage::GetMetrics()
 {
-	auto metrics = vector<Metrics>();
+	auto metrics = vector<stormy::common::entity::Metrics>();
 	TRY
 	rowset<row> rs = (sql.prepare << "SELECT * FROM metrics");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
-		Metrics element;
+		stormy::common::entity::Metrics element;
 		element.code = row.get<string>(0);
 		element.equivalents = row.get<string>(1);
-		element.value_type = row.get<string>(2);
-		element.value_unit = row.get<string>(3);
-		element.value_format = row.get<string>(4);
+		element.type = row.get<string>(2);
+		element.unit = row.get<string>(3);
+		element.format = row.get<string>(4);
 		metrics.push_back(element);
 	}
 	CATCH_MSG("[Storage] Exception at GetMetrics():\n\t")
@@ -273,27 +273,25 @@ vector<stormy::aggregation::entity::Task> DBStorage::GetTasks()
 	return tasks;
 }
 
-// TODO: move to DBAggregate?
 vector<stormy::aggregation::entity::Period> DBStorage::GetPeriods()
 {
 	auto periods = vector<stormy::aggregation::entity::Period>();
 	TRY
-	int count = 0;
-	sql << "SELECT count(*) FROM aggregate_period", into(count);
-	auto periods_name = vector<string>(count);
-	sql << "SELECT name FROM aggregate_period", into(periods_name);
-	for (auto it = periods_name.begin(); it != periods_name.end(); ++it) {
-		stormy::aggregation::entity::Period element;
-		element.name = *it;
-		// TODO: SOCI doesn't support Postgres interval type
-		element.interval = 0;
-		periods.push_back(element);
-	}	
+  rowset<row> rs = (sql.prepare << "SELECT name FROM aggregate_period");
+  for (auto it = rs.begin(); it != rs.end(); ++it) {
+    const row& row = *it;
+    stormy::aggregation::entity::Period element;
+    element.name = row.get<string>(0);
+    sql << "SELECT EXTRACT(EPOCH FROM "
+      "(SELECT period FROM aggregate_period WHERE name = :name))", 
+      use(element.name), into(element.seconds);
+    periods.push_back(element);
+  }	
 	CATCH_MSG("[Storage] Exception at GetPeriods():\n\t")
 	return periods;
 }
 
-bool DBStorage::DeleteTask( int id )
+bool DBStorage::DeleteTask(uint16_t id)
 {
 	TRY
 	sql << "DELETE FROM aggregate_task WHERE id = :id", use(id);

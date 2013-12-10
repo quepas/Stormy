@@ -4,8 +4,8 @@
 #include <Poco/Logger.h>
 
 #include "../../../common/entity_station.h"
-#include "../../../common/data/Station.h"
-#include "../../../common/data/Metrics.h"
+#include "../../../common/entity_metrics.h"
+
 #include "Scheduler.h"
 #include "task/Factory.h"
 #include "../aggregation_entity_task.h"
@@ -48,7 +48,7 @@ namespace stormy
 
 			// Available data
 			std::vector<stormy::common::entity::Station> available_stations_;
-			std::vector<Stormy::Data::Metrics> available_metrics_;
+			std::vector<stormy::common::entity::Metrics> available_metrics_;
 			std::vector<aggregation::entity::Task> available_tasks_;
 			std::vector<aggregation::entity::Period> available_periods_;
 

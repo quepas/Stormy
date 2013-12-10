@@ -48,7 +48,7 @@ HTTPRequestHandler* Factory::createRequestHandler(
   } else if (Stormy::Utils::checkTextWithRegex(URI, constant::meteo_request_pattern + constant::uri_query_vars_pattern)) {
     return new GetMeteo(URI, db_storage_);
   } else if (Stormy::Utils::checkTextWithRegex(URI, constant::info_request_pattern)) {
-    return new GetInfo();
+    return new GetInfo(db_storage_);
   } else {
     return new Bad(URI);
   }

@@ -8,6 +8,8 @@
 
 using namespace stormy::common::rest;
 using stormy::common::entity::Station;
+using stormy::common::entity::Metrics;
+using stormy::aggregation::entity::Period;
 using std::string;
 using std::map;
 using std::vector;
@@ -18,16 +20,14 @@ namespace stormy {
   namespace rest {
     namespace json {
 
-string Cookbook::PrepareServerInfo()
+string Cookbook::PrepareServerInfo(const vector<Metrics>& metrics, const std::vector<aggregation::entity::Period>& periods)
 {
-  BSONObjBuilder bson_builder;
-  // TODO: use real data
-  bson_builder.append(WrapAsJSONString("type"), "storage&acquisition");
-  bson_builder.append(WrapAsJSONString("name"), "Stormy Main Server #1");
-  bson_builder.append(WrapAsJSONString("status"), "UP");
-  bson_builder.append(WrapAsJSONString("locale"), "+1");
-  bson_builder.append(WrapAsJSONString("metrics"), "[code - description]");
-  return bson_builder.obj().toString();
+  string content = "{";
+  content += WrapAsJSONString(constant::json_available_metrics_marker) + ":";
+  content += PrepareMetricsSequence(metrics) + ",";  
+  content += WrapAsJSONString(constant::json_available_periods_marker) + ":";
+  content += PreparePeriodSequence(periods) + "}";
+  return content;
 }
 
 string Cookbook::PrepareBadResponse(const string& uri)
@@ -96,6 +96,36 @@ string Cookbook::PrepareTypedMeasurement(const map<time_t, string>& measurements
   content.append(WrapAsJSONString(constant::json_measurement_data_marker));
   content.append(":[" + data_content + "]}");
   return content;  
+}
+
+string Cookbook::PrepareMetricsSequence(const vector<Metrics>& metrics)
+{
+  string sequence = "[";
+  for (auto it = metrics.begin(); it != metrics.end(); ++it) {   
+    sequence.append(WrapAsJSONString(it->code) + ",");
+  }  
+  if(metrics.size() > 0)
+    sequence.pop_back();  // remove unnecessary comma
+  sequence += "]";  
+  return sequence;
+}
+
+string Cookbook::PreparePeriodSequence(const vector<Period>& periods)
+{
+  string sequence = "[";
+  for (auto it = periods.begin(); it != periods.end(); ++it) {
+    string element = "{";
+    element += WrapAsJSONString(constant::json_name) + ":";
+    element += WrapAsJSONString(it->name) + ",";
+    element += WrapAsJSONString(constant::json_seconds) + ":";
+    element += NumberFormatter::format(it->seconds);
+    element += "}";
+    sequence += element + ",";    
+  }
+  if (periods.size() > 0) 
+    sequence.pop_back();  // remove unnecessary comma
+  sequence += "]";
+  return sequence;
 }
 // ~~ stormy::rest::json::Mapper
 }}}

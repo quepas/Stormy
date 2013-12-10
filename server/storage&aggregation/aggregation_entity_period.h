@@ -10,7 +10,7 @@ namespace stormy {
 struct Period
 {
 	std::string name;
-	std::time_t interval;
+	std::time_t seconds;
 };
 // ~~ stormy::aggregation::entity::Period
 }}}

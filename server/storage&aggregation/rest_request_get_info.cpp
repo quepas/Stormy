@@ -13,7 +13,8 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetInfo::GetInfo()
+GetInfo::GetInfo(Stormy::DBStorage* database_storage)
+  : database_storage_(database_storage)
 {
 
 }
@@ -27,7 +28,10 @@ void GetInfo::handleRequest(HTTPServerRequest& request,
   HTTPServerResponse& response)
 {  
   ostream& stream_response = response.send();
-  stream_response << json::Cookbook::PrepareServerInfo();
+  stream_response << 
+    json::Cookbook::PrepareServerInfo(
+      database_storage_->GetMetrics(), 
+      database_storage_->GetPeriods());
 }
 // ~~ stormy::rest::request::GetInfo
 }}}

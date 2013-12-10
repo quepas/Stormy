@@ -12,6 +12,7 @@
 #include "../../common/Types.h"
 
 #include "../../common/entity_station.h"
+#include "../../common/entity_metrics.h"
 
 #include "aggregation_entity_task.h"
 #include "aggregation_entity_period.h"
@@ -27,14 +28,12 @@ namespace Stormy
 			// new style
 			std::vector<stormy::common::entity::Station> GetStations();
       uint32_t CountStations();
-
-			std::vector<Data::Metrics> GetMetrics();
+			std::vector<stormy::aggregation::entity::Task> GetTasks();
+			std::vector<stormy::aggregation::entity::Period> GetPeriods();   
+      std::vector<stormy::common::entity::Metrics> GetMetrics();
       std::vector<std::string> GetMetricsCodes();
 
-			std::vector<stormy::aggregation::entity::Task> GetTasks();
-			std::vector<stormy::aggregation::entity::Period> GetPeriods();	
-
-			bool DeleteTask(int id);
+			bool DeleteTask(uint16_t id);
 			bool DeleteTask(std::string period_name, std::string station_uid);
 			bool CreateTask(std::string period_name, std::string station_uid);
       bool UpdateTaskCurrentTime(uint32_t id, std::tm timestamp);
@@ -52,15 +51,20 @@ namespace Stormy
 
       // TODO: fix this! need entity::Measurement
       std::vector<std::string> GetStationMeasure(
-        std::string station_uid, std::string metrics_code, 
-        std::tm begin_time, std::tm end_time);
+        std::string station_uid, 
+        std::string metrics_code, 
+        std::tm begin_time, 
+        std::tm end_time);
 
       std::map<std::time_t, std::string> GetMeasurement(
-        std::string station_uid, std::string metrics_code,
-        std::tm begin, std::tm end);
+        std::string station_uid, 
+        std::string metrics_code,
+        std::tm begin, 
+        std::tm end);
 
       std::map<std::time_t, std::string> GetMeasurementFromLast(
-        std::string station_uid, std::string metrics_code, 
+        std::string station_uid, 
+        std::string metrics_code, 
         uint16_t from_last_hours);
 
       // TODO: refactor this
