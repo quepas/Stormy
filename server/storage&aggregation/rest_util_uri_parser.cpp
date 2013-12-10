@@ -14,7 +14,7 @@ namespace stormy {
   namespace rest {
     namespace util {
 
-URIParser::URIParser(std::string raw_uri)
+URIParser::URIParser(string raw_uri)
   : uri_(raw_uri)
 {
 
@@ -25,14 +25,14 @@ URIParser::~URIParser()
 
 }
 
-std::vector<std::string> URIParser::getPathSegments()
+vector<string> URIParser::getPathSegments()
 {
   auto segments = vector<string>();
   uri_.getPathSegments(segments);
   return segments;
 }
 
-std::map<std::string, std::string> URIParser::getQuerySegments()
+map<string, string> URIParser::getQuerySegments()
 {  
   auto segments = vector<string>();
   auto parameters_with_values = vector<string>();

@@ -5,10 +5,13 @@
 
 #include "rest_request_factory.h"
 
+using std::string;
+using std::vector;
 using Poco::Logger;
 using Poco::Net::ServerSocket;
 using Poco::Net::HTTPServer;
 using Poco::Net::HTTPServerParams;
+using Poco::Util::Application;
 
 namespace stormy {
   namespace rest {
@@ -28,7 +31,7 @@ Service::~Service()
 
 }
 
-void Service::initialize(Poco::Util::Application& self)
+void Service::initialize(Application& self)
 {  
   loadConfiguration();
   ServerApplication::initialize(self);
@@ -41,7 +44,7 @@ void Service::uninitialize()
   logger_.information("[rest/Service] Uninitialized");
 }
 
-int Service::main(const std::vector<std::string>& args)
+int Service::main(const vector<string>& args)
 {
   logger_.information("[rest/Service] Start");
   ServerSocket server_socket(port_);
