@@ -3,7 +3,7 @@
 #include <Poco/Logger.h>
 #include <Poco/Util/TimerTask.h>
 
-#include "../entity/Task.h"
+#include "../../aggregation_entity_task.h"
 #include "../../DBStorage.h"
 #include "../../DBAggregation.h"
 
@@ -14,12 +14,12 @@ namespace stormy {
 class Base : public Poco::Util::TimerTask
 {
 public:  
-  Base(entity::Task task_data, Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation);
+  Base(aggregation::entity::Task task_data, Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation);
   virtual ~Base();
 
   void run() = 0;
 protected:
-  entity::Task task_entity_;
+  aggregation::entity::Task task_entity_;
   Stormy::DBStorage* storage_;
   Stormy::DBAggregation* aggregation_;
 

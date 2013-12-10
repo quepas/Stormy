@@ -4,7 +4,7 @@
 #include <Poco/Logger.h>
 #include <Poco/Util/Timer.h> 
 
-#include "entity/Task.h"
+#include "../aggregation_entity_task.h"
 #include "task/Base.h"
 #include "task/Factory.h"
 
@@ -18,9 +18,9 @@ namespace stormy
       explicit Scheduler(task::Factory& factory);			
 			~Scheduler();
 
-      void Schedule(std::vector<entity::Task> task_entites);
-      void ScheduleAsInitialTask(entity::Task task);
-      void ScheduleAsRegularTask(entity::Task task);
+      void Schedule(std::vector<aggregation::entity::Task> task_entites);
+      void ScheduleAsInitialTask(aggregation::entity::Task task);
+      void ScheduleAsRegularTask(aggregation::entity::Task task);
       void Cancel();
       bool IsCancelled();
 

@@ -13,7 +13,7 @@ namespace stormy {
 class InitialAggregation : public Base
 {
 public:
-  InitialAggregation(entity::Task task_data, Stormy::DBStorage* storage, 
+  InitialAggregation(aggregation::entity::Task task_data, Stormy::DBStorage* storage, 
     Stormy::DBAggregation* aggregation, Scheduler* inner_scheduler);
   ~InitialAggregation();
 

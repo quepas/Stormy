@@ -6,7 +6,7 @@
 #include <Poco/NumberFormatter.h>
 #include <Poco/NumberParser.h>
 
-#include "../entity/Aggregate.h"
+#include "../../aggregation_entity_aggregate.h"
 
 using std::string;
 using std::asctime;
@@ -20,7 +20,7 @@ namespace stormy {
   namespace aggregate {
     namespace task {
 
-RegularAggregation::RegularAggregation( entity::Task task_data, 
+RegularAggregation::RegularAggregation( aggregation::entity::Task task_data, 
   Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation )
   : Base(task_data, storage, aggregation)
 {
@@ -85,7 +85,7 @@ void RegularAggregation::run()
         cout << "\n\tMean: " << mean << "\n" << endl;        
 
         if (!values.empty()) {
-          entity::Aggregate aggregate;
+          aggregation::entity::Aggregate aggregate;
           aggregate.station_uid = task_entity_.station_uid;
           aggregate.metrics_code = *it;
           aggregate.operation_name = "mean";

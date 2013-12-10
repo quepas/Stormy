@@ -8,8 +8,8 @@
 #include "../../../common/data/Metrics.h"
 #include "Scheduler.h"
 #include "task/Factory.h"
-#include "entity/Task.h"
-#include "entity/Period.h"
+#include "../aggregation_entity_task.h"
+#include "../aggregation_entity_period.h"
 #include "../DBStorage.h"
 #include "../DBAggregation.h"
 
@@ -49,8 +49,8 @@ namespace stormy
 			// Available data
 			std::vector<stormy::common::entity::Station> available_stations_;
 			std::vector<Stormy::Data::Metrics> available_metrics_;
-			std::vector<entity::Task> available_tasks_;
-			std::vector<entity::Period> available_periods_;
+			std::vector<aggregation::entity::Task> available_tasks_;
+			std::vector<aggregation::entity::Period> available_periods_;
 
 			// Verification data
 			std::multimap<BadTaskReason, 

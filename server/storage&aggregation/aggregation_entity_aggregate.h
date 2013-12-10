@@ -4,7 +4,7 @@
 #include <cstdint>
 
 namespace stormy {
-  namespace aggregate {
+  namespace aggregation {
     namespace entity {
 
 struct Aggregate
@@ -18,5 +18,5 @@ struct Aggregate
   double value;
   uint16_t sample_number;
 };
-// ~~ stormy::aggregate::entity::Aggregate
+// ~~ stormy::aggregation::entity::Aggregate
 }}}

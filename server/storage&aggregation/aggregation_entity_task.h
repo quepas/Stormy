@@ -3,14 +3,14 @@
 #include <string>
 
 namespace stormy {
-	namespace aggregate {
+	namespace aggregation {
 		namespace entity {
 
 struct Task
 {
 	int id;
 	std::string period_name;
-	std::string station_uid;	
+	std::string station_uid;
 	std::tm current_ts;
 };
 

@@ -73,7 +73,7 @@ tm DBAggregation::GetTaskCurrentTS(uint32_t task_id)
   return timestamp;
 }
 
-bool DBAggregation::InsertAggregate(stormy::aggregate::entity::Aggregate aggregate)
+bool DBAggregation::InsertAggregate(stormy::aggregation::entity::Aggregate aggregate)
 {
   TRY
   sql << "INSERT INTO aggregate (station_uid, metrics_code, "

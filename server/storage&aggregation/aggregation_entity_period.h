@@ -1,16 +1,16 @@
 #pragma once
 
+#include <ctime>
 #include <string>
 
 namespace stormy {
-	namespace aggregate {
+	namespace aggregation {
 		namespace entity {
 
 struct Period
 {
 	std::string name;
-	std::tm interval;
+	std::time_t interval;
 };
-
-// ~~ stormy::aggregate::entity
+// ~~ stormy::aggregation::entity::Period
 }}}

@@ -27,7 +27,7 @@ Scheduler::~Scheduler()
   Cancel();
 }
 
-void Scheduler::Schedule( std::vector<entity::Task> task_entites )
+void Scheduler::Schedule( std::vector<aggregation::entity::Task> task_entites )
 {    
   factory_.SetInnerScheduler(this);
   logger_.information("[aggregate::Scheduler] Launching " + 
@@ -66,14 +66,14 @@ void Scheduler::Clear()
   scheduled_tasks_.clear();
 }
 
-void Scheduler::ScheduleAsInitialTask(entity::Task task_entity)
+void Scheduler::ScheduleAsInitialTask(aggregation::entity::Task task_entity)
 {  
   auto scheduled_task = factory_.createDynamicTask(task::INITIAL, task_entity);
   scheduled_tasks_.push_back(scheduled_task);
   schedule(scheduled_task, 0);
 }
 
-void Scheduler::ScheduleAsRegularTask(entity::Task task_entity)
+void Scheduler::ScheduleAsRegularTask(aggregation::entity::Task task_entity)
 {  
   auto scheduled_task = factory_.createDynamicTask(task::REGULAR, task_entity);
   scheduled_tasks_.push_back(scheduled_task);

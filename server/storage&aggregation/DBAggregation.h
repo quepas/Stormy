@@ -8,7 +8,7 @@
 #include "DBStorage.h"
 #include "AggregationSetting.h"
 
-#include "aggregate/entity/Aggregate.h"
+#include "aggregation_entity_aggregate.h"
 
 namespace Stormy
 {
@@ -25,7 +25,7 @@ namespace Stormy
       std::string GetStationUIDFromTask(uint32_t task_id);     
 
       // aggregate
-      bool InsertAggregate(stormy::aggregate::entity::Aggregate aggregate);
+      bool InsertAggregate(stormy::aggregation::entity::Aggregate aggregate);
 
       // operation
       //bool InsertOperation(stormy::aggregate::entity::)

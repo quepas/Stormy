@@ -11,7 +11,7 @@ namespace stormy {
 class RegularAggregation : public Base
 {
 public:
-  RegularAggregation(entity::Task task_data, 
+  RegularAggregation(aggregation::entity::Task task_data, 
     Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation);
   ~RegularAggregation();
 

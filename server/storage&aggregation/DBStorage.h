@@ -13,8 +13,8 @@
 
 #include "../../common/entity_station.h"
 
-#include "aggregate/entity/Task.h"
-#include "aggregate/entity/Period.h"
+#include "aggregation_entity_task.h"
+#include "aggregation_entity_period.h"
 
 namespace Stormy
 {
@@ -31,8 +31,8 @@ namespace Stormy
 			std::vector<Data::Metrics> GetMetrics();
       std::vector<std::string> GetMetricsCodes();
 
-			std::vector<stormy::aggregate::entity::Task> GetTasks();
-			std::vector<stormy::aggregate::entity::Period> GetPeriods();	
+			std::vector<stormy::aggregation::entity::Task> GetTasks();
+			std::vector<stormy::aggregation::entity::Period> GetPeriods();	
 
 			bool DeleteTask(int id);
 			bool DeleteTask(std::string period_name, std::string station_uid);

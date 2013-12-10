@@ -2,7 +2,7 @@
 
 #include "../../DBStorage.h"
 #include "../../DBAggregation.h"
-#include "../entity/Task.h"
+#include "../../aggregation_entity_task.h"
 #include "Base.h"
 
 namespace stormy {
@@ -22,7 +22,7 @@ public:
   Factory(Stormy::DBStorage* database_storage, Stormy::DBAggregation* database_aggregation);
   ~Factory() {};
 
-  Base* createDynamicTask(TaskType task_type, entity::Task task_entity);
+  Base* createDynamicTask(TaskType task_type, aggregation::entity::Task task_entity);
   void SetInnerScheduler(Scheduler* inner_scheduler);
 
 private:

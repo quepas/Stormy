@@ -20,7 +20,7 @@ Factory::Factory( Stormy::DBStorage* database_storage, Stormy::DBAggregation* da
 
 }*/
 
-Base* Factory::createDynamicTask( TaskType task_type, entity::Task task_entity )
+Base* Factory::createDynamicTask( TaskType task_type, aggregation::entity::Task task_entity )
 {
     switch (task_type) {
       case INITIAL: {

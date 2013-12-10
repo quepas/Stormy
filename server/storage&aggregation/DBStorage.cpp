@@ -255,14 +255,14 @@ vector<Metrics> DBStorage::GetMetrics()
 }
 
 // TODO: move to DBAggregate?
-vector<stormy::aggregate::entity::Task> DBStorage::GetTasks()
+vector<stormy::aggregation::entity::Task> DBStorage::GetTasks()
 {
-	auto tasks = vector<stormy::aggregate::entity::Task>();
+	auto tasks = vector<stormy::aggregation::entity::Task>();
 	TRY
 	rowset<row> rs = (sql.prepare << "SELECT * FROM aggregate_task");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
-		stormy::aggregate::entity::Task element;
+		stormy::aggregation::entity::Task element;
 		element.id = row.get<int>(0);
 		element.period_name = row.get<string>(1);
 		element.station_uid = row.get<string>(2);		
@@ -274,19 +274,19 @@ vector<stormy::aggregate::entity::Task> DBStorage::GetTasks()
 }
 
 // TODO: move to DBAggregate?
-vector<stormy::aggregate::entity::Period> DBStorage::GetPeriods()
+vector<stormy::aggregation::entity::Period> DBStorage::GetPeriods()
 {
-	auto periods = vector<stormy::aggregate::entity::Period>();
+	auto periods = vector<stormy::aggregation::entity::Period>();
 	TRY
 	int count = 0;
 	sql << "SELECT count(*) FROM aggregate_period", into(count);
 	auto periods_name = vector<string>(count);
 	sql << "SELECT name FROM aggregate_period", into(periods_name);
 	for (auto it = periods_name.begin(); it != periods_name.end(); ++it) {
-		stormy::aggregate::entity::Period element;
+		stormy::aggregation::entity::Period element;
 		element.name = *it;
 		// TODO: SOCI doesn't support Postgres interval type
-		element.interval = tm();
+		element.interval = 0;
 		periods.push_back(element);
 	}	
 	CATCH_MSG("[Storage] Exception at GetPeriods():\n\t")
