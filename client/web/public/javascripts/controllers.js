@@ -12,7 +12,7 @@ function ConnectCtrl() {
 
 function AppCtrl($scope, $http) {
 	$scope.updateMeteo = function() {
-		$http.get('/acq/meteo/' + $scope.currentStation.id + '/' + $scope.currentType.id)
+		$http.get('/acq/meteo/' + $scope.currentStation.id + '/' + $scope.currentType.code)
 			.success(function(data) {
 				$scope.currentMeteo = data.measurements
 				var context = document.getElementById("meteoChart").getContext("2d")
@@ -26,7 +26,7 @@ function AppCtrl($scope, $http) {
 	})
 
 	$http.get('/acq/info').success(function(data) {
-		$scope.availableTypes = data.availableTypes
+		$scope.availableTypes = data.metrics
 		$scope.currentType = $scope.availableTypes[0]
 	})
 }
