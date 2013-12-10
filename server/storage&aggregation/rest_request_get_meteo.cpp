@@ -43,10 +43,12 @@ void GetMeteo::handleRequest(HTTPServerRequest& request,
   if(path_segments.size() > 1 && metrics_index != query_segments.end()) {
     string station_id = path_segments[1];
     string metrics_code = metrics_index->second;
-    uint16_t hours = 24;
+    int hours = constant::default_from_last_hours;
 
     if(from_last_hours_index != query_segments.end()) {
-      hours = NumberParser::parse(from_last_hours_index->second);
+      if(!NumberParser::tryParse(from_last_hours_index->second, hours)) {
+        hours = constant::default_from_last_hours;
+      }
     }    
     stream_response << json::Cookbook::PrepareTypedMeasurement(
       storage_database_->GetMeasurementFromLast(

@@ -10,7 +10,7 @@ namespace stormy {
     namespace request {
 
 /*
- *  Getting meteo data from last 24 hours
+ *  Getting meteo data from last N hours (24 by default)
  */
 class GetMeteo : public Poco::Net::HTTPRequestHandler
 {

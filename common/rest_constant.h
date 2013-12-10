@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 
 namespace stormy {
@@ -22,6 +23,7 @@ const std::string type_parameter = "type";
 const std::string from_parameter = "from";
 const std::string to_parameter = "to";
 const std::string from_last_hours_parameter = "from_last_hours";
+const uint16_t default_from_last_hours = 24;
 
 /*
  *  JSON constants
