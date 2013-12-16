@@ -20,9 +20,12 @@ namespace stormy {
   namespace rest {
     namespace json {
 
-string Cookbook::PrepareServerInfo(const vector<Metrics>& metrics, const std::vector<aggregation::entity::Period>& periods)
+string Cookbook::PrepareServerInfo(const vector<Metrics>& metrics, 
+  const std::vector<aggregation::entity::Period>& periods)
 {
-  string content = "{";
+  string content = "{" + WrapAsJSONString(constant::json_server_marker) + ":{";
+  content += WrapAsJSONString(constant::json_type) + ":";
+  content += WrapAsJSONString(constant::json_storage_and_aggregation_server_type) + "},";
   content += WrapAsJSONString(constant::json_available_metrics_marker) + ":";
   content += PrepareMetricsSequence(metrics) + ",";  
   content += WrapAsJSONString(constant::json_available_periods_marker) + ":";

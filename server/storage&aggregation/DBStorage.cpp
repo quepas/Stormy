@@ -281,10 +281,7 @@ vector<stormy::aggregation::entity::Period> DBStorage::GetPeriods()
   for (auto it = rs.begin(); it != rs.end(); ++it) {
     const row& row = *it;
     stormy::aggregation::entity::Period element;
-    element.name = row.get<string>(0);
-    sql << "SELECT EXTRACT(EPOCH FROM "
-      "(SELECT period FROM aggregate_period WHERE name = :name))", 
-      use(element.name), into(element.seconds);
+    element.name = row.get<string>(0);   
     periods.push_back(element);
   }	
 	CATCH_MSG("[Storage] Exception at GetPeriods():\n\t")
