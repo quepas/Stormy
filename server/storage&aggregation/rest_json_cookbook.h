@@ -16,7 +16,9 @@ namespace stormy {
 class Cookbook 
 {
 public:
-  static std::string PrepareServerInfo(const std::vector<common::entity::Metrics>& metrics, const std::vector<aggregation::entity::Period>& periods);
+  static std::string PrepareServerInfo(
+    const std::vector<common::entity::Metrics>& metrics, 
+    const std::vector<aggregation::entity::Period>& periods);
   static std::string PrepareBadResponse(const std::string& uri);
   static std::string PrepareStation(const common::entity::Station& station);
   static std::string PrepareStations(

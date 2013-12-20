@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <soci.h>
 #include <Poco/Timestamp.h>
+#include <Poco/Logger.h>
 
 #include "Database.h"
 #include "../../common/data/Station.h"
@@ -95,5 +96,6 @@ namespace Stormy
 
 			Database* configuration;
 			soci::session sql;
+      Poco::Logger& logger_;
 	};
 }

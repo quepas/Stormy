@@ -5,6 +5,8 @@
 
 #include <postgresql/soci-postgresql.h>
 
+using Poco::Logger;
+
 using namespace Stormy;
 using namespace Stormy::Data;
 using namespace std;
@@ -12,7 +14,8 @@ using namespace soci;
 using namespace Poco;
 
 DBStorage::DBStorage( Database* storageDB )
-	:	configuration(storageDB)
+	:	logger_(Logger::get("aggregation")),
+    configuration(storageDB)
 {	
 	connect();
 }

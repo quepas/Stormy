@@ -12,13 +12,17 @@
 #include "../../common/Utils.h"
 #include "JSONUtils.h"
 
+using Poco::Logger;
+
 using namespace Stormy;
 using namespace Stormy::Data;
 using namespace Poco;
 using namespace Poco::Net;
 using namespace std;
 
-AcquisitionHTTPConnector::AcquisitionHTTPConnector()
+Logger& AcquisitionHTTPConnector::logger_ = Logger::get("aggregation");
+
+AcquisitionHTTPConnector::AcquisitionHTTPConnector()  
 {
 
 }
@@ -28,7 +32,7 @@ AcquisitionHTTPConnector::~AcquisitionHTTPConnector()
 
 }
 
-string AcquisitionHTTPConnector::getDataAsStringAt( string host, unsigned port, string resource )
+string AcquisitionHTTPConnector::getDataAsStringAt(string host, unsigned port, string resource)
 {
 	string content;
 	TRY				
@@ -42,8 +46,8 @@ string AcquisitionHTTPConnector::getDataAsStringAt( string host, unsigned port, 
 	HTTPResponse response;
 	istream& receiveStream = session.receiveResponse(response);
 	StreamCopier::copyToString(receiveStream, content);	
-	CATCH_MSG("[HTTPConnector] Exception while reaching "
-		<< host << ":" << port << resource << ": ")
+	CATCH_MSG(std::string("[HTTPConnector] Exception while reaching ")
+		+ host + ":" + NumberFormatter::format(port) + resource)
 	return content;
 }
 

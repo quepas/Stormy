@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <soci.h>
 
+#include <Poco/Logger.h>
+
 #include "Database.h"
 #include "DBStorage.h"
 #include "AggregationSetting.h"
@@ -41,5 +43,6 @@ namespace Stormy
 			Database* database_setting_;
 			DBStorage* database_storage_;
 			soci::session sql;
+      Poco::Logger& logger_;
 	};
 }

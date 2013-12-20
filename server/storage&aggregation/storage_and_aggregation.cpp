@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Poco/Logger.h>
-#include <Poco/ConsoleChannel.h>
+#include <Poco/NumberFormatter.h>
+#include <Poco/WindowsConsoleChannel.h>
 #include <Poco/AutoPtr.h>
 
 #include "AggregationConfig.h"
@@ -11,19 +12,17 @@
 #include "DBAggregation.h"
 #include "AcquisitionScheduler.h"
 #include "../../common/Utils.h"
-#include "../../common/data/Station.h"
 #include "aggregate/Engine.h"
 #include "rest_service.h"
 
 using namespace Stormy;
-using namespace std;
 using namespace Poco;
 
 int main(int argc, char** argv) {
-	cout << "==== Storage & Aggregation started. ====" << endl;	
-	AutoPtr<ConsoleChannel> channel(new ConsoleChannel);
+	AutoPtr<WindowsColorConsoleChannel> channel(new WindowsColorConsoleChannel);
+  (*channel).setProperty("informationColor", "gray");   
 	Logger::root().setChannel(channel);
-	Logger& logger = Logger::get("aggregation");
+	Logger& logger = Logger::get("aggregation_main_thread");  
 	AcquisitionServersConfig acquisitionServersCfg("config/acquisition_servers.yaml");
 	AggregationConfig aggregationCfg("config/aggregation.yaml");
 	DatabaseConfig storageDBcfg("config/storage_database.yaml");
@@ -31,36 +30,38 @@ int main(int argc, char** argv) {
 
 	DBStorage storage(storageDBcfg.getConfiguration());
 	DBAggregation aggregation(aggregationDBcfg.getConfiguration(), &storage);
-	cout << "Measurements in storage: " << storage.countAllMeasurements() << endl;
-	cout << "Available stations: " << storage.CountStations() << endl;
-
-	cout << "-------------------------------------------------------------"
-		"-------------------------------------------------------------"<< endl;
+  
+  logger.information("==== Storage & Aggregation started. ====");	  
+	logger.information("Measurements in storage: " + 
+    NumberFormatter::format(storage.countAllMeasurements()));
+	logger.information("Available stations: " + 
+    NumberFormatter::format(storage.CountStations()));
+	logger.information("-------------------------------------------------------------"
+		"-------------------------------------------------------------");
 	// display current configurations
-	cout << "=== Acquisition Servers: " << endl;
+	logger.information("=== Acquisition Servers: ");
 	Utils::forEach(acquisitionServersCfg.getConfiguration(),
-		[](AcquisitionServer* server) {
-			cout << "\t" << server -> toString() << endl;
+		[&](AcquisitionServer* server) {
+			logger.information("\t" + server -> toString());
 	});
-	cout << "=== Available aggregates: " << endl;
+	logger.information("=== Available aggregates: ");
 	Utils::forEach(aggregationCfg.getConfiguration(),
-		[](AggregationSetting setting) {
-			cout << "\t" << setting.toString() << endl;
+		[&](AggregationSetting setting) {
+			logger.information("\t" + setting.toString());
 	});
-	cout << "=== Storage database: " << endl;
-	cout << "\t" << storageDBcfg.getConfiguration()->toString() << endl;
-	cout << "=== Aggregation database: " << endl;
-	cout << "\t" << aggregationDBcfg.getConfiguration()->toString() << endl;
-	cout << "-------------------------------------------------------------"
-		"-------------------------------------------------------------"<< endl;
+	logger.information("=== Storage database: ");
+	logger.information("\t" + storageDBcfg.getConfiguration()->toString());
+	logger.information("=== Aggregation database: ");
+	logger.information("\t" + aggregationDBcfg.getConfiguration()->toString());
+	logger.information("-------------------------------------------------------------"
+		"-------------------------------------------------------------");
 
-	AcquistionScheduler scheduler(&storage);
-	//scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
+	/*AcquistionScheduler scheduler(&storage);
+	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
 
 	stormy::aggregate::Engine aggregation_engine(&storage, &aggregation);
-	aggregation_engine.Start(); 
+	aggregation_engine.Start(); */
   
   auto& rest_service = stormy::rest::Service(&storage, &aggregation);
   rest_service.run(argc, argv);
-	getchar();  
 }

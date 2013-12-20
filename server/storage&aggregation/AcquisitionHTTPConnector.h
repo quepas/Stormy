@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include <Poco/Logger.h>
 #include <Poco/Timestamp.h>
 #include "../../common/Types.h"
 
@@ -26,6 +27,6 @@ namespace Stormy
 			static MetricsPtrVector getMetricsAt(
 				std::string host, uint32 port);
 		private:
-
+      static Poco::Logger& logger_;
 	};
 }

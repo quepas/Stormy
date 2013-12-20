@@ -4,13 +4,16 @@
 #include <postgresql/soci-postgresql.h>
 #include "../../common/Utils.h"
 
+using Poco::Logger;
+
 using namespace Stormy;
 using namespace Data;
 using namespace soci;
 using namespace std;
 
 DBAggregation::DBAggregation( Database* database_setting, DBStorage* database_storage )
-	:	database_setting_(database_setting),
+	:	logger_(Logger::get("aggregation")),
+    database_setting_(database_setting),
 		database_storage_(database_storage)
 {
 	Connect();

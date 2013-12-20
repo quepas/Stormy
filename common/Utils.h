@@ -8,8 +8,14 @@
 #include <sstream>
 
 #define TRY try {
-#define CATCH }catch(const exception& ex){cout << ex.what() << endl;}
-#define CATCH_MSG(msg) }catch(const exception& ex){cout << msg << ex.what() << endl;}
+#define CATCH                   \
+  } catch(const exception& ex){ \
+    logger_.error(ex.what());   \
+  }
+#define CATCH_MSG(msg)                                  \
+  } catch(const exception& ex) {                        \
+    logger_.error(std::string(msg) + ": " + ex.what()); \
+  }
 
 namespace Stormy
 {
@@ -18,10 +24,8 @@ namespace Stormy
 	{
 		std::stringstream ss;
 		Out out;
-
 		ss << in;
 		ss >> out;
-
 		return out;
 	};
 
