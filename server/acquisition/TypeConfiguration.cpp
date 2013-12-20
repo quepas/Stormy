@@ -2,11 +2,12 @@
 
 #include <yaml-cpp/yaml.h>
 #include <boost/algorithm/string.hpp>
-#include "../../common/YAMLUtils.h"
+#include "../../common/yaml_util.h"
 
 using namespace Stormy;
 using namespace Meteo;
 using namespace std;
+using namespace stormy::common;
 
 TypeConfiguration::TypeConfiguration( string filepath )
 {
@@ -27,34 +28,34 @@ bool TypeConfiguration::load( string filepath )
 
 	for(auto it = root.begin(); it != root.end(); ++it)
 	{		
-		if(YAMLUtils::isDefined(it, "id"))
+		if(yaml::Util::IsDefined(it, "id"))
 		{
-			string id = YAMLUtils::getString(it, "id");
-			if(!YAMLUtils::isDefined(it, "valueType")) {
+			string id = yaml::Util::GetString(it, "id");
+			if(!yaml::Util::IsDefined(it, "valueType")) {
 				cout << "For " << id << " valueType is not defined" << endl;
 				continue;
 			}
-			string valueType = YAMLUtils::getString(it, "valueType");
-			if(!YAMLUtils::isDefined(it, "valueUnit")) {
+			string valueType = yaml::Util::GetString(it, "valueType");
+			if(!yaml::Util::IsDefined(it, "valueUnit")) {
 				cout << "For " << id << " valueUnit is not defined" << endl;
 				continue;
 			}
-			string valueUnit = YAMLUtils::getString(it, "valueUnit");
-			if(!YAMLUtils::isDefined(it, "equivalents")) {
+			string valueUnit = yaml::Util::GetString(it, "valueUnit");
+			if(!yaml::Util::IsDefined(it, "equivalents")) {
 				cout << "For " << id << " equivalents is not defined" << endl;
 				continue;
 			}
-			string equivalents = YAMLUtils::getString(it, "equivalents");
+			string equivalents = yaml::Util::GetString(it, "equivalents");
 			vector<string> splitedEquivalents;
 			boost::split(splitedEquivalents, equivalents, boost::is_any_of(";,"));
 
 			string valueFormat = "";
-			if(YAMLUtils::isDefined(it, "valueFormat")) {
-				valueFormat = YAMLUtils::getString(it, "valueFormat");
+			if(yaml::Util::IsDefined(it, "valueFormat")) {
+				valueFormat = yaml::Util::GetString(it, "valueFormat");
 			}
 			bool isMeteo = true;
-			if(YAMLUtils::isDefined(it, "isMeteo")) {
-				isMeteo = YAMLUtils::getBoolFromString(it, "isMeteo");
+			if(yaml::Util::IsDefined(it, "isMeteo")) {
+				isMeteo = yaml::Util::GetBool(it, "isMeteo");
 			}
 			TypePtr type(new Type());
 			type -> id = id;
