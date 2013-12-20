@@ -1,7 +1,7 @@
-#include "YAMLConfig.h"
+#include "yaml_config.h"
 
 #include "Utils.h"
-#include "YAMLUtils.h"
+#include "yaml_util.h"
 #include <boost/lexical_cast.hpp>
 
 using std::string;
@@ -78,7 +78,7 @@ void Config::OpenFromFile(string path)
 {
 	Node root = LoadFile(path);
 	if(root.IsSequence()) {
-		Stormy::YAMLUtils::forEach(root, [&](Node node) {
+		Util::forEach(root, [&](Node node) {
 			ReadAndAddEntry(node);
 		});		
 	} else if(root.IsMap()) {
