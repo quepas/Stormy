@@ -4,7 +4,7 @@ using namespace Stormy;
 using namespace std;
 
 AggregationConfig::AggregationConfig( string path )
-	:	YAMLConfig(path),
+	:	Config(path),
 		configuration()
 {
 	mapIntoConfiguration();
@@ -20,27 +20,27 @@ void AggregationConfig::mapIntoConfiguration()
 	for(uint16 i = 0; i < Size(); ++i) {
 		AggregationSetting setting;
 
-		if(hasField("name", i)) {
-			setting.name = asString("name", i);
+		if(HasField("name", i)) {
+			setting.name = AsString("name", i);
 		} else {
 			cout << "No aggregation name. Try next..." << endl;
 			continue;
 		}
-		if(hasField("interval", i)) {
-			setting.interval = asString("interval", i);
+		if(HasField("interval", i)) {
+			setting.interval = AsString("interval", i);
 		} else {
 			cout << "No aggregation interval. Try next..." << endl;
 			continue;
 		}
-		if(hasField("taskRefresh", i)) {
-			setting.taskRefresh = asInt("taskRefresh", i);
+		if(HasField("taskRefresh", i)) {
+			setting.taskRefresh = AsInt("taskRefresh", i);
 		} else {
 			cout << "No aggregation task refresh time. Try next..." 
 				<< endl;
 			continue;
 		}
-		if(hasField("turnOn", i)) {
-			setting.turnOn = asBool("turnOn", i);
+		if(HasField("turnOn", i)) {
+			setting.turnOn = AsBool("turnOn", i);
 		} else {
 			setting.turnOn = false;
 		}

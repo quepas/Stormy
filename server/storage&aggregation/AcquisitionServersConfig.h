@@ -1,12 +1,12 @@
 #pragma once
 
 #include <string>
-#include "../../common/YAMLConfig.h"
+#include "../../common/yaml_config.h"
 #include "AcquisitionServer.h"
 
 namespace Stormy 
 {
-	class AcquisitionServersConfig : public YAMLConfig
+	class AcquisitionServersConfig : public stormy::common::yaml::Config
 	{
 		public:
 			AcquisitionServersConfig(std::string path);

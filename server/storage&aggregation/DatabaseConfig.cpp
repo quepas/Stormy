@@ -4,7 +4,7 @@ using namespace Stormy;
 using namespace std;
 
 DatabaseConfig::DatabaseConfig( string path )
-	:	YAMLConfig(path),
+	:	Config(path),
 		configuration(new Database())
 {
 	mapIntoConfiguration();
@@ -18,36 +18,36 @@ DatabaseConfig::~DatabaseConfig()
 void DatabaseConfig::mapIntoConfiguration()
 {
 	configuration = new Database();
-	if(hasField("name")) {
-		configuration -> name = asString("name");
+	if(HasField("name")) {
+		configuration -> name = AsString("name");
 	}
-	if(hasField("host")) {
-		configuration -> host = asString("host");
+	if(HasField("host")) {
+		configuration -> host = AsString("host");
 	} else {
 		std::string defaultHost = "localhost";
 		cout << "[StorageDB] No host data. Using default (" 
 			 << defaultHost << ")." << endl;	
     configuration -> host = defaultHost;
 	}
-	if(hasField("port")) {
-		configuration -> port = asInt("port");
+	if(HasField("port")) {
+		configuration -> port = AsInt("port");
 	} else {
 		cout << "[StorageDB] No port data. Using default (" 
 			 << Database::defaultPort << ")." << endl;
 		configuration -> port = Database::defaultPort;
 	}
-	if(hasField("database")) {
-		configuration -> database = asString("database");
+	if(HasField("database")) {
+		configuration -> database = AsString("database");
 	} else {		
 		cout << "[StorageDB] No database name." << endl;
 	}
-	if(hasField("user")) {
-		configuration -> user = asString("user");
+	if(HasField("user")) {
+		configuration -> user = AsString("user");
 	} else {
 		cout << "[StorageDB] No user name." << endl;
 	}
-	if(hasField("password")) {
-		configuration -> password  = asString("password");
+	if(HasField("password")) {
+		configuration -> password  = AsString("password");
 	} else {
 		cout << "[StorageDB] No password." << endl;
 	}

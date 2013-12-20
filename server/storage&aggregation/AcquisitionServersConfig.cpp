@@ -5,7 +5,7 @@
 using namespace Stormy;
 
 AcquisitionServersConfig::AcquisitionServersConfig( std::string path )
-	:	YAMLConfig(path),
+	:	Config(path),
 		configuration()
 {
 	mapIntoConfiguration();
@@ -21,30 +21,30 @@ void AcquisitionServersConfig::mapIntoConfiguration()
 	for(unsigned int i = 0; i < Size(); ++i) {
 		AcquisitionServer* serverCfg = new AcquisitionServer();
 		
-		if(hasField("name", i)) {			
-			serverCfg -> name = asString("name", i);
+		if(HasField("name", i)) {			
+			serverCfg -> name = AsString("name", i);
 		}
-		if(hasField("host", i)) {
-			serverCfg -> host = asString("host", i);
+		if(HasField("host", i)) {
+			serverCfg -> host = AsString("host", i);
 		} else {
 			std::cout << "No host data in " << i + 1 
 				<< "th configuration." << std::endl;
 			continue;
 		}
-		if(hasField("port", i)) {
-			serverCfg -> port = asInt("port", i);
+		if(HasField("port", i)) {
+			serverCfg -> port = AsInt("port", i);
 		} else {
 			std::cout << "No port data in " << i + 1
 				<< "th configuration." << std::endl;
 			continue;
 		}
-		if(hasField("acquisitionInterval", i)) {
-			serverCfg -> acquisitionInterval = asInt("acquisitionInterval", i);
+		if(HasField("acquisitionInterval", i)) {
+			serverCfg -> acquisitionInterval = AsInt("acquisitionInterval", i);
 		} else {
 			serverCfg -> acquisitionInterval = 30; // seconds
 		}
 		std::string strHost = serverCfg -> host;
-		std::string strPort = asString("port", i);
+		std::string strPort = AsString("port", i);
 		serverCfg -> id = Utils::md5(strHost + ":" + strPort);
 		configuration.push_back(serverCfg);
 	}
