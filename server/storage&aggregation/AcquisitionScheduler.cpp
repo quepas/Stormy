@@ -13,14 +13,14 @@ AcquistionScheduler::AcquistionScheduler( DBStorage* _dbStorage )
 
 AcquistionScheduler::~AcquistionScheduler()
 {
-	Utils::forEach(acquiredServerTask, [](AcquistionTask* server) {
+	Utils::forEach(acquiredServerTask, [](stormy::acquisition::Task* server) {
 		delete server;
 	});
 }
 
 void AcquistionScheduler::scheduleAcquisition( AcquisitionServer* server )
 {
-	schedule(new AcquistionTask(dbStorage, server), 10000, server -> acquisitionInterval * 1000);
+	schedule(new stormy::acquisition::Task(dbStorage, server), 10000, server -> acquisitionInterval * 1000);
 }
 
 void AcquistionScheduler::scheduleManyAcquisition( 

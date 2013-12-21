@@ -51,9 +51,9 @@ int main(int argc, char** argv) {
 			logger.information("\t" + setting.toString());
 	});
 	logger.information("=== Storage database: ");
-	logger.information("\t" + storageDBcfg.Configuration()->toString());
+	logger.information("\t" + storageDBcfg.Configuration()->ToString());
 	logger.information("=== Aggregation database: ");
-	logger.information("\t" + aggregationDBcfg.Configuration()->toString());
+	logger.information("\t" + aggregationDBcfg.Configuration()->ToString());
 	logger.information("-------------------------------------------------------------"
 		"-------------------------------------------------------------");
 

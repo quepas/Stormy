@@ -5,7 +5,7 @@
 
 #include "DBStorage.h"
 #include "AcquisitionServer.h"
-#include "AcquisitionTask.h"
+#include "acquisition_task.h"
 
 namespace Stormy
 {
@@ -21,7 +21,7 @@ namespace Stormy
 			void scheduleManyAcquisition(const std::vector<AcquisitionServer*>& servers);
 
 		private:
-			std::vector<AcquistionTask*> acquiredServerTask;
+			std::vector<stormy::acquisition::Task*> acquiredServerTask;
 			DBStorage* dbStorage;
 	};
 }
