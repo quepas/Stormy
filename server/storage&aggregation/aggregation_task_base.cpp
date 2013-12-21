@@ -1,4 +1,4 @@
-#include "Base.h"
+#include "aggregation_task_base.h"
 
 #include <Poco/NumberFormatter.h>
 
@@ -7,10 +7,10 @@ using Poco::Logger;
 using Poco::NumberFormatter;
 
 namespace stormy {
-  namespace aggregate {
+  namespace aggregation {
     namespace task {
 
-Base::Base(aggregation::entity::Task task_data, Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation)
+Base::Base(entity::Task task_data, Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation)
   : logger_(Logger::get("aggregation")),
     task_entity_(task_data),
     storage_(storage),
@@ -23,11 +23,10 @@ Base::~Base()
 
 }
 
-string Base::prepareHeader(string task_type)
+string Base::PrepareHeader(string task_type)
 {
-  return "[aggregate::" + task_type + "#" +
+  return "[aggregate/" + task_type + "#" +
     NumberFormatter::format(task_entity_.id) + "]";
 }
-
-// ~~ stormy::aggregate::task::Base
+// ~~ stormy::aggregation::task::Base
 }}}

@@ -15,16 +15,16 @@ namespace stormy {
 class HTTPConnector
 {
 public:    
-  static std::string getDataAsStringAt
+  static std::string FetchDataAsStringAt
     (std::string host, uint32_t port, std::string resource);
-  static Stormy::StationPtrVector getStationsAt(
+  static Stormy::StationPtrVector FetchStationsAt(
     std::string host, uint32_t port);
-  static Stormy::MeasurementPtrVector getMeasurementsForStationAt(
+  static Stormy::MeasurementPtrVector FetchMeasurementsForStationAt(
     std::string host, uint32_t port, std::string stationId);
-  static Stormy::MeasurementPtrVector getMeasurementsForStationNewerThanAt(
+  static Stormy::MeasurementPtrVector FetchMeasurementsForStationNewerThanAt(
     std::string host, uint32_t port, std::string stationId, 
     Poco::Timestamp timestamp);
-  static Stormy::MetricsPtrVector getMetricsAt(
+  static Stormy::MetricsPtrVector FetchMetricsAt(
     std::string host, uint32_t port);
 
 private:

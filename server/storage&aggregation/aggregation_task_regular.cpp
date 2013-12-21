@@ -1,4 +1,4 @@
-#include "RegularAggregation.h"
+#include "aggregation_task_regular.h"
 
 #include <ctime>
 #include <string>
@@ -6,7 +6,7 @@
 #include <Poco/NumberFormatter.h>
 #include <Poco/NumberParser.h>
 
-#include "../../aggregation_entity_aggregate.h"
+#include "aggregation_entity_aggregate.h"
 
 using std::string;
 using std::asctime;
@@ -17,27 +17,31 @@ using Poco::NumberFormatter;
 using Poco::NumberParser;
 
 namespace stormy {
-  namespace aggregate {
+  namespace aggregation {
     namespace task {
 
-RegularAggregation::RegularAggregation( aggregation::entity::Task task_data, 
-  Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation )
+Regular::Regular(
+  entity::Task task_data, 
+  Stormy::DBStorage* storage, 
+  Stormy::DBAggregation* aggregation )
   : Base(task_data, storage, aggregation)
 {
 
 }
 
-RegularAggregation::~RegularAggregation()
+Regular::~Regular()
 {
-  logger_.information(prepareHeader("RegularAggregation") + 
+  logger_.information(PrepareHeader("RegularAggregation") + 
     "] Has died.");
 }
 
-void RegularAggregation::run()
+void Regular::run()
 {
   // update task current_ts
-  task_entity_.current_ts = aggregation_->GetTaskCurrentTS(task_entity_.id);
-  tm station_last_update_ts = storage_->GetStationLastUpdate(task_entity_.station_uid);
+  task_entity_.current_ts = aggregation_->GetTaskCurrentTS(
+    task_entity_.id);
+  tm station_last_update_ts = storage_->GetStationLastUpdate(
+    task_entity_.station_uid);
   time_t station_last_update_time = mktime(&station_last_update_ts);
 
   string current_ts = asctime(&task_entity_.current_ts);
@@ -52,15 +56,20 @@ void RegularAggregation::run()
     auto metrics_code = storage_->GetMetricsCodes();
     // IMPORTANT! : check if measurement is numeric
 
-    for (auto it = metrics_code.begin(); it != metrics_code.end(); ++it) {  
-      auto values = storage_->GetStationMeasure(task_entity_.station_uid, *it, task_entity_.current_ts, interval_end_ts);
+    for (auto metrics_it = metrics_code.begin(); metrics_it != metrics_code.end(); ++metrics_it) {  
+      auto values = storage_->GetStationMeasure(
+        task_entity_.station_uid, 
+        *metrics_it,
+        task_entity_.current_ts, 
+        interval_end_ts);
       int count = values.size();
 
       // IMPORTANT!: if any measure exists
       if (count > 0) {    
-        logger_.information(prepareHeader("RegularAggregation") + 
+        logger_.information(PrepareHeader("RegularAggregation") + 
           "] Running. Aggregated period [" + current_ts + " - "
-          + asctime(&interval_end_ts) + ". Number of samples: " + NumberFormatter::format(count));
+          + asctime(&interval_end_ts) + ". Number of samples: " + 
+            NumberFormatter::format(count));
   
         // !DEBUG
         string str_values = "[";
@@ -77,17 +86,18 @@ void RegularAggregation::run()
         // calculate mean(x)
         double sum = 0.0;
         count = 0;
-        for (auto it = values.begin(); it != values.end(); ++it) {
-          sum += NumberParser::parseFloat(*it); 
+        for (auto values_it = values.begin(); 
+              values_it != values.end(); ++values_it) {
+          sum += NumberParser::parseFloat(*values_it); 
           ++count;
         }
         double mean = sum / count;
         cout << "\n\tMean: " << mean << "\n" << endl;        
 
         if (!values.empty()) {
-          aggregation::entity::Aggregate aggregate;
+          entity::Aggregate aggregate;
           aggregate.station_uid = task_entity_.station_uid;
-          aggregate.metrics_code = *it;
+          aggregate.metrics_code = *metrics_it;
           aggregate.operation_name = "mean";
           aggregate.period_name = task_entity_.period_name;
           aggregate.start_time = task_entity_.current_ts;
@@ -95,7 +105,7 @@ void RegularAggregation::run()
           aggregate.sample_number = values.size();
 
           aggregation_->InsertAggregate(aggregate);
-          logger_.information(prepareHeader("RegularAggregation") +
+          logger_.information(PrepareHeader("RegularAggregation") +
             "Aggregate created.");
         }
       }      
@@ -103,8 +113,8 @@ void RegularAggregation::run()
     storage_->UpdateTaskCurrentTime(task_entity_.id, interval_end_ts);
   }
 
-  logger_.information(prepareHeader("RegularAggregation") + 
+  logger_.information(PrepareHeader("RegularAggregation") + 
     "Task ended.");  
 }
-// ~~ stormy::aggregate::task::RegularAggregation
+// ~~ stormy::aggregation::task::Regular
 }}}

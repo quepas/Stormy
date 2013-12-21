@@ -1,25 +1,25 @@
 #pragma once
 
-#include "Base.h"
-#include "../Scheduler.h"
+#include "aggregation_task_base.h"
+#include "aggregation_scheduler.h"
 
-#include "../../DBStorage.h"
-#include "../../DBAggregation.h"
+#include "DBStorage.h"
+#include "DBAggregation.h"
 
 namespace stormy {
-  namespace aggregate {
+  namespace aggregation {
     namespace task {
 
-class InitialAggregation : public Base
+class Initial : public Base
 {
 public:
-  InitialAggregation(aggregation::entity::Task task_data, Stormy::DBStorage* storage, 
+  Initial(entity::Task task_data, Stormy::DBStorage* storage, 
     Stormy::DBAggregation* aggregation, Scheduler* inner_scheduler);
-  ~InitialAggregation();
+  ~Initial();
 
   void run() override;  
 private:
   Scheduler* inner_scheduler_;
 };
-// ~~ stormy::aggregate::task::InitialAggregation
+// ~~ stormy::aggregation::task::Initial
 }}}

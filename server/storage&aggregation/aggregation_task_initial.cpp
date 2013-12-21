@@ -1,4 +1,4 @@
-#include "InitialAggregation.h"
+#include "aggregation_task_initial.h"
 
 #include <ctime>
 #include <string>
@@ -11,29 +11,31 @@ using Poco::Logger;
 using Poco::NumberFormatter;
 
 namespace stormy {
-  namespace aggregate {
+  namespace aggregation {
     namespace task {
 
-InitialAggregation::InitialAggregation(aggregation::entity::Task task_data, 
-  Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation, 
+Initial::Initial(
+  entity::Task task_data, 
+  Stormy::DBStorage* storage, 
+  Stormy::DBAggregation* aggregation, 
   Scheduler* inner_scheduler)
   : Base(task_data, storage, aggregation),
     inner_scheduler_(inner_scheduler)
 {
 }
 
-InitialAggregation::~InitialAggregation()
+Initial::~Initial()
 {
-  logger_.information(prepareHeader("InitialAggregation") + 
+  logger_.information(PrepareHeader("InitialAggregation") + 
     "] Has died.");
 }
 
-void InitialAggregation::run()
+void Initial::run()
 {
   string current_ts = asctime(&task_entity_.current_ts);
   current_ts.erase(current_ts.length()-1);  // Erase '\n' from end
 
-  logger_.information(prepareHeader("InitialAggregation") + 
+  logger_.information(PrepareHeader("InitialAggregation") + 
     "] Running. Aggregated period [" + current_ts + " - ...]");
 
   // check if any measurements exists
@@ -42,7 +44,7 @@ void InitialAggregation::run()
     tm oldest_measure = storage_->
       GetOldestStationMeasureTime(task_entity_.station_uid);
 
-    logger_.information(prepareHeader("InitialAggregation") +
+    logger_.information(PrepareHeader("InitialAggregation") +
       "Oldest measure from " + asctime(&oldest_measure));
 
     time_t current_task_t = mktime(&task_entity_.current_ts);
@@ -62,8 +64,8 @@ void InitialAggregation::run()
       "Couldn't create RegularAggregation task.");
   }
 
-  logger_.information(prepareHeader("InitialAggregation") + 
+  logger_.information(PrepareHeader("InitialAggregation") + 
     "] Task ended.");  
 }
-// ~~ stormy::aggregate::task::InitialAggregation
+// ~~ stormy::aggregation::task::Initial
 }}}

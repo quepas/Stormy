@@ -30,7 +30,7 @@ namespace stormy {
 
 Logger& HTTPConnector::logger_ = Logger::get("aggregation/HTTPConnector");
 
-string HTTPConnector::getDataAsStringAt(string host, unsigned port, string resource)
+string HTTPConnector::FetchDataAsStringAt(string host, unsigned port, string resource)
 {
 	string content;
 	TRY				
@@ -49,19 +49,19 @@ string HTTPConnector::getDataAsStringAt(string host, unsigned port, string resou
 	return content;
 }
 
-vector<shared_ptr<Stormy::Data::Station>> HTTPConnector::getStationsAt(
+vector<shared_ptr<Stormy::Data::Station>> HTTPConnector::FetchStationsAt(
 	string host, unsigned port)
 {
 	string resource = "/station";
-	string content = getDataAsStringAt(host, port, resource);
+	string content = FetchDataAsStringAt(host, port, resource);
 	return Stormy::JSONUtils::extractStationsFromJSON(content);
 }
 
-vector<shared_ptr<Stormy::Data::Measurement>> HTTPConnector::getMeasurementsForStationAt(
+vector<shared_ptr<Stormy::Data::Measurement>> HTTPConnector::FetchMeasurementsForStationAt(
 	string host, unsigned port, string stationId)
 {
 	string resource = "/meteo/" + stationId;
-	string content = getDataAsStringAt(host, port, resource);
+	string content = FetchDataAsStringAt(host, port, resource);
 	auto measurements = Stormy::JSONUtils::extractMeasurementsFromJSON(content);
 
 	Stormy::Utils::forEach(measurements, [&](Stormy::MeasurementPtr entry) {
@@ -71,12 +71,12 @@ vector<shared_ptr<Stormy::Data::Measurement>> HTTPConnector::getMeasurementsForS
 	return measurements;
 }
 
-Stormy::MeasurementPtrVector HTTPConnector::getMeasurementsForStationNewerThanAt(
+Stormy::MeasurementPtrVector HTTPConnector::FetchMeasurementsForStationNewerThanAt(
 	string host, uint32_t port, string stationId, Timestamp timestamp)
 {
 	string resource = "/meteo/" + stationId + "/" + 
 		NumberFormatter::format(timestamp.epochMicroseconds());
-	string content = getDataAsStringAt(host, port, resource);
+	string content = FetchDataAsStringAt(host, port, resource);
 	auto measurements = Stormy::JSONUtils::extractMeasurementsFromJSON(content);
 
 	Stormy::Utils::forEach(measurements, [&](Stormy::MeasurementPtr entry) {
@@ -85,10 +85,10 @@ Stormy::MeasurementPtrVector HTTPConnector::getMeasurementsForStationNewerThanAt
 	return measurements;
 }
 
-Stormy::MetricsPtrVector HTTPConnector::getMetricsAt(string host, uint32_t port)
+Stormy::MetricsPtrVector HTTPConnector::FetchMetricsAt(string host, uint32_t port)
 {
 	string resource = "/metrics";
-	string content = getDataAsStringAt(host, port, resource);
+	string content = FetchDataAsStringAt(host, port, resource);
 	return Stormy::JSONUtils::extractMetricsFromJSON(content);
 }
 // ~~ stormy::acquisition::HTTPConnector

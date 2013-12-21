@@ -1,13 +1,15 @@
-#include "Factory.h"
+#include "aggregation_task_factory.h"
 
-#include "InitialAggregation.h"
-#include "RegularAggregation.h"
+#include "aggregation_task_initial.h"
+#include "aggregation_task_regular.h"
 
 namespace stormy {
-  namespace aggregate {
+  namespace aggregation {
     namespace task {
 
-Factory::Factory( Stormy::DBStorage* database_storage, Stormy::DBAggregation* database_aggregation) 
+Factory::Factory(
+  Stormy::DBStorage* database_storage, 
+  Stormy::DBAggregation* database_aggregation) 
   : database_storage_(database_storage),
     database_aggregation_(database_aggregation),
     inner_scheduler_(nullptr)
@@ -15,29 +17,24 @@ Factory::Factory( Stormy::DBStorage* database_storage, Stormy::DBAggregation* da
 
 }
 
-/*Factory::~Factory()
-{
-
-}*/
-
-Base* Factory::createDynamicTask( TaskType task_type, aggregation::entity::Task task_entity )
+Base* Factory::CreateDynamicTask(TaskType task_type, entity::Task task_entity)
 {
     switch (task_type) {
       case INITIAL: {
-        return new InitialAggregation(task_entity, 
+        return new Initial(task_entity, 
           database_storage_, database_aggregation_, inner_scheduler_);        
       }
       case REGULAR: {
-        return new RegularAggregation(task_entity, 
+        return new Regular(task_entity, 
           database_storage_, database_aggregation_);
       }      
     }
     return nullptr;
 }
 
-void Factory::SetInnerScheduler( Scheduler* inner_scheduler )
+void Factory::SetInnerScheduler(Scheduler* inner_scheduler)
 {
   inner_scheduler_ = inner_scheduler;
 }
-// ~~ stormy::aggregate::task::Factory
+// ~~ stormy::aggregation::task::Factory
 }}}

@@ -12,7 +12,7 @@
 #include "acquisition_scheduler.h"
 #include "../../common/Utils.h"
 #include "../../common/db_config.h"
-#include "aggregate/Engine.h"
+#include "aggregation_engine.h"
 #include "rest_service.h"
 
 using namespace stormy;
@@ -23,6 +23,7 @@ using namespace Poco;
 int main(int argc, char** argv) {
 	AutoPtr<WindowsColorConsoleChannel> channel(new WindowsColorConsoleChannel);
   (*channel).setProperty("informationColor", "gray");   
+  (*channel).setProperty("errorColor", "red");
 	Logger::root().setChannel(channel);
 	Logger& logger = Logger::get("aggregation_main_thread");  
 	acquisition::Config acquisitionServersCfg("config/acquisition_servers.yaml");
@@ -58,11 +59,11 @@ int main(int argc, char** argv) {
 	logger.information("-------------------------------------------------------------"
 		"-------------------------------------------------------------");
 
-	/*AcquistionScheduler scheduler(&storage);
-	scheduler.scheduleManyAcquisition(acquisitionServersCfg.getConfiguration());	
+	acquisition::Scheduler scheduler(&storage);
+	scheduler.Schedule(acquisitionServersCfg.Configuration());	
 
-	stormy::aggregate::Engine aggregation_engine(&storage, &aggregation);
-	aggregation_engine.Start(); */
+	stormy::aggregation::Engine aggregation_engine(&storage, &aggregation);
+	aggregation_engine.Start();
   
   auto& rest_service = stormy::rest::Service(&storage, &aggregation);
   rest_service.run(argc, argv);
