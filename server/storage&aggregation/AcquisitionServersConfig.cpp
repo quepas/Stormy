@@ -5,7 +5,7 @@
 using namespace Stormy;
 
 AcquisitionServersConfig::AcquisitionServersConfig( std::string path )
-	:	Config(path),
+	:	BaseConfig(path),
 		configuration()
 {
 	mapIntoConfiguration();

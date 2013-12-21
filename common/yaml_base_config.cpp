@@ -1,4 +1,4 @@
-#include "yaml_config.h"
+#include "yaml_base_config.h"
 
 #include "Utils.h"
 #include "yaml_util.h"
@@ -10,22 +10,24 @@ using std::map;
 using boost::lexical_cast;
 using YAML::Node;
 using YAML::LoadFile;
+using Poco::Logger;
 
 namespace stormy {
   namespace common {
     namespace yaml {
 
-Config::Config(string path)	
+BaseConfig::BaseConfig(string path)
+  : logger_(Logger::get("yaml/config"))
 {
 	OpenFromFile(path);	
 }
 
-Config::~Config()
+BaseConfig::~BaseConfig()
 {
 
 }
 
-bool Config::HasField(string field, uint16_t index /*= 0*/)
+bool BaseConfig::HasField(string field, uint16_t index /*= 0*/)
 {
 	if(CheckIndex(index)) {
 		return data_[index].find(field) != data_[index].end();
@@ -33,7 +35,7 @@ bool Config::HasField(string field, uint16_t index /*= 0*/)
 	return false;
 }
 
-vector<string> Config::GetFields(uint16_t index /*= 0*/)
+vector<string> BaseConfig::GetFields(uint16_t index /*= 0*/)
 {
 	vector<string> result;
 	if(CheckIndex(index)) {
@@ -45,40 +47,40 @@ vector<string> Config::GetFields(uint16_t index /*= 0*/)
 	return result;
 }
 
-uint16_t Config::Size()
+uint16_t BaseConfig::Size()
 {
 	return data_.size();
 }
 
-string Config::AsString(string field, uint16_t index /*= 0*/)
+string BaseConfig::AsString(string field, uint16_t index /*= 0*/)
 {
 	return GetValue(field, index);
 }
 
-int Config::AsInt(string field, uint16_t index /*= 0*/)
+int BaseConfig::AsInt(string field, uint16_t index /*= 0*/)
 {
 	string result = GetValue(field, index);
 	if(!result.empty()) return lexical_cast<int>(result);
 	return 0;
 }
 
-double Config::AsDouble(string field, uint16_t index /*= 0*/)
+double BaseConfig::AsDouble(string field, uint16_t index /*= 0*/)
 {
 	string result = GetValue(field, index);
 	if(!result.empty()) return lexical_cast<double>(result);
 	return 0.0;
 }
 
-bool Config::AsBool(string field, uint16_t index /*= 0*/)
+bool BaseConfig::AsBool(string field, uint16_t index /*= 0*/)
 {	
 	return Stormy::Utils::asBool(GetValue(field, index));	
 }
 
-void Config::OpenFromFile(string path)
+void BaseConfig::OpenFromFile(string path)
 {
 	Node root = LoadFile(path);
 	if(root.IsSequence()) {
-		Util::forEach(root, [&](Node node) {
+		Util::ForEach(root, [&](Node node) {
 			ReadAndAddEntry(node);
 		});		
 	} else if(root.IsMap()) {
@@ -86,7 +88,7 @@ void Config::OpenFromFile(string path)
 	}
 }
 
-void Config::ReadAndAddEntry(Node entry)
+void BaseConfig::ReadAndAddEntry(Node entry)
 {
 	if(entry.IsMap()) {
 		map<string, string> mappedEntry;
@@ -100,12 +102,12 @@ void Config::ReadAndAddEntry(Node entry)
 	}
 }
 
-bool Config::CheckIndex( uint16_t index )
+bool BaseConfig::CheckIndex( uint16_t index )
 {
 	return index <= (data_.size() - 1);
 }
 
-string Config::GetValue(string key, uint16_t index /*= 0*/)
+string BaseConfig::GetValue(string key, uint16_t index /*= 0*/)
 {
 	string result;
 	if(CheckIndex(index) && HasField(key, index)) {

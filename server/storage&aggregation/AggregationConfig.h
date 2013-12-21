@@ -1,12 +1,12 @@
 #pragma once
 
 #include <string>
-#include "../../common/yaml_config.h"
+#include "../../common/yaml_base_config.h"
 #include "AggregationSetting.h"
 
 namespace Stormy
 {
-	class AggregationConfig : public stormy::common::yaml::Config
+	class AggregationConfig : public stormy::common::yaml::BaseConfig
 	{
 	public:
 		AggregationConfig(std::string path);

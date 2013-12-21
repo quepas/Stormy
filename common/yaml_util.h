@@ -18,7 +18,7 @@ public:
   static bool GetBool(YAML::iterator it, std::string field);
 
   template<typename T>
-  static void forEach(YAML::Node& node, T func) {
+  static void ForEach(YAML::Node& node, T func) {
     std::for_each(node.begin(), node.end(), func);
   }
 };

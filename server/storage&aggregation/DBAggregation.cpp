@@ -11,7 +11,7 @@ using namespace Data;
 using namespace soci;
 using namespace std;
 
-DBAggregation::DBAggregation( Database* database_setting, DBStorage* database_storage )
+DBAggregation::DBAggregation( db::Setting* database_setting, DBStorage* database_storage )
 	:	logger_(Logger::get("aggregation")),
     database_setting_(database_setting),
 		database_storage_(database_storage)
@@ -27,7 +27,7 @@ DBAggregation::~DBAggregation()
 void DBAggregation::Connect()
 {
 	TRY
-	sql.open(postgresql, database_setting_ -> asConnectionString());
+	sql.open(postgresql, database_setting_ -> AsConnectionString());
 	CATCH_MSG("[AggregationDB] connect(): ")
 }
 

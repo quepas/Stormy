@@ -4,7 +4,7 @@ using namespace Stormy;
 using namespace std;
 
 AggregationConfig::AggregationConfig( string path )
-	:	Config(path),
+	:	BaseConfig(path),
 		configuration()
 {
 	mapIntoConfiguration();

@@ -6,18 +6,20 @@
 
 #include <Poco/Logger.h>
 
-#include "Database.h"
+#include "../../common/db_setting.h"
 #include "DBStorage.h"
 #include "AggregationSetting.h"
 
 #include "aggregation_entity_aggregate.h"
+
+using namespace stormy::common;
 
 namespace Stormy
 {
 	class DBAggregation
 	{
 		public:
-			DBAggregation(Database* database_setting, DBStorage* database_storage);
+			DBAggregation(db::Setting* database_setting, DBStorage* database_storage);
 			~DBAggregation();
       
       // tasks
@@ -40,7 +42,7 @@ namespace Stormy
 
 			void Connect();
 
-			Database* database_setting_;
+			db::Setting* database_setting_;
 			DBStorage* database_storage_;
 			soci::session sql;
       Poco::Logger& logger_;

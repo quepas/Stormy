@@ -13,7 +13,7 @@ using namespace std;
 using namespace soci;
 using namespace Poco;
 
-DBStorage::DBStorage( Database* storageDB )
+DBStorage::DBStorage( db::Setting* storageDB )
 	:	logger_(Logger::get("aggregation")),
     configuration(storageDB)
 {	
@@ -28,7 +28,7 @@ DBStorage::~DBStorage()
 void DBStorage::connect()
 {
 	TRY
-	sql.open(postgresql, configuration -> asConnectionString());	
+	sql.open(postgresql, configuration -> AsConnectionString());	
 	CATCH_MSG("[StorageDB] connect(): ")
 }
 

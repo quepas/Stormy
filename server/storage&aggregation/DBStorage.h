@@ -6,7 +6,7 @@
 #include <Poco/Timestamp.h>
 #include <Poco/Logger.h>
 
-#include "Database.h"
+#include "../../common/db_setting.h"
 #include "../../common/data/Station.h"
 #include "../../common/data/Measurement.h"
 #include "../../common/Utils.h"
@@ -18,12 +18,14 @@
 #include "aggregation_entity_task.h"
 #include "aggregation_entity_period.h"
 
+using namespace stormy::common;
+
 namespace Stormy
 {
 	class DBStorage
 	{
 		public:
-			DBStorage(Database* storageDB);
+			DBStorage(db::Setting* storageDB);
 			~DBStorage();
 
 			// new style
@@ -94,7 +96,7 @@ namespace Stormy
 		private:
 			void connect();
 
-			Database* configuration;
+			db::Setting* configuration;
 			soci::session sql;
       Poco::Logger& logger_;
 	};
