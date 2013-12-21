@@ -3,7 +3,7 @@
 #include <Poco/Logger.h>
 #include <Poco/Util/TimerTask.h>
 
-#include "AcquisitionServer.h"
+#include "acquisition_setting.h"
 #include "DBStorage.h"
 
 namespace stormy {
@@ -12,12 +12,12 @@ namespace stormy {
 class Task : public Poco::Util::TimerTask
 {
 public:
-	Task(Stormy::DBStorage* _dbStorage, Stormy::AcquisitionServer* _server);
+	Task(Stormy::DBStorage* _dbStorage, Setting* _server);
 	~Task();
 
 	void run() override;
 private:
-	Stormy::AcquisitionServer* server;
+	Setting* server;
 	Stormy::DBStorage* dbStorage;
   Poco::Logger& logger_;
 };

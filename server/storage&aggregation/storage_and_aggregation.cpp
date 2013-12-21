@@ -6,7 +6,7 @@
 
 #include "AggregationConfig.h"
 #include "AggregationSetting.h"
-#include "AcquisitionServersConfig.h"
+#include "acquisition_config.h"
 #include "DBStorage.h"
 #include "DBAggregation.h"
 #include "AcquisitionScheduler.h"
@@ -15,6 +15,7 @@
 #include "aggregate/Engine.h"
 #include "rest_service.h"
 
+using namespace stormy;
 using namespace stormy::common;
 using namespace Stormy;
 using namespace Poco;
@@ -24,7 +25,7 @@ int main(int argc, char** argv) {
   (*channel).setProperty("informationColor", "gray");   
 	Logger::root().setChannel(channel);
 	Logger& logger = Logger::get("aggregation_main_thread");  
-	AcquisitionServersConfig acquisitionServersCfg("config/acquisition_servers.yaml");
+	acquisition::Config acquisitionServersCfg("config/acquisition_servers.yaml");
 	AggregationConfig aggregationCfg("config/aggregation.yaml");
 	db::Config storageDBcfg("config/storage_database.yaml");
 	db::Config aggregationDBcfg("config/aggregation_database.yaml");
@@ -41,9 +42,9 @@ int main(int argc, char** argv) {
 		"-------------------------------------------------------------");
 	// display current configurations
 	logger.information("=== Acquisition Servers: ");
-	Utils::forEach(acquisitionServersCfg.getConfiguration(),
-		[&](AcquisitionServer* server) {
-			logger.information("\t" + server -> toString());
+	Utils::forEach(acquisitionServersCfg.Configuration(),
+		[&](acquisition::Setting* server) {
+			logger.information("\t" + server -> ToString());
 	});
 	logger.information("=== Available aggregates: ");
 	Utils::forEach(aggregationCfg.getConfiguration(),

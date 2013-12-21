@@ -4,7 +4,7 @@
 #include <Poco/Util/Timer.h>
 
 #include "DBStorage.h"
-#include "AcquisitionServer.h"
+#include "acquisition_setting.h"
 #include "acquisition_task.h"
 
 namespace Stormy
@@ -17,8 +17,8 @@ namespace Stormy
 
 			void setDBStorage(DBStorage* dbStorage);
 
-			void scheduleAcquisition(AcquisitionServer* server);
-			void scheduleManyAcquisition(const std::vector<AcquisitionServer*>& servers);
+			void scheduleAcquisition(stormy::acquisition::Setting* server);
+			void scheduleManyAcquisition(const std::vector<stormy::acquisition::Setting*>& servers);
 
 		private:
 			std::vector<stormy::acquisition::Task*> acquiredServerTask;

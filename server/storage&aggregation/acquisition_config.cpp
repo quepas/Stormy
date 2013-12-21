@@ -1,25 +1,30 @@
-#include "AcquisitionServersConfig.h"
+#include "acquisition_config.h"
 
 #include "../../common/Utils.h"
 
-using namespace Stormy;
+using std::string;
 
-AcquisitionServersConfig::AcquisitionServersConfig( std::string path )
-	:	BaseConfig(path),
-		configuration()
+namespace stormy {
+  namespace acquisition {
+
+Config::Config( string path )
+	:	BaseConfig(path)		
 {
-	mapIntoConfiguration();
+	MapIntoConfiguration();
 }
 
-AcquisitionServersConfig::~AcquisitionServersConfig()
+Config::~Config()
 {
-
+  for (auto& it = configuration_.begin(); 
+       it != configuration_.end(); ++it) {
+    delete *it;
+  }
 }
 
-void AcquisitionServersConfig::mapIntoConfiguration()
+void Config::MapIntoConfiguration()
 {
 	for(unsigned int i = 0; i < Size(); ++i) {
-		AcquisitionServer* serverCfg = new AcquisitionServer();
+		Setting* serverCfg = new Setting();
 		
 		if(HasField("name", i)) {			
 			serverCfg -> name = AsString("name", i);
@@ -39,13 +44,15 @@ void AcquisitionServersConfig::mapIntoConfiguration()
 			continue;
 		}
 		if(HasField("acquisitionInterval", i)) {
-			serverCfg -> acquisitionInterval = AsInt("acquisitionInterval", i);
+			serverCfg -> interval = AsInt("acquisitionInterval", i);
 		} else {
-			serverCfg -> acquisitionInterval = 30; // seconds
+			serverCfg -> interval = 30; // seconds
 		}
 		std::string strHost = serverCfg -> host;
 		std::string strPort = AsString("port", i);
-		serverCfg -> id = Utils::md5(strHost + ":" + strPort);
-		configuration.push_back(serverCfg);
+		serverCfg -> id = Stormy::Utils::md5(strHost + ":" + strPort);
+		configuration_.push_back(serverCfg);
 	}
 }
+// ~~ stormy::acquisition::Config
+}}

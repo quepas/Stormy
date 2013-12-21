@@ -18,15 +18,15 @@ AcquistionScheduler::~AcquistionScheduler()
 	});
 }
 
-void AcquistionScheduler::scheduleAcquisition( AcquisitionServer* server )
+void AcquistionScheduler::scheduleAcquisition( stormy::acquisition::Setting* server )
 {
-	schedule(new stormy::acquisition::Task(dbStorage, server), 10000, server -> acquisitionInterval * 1000);
+	schedule(new stormy::acquisition::Task(dbStorage, server), 10000, server -> interval * 1000);
 }
 
 void AcquistionScheduler::scheduleManyAcquisition( 
-	const vector<AcquisitionServer*>& servers )
+	const vector<stormy::acquisition::Setting*>& servers )
 {
-	Utils::forEach(servers, [&](AcquisitionServer* server) {
+	Utils::forEach(servers, [&](stormy::acquisition::Setting* server) {
 		scheduleAcquisition(server);
 	});
 }
