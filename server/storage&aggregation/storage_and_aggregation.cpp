@@ -4,8 +4,8 @@
 #include <Poco/WindowsConsoleChannel.h>
 #include <Poco/AutoPtr.h>
 
-#include "AggregationConfig.h"
-#include "AggregationSetting.h"
+#include "aggregation_config.h"
+#include "aggregation_setting.h"
 #include "acquisition_config.h"
 #include "DBStorage.h"
 #include "DBAggregation.h"
@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
 	Logger::root().setChannel(channel);
 	Logger& logger = Logger::get("aggregation_main_thread");  
 	acquisition::Config acquisitionServersCfg("config/acquisition_servers.yaml");
-	AggregationConfig aggregationCfg("config/aggregation.yaml");
+	aggregation::Config aggregationCfg("config/aggregation.yaml");
 	db::Config storageDBcfg("config/storage_database.yaml");
 	db::Config aggregationDBcfg("config/aggregation_database.yaml");
 
@@ -47,9 +47,9 @@ int main(int argc, char** argv) {
 			logger.information("\t" + server -> ToString());
 	});
 	logger.information("=== Available aggregates: ");
-	Utils::forEach(aggregationCfg.getConfiguration(),
-		[&](AggregationSetting setting) {
-			logger.information("\t" + setting.toString());
+	Utils::forEach(aggregationCfg.Configuration(),
+		[&](aggregation::Setting setting) {
+			logger.information("\t" + setting.ToString());
 	});
 	logger.information("=== Storage database: ");
 	logger.information("\t" + storageDBcfg.Configuration()->ToString());

@@ -1,22 +1,25 @@
 #pragma once
 
 #include <string>
+
 #include "../../common/yaml_base_config.h"
-#include "AggregationSetting.h"
+#include "aggregation_setting.h"
 
-namespace Stormy
+namespace stormy {
+  namespace aggregation {
+
+class Config : public common::yaml::BaseConfig
 {
-	class AggregationConfig : public stormy::common::yaml::BaseConfig
-	{
-	public:
-		AggregationConfig(std::string path);
-		~AggregationConfig();
+public:
+	Config(std::string path);
+	~Config();
 
-		std::vector<AggregationSetting>& getConfiguration() {
-			return configuration;
-		}
-	private:
-		std::vector<AggregationSetting> configuration;
-		void mapIntoConfiguration();
-	};
-}
+	std::vector<Setting>& Configuration() {
+		return configuration_;
+	}
+private:
+	std::vector<Setting> configuration_;
+	void MapIntoConfiguration();
+};
+// ~~ stormy::aggregation::Config
+}}

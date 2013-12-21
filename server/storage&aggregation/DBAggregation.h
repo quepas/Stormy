@@ -8,7 +8,7 @@
 
 #include "../../common/db_setting.h"
 #include "DBStorage.h"
-#include "AggregationSetting.h"
+#include "aggregation_setting.h"
 
 #include "aggregation_entity_aggregate.h"
 
@@ -38,7 +38,7 @@ namespace Stormy
 				return database_storage_;
 			}
 		private:  
-			uint32_t InsertTask(std::string station_uid, AggregationSetting aggregation_setting);
+			uint32_t InsertTask(std::string station_uid, stormy::aggregation::Setting aggregation_setting);
 
 			void Connect();
 

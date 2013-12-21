@@ -44,7 +44,7 @@ uint32_t DBAggregation::GetTaskId(string station_uid, string period_name)
 	return id;
 }
 
-uint32_t DBAggregation::InsertTask(string station_uid, AggregationSetting aggregation)
+uint32_t DBAggregation::InsertTask(string station_uid, stormy::aggregation::Setting aggregation)
 {
 	uint32_t id = 0;
 	TRY

@@ -1,49 +1,54 @@
-#include "AggregationConfig.h"
+#include "aggregation_config.h"
 
-using namespace Stormy;
-using namespace std;
+#include <cstdint>
 
-AggregationConfig::AggregationConfig( string path )
-	:	BaseConfig(path),
-		configuration()
+using std::string;
+
+namespace stormy {
+  namespace aggregation {
+
+Config::Config(string path)
+	:	BaseConfig(path)		
 {
-	mapIntoConfiguration();
+	MapIntoConfiguration();
 }
 
-AggregationConfig::~AggregationConfig()
+Config::~Config()
 {
 
 }
 
-void AggregationConfig::mapIntoConfiguration()
+void Config::MapIntoConfiguration()
 {
-	for(uint16 i = 0; i < Size(); ++i) {
-		AggregationSetting setting;
+	for(uint16_t i = 0; i < Size(); ++i) {
+		Setting setting;
 
 		if(HasField("name", i)) {
 			setting.name = AsString("name", i);
 		} else {
-			cout << "No aggregation name. Try next..." << endl;
+			logger_.warning("No aggregation name. Try next...");
 			continue;
 		}
 		if(HasField("interval", i)) {
 			setting.interval = AsString("interval", i);
 		} else {
-			cout << "No aggregation interval. Try next..." << endl;
+			logger_.warning("No aggregation interval. Try next...");
 			continue;
 		}
 		if(HasField("taskRefresh", i)) {
-			setting.taskRefresh = AsInt("taskRefresh", i);
+			setting.task_refresh = AsInt("taskRefresh", i);
 		} else {
-			cout << "No aggregation task refresh time. Try next..." 
-				<< endl;
+			logger_.warning("No aggregation task refresh time. Try next...");
 			continue;
 		}
 		if(HasField("turnOn", i)) {
-			setting.turnOn = AsBool("turnOn", i);
+			setting.turn_on = AsBool("turnOn", i);
 		} else {
-			setting.turnOn = false;
+			setting.turn_on = false;
+      logger_.notice("Aggregation task " + setting.name + " is turn off.");
 		}
-		configuration.push_back(setting);
+		configuration_.push_back(setting);
 	}
 }
+// ~~ stormy::aggregation::Config
+}}
