@@ -9,7 +9,7 @@
 #include "acquisition_config.h"
 #include "DBStorage.h"
 #include "DBAggregation.h"
-#include "AcquisitionScheduler.h"
+#include "acquisition_scheduler.h"
 #include "../../common/Utils.h"
 #include "../../common/db_config.h"
 #include "aggregate/Engine.h"

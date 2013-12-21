@@ -6,7 +6,7 @@
 #include <Poco/Stopwatch.h>
 
 #include "../../common/data/Station.h"
-#include "AcquisitionHTTPConnector.h"
+#include "acquisition_http_connector.h"
 #include "JSONUtils.h"
 
 using std::string;
@@ -39,13 +39,11 @@ void Task::run()
 	logger_.notice("[AcquisitionTask] Start fetching data from " + 
     server -> name);
 	// metrics
-	auto metrics = 
-		Stormy::AcquisitionHTTPConnector::getMetricsAt(host, port);
+	auto metrics = HTTPConnector::getMetricsAt(host, port);
 	dbStorage -> insertMetrics(metrics);
 
 	// stations
-	auto stations = 
-		Stormy::AcquisitionHTTPConnector::getStationsAt(host, port);
+	auto stations = HTTPConnector::getStationsAt(host, port);
 	dbStorage -> insertStations(stations);	
 
 	uint32_t measurementCounter = 0;
@@ -56,12 +54,10 @@ void Task::run()
 
 		Stormy::MeasurementPtrVector measurements;		
 		if(newestMeasureForStation.epochMicroseconds() != 0) {
-			measurements = 
-				Stormy::AcquisitionHTTPConnector::getMeasurementsForStationNewerThanAt(
+			measurements = HTTPConnector::getMeasurementsForStationNewerThanAt(
 					host, port, station -> uid, newestMeasureForStation);
 		} else {
-			measurements = 
-				Stormy::AcquisitionHTTPConnector::getMeasurementsForStationAt(
+			measurements = HTTPConnector::getMeasurementsForStationAt(
 				host, port, station -> uid);
 		}
 		measurementCounter += measurements.size();

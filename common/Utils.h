@@ -9,11 +9,11 @@
 
 #define TRY try {
 #define CATCH                   \
-  } catch(const exception& ex){ \
+  } catch(const std::exception& ex){ \
     logger_.error(ex.what());   \
   }
 #define CATCH_MSG(msg)                                  \
-  } catch(const exception& ex) {                        \
+  } catch(const std::exception& ex) {                        \
     logger_.error(std::string(msg) + ": " + ex.what()); \
   }
 

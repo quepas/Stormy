@@ -1,0 +1,39 @@
+#include "acquisition_scheduler.h"
+
+#include "../../common/Utils.h"
+
+using std::vector;
+
+namespace stormy {
+  namespace acquisition {
+
+Scheduler::Scheduler( Stormy::DBStorage* _dbStorage )
+		:	storage_database_(_dbStorage)
+{
+
+}
+
+Scheduler::~Scheduler()
+{
+
+}
+
+void Scheduler::Schedule(Setting* server)
+{
+	schedule(new Task(storage_database_, server), 10000, server -> interval * 1000);
+}
+
+void Scheduler::Schedule( 
+	const vector<Setting*>& servers )
+{
+	Stormy::Utils::forEach(servers, [&](Setting* server) {
+		Schedule(server);
+	});
+}
+
+void Scheduler::SetDBStorage( Stormy::DBStorage* _dbStorage )
+{
+	if(_dbStorage) storage_database_ = _dbStorage;
+}
+// ~~ stormy::acquisition::Scheduler
+}}
