@@ -8,7 +8,6 @@
 using Poco::Logger;
 
 using namespace Stormy;
-using namespace Stormy::Data;
 using namespace std;
 using namespace soci;
 using namespace Poco;
@@ -58,15 +57,15 @@ void DBStorage::clearAllStation()
 	CATCH_MSG("[StorageDB] clearAllStation(): ")
 }
 
-Station* DBStorage::getStationByUID( string uid )
+entity::Station DBStorage::getStationByUID(string uid)
 {
-	Station* result = new Station();
+	entity::Station station;
 	TRY
 	sql << "SELECT uid, name, url, refresh_time FROM station WHERE uid = :uid",
-		into(result -> uid), into(result -> name), into(result -> url),
-		into(result -> refresh_time), use(uid);
+		into(station.uid), into(station.name), into(station.url),
+		into(station.refresh_time), use(uid);
 	CATCH_MSG("[StorageDB] getStationByUID(): ")
-	return result;
+	return station;
 }
 
 bool DBStorage::existsStationByUID( string uid )

@@ -7,7 +7,6 @@
 using Poco::Logger;
 
 using namespace Stormy;
-using namespace Data;
 using namespace soci;
 using namespace std;
 
@@ -56,7 +55,7 @@ uint32_t DBAggregation::InsertTask(string station_uid, stormy::aggregation::Sett
 	return id;
 }
 
-string Stormy::DBAggregation::GetStationUIDFromTask(uint32_t task_id)
+string DBAggregation::GetStationUIDFromTask(uint32_t task_id)
 {
 	string station_uid = 0;
 	TRY

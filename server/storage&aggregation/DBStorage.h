@@ -7,7 +7,6 @@
 #include <Poco/Logger.h>
 
 #include "../../common/db_setting.h"
-#include "../../common/data/Station.h"
 #include "../../common/Utils.h"
 
 #include "../../common/entity_station.h"
@@ -79,7 +78,7 @@ namespace Stormy
 			void insertStations(const std::vector<entity::Station>& stations);
 			void clearAllStation();
 			bool existsStationByUID(std::string uid);
-			Data::Station* getStationByUID(std::string uid);								
+			entity::Station getStationByUID(std::string uid);								
 
 			// measurements			
 			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);			
