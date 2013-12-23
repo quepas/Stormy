@@ -62,9 +62,9 @@ int main(int argc, char** argv) {
 	acquisition::Scheduler scheduler(&storage);
 	scheduler.Schedule(acquisitionServersCfg.Configuration());	
 
-	stormy::aggregation::Engine aggregation_engine(&storage, &aggregation);
+	aggregation::Engine aggregation_engine(&storage, &aggregation);
 	aggregation_engine.Start();
   
-  auto& rest_service = stormy::rest::Service(&storage, &aggregation);
+  auto& rest_service = rest::Service(&storage, &aggregation);
   rest_service.run(argc, argv);
 }

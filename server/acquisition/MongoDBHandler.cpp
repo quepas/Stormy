@@ -1,14 +1,19 @@
 #include "MongoDBHandler.h"
 
+#include <ctime>
 #include <boost/algorithm/string.hpp>
 #include <boost/any.hpp>
 #include <Poco/Timestamp.h>
 #include <Poco/NumberParser.h>
+#include <Poco/NumberFormatter.h>
 
 #include "TypeConfiguration.h"
 #include "MeteoUtils.h"
 #include "MeteoConst.h"
 #include "../../common/Utils.h"
+
+using std::time_t;
+using Poco::NumberFormatter;
 
 using namespace Stormy;
 using namespace Meteo;
@@ -17,8 +22,8 @@ using namespace std;
 using namespace mongo;
 
 MongoDBHandler::MongoDBHandler( string dbAddress /*= "localhost"*/ )
-	:	connected(false),
-		connection(DBClientConnection())
+	:	connection(DBClientConnection()),
+    Handler("MongoDB")
 {
 	if(!dbAddress.empty())
 		connect(dbAddress);
@@ -34,22 +39,22 @@ void MongoDBHandler::connect( string dbAddress )
 	try {
 		connection.connect(dbAddress);
 		cout << "Connected to MongoDB database: " << dbAddress << endl;
-		connected = true;
+		connected_ = true;      
 	} catch (const DBException& e) {
 		cout << "[ERROR]: " << e.what() << endl;
-		connected = false;
+		connected_ = false;
 	}
 }
 
 void MongoDBHandler::clearMeteosData()
 {
-	if(!connected) return;
+	if(!connected_) return;
 	connection.dropCollection(MeteoUtils::getMeteoDb());
 }
 
 void MongoDBHandler::insertMeteoData( MeasurementPtr measurement )
 {
-	if(!connected || !measurement.get()) return;
+	if(!connected_ || !measurement.get()) return;
 
 	BSONObjBuilder bsonBuilder;
 	auto data = measurement -> data;
@@ -66,37 +71,37 @@ void MongoDBHandler::insertMeteoData( MeasurementPtr measurement )
 
 void MongoDBHandler::clearStationsData()
 {
-	if(!connected) return;
-	connection.dropCollection(MeteoUtils::getStatioDb());
+	if(!connected_) return;
+	connection.dropCollection(MeteoUtils::getStationDb());
 }
 
 void MongoDBHandler::insertStationsData( const StationPtrVector& data )
 {
-	if(!connected) return;
+	if(!connected_) return;
 	for(auto it = data.begin(); it != data.end(); ++it)
 		insertStationData(*it);
 }
 
 void MongoDBHandler::insertStationData( StationPtr data )
 {
-	if(!connected || !data.get()) return;
+	if(!connected_ || !data.get()) return;
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(Const::mongoId, data -> stationId);
 	bsonBuilder.append(Const::name, data -> name);
 	bsonBuilder.append(Const::parserClass, data -> parserClass);
 	bsonBuilder.append(Const::refreshTime, data -> refreshTime);
 	bsonBuilder.append(Const::url, data -> url);
-	connection.insert(MeteoUtils::getStatioDb(), bsonBuilder.obj());
+	connection.insert(MeteoUtils::getStationDb(), bsonBuilder.obj());
 }
 
 StationPtrVector MongoDBHandler::getStationsData()
 {
 	auto result = StationPtrVector();
-	if(!connected) return result;
+	if(!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
-		connection.query(MeteoUtils::getStatioDb(), BSONObj());
-	while( cursor -> more() ) {
+		connection.query(MeteoUtils::getStationDb(), BSONObj());
+	while( cursor -> more() ) {    
 		BSONObj current = cursor -> next();
 		StationPtr station(new Station());
 		station -> stationId = current.getStringField(Const::mongoId.c_str());
@@ -112,7 +117,7 @@ StationPtrVector MongoDBHandler::getStationsData()
 MeasurementPtr MongoDBHandler::getCurrentMeteoTypeData( string stationId, string typeId )
 {
 	auto result = MeasurementPtr(new Measurement());
-	if(!connected) return result;
+	if(!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
@@ -131,7 +136,7 @@ MeasurementPtr MongoDBHandler::getCurrentMeteoTypeData( string stationId, string
 MeasurementPtrVector MongoDBHandler::getCurrentMeteoTypeDatas( string stationId, string typeId )
 {
 	auto result = MeasurementPtrVector();
-	if(!connected) return result;
+	if(!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
@@ -153,7 +158,7 @@ MeasurementPtrVector MongoDBHandler::getCurrentMeteoTypeDatas( string stationId,
 MeasurementPtrVector MongoDBHandler::getMeteoData(string stationId)
 {
 	auto result = MeasurementPtrVector();
-	if(!connected) return result;
+	if(!connected_) return result;
 	
 	TypePtrVector types = getTypesData();
 	auto_ptr<DBClientCursor> cursor =
@@ -190,7 +195,7 @@ MeasurementPtrVector MongoDBHandler::getMeteoData(string stationId)
 MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, string timestamp )
 {
 	auto result = MeasurementPtrVector();
-	if(!connected) return result;
+	if(!connected_) return result;
 	
 	TypePtrVector types = getTypesData();
 	auto_ptr<DBClientCursor> cursor =
@@ -228,11 +233,11 @@ MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, st
 TypePtrVector MongoDBHandler::getTypesData()
 {
 	TypePtrVector result;
-	if(!connected) return result;
+	if(!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getTypeDb(), BSONObj());
-	while( cursor -> more() ) {
+	while( cursor -> more() ) {    
 		BSONObj current = cursor -> next();
 		TypePtr type(new Type());
 		type -> id = current.getStringField(Const::id.c_str());
@@ -248,7 +253,7 @@ TypePtrVector MongoDBHandler::getTypesData()
 
 bool MongoDBHandler::insertTypesData( const TypePtrVector& data )
 {
-	if(!connected || data.empty()) return false;
+	if(!connected_ || data.empty()) return false;
 	Utils::forEach(data, [&](TypePtr type) {		
 		BSONObjBuilder bsonBuilder;
 		bsonBuilder.append(Const::id, type -> id);
@@ -264,7 +269,37 @@ bool MongoDBHandler::insertTypesData( const TypePtrVector& data )
 
 bool MongoDBHandler::clearTypesData()
 {
-	if(!connected) return false;
+	if(!connected_) return false;
 	connection.dropCollection(MeteoUtils::getTypeDb());
 	return true;
+}
+
+void MongoDBHandler::ExpireData()
+{
+  if(!ValidateConnection()) return;
+  auto stations_uid = FetchStationsUID();
+  time_t expiration_time = Utils::LocaltimeNow() - expiration_seconds();  
+  
+  for (auto it = stations_uid.begin(); it != stations_uid.end(); ++it) {   
+    connection.remove(
+      MeteoUtils::getMeteoDb() + "." + Const::stationIdPrefix + *it, 
+      QUERY(Const::mongoId << LT << NumberFormatter::format(expiration_time)));    
+  }
+}
+
+vector<string> MongoDBHandler::FetchStationsUID()
+{
+  auto result = vector<string>();
+  if(!ValidateConnection()) return result;
+
+  auto_ptr<DBClientCursor> cursor = 
+    connection.query(MeteoUtils::getStationDb(), BSONObj());
+
+  while (cursor->more()) {
+    auto current_value = cursor->next();
+    string station_uid = current_value
+      .getStringField(Const::mongoId.c_str());
+    result.push_back(station_uid);
+  }
+  return result;
 }

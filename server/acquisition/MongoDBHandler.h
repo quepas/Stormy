@@ -1,15 +1,23 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <mongo/client/dbclient.h>
 
+#include "../../common/db_handler.h"
+#include "../../common/db_has_data_expiration.h"
 #include "MeteoData.h"
+
+using namespace stormy::common;
 
 namespace Stormy
 {
-	class MongoDBHandler
+	class MongoDBHandler : public db::Handler, public db::HasDataExpiration
 	{
 		public:						
+      void ExpireData() override;
+      std::vector<std::string> FetchStationsUID();
+
 			void clearMeteosData();
 			void insertMeteoData(MeasurementPtr meteoData);
 			MeasurementPtrVector getMeteoData(std::string stationId);
@@ -32,13 +40,11 @@ namespace Stormy
 			}
 		private:
 			MongoDBHandler(std::string dbAddress = "localhost");
-			MongoDBHandler(const MongoDBHandler&) {}
+			MongoDBHandler(const MongoDBHandler&) : Handler("MongoDB") {}
 			MongoDBHandler& operator=(const MongoDBHandler&) {}
 			~MongoDBHandler();
 
-			void connect(std::string dbAddress);
-
-			bool connected;
+			void connect(std::string dbAddress);			
 			mongo::DBClientConnection connection;
 	};
 }

@@ -7,6 +7,8 @@
 #include <typeinfo>
 
 using namespace Stormy;
+using std::time_t;
+using std::time;
 using Poco::MD5Engine;
 using boost::any;
 using boost::any_cast;
@@ -95,6 +97,12 @@ bool Utils::asBool( std::string text )
 {
 	to_lower(text);
 	return text == "true" || text == "1";
+}
+
+time_t Utils::LocaltimeNow()
+{
+  // TODO: fix this!
+  return time(0) + 3600;
 }
 
 std::string Utils::numberPattern = "-?[0-9]+([.][0-9]+)?";

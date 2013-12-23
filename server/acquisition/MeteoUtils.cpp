@@ -40,7 +40,7 @@ std::string MeteoUtils::getMeteoDb()
 	return Const::mongoDb + "." + Const::mongoMeteo;
 }
 
-std::string MeteoUtils::getStatioDb()
+std::string MeteoUtils::getStationDb()
 {
 	return Const::mongoDb + "." + Const::mongoStation;
 }

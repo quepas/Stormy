@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ctime>
 #include <string>
 #include <vector>
 #include <map>
@@ -44,6 +45,7 @@ namespace Stormy
 			// date & time
 			static bool checkIfStandardDate(std::string date);	// YYYY-MM-DD
 			static bool checkIfStandardTime(std::string time);	// HH:MM
+      static std::time_t LocaltimeNow();
 
 			// stl
 			template<typename T, typename V>

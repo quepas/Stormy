@@ -12,6 +12,8 @@
 #include "HttpServer.h"
 #include "AcquisitionScheduler.h"
 
+#include "../../common/db_expiration_engine.h"
+
 #include <sstream>
 
 using namespace Stormy;
@@ -25,6 +27,7 @@ int main(int argc, char** argv)
 	TypeConfiguration meteoTypeCfg("config/meteo_data_type_config.yaml");
 
 	MongoDBHandler& dbHandler = MongoDBHandler::get();
+  dbHandler.set_expiration_seconds(3600 * 72);
 	dbHandler.clearStationsData();
 	dbHandler.insertStationsData(meteoStationsCfg.getConfiguration());
 	dbHandler.clearTypesData();
@@ -33,8 +36,11 @@ int main(int argc, char** argv)
 	AcquisitionScheduler acqSecheduler;
 	acqSecheduler.scheduleManyAcquisition(meteoStationsCfg.getConfiguration());
 
-	Stormy::HttpServer httpServer;
-	httpServer.run(argc, argv);
+  stormy::common::db::expiration::Engine expiration_engine(dbHandler);
+  expiration_engine.ScheduleEverySeconds(3600);
 
+	Stormy::HttpServer httpServer;
+	httpServer.run(argc, argv);  
+  
 	getchar();
 }
