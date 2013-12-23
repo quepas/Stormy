@@ -5,11 +5,14 @@
 #include <Poco/NumberFormatter.h>
 #include <Poco/Stopwatch.h>
 
-#include "../../common/data/Station.h"
+#include "../../common/entity_measurement.h"
+#include "../../common/entity_station.h"
 #include "acquisition_http_connector.h"
-#include "JSONUtils.h"
+#include "acquisition_json_util.h"
 
+using namespace stormy::common;
 using std::string;
+using std::vector;
 using Poco::Logger;
 using Poco::NumberFormatter;
 using Poco::Stopwatch;
@@ -47,17 +50,17 @@ void Task::run()
 
 	uint32_t measurementCounter = 0;
 	// data
-	Stormy::Utils::forEach(stations, [&](Stormy::StationPtr station) {
+	Stormy::Utils::forEach(stations, [&](entity::Station station) {
 		auto newestMeasureForStation =
-			dbStorage -> findNewestMeasureTimeByStationUID(station -> uid);
+			dbStorage -> findNewestMeasureTimeByStationUID(station.uid);
 
-		Stormy::MeasurementPtrVector measurements;		
+		vector<entity::Measurement> measurements;		
 		if(newestMeasureForStation.epochMicroseconds() != 0) {
 			measurements = http_connector.FetchMeasurementsForStationNewerThanAt(
-					station -> uid, newestMeasureForStation);
+					station.uid, newestMeasureForStation);
 		} else {
 			measurements = http_connector.FetchMeasurementsForStationAt(
-				station -> uid);
+				station.uid);
 		}
 		measurementCounter += measurements.size();
 		dbStorage -> InsertMeasurements(measurements);		

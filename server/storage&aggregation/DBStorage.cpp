@@ -32,22 +32,20 @@ void DBStorage::connect()
 	CATCH_MSG("[StorageDB] connect(): ")
 }
 
-void DBStorage::insertStation( StationPtr station )
+void DBStorage::insertStation(entity::Station station)
 {
-	if(station) {
-		TRY
-		sql << "INSERT INTO station(uid, name, url, refresh_time, last_update)"
-			"values(:uid, :name, :url, :refresh_time, to_timestamp(0))",
-			use(station -> uid), use(station -> name), 
-			use(station -> url), use(station -> refresh_time);
-		CATCH_MSG("[StorageDB] insertStation(): ")		
-	}
+  TRY
+  sql << "INSERT INTO station(uid, name, url, refresh_time, last_update)"
+    "values(:uid, :name, :url, :refresh_time, to_timestamp(0))",
+    use(station.uid), use(station.name), 
+    use(station.url), use(station.refresh_time);
+  CATCH_MSG("[StorageDB] insertStation(): ")
 }
 
-void DBStorage::insertStations( const StationPtrVector& stations )
+void DBStorage::insertStations( const vector<entity::Station>& stations )
 {
-	Utils::forEach(stations, [&](StationPtr station) {
-		if(!existsStationByUID(station -> uid))
+	Utils::forEach(stations, [&](entity::Station station) {
+		if(!existsStationByUID(station.uid))
 			insertStation(station);
 	});
 }
@@ -81,20 +79,21 @@ bool DBStorage::existsStationByUID( string uid )
   return count > 0;
 }
 
-bool DBStorage::InsertMeasurements( const MeasurementPtrVector& measurements )
+bool DBStorage::InsertMeasurements(const vector<entity::Measurement>& measurements)
 {
 	if(!measurements.empty()) {
 		TRY		
 		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
-			string metricsCode = (*it) -> metrics -> code;
+			string metricsCode = it->code;
       auto metrics = GetMetricsCodes();
 			if(Utils::contains(metrics, metricsCode)) {
-        string station_uid = (*it)->station->uid;			
-        time_t current_ts = (*it) -> timestamp.epochMicroseconds();
+        string station_uid = it->station_uid;
+        auto current_tm = it->timestamp;
+        time_t current_ts = mktime(&current_tm);
 			  sql << "INSERT INTO measurement(code, value_text, station_uid, timestamp)"
 				  "values(:code, :value_text, :station_uid, to_timestamp(:timestamp))", 
 				  use(metricsCode),
-				  use(boost::any_cast<std::string>((*it) -> value)), 
+				  use(it->value_text), 
 				  use(station_uid),
 				  use(current_ts);
       
@@ -128,9 +127,9 @@ Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 	return Timestamp(time);
 }
 
-Timestamp DBStorage::findOldestMeasureTimeByStationUID( string uid )
+Timestamp DBStorage::findOldestMeasureTimeByStationUID(string uid)
 {
-	ulong time = 0;
+	time_t time = 0;
 	if(countMeasurementFromStation(uid) > 0) {
 		TRY		
 		// TODO: fix acquisition 'time zone' time respect
@@ -144,26 +143,24 @@ Timestamp DBStorage::findOldestMeasureTimeByStationUID( string uid )
 }
 
 
-bool DBStorage::insertOneMetrics( const MetricsPtr& metrics )
+bool DBStorage::insertOneMetrics(entity::Metrics metrics)
 {
-	if(metrics) {
-		TRY
-		sql << "INSERT INTO metrics(code, equivalents, type, unit, format)"
-			"values(:code, :equivalents, :type, :unit, :format)",
-			use(metrics -> code), use(metrics -> equivalents),
-			use(metrics -> value_type), use(metrics -> value_unit),
-			use(metrics -> value_format);
-		return true;
-		CATCH			
-	}
+  TRY
+  sql << "INSERT INTO metrics(code, equivalents, type, unit, format)"
+    "values(:code, :equivalents, :type, :unit, :format)",
+    use(metrics.code), use(metrics.equivalents),
+    use(metrics.type), use(metrics.unit),
+    use(metrics.format);
+  return true;
+  CATCH			
 	return false;	
 }
 
-bool DBStorage::insertMetrics( const MetricsPtrVector& metrics )
+bool DBStorage::insertMetrics(const vector<entity::Metrics>& metrics)
 {
 	if(!metrics.empty()) {
-		Utils::forEach(metrics, [&](MetricsPtr metric) {
-			if(!existsMetricsByCode(metric -> code))
+		Utils::forEach(metrics, [&](entity::Metrics metric) {
+			if(!existsMetricsByCode(metric.code))
 				insertOneMetrics(metric);
 		});
 	}
@@ -172,7 +169,7 @@ bool DBStorage::insertMetrics( const MetricsPtrVector& metrics )
 
 bool DBStorage::existsMetricsByCode( const string& code )
 {
-	uint32 count = 0;
+	uint32_t count = 0;
 	TRY
 	sql << "SELECT count(*) FROM metrics WHERE code = :code",
 		into(count), use(code);
@@ -182,7 +179,7 @@ bool DBStorage::existsMetricsByCode( const string& code )
 
 bool DBStorage::existsAnyMeasurementFromStation( string uid )
 {
-	uint32 count = 0;
+	uint32_t count = 0;
 	TRY
 	sql << "SELECT count(*) FROM measurement WHERE "
 		"station_uid = :uid",
@@ -191,9 +188,9 @@ bool DBStorage::existsAnyMeasurementFromStation( string uid )
 	return count > 0;
 }
 
-uint32 DBStorage::countAllMeasurements()
+uint32_t DBStorage::countAllMeasurements()
 {
-	uint32 count = 0;
+	uint32_t count = 0;
 	TRY
 	sql << "SELECT count(*) FROM measurement", into(count);
 	CATCH_MSG("[StorageDB] countAllMeasurements(): ")
@@ -209,9 +206,9 @@ uint32_t DBStorage::CountStations()
 	return count;
 }
 
-ulong DBStorage::countMeasurementFromStation(string uid)
+uint64_t DBStorage::countMeasurementFromStation(string uid)
 {
-	ulong count = 0;
+	uint64_t count = 0;
 	TRY
 	sql << "SELECT count(*) FROM measurement "
 		"WHERE uid = :uid", use(uid), into(count);

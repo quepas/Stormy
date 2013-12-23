@@ -8,16 +8,16 @@
 
 #include "../../common/db_setting.h"
 #include "../../common/data/Station.h"
-#include "../../common/data/Measurement.h"
 #include "../../common/Utils.h"
-#include "../../common/Types.h"
 
 #include "../../common/entity_station.h"
 #include "../../common/entity_metrics.h"
+#include "../../common/entity_measurement.h"
 
 #include "aggregation_entity_task.h"
 #include "aggregation_entity_period.h"
 
+using namespace stormy;
 using namespace stormy::common;
 
 namespace Stormy
@@ -29,11 +29,11 @@ namespace Stormy
 			~DBStorage();
 
 			// new style
-			std::vector<stormy::common::entity::Station> GetStations();
+			std::vector<entity::Station> GetStations();
       uint32_t CountStations();
-			std::vector<stormy::aggregation::entity::Task> GetTasks();
-			std::vector<stormy::aggregation::entity::Period> GetPeriods();   
-      std::vector<stormy::common::entity::Metrics> GetMetrics();
+			std::vector<aggregation::entity::Task> GetTasks();
+			std::vector<aggregation::entity::Period> GetPeriods();   
+      std::vector<entity::Metrics> GetMetrics();
       std::vector<std::string> GetMetricsCodes();
 
 			bool DeleteTask(uint16_t id);
@@ -72,11 +72,11 @@ namespace Stormy
 
       // TODO: refactor this
       bool InsertMeasurements(
-        const MeasurementPtrVector& measurements);
+        const std::vector<entity::Measurement>& measurements);
 
 			// stations					 
-			void insertStation(StationPtr station);
-			void insertStations(const StationPtrVector& stations);
+			void insertStation(entity::Station station);
+			void insertStations(const std::vector<entity::Station>& stations);
 			void clearAllStation();
 			bool existsStationByUID(std::string uid);
 			Data::Station* getStationByUID(std::string uid);								
@@ -85,12 +85,12 @@ namespace Stormy
 			Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);			
 			Poco::Timestamp findOldestMeasureTimeByStationUID(std::string uid);
 			bool existsAnyMeasurementFromStation(std::string uid);
-			ulong countMeasurementFromStation(std::string uid);
-			uint32 countAllMeasurements();
+			uint64_t countMeasurementFromStation(std::string uid);
+			uint32_t countAllMeasurements();
 
 			// metrics
-			bool insertOneMetrics(const MetricsPtr& metrics);
-			bool insertMetrics(const MetricsPtrVector& metrics);
+			bool insertOneMetrics(entity::Metrics metrics);
+			bool insertMetrics(const std::vector<entity::Metrics>& metrics);
 			bool existsMetricsByCode(const std::string& code);
 			
 		private:

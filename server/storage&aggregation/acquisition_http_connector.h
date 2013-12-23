@@ -7,7 +7,9 @@
 #include <Poco/Logger.h>
 #include <Poco/Timestamp.h>
 
-#include "../../common/Types.h"
+#include "../../common/entity_station.h"
+#include "../../common/entity_measurement.h"
+#include "../../common/entity_metrics.h"
 
 namespace stormy {
   namespace acquisition {
@@ -19,13 +21,15 @@ public:
   ~HTTPConnector() {};
 
   std::string FetchDataAsStringAt(std::string resource) const;
-  Stormy::StationPtrVector FetchStationsAt() const;
-  Stormy::MeasurementPtrVector FetchMeasurementsForStationAt(
-    std::string stationId) const;
-  Stormy::MeasurementPtrVector FetchMeasurementsForStationNewerThanAt(
-    std::string stationId, 
-    Poco::Timestamp timestamp) const;
-  Stormy::MetricsPtrVector FetchMetricsAt() const;
+  std::vector<common::entity::Station> FetchStationsAt() const;
+  std::vector<common::entity::Measurement> 
+    FetchMeasurementsForStationAt(
+      std::string station_uid) const;
+  std::vector<common::entity::Measurement> 
+    FetchMeasurementsForStationNewerThanAt(
+      std::string station_uid, 
+      Poco::Timestamp timestamp) const;
+  std::vector<common::entity::Metrics> FetchMetricsAt() const;
 
 private:
   Poco::Logger& logger_;

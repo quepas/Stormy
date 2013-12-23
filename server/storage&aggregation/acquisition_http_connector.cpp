@@ -1,7 +1,6 @@
 #include "acquisition_http_connector.h"
 
 #include <iostream>
-
 #include <Poco/Net/HTTPClientSession.h>
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>
@@ -9,7 +8,9 @@
 #include <Poco/NumberFormatter.h>
 
 #include "../../common/Utils.h"
-#include "JSONUtils.h"
+#include "acquisition_json_util.h"
+
+using namespace stormy::common;
 
 using std::istream;
 using std::string;
@@ -54,47 +55,47 @@ string HTTPConnector::FetchDataAsStringAt(string resource) const
 	return content;
 }
 
-vector<shared_ptr<Stormy::Data::Station>> 
+vector<entity::Station>
   HTTPConnector::FetchStationsAt() const
 {
 	string resource = "/station";
 	string content = FetchDataAsStringAt(resource);
-	return Stormy::JSONUtils::extractStationsFromJSON(content);
+	return json::ExtractStations(content);
 }
 
-vector<shared_ptr<Stormy::Data::Measurement>> 
-  HTTPConnector::FetchMeasurementsForStationAt(string stationId) const
+vector<entity::Measurement>
+  HTTPConnector::FetchMeasurementsForStationAt(string station_uid) const
 {
-	string resource = "/meteo/" + stationId;
+	string resource = "/meteo/" + station_uid;
 	string content = FetchDataAsStringAt(resource);
-	auto measurements = Stormy::JSONUtils::extractMeasurementsFromJSON(content);
+	auto measurements = json::ExtractMeasurements(content);
 
-	Stormy::Utils::forEach(measurements, [&](Stormy::MeasurementPtr entry) {
-		entry -> station = new Stormy::Data::Station(stationId);
-	});
-
+  for (auto it = measurements.begin(); it != measurements.end(); ++it) {
+    it -> station_uid = station_uid;
+  }
 	return measurements;
 }
 
-Stormy::MeasurementPtrVector HTTPConnector::FetchMeasurementsForStationNewerThanAt(
-  string stationId, Timestamp timestamp) const
+vector<entity::Measurement> 
+  HTTPConnector::FetchMeasurementsForStationNewerThanAt(
+    string station_uid, Timestamp timestamp) const
 {
-	string resource = "/meteo/" + stationId + "/" + 
+	string resource = "/meteo/" + station_uid + "/" + 
 		NumberFormatter::format(timestamp.epochMicroseconds());
 	string content = FetchDataAsStringAt(resource);
-	auto measurements = Stormy::JSONUtils::extractMeasurementsFromJSON(content);
+	auto measurements = json::ExtractMeasurements(content);
 
-	Stormy::Utils::forEach(measurements, [&](Stormy::MeasurementPtr entry) {
-		entry -> station = new Stormy::Data::Station(stationId);
-	});
+  for (auto it = measurements.begin(); it != measurements.end(); ++it) {
+    it -> station_uid = station_uid;
+  }
 	return measurements;
 }
 
-Stormy::MetricsPtrVector HTTPConnector::FetchMetricsAt() const
+vector<entity::Metrics> HTTPConnector::FetchMetricsAt() const
 {
 	string resource = "/metrics";
 	string content = FetchDataAsStringAt(resource);
-	return Stormy::JSONUtils::extractMetricsFromJSON(content);
+	return json::ExtractMetrics(content);
 }
 // ~~ stormy::acquisition::HTTPConnector
 }}
