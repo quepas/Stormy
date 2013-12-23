@@ -6,7 +6,6 @@
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>
 #include <Poco/StreamCopier.h>
-#include <Poco/Exception.h>
 #include <Poco/NumberFormatter.h>
 
 #include "../../common/Utils.h"
@@ -28,15 +27,21 @@ using Poco::Timestamp;
 namespace stormy {
   namespace acquisition {
 
-Logger& HTTPConnector::logger_ = Logger::get("aggregation/HTTPConnector");
+HTTPConnector::HTTPConnector(const string host, const uint32_t port)
+  : logger_(Logger::get("aggregation/HTTPConnector")),
+    host_(host),
+    port_(port)
+{
 
-string HTTPConnector::FetchDataAsStringAt(string host, unsigned port, string resource)
+}
+
+string HTTPConnector::FetchDataAsStringAt(string resource) const
 {
 	string content;
 	TRY				
 	HTTPClientSession session;
-	session.setHost(host);
-	session.setPort(port);	
+	session.setHost(host_);
+	session.setPort(port_);	
 	session.setTimeout(Timespan(5000));
 	HTTPRequest request(HTTPRequest::HTTP_POST, resource);
 	session.sendRequest(request);		
@@ -44,24 +49,24 @@ string HTTPConnector::FetchDataAsStringAt(string host, unsigned port, string res
 	HTTPResponse response;
 	istream& receiveStream = session.receiveResponse(response);
 	StreamCopier::copyToString(receiveStream, content);	
-	CATCH_MSG(std::string("[HTTPConnector] Exception while reaching ")
-		+ host + ":" + NumberFormatter::format(port) + resource)
+	CATCH_MSG(string("[acquisition/HTTPConnector] Exception while reaching ")
+		+ host_ + ":" + NumberFormatter::format(port_) + resource)
 	return content;
 }
 
-vector<shared_ptr<Stormy::Data::Station>> HTTPConnector::FetchStationsAt(
-	string host, unsigned port)
+vector<shared_ptr<Stormy::Data::Station>> 
+  HTTPConnector::FetchStationsAt() const
 {
 	string resource = "/station";
-	string content = FetchDataAsStringAt(host, port, resource);
+	string content = FetchDataAsStringAt(resource);
 	return Stormy::JSONUtils::extractStationsFromJSON(content);
 }
 
-vector<shared_ptr<Stormy::Data::Measurement>> HTTPConnector::FetchMeasurementsForStationAt(
-	string host, unsigned port, string stationId)
+vector<shared_ptr<Stormy::Data::Measurement>> 
+  HTTPConnector::FetchMeasurementsForStationAt(string stationId) const
 {
 	string resource = "/meteo/" + stationId;
-	string content = FetchDataAsStringAt(host, port, resource);
+	string content = FetchDataAsStringAt(resource);
 	auto measurements = Stormy::JSONUtils::extractMeasurementsFromJSON(content);
 
 	Stormy::Utils::forEach(measurements, [&](Stormy::MeasurementPtr entry) {
@@ -72,11 +77,11 @@ vector<shared_ptr<Stormy::Data::Measurement>> HTTPConnector::FetchMeasurementsFo
 }
 
 Stormy::MeasurementPtrVector HTTPConnector::FetchMeasurementsForStationNewerThanAt(
-	string host, uint32_t port, string stationId, Timestamp timestamp)
+  string stationId, Timestamp timestamp) const
 {
 	string resource = "/meteo/" + stationId + "/" + 
 		NumberFormatter::format(timestamp.epochMicroseconds());
-	string content = FetchDataAsStringAt(host, port, resource);
+	string content = FetchDataAsStringAt(resource);
 	auto measurements = Stormy::JSONUtils::extractMeasurementsFromJSON(content);
 
 	Stormy::Utils::forEach(measurements, [&](Stormy::MeasurementPtr entry) {
@@ -85,10 +90,10 @@ Stormy::MeasurementPtrVector HTTPConnector::FetchMeasurementsForStationNewerThan
 	return measurements;
 }
 
-Stormy::MetricsPtrVector HTTPConnector::FetchMetricsAt(string host, uint32_t port)
+Stormy::MetricsPtrVector HTTPConnector::FetchMetricsAt() const
 {
 	string resource = "/metrics";
-	string content = FetchDataAsStringAt(host, port, resource);
+	string content = FetchDataAsStringAt(resource);
 	return Stormy::JSONUtils::extractMetricsFromJSON(content);
 }
 // ~~ stormy::acquisition::HTTPConnector

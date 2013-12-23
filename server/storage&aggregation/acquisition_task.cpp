@@ -32,18 +32,17 @@ Task::~Task()
 void Task::run()
 {
 	Stopwatch stopwatch;
-	stopwatch.start();
-	string host = server -> host;
-	unsigned port = server -> port;
-	
+	stopwatch.start();	
+	HTTPConnector http_connector(server->host, server->port);
+
 	logger_.notice("[AcquisitionTask] Start fetching data from " + 
     server -> name);
 	// metrics
-	auto metrics = HTTPConnector::FetchMetricsAt(host, port);
+	auto metrics = http_connector.FetchMetricsAt();
 	dbStorage -> insertMetrics(metrics);
 
 	// stations
-	auto stations = HTTPConnector::FetchStationsAt(host, port);
+	auto stations = http_connector.FetchStationsAt();
 	dbStorage -> insertStations(stations);	
 
 	uint32_t measurementCounter = 0;
@@ -54,11 +53,11 @@ void Task::run()
 
 		Stormy::MeasurementPtrVector measurements;		
 		if(newestMeasureForStation.epochMicroseconds() != 0) {
-			measurements = HTTPConnector::FetchMeasurementsForStationNewerThanAt(
-					host, port, station -> uid, newestMeasureForStation);
+			measurements = http_connector.FetchMeasurementsForStationNewerThanAt(
+					station -> uid, newestMeasureForStation);
 		} else {
-			measurements = HTTPConnector::FetchMeasurementsForStationAt(
-				host, port, station -> uid);
+			measurements = http_connector.FetchMeasurementsForStationAt(
+				station -> uid);
 		}
 		measurementCounter += measurements.size();
 		dbStorage -> InsertMeasurements(measurements);		

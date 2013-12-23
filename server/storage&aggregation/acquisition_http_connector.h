@@ -15,23 +15,22 @@ namespace stormy {
 class HTTPConnector
 {
 public:    
-  static std::string FetchDataAsStringAt
-    (std::string host, uint32_t port, std::string resource);
-  static Stormy::StationPtrVector FetchStationsAt(
-    std::string host, uint32_t port);
-  static Stormy::MeasurementPtrVector FetchMeasurementsForStationAt(
-    std::string host, uint32_t port, std::string stationId);
-  static Stormy::MeasurementPtrVector FetchMeasurementsForStationNewerThanAt(
-    std::string host, uint32_t port, std::string stationId, 
-    Poco::Timestamp timestamp);
-  static Stormy::MetricsPtrVector FetchMetricsAt(
-    std::string host, uint32_t port);
+  HTTPConnector(const std::string host, const uint32_t port);
+  ~HTTPConnector() {};
+
+  std::string FetchDataAsStringAt(std::string resource) const;
+  Stormy::StationPtrVector FetchStationsAt() const;
+  Stormy::MeasurementPtrVector FetchMeasurementsForStationAt(
+    std::string stationId) const;
+  Stormy::MeasurementPtrVector FetchMeasurementsForStationNewerThanAt(
+    std::string stationId, 
+    Poco::Timestamp timestamp) const;
+  Stormy::MetricsPtrVector FetchMetricsAt() const;
 
 private:
-  static Poco::Logger& logger_;
-
-  HTTPConnector() {};
-  ~HTTPConnector() {};
+  Poco::Logger& logger_;
+  const std::string host_;
+  const uint32_t port_;
 };
 // ~~ stormy::acquisition::HTTPConnector
 }}
