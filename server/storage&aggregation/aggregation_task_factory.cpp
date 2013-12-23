@@ -8,8 +8,8 @@ namespace stormy {
     namespace task {
 
 Factory::Factory(
-  Stormy::DBStorage* database_storage, 
-  Stormy::DBAggregation* database_aggregation) 
+  db::Storage* database_storage, 
+  db::Aggregate* database_aggregation) 
   : database_storage_(database_storage),
     database_aggregation_(database_aggregation),
     inner_scheduler_(nullptr)

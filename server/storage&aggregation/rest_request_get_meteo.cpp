@@ -18,7 +18,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMeteo::GetMeteo(string uri, Stormy::DBStorage* storage_database ) 
+GetMeteo::GetMeteo(string uri, db::Storage* storage_database ) 
   : uri_parser_(uri),
     storage_database_(storage_database)
 {

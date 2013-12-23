@@ -13,7 +13,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetInfo::GetInfo(Stormy::DBStorage* database_storage)
+GetInfo::GetInfo(db::Storage* database_storage)
   : database_storage_(database_storage)
 {
 

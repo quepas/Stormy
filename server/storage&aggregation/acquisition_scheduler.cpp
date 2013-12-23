@@ -7,7 +7,7 @@ using std::vector;
 namespace stormy {
   namespace acquisition {
 
-Scheduler::Scheduler( Stormy::DBStorage* _dbStorage )
+Scheduler::Scheduler( db::Storage* _dbStorage )
 		:	storage_database_(_dbStorage)
 {
 
@@ -31,7 +31,7 @@ void Scheduler::Schedule(
 	});
 }
 
-void Scheduler::SetDBStorage( Stormy::DBStorage* _dbStorage )
+void Scheduler::SetDBStorage( db::Storage* _dbStorage )
 {
 	if(_dbStorage) storage_database_ = _dbStorage;
 }

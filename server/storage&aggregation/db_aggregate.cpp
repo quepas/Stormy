@@ -1,16 +1,18 @@
-#include "DBAggregation.h"
+#include "db_aggregate.h"
 
 #include <iostream>
 #include <postgresql/soci-postgresql.h>
 #include "../../common/Utils.h"
 
 using Poco::Logger;
+using soci::postgresql;
+using soci::use;
+using soci::into;
 
-using namespace Stormy;
-using namespace soci;
-using namespace std;
+namespace stormy {
+  namespace db {
 
-DBAggregation::DBAggregation( db::Setting* database_setting, DBStorage* database_storage )
+Aggregate::Aggregate( common::db::Setting* database_setting, Storage* database_storage )
 	:	logger_(Logger::get("aggregation")),
     database_setting_(database_setting),
 		database_storage_(database_storage)
@@ -18,19 +20,19 @@ DBAggregation::DBAggregation( db::Setting* database_setting, DBStorage* database
 	Connect();
 }
 
-DBAggregation::~DBAggregation()
+Aggregate::~Aggregate()
 {
 
 }
 
-void DBAggregation::Connect()
+void Aggregate::Connect()
 {
 	TRY
 	sql.open(postgresql, database_setting_ -> AsConnectionString());
 	CATCH_MSG("[AggregationDB] connect(): ")
 }
 
-uint32_t DBAggregation::GetTaskId(string station_uid, string period_name)
+uint32_t Aggregate::GetTaskId(string station_uid, string period_name)
 {
 	uint32_t id = 0;
 	TRY
@@ -43,7 +45,7 @@ uint32_t DBAggregation::GetTaskId(string station_uid, string period_name)
 	return id;
 }
 
-uint32_t DBAggregation::InsertTask(string station_uid, stormy::aggregation::Setting aggregation)
+uint32_t Aggregate::InsertTask(string station_uid, stormy::aggregation::Setting aggregation)
 {
 	uint32_t id = 0;
 	TRY
@@ -55,7 +57,7 @@ uint32_t DBAggregation::InsertTask(string station_uid, stormy::aggregation::Sett
 	return id;
 }
 
-string DBAggregation::GetStationUIDFromTask(uint32_t task_id)
+string Aggregate::GetStationUIDFromTask(uint32_t task_id)
 {
 	string station_uid = 0;
 	TRY
@@ -65,7 +67,7 @@ string DBAggregation::GetStationUIDFromTask(uint32_t task_id)
 	return station_uid;
 }
 
-tm DBAggregation::GetTaskCurrentTS(uint32_t task_id)
+tm Aggregate::GetTaskCurrentTS(uint32_t task_id)
 {
   tm timestamp;
   TRY
@@ -75,7 +77,7 @@ tm DBAggregation::GetTaskCurrentTS(uint32_t task_id)
   return timestamp;
 }
 
-bool DBAggregation::InsertAggregate(stormy::aggregation::entity::Aggregate aggregate)
+bool Aggregate::InsertAggregate(stormy::aggregation::entity::Aggregate aggregate)
 {
   TRY
   sql << "INSERT INTO aggregate (station_uid, metrics_code, "
@@ -91,4 +93,5 @@ bool DBAggregation::InsertAggregate(stormy::aggregation::entity::Aggregate aggre
   CATCH_MSG("[AggregationDB] InsertAggregate():\n\t")
   return false;
 }
-
+// ~~ stormy::db::Aggregate
+}}

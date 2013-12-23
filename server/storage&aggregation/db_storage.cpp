@@ -1,37 +1,48 @@
-#include "DBStorage.h"
+#include "db_storage.h"
 
 #include <exception>
 #include <iostream>
 
 #include <postgresql/soci-postgresql.h>
 
+using namespace stormy::common;
+
+using std::map;
+using std::string;
+using std::tm;
+using std::time_t;
+using std::vector;
 using Poco::Logger;
+using Poco::Timestamp;
+using soci::postgresql;
+using soci::use;
+using soci::into;
+using soci::row;
+using soci::rowset;
 
-using namespace Stormy;
-using namespace std;
-using namespace soci;
-using namespace Poco;
+namespace stormy {
+  namespace db {
 
-DBStorage::DBStorage( db::Setting* storageDB )
+Storage::Storage(common::db::Setting* storageDB)
 	:	logger_(Logger::get("aggregation")),
     configuration(storageDB)
 {	
 	connect();
 }
 
-DBStorage::~DBStorage()
+Storage::~Storage()
 {
 
 }
 
-void DBStorage::connect()
+void Storage::connect()
 {
 	TRY
 	sql.open(postgresql, configuration -> AsConnectionString());	
 	CATCH_MSG("[StorageDB] connect(): ")
 }
 
-void DBStorage::insertStation(entity::Station station)
+void Storage::insertStation(entity::Station station)
 {
   TRY
   sql << "INSERT INTO station(uid, name, url, refresh_time, last_update)"
@@ -41,23 +52,23 @@ void DBStorage::insertStation(entity::Station station)
   CATCH_MSG("[StorageDB] insertStation(): ")
 }
 
-void DBStorage::insertStations( const vector<entity::Station>& stations )
+void Storage::insertStations(const vector<entity::Station>& stations)
 {
-	Utils::forEach(stations, [&](entity::Station station) {
+	Stormy::Utils::forEach(stations, [&](entity::Station station) {
 		if(!existsStationByUID(station.uid))
 			insertStation(station);
 	});
 }
 
 
-void DBStorage::clearAllStation()
+void Storage::clearAllStation()
 {
 	TRY
 	sql << "DELETE FROM station";
 	CATCH_MSG("[StorageDB] clearAllStation(): ")
 }
 
-entity::Station DBStorage::getStationByUID(string uid)
+entity::Station Storage::getStationByUID(string uid)
 {
 	entity::Station station;
 	TRY
@@ -68,7 +79,7 @@ entity::Station DBStorage::getStationByUID(string uid)
 	return station;
 }
 
-bool DBStorage::existsStationByUID( string uid )
+bool Storage::existsStationByUID(string uid)
 {	
   int count = 0;
 	TRY
@@ -78,14 +89,14 @@ bool DBStorage::existsStationByUID( string uid )
   return count > 0;
 }
 
-bool DBStorage::InsertMeasurements(const vector<entity::Measurement>& measurements)
+bool Storage::InsertMeasurements(const vector<entity::Measurement>& measurements)
 {
 	if(!measurements.empty()) {
 		TRY		
 		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
 			string metricsCode = it->code;
       auto metrics = GetMetricsCodes();
-			if(Utils::contains(metrics, metricsCode)) {
+			if(Stormy::Utils::contains(metrics, metricsCode)) {
         string station_uid = it->station_uid;
         auto current_tm = it->timestamp;
         time_t current_ts = mktime(&current_tm);
@@ -111,9 +122,9 @@ bool DBStorage::InsertMeasurements(const vector<entity::Measurement>& measuremen
 	return false;
 }
 
-Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
+Timestamp Storage::findNewestMeasureTimeByStationUID(string uid)
 {	
-	unsigned long time = 0;
+	time_t time = 0;
 	if(!uid.empty() && existsAnyMeasurementFromStation(uid)) {
 		TRY
 		// TODO: fix time zone
@@ -126,7 +137,7 @@ Timestamp DBStorage::findNewestMeasureTimeByStationUID( string uid )
 	return Timestamp(time);
 }
 
-Timestamp DBStorage::findOldestMeasureTimeByStationUID(string uid)
+Timestamp Storage::findOldestMeasureTimeByStationUID(string uid)
 {
 	time_t time = 0;
 	if(countMeasurementFromStation(uid) > 0) {
@@ -142,7 +153,7 @@ Timestamp DBStorage::findOldestMeasureTimeByStationUID(string uid)
 }
 
 
-bool DBStorage::insertOneMetrics(entity::Metrics metrics)
+bool Storage::insertOneMetrics(entity::Metrics metrics)
 {
   TRY
   sql << "INSERT INTO metrics(code, equivalents, type, unit, format)"
@@ -155,10 +166,10 @@ bool DBStorage::insertOneMetrics(entity::Metrics metrics)
 	return false;	
 }
 
-bool DBStorage::insertMetrics(const vector<entity::Metrics>& metrics)
+bool Storage::insertMetrics(const vector<entity::Metrics>& metrics)
 {
 	if(!metrics.empty()) {
-		Utils::forEach(metrics, [&](entity::Metrics metric) {
+		Stormy::Utils::forEach(metrics, [&](entity::Metrics metric) {
 			if(!existsMetricsByCode(metric.code))
 				insertOneMetrics(metric);
 		});
@@ -166,7 +177,7 @@ bool DBStorage::insertMetrics(const vector<entity::Metrics>& metrics)
 	return true;
 }
 
-bool DBStorage::existsMetricsByCode( const string& code )
+bool Storage::existsMetricsByCode(const string& code)
 {
 	uint32_t count = 0;
 	TRY
@@ -176,7 +187,7 @@ bool DBStorage::existsMetricsByCode( const string& code )
 	return count > 0;
 }
 
-bool DBStorage::existsAnyMeasurementFromStation( string uid )
+bool Storage::existsAnyMeasurementFromStation(string uid)
 {
 	uint32_t count = 0;
 	TRY
@@ -187,7 +198,7 @@ bool DBStorage::existsAnyMeasurementFromStation( string uid )
 	return count > 0;
 }
 
-uint32_t DBStorage::countAllMeasurements()
+uint32_t Storage::countAllMeasurements()
 {
 	uint32_t count = 0;
 	TRY
@@ -196,7 +207,7 @@ uint32_t DBStorage::countAllMeasurements()
 	return count;
 }
 
-uint32_t DBStorage::CountStations()
+uint32_t Storage::CountStations()
 {
 	uint32_t count = 0;
 	TRY
@@ -205,7 +216,7 @@ uint32_t DBStorage::CountStations()
 	return count;
 }
 
-uint64_t DBStorage::countMeasurementFromStation(string uid)
+uint64_t Storage::countMeasurementFromStation(string uid)
 {
 	uint64_t count = 0;
 	TRY
@@ -215,14 +226,14 @@ uint64_t DBStorage::countMeasurementFromStation(string uid)
 	return count;
 }
 
-vector<stormy::common::entity::Station> DBStorage::GetStations()
+vector<entity::Station> Storage::GetStations()
 {
-	auto stations = vector<stormy::common::entity::Station>();
+	auto stations = vector<entity::Station>();
 	TRY
 	rowset<row> rs = (sql.prepare << "SELECT * FROM station");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
-		stormy::common::entity::Station element;
+		entity::Station element;
 		element.uid = row.get<string>(0);
 		element.name = row.get<string>(1);
 		element.url = row.get<string>(2);
@@ -234,14 +245,14 @@ vector<stormy::common::entity::Station> DBStorage::GetStations()
 	return stations;
 }
 
-vector<stormy::common::entity::Metrics> DBStorage::GetMetrics()
+vector<entity::Metrics> Storage::GetMetrics()
 {
-	auto metrics = vector<stormy::common::entity::Metrics>();
+	auto metrics = vector<entity::Metrics>();
 	TRY
 	rowset<row> rs = (sql.prepare << "SELECT * FROM metrics");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
-		stormy::common::entity::Metrics element;
+		entity::Metrics element;
 		element.code = row.get<string>(0);
 		element.equivalents = row.get<string>(1);
 		element.type = row.get<string>(2);
@@ -254,14 +265,14 @@ vector<stormy::common::entity::Metrics> DBStorage::GetMetrics()
 }
 
 // TODO: move to DBAggregate?
-vector<stormy::aggregation::entity::Task> DBStorage::GetTasks()
+vector<aggregation::entity::Task> Storage::GetTasks()
 {
-	auto tasks = vector<stormy::aggregation::entity::Task>();
+	auto tasks = vector<aggregation::entity::Task>();
 	TRY
 	rowset<row> rs = (sql.prepare << "SELECT * FROM aggregate_task");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
-		stormy::aggregation::entity::Task element;
+		aggregation::entity::Task element;
 		element.id = row.get<int>(0);
 		element.period_name = row.get<string>(1);
 		element.station_uid = row.get<string>(2);		
@@ -272,14 +283,14 @@ vector<stormy::aggregation::entity::Task> DBStorage::GetTasks()
 	return tasks;
 }
 
-vector<stormy::aggregation::entity::Period> DBStorage::GetPeriods()
+vector<aggregation::entity::Period> Storage::GetPeriods()
 {
-	auto periods = vector<stormy::aggregation::entity::Period>();
+	auto periods = vector<aggregation::entity::Period>();
 	TRY
   rowset<row> rs = (sql.prepare << "SELECT name FROM aggregate_period");
   for (auto it = rs.begin(); it != rs.end(); ++it) {
     const row& row = *it;
-    stormy::aggregation::entity::Period element;
+    aggregation::entity::Period element;
     element.name = row.get<string>(0);   
     periods.push_back(element);
   }	
@@ -287,7 +298,7 @@ vector<stormy::aggregation::entity::Period> DBStorage::GetPeriods()
 	return periods;
 }
 
-bool DBStorage::DeleteTask(uint16_t id)
+bool Storage::DeleteTask(uint16_t id)
 {
 	TRY
 	sql << "DELETE FROM aggregate_task WHERE id = :id", use(id);
@@ -296,7 +307,7 @@ bool DBStorage::DeleteTask(uint16_t id)
 	return false;
 }
 
-bool Stormy::DBStorage::DeleteTask(std::string period_name, std::string station_uid)
+bool Storage::DeleteTask(string period_name, string station_uid)
 {
 	TRY
 	sql << "DELETE FROM aggregate_task "
@@ -308,7 +319,7 @@ bool Stormy::DBStorage::DeleteTask(std::string period_name, std::string station_
 	return false;
 }
 
-std::vector<std::string> Stormy::DBStorage::GetStationUIDs()
+vector<string> Storage::GetStationUIDs()
 {
   auto station_uids = vector<string>();
   TRY
@@ -320,7 +331,7 @@ std::vector<std::string> Stormy::DBStorage::GetStationUIDs()
   return station_uids;
 }
 
-map<time_t, string> Stormy::DBStorage::GetMeasurement(
+map<time_t, string> Storage::GetMeasurement(
   string station_uid, string metrics_code, tm begin, tm end)
 {
   auto result = map<time_t, string>();
@@ -341,7 +352,7 @@ map<time_t, string> Stormy::DBStorage::GetMeasurement(
   return result;
 }
 
-map<time_t, string> DBStorage::GetMeasurementFromLast(
+map<time_t, string> Storage::GetMeasurementFromLast(
   string station_uid, string metrics_code, uint16_t from_last_hours )
 {
   time_t time_data = time(nullptr);
@@ -351,7 +362,7 @@ map<time_t, string> DBStorage::GetMeasurementFromLast(
   return GetMeasurement(station_uid, metrics_code, from_time, to_time);
 }
 
-vector<string> DBStorage::GetMetricsCodes()
+vector<string> Storage::GetMetricsCodes()
 {
   static auto metrics = GetMetrics();
   auto result = vector<string>(metrics.size());
@@ -361,7 +372,7 @@ vector<string> DBStorage::GetMetricsCodes()
   return result;
 }
 
-vector<string> DBStorage::GetStationMeasure(string station_uid, 
+vector<string> Storage::GetStationMeasure(string station_uid, 
   string metrics_code, tm begin_time, tm end_time)
 {
   auto result = vector<string>();
@@ -381,7 +392,7 @@ vector<string> DBStorage::GetStationMeasure(string station_uid,
   return result;
 }
 
-string DBStorage::GetStationName(string uid)
+string Storage::GetStationName(string uid)
 {
   string result;
   TRY
@@ -391,7 +402,7 @@ string DBStorage::GetStationName(string uid)
   return result;
 }
 
-tm DBStorage::GetOldestStationMeasureTime(std::string uid)
+tm Storage::GetOldestStationMeasureTime(string uid)
 {
   time_t time = 0;
   TRY
@@ -402,7 +413,7 @@ tm DBStorage::GetOldestStationMeasureTime(std::string uid)
   return *gmtime(&time);
 }
 
-int DBStorage::CountStationMeasures(std::string uid)
+int Storage::CountStationMeasures(string uid)
 {
   int count = 0;
   TRY
@@ -412,7 +423,7 @@ int DBStorage::CountStationMeasures(std::string uid)
   return count;
 }
 
-bool DBStorage::UpdateTaskCurrentTime(uint32_t id, std::tm timestamp)
+bool Storage::UpdateTaskCurrentTime(uint32_t id, tm timestamp)
 {
   TRY
   sql << "UPDATE aggregate_task SET current_ts = :timestamp "
@@ -422,7 +433,7 @@ bool DBStorage::UpdateTaskCurrentTime(uint32_t id, std::tm timestamp)
   return false;
 }
 
-tm DBStorage::CalculateAggregateEndTime(string period_name, tm start_time)
+tm Storage::CalculateAggregateEndTime(string period_name, tm start_time)
 {  
   time_t time = 0;
   TRY
@@ -433,7 +444,7 @@ tm DBStorage::CalculateAggregateEndTime(string period_name, tm start_time)
   return *gmtime(&time);
 }
 
-bool DBStorage::UpdateStationLastUpdate(string station_uid, tm timestamp)
+bool Storage::UpdateStationLastUpdate(string station_uid, tm timestamp)
 {
   TRY
   sql << "UPDATE station SET last_update = :last_update "
@@ -443,7 +454,7 @@ bool DBStorage::UpdateStationLastUpdate(string station_uid, tm timestamp)
   return false;
 }
 
-tm DBStorage::GetStationLastUpdate(string station_uid)
+tm Storage::GetStationLastUpdate(string station_uid)
 {
   time_t time = 0;
   TRY
@@ -453,7 +464,7 @@ tm DBStorage::GetStationLastUpdate(string station_uid)
   return *gmtime(&time);
 }
 
-bool DBStorage::CreateTask(string period_name, string station_uid)
+bool Storage::CreateTask(string period_name, string station_uid)
 {
 	TRY
 	sql << "INSERT INTO aggregate_task "
@@ -464,3 +475,5 @@ bool DBStorage::CreateTask(string period_name, string station_uid)
 	CATCH_MSG("[Storage] CreateTask(period, station):\n\t")
 	return false;
 }
+// ~~ stormy::db::Storage
+}}

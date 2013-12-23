@@ -10,8 +10,8 @@
 #include "aggregation_task_factory.h"
 #include "aggregation_entity_task.h"
 #include "aggregation_entity_period.h"
-#include "DBStorage.h"
-#include "DBAggregation.h"
+#include "db_storage.h"
+#include "db_aggregate.h"
 
 namespace stormy {
   namespace aggregation {
@@ -24,7 +24,7 @@ enum BadTaskReason {
 class Engine
 {
 public:
-  Engine(Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation);			
+  Engine(db::Storage* storage, db::Aggregate* aggregation);			
   ~Engine();
 
   void Start();
@@ -59,8 +59,8 @@ private:
   Scheduler scheduler_;
   Poco::Logger& logger_;
 				
-  Stormy::DBStorage* storage_;
-  Stormy::DBAggregation* aggregation_;
+  db::Storage* storage_;
+  db::Aggregate* aggregation_;
 };
 // ~~ stormy::aggregation::Engine
 }}

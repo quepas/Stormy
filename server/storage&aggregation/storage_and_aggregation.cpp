@@ -7,8 +7,8 @@
 #include "aggregation_config.h"
 #include "aggregation_setting.h"
 #include "acquisition_config.h"
-#include "DBStorage.h"
-#include "DBAggregation.h"
+#include "db_storage.h"
+#include "db_aggregate.h"
 #include "acquisition_scheduler.h"
 #include "../../common/Utils.h"
 #include "../../common/db_config.h"
@@ -16,7 +16,6 @@
 #include "rest_service.h"
 
 using namespace stormy;
-using namespace stormy::common;
 using namespace Stormy;
 using namespace Poco;
 
@@ -28,11 +27,11 @@ int main(int argc, char** argv) {
 	Logger& logger = Logger::get("aggregation_main_thread");  
 	acquisition::Config acquisitionServersCfg("config/acquisition_servers.yaml");
 	aggregation::Config aggregationCfg("config/aggregation.yaml");
-	db::Config storageDBcfg("config/storage_database.yaml");
-	db::Config aggregationDBcfg("config/aggregation_database.yaml");
+	common::db::Config storageDBcfg("config/storage_database.yaml");
+	common::db::Config aggregationDBcfg("config/aggregation_database.yaml");
 
-	DBStorage storage(storageDBcfg.Configuration());
-	DBAggregation aggregation(aggregationDBcfg.Configuration(), &storage);
+	db::Storage storage(storageDBcfg.Configuration());
+	db::Aggregate aggregation(aggregationDBcfg.Configuration(), &storage);
   
   logger.information("==== Storage & Aggregation started. ====");	  
 	logger.information("Measurements in storage: " + 

@@ -11,7 +11,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetAggregate::GetAggregate(string uri, Stormy::DBAggregation* aggregate_database)
+GetAggregate::GetAggregate(string uri, db::Aggregate* aggregate_database)
   : uri_parser_(uri),
     aggregate_database_(aggregate_database)
 {

@@ -20,7 +20,7 @@ using Poco::Stopwatch;
 namespace stormy {
   namespace acquisition {
 
-Task::Task( Stormy::DBStorage* _dbStorage, Setting* _server)
+Task::Task( db::Storage* _dbStorage, Setting* _server)
 	:	logger_(Logger::get("acquisition/task")),
     dbStorage(_dbStorage), server(_server)
 {

@@ -16,8 +16,8 @@ namespace stormy {
 
 Initial::Initial(
   entity::Task task_data, 
-  Stormy::DBStorage* storage, 
-  Stormy::DBAggregation* aggregation, 
+  db::Storage* storage, 
+  db::Aggregate* aggregation, 
   Scheduler* inner_scheduler)
   : Base(task_data, storage, aggregation),
     inner_scheduler_(inner_scheduler)

@@ -11,8 +11,8 @@ namespace stormy {
 	namespace aggregation {
     
 Engine::Engine(
-  Stormy::DBStorage* storage, 
-  Stormy::DBAggregation* aggregation)
+  db::Storage* storage, 
+  db::Aggregate* aggregation)
   : logger_(Logger::get("aggregation")),
     storage_(storage),
     aggregation_(aggregation),

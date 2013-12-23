@@ -22,8 +22,8 @@ namespace stormy {
 
 Regular::Regular(
   entity::Task task_data, 
-  Stormy::DBStorage* storage, 
-  Stormy::DBAggregation* aggregation )
+  db::Storage* storage, 
+  db::Aggregate* aggregation )
   : Base(task_data, storage, aggregation)
 {
 

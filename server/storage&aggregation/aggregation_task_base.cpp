@@ -10,7 +10,7 @@ namespace stormy {
   namespace aggregation {
     namespace task {
 
-Base::Base(entity::Task task_data, Stormy::DBStorage* storage, Stormy::DBAggregation* aggregation)
+Base::Base(entity::Task task_data, db::Storage* storage, db::Aggregate* aggregation)
   : logger_(Logger::get("aggregation")),
     task_entity_(task_data),
     storage_(storage),

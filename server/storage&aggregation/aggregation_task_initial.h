@@ -3,8 +3,8 @@
 #include "aggregation_task_base.h"
 #include "aggregation_scheduler.h"
 
-#include "DBStorage.h"
-#include "DBAggregation.h"
+#include "db_storage.h"
+#include "db_aggregate.h"
 
 namespace stormy {
   namespace aggregation {
@@ -13,8 +13,8 @@ namespace stormy {
 class Initial : public Base
 {
 public:
-  Initial(entity::Task task_data, Stormy::DBStorage* storage, 
-    Stormy::DBAggregation* aggregation, Scheduler* inner_scheduler);
+  Initial(entity::Task task_data, db::Storage* storage, 
+    db::Aggregate* aggregation, Scheduler* inner_scheduler);
   ~Initial();
 
   void run() override;  

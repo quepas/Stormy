@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DBStorage.h"
+#include "db_storage.h"
 
 #include <Poco/Net/HTTPRequestHandler.h>
 
@@ -11,14 +11,14 @@ namespace stormy {
 class GetStation : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetStation(Stormy::DBStorage* storage_database);
+  GetStation(db::Storage* storage_database);
   ~GetStation();
 
   void handleRequest(Poco::Net::HTTPServerRequest& request, 
     Poco::Net::HTTPServerResponse& response);
 
 private:
-  Stormy::DBStorage* storage_database_;
+  db::Storage* storage_database_;
 };
 // ~~ stormy::rest::request::GetStation
 }}}
