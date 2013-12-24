@@ -7,7 +7,7 @@
 #include <Poco/StreamCopier.h>
 #include <Poco/NumberFormatter.h>
 
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 #include "acquisition_json_util.h"
 
 using namespace stormy::common;

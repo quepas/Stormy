@@ -1,6 +1,6 @@
 #include "acquisition_config.h"
 
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 
 using std::string;
 
@@ -50,7 +50,7 @@ void Config::MapIntoConfiguration()
 		}
 		std::string strHost = serverCfg -> host;
 		std::string strPort = AsString("port", i);
-		serverCfg -> id = Stormy::Utils::md5(strHost + ":" + strPort);
+		serverCfg -> id = common::MD5(strHost + ":" + strPort);
 		configuration_.push_back(serverCfg);
 	}
 }

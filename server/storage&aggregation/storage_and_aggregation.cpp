@@ -10,13 +10,12 @@
 #include "db_storage.h"
 #include "db_aggregate.h"
 #include "acquisition_scheduler.h"
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 #include "../../common/db_config.h"
 #include "aggregation_engine.h"
 #include "rest_service.h"
 
 using namespace stormy;
-using namespace Stormy;
 using namespace Poco;
 
 int main(int argc, char** argv) {
@@ -42,12 +41,12 @@ int main(int argc, char** argv) {
 		"-------------------------------------------------------------");
 	// display current configurations
 	logger.information("=== Acquisition Servers: ");
-	Utils::forEach(acquisitionServersCfg.Configuration(),
+	common::Each(acquisitionServersCfg.Configuration(),
 		[&](acquisition::Setting* server) {
 			logger.information("\t" + server -> ToString());
 	});
 	logger.information("=== Available aggregates: ");
-	Utils::forEach(aggregationCfg.Configuration(),
+	common::Each(aggregationCfg.Configuration(),
 		[&](aggregation::Setting setting) {
 			logger.information("\t" + setting.ToString());
 	});

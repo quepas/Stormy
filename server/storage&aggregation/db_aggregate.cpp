@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <postgresql/soci-postgresql.h>
-#include "../../common/Utils.h"
 
 using Poco::Logger;
 using soci::postgresql;

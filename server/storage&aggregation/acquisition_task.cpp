@@ -50,7 +50,7 @@ void Task::run()
 
 	uint32_t measurementCounter = 0;
 	// data
-	Stormy::Utils::forEach(stations, [&](entity::Station station) {
+	Each(stations, [&](entity::Station station) {
 		auto newestMeasureForStation =
 			dbStorage -> findNewestMeasureTimeByStationUID(station.uid);
 

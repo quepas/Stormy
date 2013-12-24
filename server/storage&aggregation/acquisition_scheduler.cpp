@@ -1,6 +1,6 @@
 #include "acquisition_scheduler.h"
 
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 
 using std::vector;
 
@@ -26,7 +26,7 @@ void Scheduler::Schedule(Setting* server)
 void Scheduler::Schedule( 
 	const vector<Setting*>& servers )
 {
-	Stormy::Utils::forEach(servers, [&](Setting* server) {
+	common::Each(servers, [&](Setting* server) {
 		Schedule(server);
 	});
 }

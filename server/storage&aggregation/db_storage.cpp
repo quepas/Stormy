@@ -54,7 +54,7 @@ void Storage::insertStation(entity::Station station)
 
 void Storage::insertStations(const vector<entity::Station>& stations)
 {
-	Stormy::Utils::forEach(stations, [&](entity::Station station) {
+	Each(stations, [&](entity::Station station) {
 		if(!existsStationByUID(station.uid))
 			insertStation(station);
 	});
@@ -96,7 +96,7 @@ bool Storage::InsertMeasurements(const vector<entity::Measurement>& measurements
 		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
 			string metricsCode = it->code;
       auto metrics = GetMetricsCodes();
-			if(Stormy::Utils::contains(metrics, metricsCode)) {
+			if(Contains(metrics, metricsCode)) {
         string station_uid = it->station_uid;
         auto current_tm = it->timestamp;
         time_t current_ts = mktime(&current_tm);
@@ -169,7 +169,7 @@ bool Storage::insertOneMetrics(entity::Metrics metrics)
 bool Storage::insertMetrics(const vector<entity::Metrics>& metrics)
 {
 	if(!metrics.empty()) {
-		Stormy::Utils::forEach(metrics, [&](entity::Metrics metric) {
+		Each(metrics, [&](entity::Metrics metric) {
 			if(!existsMetricsByCode(metric.code))
 				insertOneMetrics(metric);
 		});

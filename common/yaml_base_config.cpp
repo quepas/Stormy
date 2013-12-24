@@ -1,6 +1,6 @@
 #include "yaml_base_config.h"
 
-#include "Utils.h"
+#include "util.h"
 #include "yaml_util.h"
 #include <boost/lexical_cast.hpp>
 
@@ -73,7 +73,7 @@ double BaseConfig::AsDouble(string field, uint16_t index /*= 0*/)
 
 bool BaseConfig::AsBool(string field, uint16_t index /*= 0*/)
 {	
-	return Stormy::Utils::asBool(GetValue(field, index));	
+	return ToBool(GetValue(field, index));	
 }
 
 void BaseConfig::OpenFromFile(string path)

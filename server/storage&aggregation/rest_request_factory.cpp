@@ -6,9 +6,10 @@
 #include "rest_request_get_info.h"
 #include "rest_request_bad.h"
 
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 #include "../../common/rest_constant.h"
 
+using namespace stormy::common;
 using namespace stormy::common::rest;
 using std::string;
 using Poco::Logger;
@@ -38,18 +39,14 @@ HTTPRequestHandler* Factory::createRequestHandler(
   string URI = request.getURI();
   logger_.information("[rest/Factory] Handling request: " + URI);
 
-  if (Stormy::Utils::checkTextWithRegex(
-        URI, constant::station_request_pattern)) {
+  if (IsMatch(URI, constant::station_request_pattern)) {
     return new GetStation(db_storage_);
-  } else if (Stormy::Utils::checkTextWithRegex(
-              URI, constant::aggregate_request_pattern)) {
+  } else if (IsMatch(URI, constant::aggregate_request_pattern)) {
     return new GetAggregate(URI, db_aggregation_);
-  } else if (Stormy::Utils::checkTextWithRegex(
-              URI, constant::meteo_request_pattern + 
+  } else if (IsMatch(URI, constant::meteo_request_pattern + 
                 constant::uri_query_vars_pattern)) {
     return new GetMeteo(URI, db_storage_);
-  } else if (Stormy::Utils::checkTextWithRegex(
-              URI, constant::info_request_pattern)) {
+  } else if (IsMatch(URI, constant::info_request_pattern)) {
     return new GetInfo(db_storage_);
   } else {
     return new Bad(URI);
