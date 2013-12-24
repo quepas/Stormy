@@ -28,34 +28,34 @@ bool TypeConfiguration::load( string filepath )
 
 	for(auto it = root.begin(); it != root.end(); ++it)
 	{		
-		if(yaml::Util::IsDefined(it, "id"))
+		if(yaml::IsDefined(it, "id"))
 		{
-			string id = yaml::Util::GetString(it, "id");
-			if(!yaml::Util::IsDefined(it, "valueType")) {
+			string id = yaml::GetString(it, "id");
+			if(!yaml::IsDefined(it, "valueType")) {
 				cout << "For " << id << " valueType is not defined" << endl;
 				continue;
 			}
-			string valueType = yaml::Util::GetString(it, "valueType");
-			if(!yaml::Util::IsDefined(it, "valueUnit")) {
+			string valueType = yaml::GetString(it, "valueType");
+			if(!yaml::IsDefined(it, "valueUnit")) {
 				cout << "For " << id << " valueUnit is not defined" << endl;
 				continue;
 			}
-			string valueUnit = yaml::Util::GetString(it, "valueUnit");
-			if(!yaml::Util::IsDefined(it, "equivalents")) {
+			string valueUnit = yaml::GetString(it, "valueUnit");
+			if(!yaml::IsDefined(it, "equivalents")) {
 				cout << "For " << id << " equivalents is not defined" << endl;
 				continue;
 			}
-			string equivalents = yaml::Util::GetString(it, "equivalents");
+			string equivalents = yaml::GetString(it, "equivalents");
 			vector<string> splitedEquivalents;
 			boost::split(splitedEquivalents, equivalents, boost::is_any_of(";,"));
 
 			string valueFormat = "";
-			if(yaml::Util::IsDefined(it, "valueFormat")) {
-				valueFormat = yaml::Util::GetString(it, "valueFormat");
+			if(yaml::IsDefined(it, "valueFormat")) {
+				valueFormat = yaml::GetString(it, "valueFormat");
 			}
 			bool isMeteo = true;
-			if(yaml::Util::IsDefined(it, "isMeteo")) {
-				isMeteo = yaml::Util::GetBool(it, "isMeteo");
+			if(yaml::IsDefined(it, "isMeteo")) {
+				isMeteo = yaml::GetBool(it, "isMeteo");
 			}
 			TypePtr type(new Type());
 			type -> id = id;

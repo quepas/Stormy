@@ -10,7 +10,7 @@
 #include "TypeConfiguration.h"
 #include "MeteoUtils.h"
 #include "MeteoConst.h"
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 
 using std::time_t;
 using Poco::NumberFormatter;
@@ -61,7 +61,7 @@ void MongoDBHandler::insertMeteoData( MeasurementPtr measurement )
 	for(auto it = data.begin(); it != data.end(); ++it)
 	{
 		string key = it -> first;
-		string value = Utils::getStringFromAny(it -> second);
+		string value = stormy::common::ToString(it -> second);
 		bsonBuilder.append(key, value);
 	}
 	string stationId = measurement -> station -> stationId;
@@ -125,7 +125,7 @@ MeasurementPtr MongoDBHandler::getCurrentMeteoTypeData( string stationId, string
 	if(cursor -> more()) {
 		BSONObj current = cursor -> next();
 		result -> timestamp = Timestamp::fromEpochTime(
-			lexical_cast<long>(current.getStringField(Const::mongoId.c_str())));
+			NumberParser::parse64(current.getStringField(Const::mongoId.c_str())));
 		if(current.hasField(typeId)) {
 			result -> data[typeId] = string(current.getStringField(typeId.c_str()));
 		}
@@ -145,7 +145,7 @@ MeasurementPtrVector MongoDBHandler::getCurrentMeteoTypeDatas( string stationId,
 		BSONObj current = cursor -> next();
 		MeasurementPtr measurement(new Measurement());
 		measurement -> timestamp = Timestamp::fromEpochTime(
-			lexical_cast<long>(current.getStringField(Const::mongoId.c_str())));
+			NumberParser::parse64(current.getStringField(Const::mongoId.c_str())));
 		if(current.hasField(typeId)) {
 			measurement -> data[typeId] =
 				string(current.getStringField(typeId.c_str()));
@@ -254,7 +254,7 @@ TypePtrVector MongoDBHandler::getTypesData()
 bool MongoDBHandler::insertTypesData( const TypePtrVector& data )
 {
 	if(!connected_ || data.empty()) return false;
-	Utils::forEach(data, [&](TypePtr type) {		
+	stormy::common::Each(data, [&](TypePtr type) {		
 		BSONObjBuilder bsonBuilder;
 		bsonBuilder.append(Const::id, type -> id);
 		bsonBuilder.append(Const::equivalents, type -> equivalents[0]);
@@ -278,7 +278,7 @@ void MongoDBHandler::ExpireData()
 {
   if(!ValidateConnection()) return;
   auto stations_uid = FetchStationsUID();
-  time_t expiration_time = Utils::LocaltimeNow() - expiration_seconds();  
+  time_t expiration_time = stormy::common::LocaltimeNow() - expiration_seconds();  
   
   for (auto it = stations_uid.begin(); it != stations_uid.end(); ++it) {   
     connection.remove(

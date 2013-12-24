@@ -3,7 +3,7 @@
 #include <vector>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 #include "MeteoConst.h"
 
 using namespace Stormy;
@@ -18,8 +18,8 @@ double MeteoUtils::extractTemperature( std::string text )
 
 	for(auto it = splited.begin(); it != splited.end(); ++it) {
 		std::string value = *it;
-		if(Utils::isNumber(value)) {
-			return Utils::stringToDouble(value);
+		if(stormy::common::IsNumeric(value)) {
+			return stormy::common::ToDouble(value);
 		}
 	}
 	return 0.0;

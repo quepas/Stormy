@@ -1,6 +1,6 @@
 #include "StationConfiguration.h"
 #include "../../common/yaml_util.h"
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 
 using namespace Stormy::Meteo;
 using namespace stormy::common;
@@ -26,30 +26,30 @@ bool StationConfiguration::load(std::string filePath)
 
 	for(auto it = root.begin(); it != root.end(); ++it)
 	{
-		if(!yaml::Util::IsDefined(it, "url"))
+		if(!yaml::IsDefined(it, "url"))
 		{
 			std::cout << "Field url is not defined" << std::endl;
 			return false;
 		}
-		if(!yaml::Util::IsDefined(it, "parserClass"))
+		if(!yaml::IsDefined(it, "parserClass"))
 		{
 			std::cout << "Field parserClass is not defined" << std::endl;
 			return false;
 		}
-		if(!yaml::Util::IsDefined(it, "refreshTime"))
+		if(!yaml::IsDefined(it, "refreshTime"))
 		{
 			std::cout << "Field refreshTime is not defined" << std::endl;
 			return false;
 		}
 
 		StationPtr meteoStation(new Station());
-		meteoStation -> url = yaml::Util::GetString(it, "url");
-		meteoStation -> stationId = Utils::md5(meteoStation -> url);
-		meteoStation -> parserClass = yaml::Util::GetString(it, "parserClass");
-		meteoStation -> refreshTime = yaml::Util::GetLongNumber(it, "refreshTime");
+		meteoStation -> url = yaml::GetString(it, "url");
+		meteoStation -> stationId = MD5(meteoStation -> url);
+		meteoStation -> parserClass = yaml::GetString(it, "parserClass");
+		meteoStation -> refreshTime = yaml::GetLongNumber(it, "refreshTime");
 
-		if(yaml::Util::IsDefined(it, "name"))
-			meteoStation -> name = yaml::Util::GetString(it, "name");
+		if(yaml::IsDefined(it, "name"))
+			meteoStation -> name = yaml::GetString(it, "name");
 
 		configuration.push_back(meteoStation);
 	}

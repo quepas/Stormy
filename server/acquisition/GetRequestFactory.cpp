@@ -7,7 +7,7 @@
 #include "GetMeteoRequest.h"
 #include "GetInfoRequest.h"
 #include "GetMetricsRequest.h"
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 #include "RESTConst.h"
 
 using namespace Stormy;
@@ -31,20 +31,20 @@ HTTPRequestHandler* GetRequestFactory::createRequestHandler
 	string URI = request.getURI();
 	cout << "REST: " << URI << endl;
 
-	if(Utils::checkTextWithRegex(URI, Const::stationPattern))
+	if(stormy::common::IsMatch(URI, Const::stationPattern))
 		return new GetStationRequest();
-	if(Utils::checkTextWithRegex(URI, Const::metricsPattern))
+	if(stormy::common::IsMatch(URI, Const::metricsPattern))
 		return new GetMetricsRequest();
-	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdPattern))
-		return new GetMeteoRequest(Utils::extractMD5FromText(URI));	
-	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdTimestampPattern))		
-		return new GetMeteoRequest(Utils::extractMD5FromText(URI), "", 
-			Utils::extractEndIdFromRestURI(URI));
-	if(Utils::checkTextWithRegex(URI, Const::meteoStationIdTypePattern)) {
-		return new GetMeteoRequest(Utils::extractMD5FromText(URI),
-			Utils::extractEndIdFromRestURI(URI));
+	if(stormy::common::IsMatch(URI, Const::meteoStationIdPattern))
+		return new GetMeteoRequest(stormy::common::ExtractMD5(URI));	
+	if(stormy::common::IsMatch(URI, Const::meteoStationIdTimestampPattern))		
+		return new GetMeteoRequest(stormy::common::ExtractMD5(URI), "", 
+			stormy::common::ExtractURIEndPathSegment(URI));
+	if(stormy::common::IsMatch(URI, Const::meteoStationIdTypePattern)) {
+		return new GetMeteoRequest(stormy::common::ExtractMD5(URI),
+			stormy::common::ExtractURIEndPathSegment(URI));
 	}
-	if(Utils::checkTextWithRegex(URI, Const::infoPattern))
+	if(stormy::common::IsMatch(URI, Const::infoPattern))
 		return new GetInfoRequest("");
 
 	return nullptr;

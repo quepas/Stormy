@@ -13,7 +13,7 @@
 #include "PyFunction.h"
 #include "PyObjectMapper.h"
 #include "TypeConfiguration.h"
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 #include "MeteoUtils.h"
 #include "MeteoConst.h"
 
@@ -96,8 +96,8 @@ MeasurementPtr PyParserWrapper::parseFromStation( Station station )
 			std::string date = any_cast<std::string>(data[Const::date]);
 			std::string time = any_cast<std::string>(data[Const::time]);
 
-			if(Utils::checkIfStandardDate(date)
-				&& Utils::checkIfStandardTime(time))
+			if(stormy::common::IsDate(date)
+				&& stormy::common::IsTime(time))
 			{
 				std::string dateTime = date + " " + time;
 				int diffTimeZone;

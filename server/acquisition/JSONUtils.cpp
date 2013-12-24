@@ -2,8 +2,9 @@
 
 #include <mongo/client/dbclient.h>
 #include <boost/any.hpp>
+#include <Poco/NumberFormatter.h>
 #include "MeteoConst.h"
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 #include "RESTConst.h"
 
 using namespace Stormy;
@@ -14,6 +15,7 @@ using mongo::BSONObj;
 using mongo::BSONObjBuilder;
 using boost::any_cast;
 using boost::any;
+using Poco::NumberFormatter;
 
 string JSONUtils::prepareJSONForStation( StationPtr station )
 {
@@ -28,7 +30,7 @@ string JSONUtils::prepareJSONForStation( StationPtr station )
 string JSONUtils::prepareJSONForStations( const StationPtrVector& stations )
 {
 	string content = "{\"stations\":[";
-	Utils::forEach(stations, [&](StationPtr station) {
+	stormy::common::Each(stations, [&](StationPtr station) {
 		content += prepareJSONForStation(station) + ",";
 	});
 	if(stations.size() > 0)
@@ -41,10 +43,10 @@ string JSONUtils::prepareJSONForMeasurement( MeasurementPtr measurement )
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::id),
-		Utils::getStringFromAny(measurement -> data[Const::mongoId]));
-	Utils::forEach(measurement -> data, [&](pair<string, any> pair) {
+		stormy::common::ToString(measurement -> data[Const::mongoId]));
+	stormy::common::Each(measurement -> data, [&](pair<string, any> pair) {
 		if(pair.first != Const::mongoId) {
-			bsonBuilder.append(wrapAsJSONString(pair.first), Utils::getStringFromAny(pair.second));
+			bsonBuilder.append(wrapAsJSONString(pair.first), stormy::common::ToString(pair.second));
 		}
 	});
 	return bsonBuilder.obj().toString();
@@ -53,7 +55,7 @@ string JSONUtils::prepareJSONForMeasurement( MeasurementPtr measurement )
 string JSONUtils::prepareJSONForMeasurements( const MeasurementPtrVector& measurements )
 {
 	string content = "{\"meteo\":[";
-	Utils::forEach(measurements, [&](MeasurementPtr measurement) {
+	stormy::common::Each(measurements, [&](MeasurementPtr measurement) {
 		content += prepareJSONForMeasurement(measurement) + ",";
 	});
 	if(measurements.size() > 0)
@@ -83,7 +85,7 @@ string JSONUtils::prepareJSONForAvailableType( TypePtr type )
 string JSONUtils::prepareJSONForAvailableTypes( const TypePtrVector& types )
 {
 	string content = "{\"metrics\":[";
-	Utils::forEach(types, [&](TypePtr type) {
+	stormy::common::Each(types, [&](TypePtr type) {
 		if(type -> isMeteo)
 			content += prepareJSONForAvailableType(type) + ",";
 	});
@@ -98,16 +100,16 @@ string JSONUtils::prepareJSONForSingleMeasurement( MeasurementPtr measurement )
 	if(!measurement || measurement -> data.empty()) return REST::Const::emptyJSON;
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::timestamp),
-		lexical_cast<string>(measurement -> timestamp.epochTime()));
+		NumberFormatter::format(measurement -> timestamp.epochTime()));
 	auto pair = measurement -> data.begin();
-	bsonBuilder.append(wrapAsJSONString(Const::data), Utils::getStringFromAny(pair -> second));
+	bsonBuilder.append(wrapAsJSONString(Const::data), stormy::common::ToString(pair -> second));
 	return bsonBuilder.obj().toString();
 }
 
 string JSONUtils::prepareJSONForSingleMeasurements( const MeasurementPtrVector& measurements )
 {
 	string content = "{\"measurements\":[";
-	Utils::forEach(measurements, [&](MeasurementPtr measurement) {
+	stormy::common::Each(measurements, [&](MeasurementPtr measurement) {
 		if(!measurement -> data.empty())
 			content += prepareJSONForSingleMeasurement(measurement) + ",";
 	});
@@ -124,7 +126,7 @@ string JSONUtils::prepareJSONForInfo(const std::string& server_type, const TypeP
   server_info += wrapAsJSONString(server_type) + "},";
 
   string content = server_info + "\"metrics\":[";
-  Utils::forEach(types, [&](TypePtr type) {
+  stormy::common::Each(types, [&](TypePtr type) {
     if(type -> isMeteo)
       content += prepareJSONForAvailableType(type) + ",";
   });

@@ -1,7 +1,7 @@
 #include "GetStationRequest.h"
 
 #include "MongoDBHandler.h"
-#include "../../common/Utils.h"
+#include "../../common/util.h"
 #include "JSONUtils.h"
 
 using namespace Stormy;
