@@ -1,7 +1,7 @@
 #include "GetInfoRequest.h"
 
 #include "TypeConfiguration.h"
-#include "RESTConst.h"
+#include "rest_constant.h"
 #include "JSONUtils.h"
 
 using namespace Stormy;
@@ -28,6 +28,6 @@ void Stormy::GetInfoRequest::handleRequest( HTTPServerRequest& request, HTTPServ
 			new TypeConfiguration("config/meteo_data_type_config.yaml");
 		ostr << JSONUtils::prepareJSONForInfo("A", typesCfg -> getConfiguration());
 	} else {
-		ostr << REST::Const::emptyJSON;
+		ostr << stormy::rest::constant::emptyJSON;
 	}
 }

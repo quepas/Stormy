@@ -4,14 +4,13 @@
 #include "../../common/util.h"
 #include "JSONUtils.h"
 #include "TypeConfiguration.h"
-#include "RESTConst.h"
+#include "rest_constant.h"
 
 #include <boost/any.hpp>
 #include <boost/lexical_cast.hpp>
 
 using namespace Stormy;
 using namespace Meteo;
-using REST::Const;
 using namespace std;
 
 GetMeteoRequest::GetMeteoRequest(string _stationId, 
@@ -31,7 +30,7 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 	ostream& ostr = response.send();
 
 	MongoDBHandler& dbHandler = MongoDBHandler::get();	
-	if(stationId != REST::Const::none) {
+	if(stationId != stormy::rest::constant::none) {
 		if(typeId.empty()) {
 			if(timestamp.empty()) {				
 				MeasurementPtrVector meteo = dbHandler.getMeteoData(stationId);
@@ -45,6 +44,6 @@ void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerRespo
 			ostr << JSONUtils::prepareJSONForSingleMeasurements(singleMeteo);
 		}
 	} else {
-		ostr << REST::Const::emptyJSON;
+		ostr << stormy::rest::constant::emptyJSON;
 	}
 }

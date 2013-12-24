@@ -2,11 +2,11 @@
 
 #include "TypeConfiguration.h"
 #include "JSONUtils.h"
-#include "RESTConst.h"
+#include "rest_constant.h"
 
 using namespace Stormy;
-using namespace Stormy::Meteo;
 using namespace Stormy::REST;
+using namespace Stormy::Meteo;
 using namespace std;
 
 GetMetricsRequest::GetMetricsRequest( string _stationId /*= ""*/ )
@@ -31,7 +31,7 @@ void GetMetricsRequest::handleRequest( HTTPServerRequest& request,
 		ostr << JSONUtils::prepareJSONForAvailableTypes(
 			typesCfg->getConfiguration());
 	} else {
-		ostr << Const::emptyJSON;
+		ostr << stormy::rest::constant::emptyJSON;
 	}
 	
 }

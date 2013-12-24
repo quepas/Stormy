@@ -5,7 +5,7 @@
 #include <Poco/NumberFormatter.h>
 #include "MeteoConst.h"
 #include "../../common/util.h"
-#include "RESTConst.h"
+#include "rest_constant.h"
 
 using namespace Stormy;
 using namespace Meteo;
@@ -97,7 +97,7 @@ string JSONUtils::prepareJSONForAvailableTypes( const TypePtrVector& types )
 
 string JSONUtils::prepareJSONForSingleMeasurement( MeasurementPtr measurement )
 {
-	if(!measurement || measurement -> data.empty()) return REST::Const::emptyJSON;
+	if(!measurement || measurement -> data.empty()) return stormy::rest::constant::emptyJSON;
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(Const::timestamp),
 		NumberFormatter::format(measurement -> timestamp.epochTime()));
