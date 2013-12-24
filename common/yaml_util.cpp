@@ -10,31 +10,31 @@ namespace stormy {
   namespace common {
     namespace yaml {
 
-bool Util::IsDefined(iterator it, string field)
+bool IsDefined(iterator it, string field)
 {
 	return (*it)[field].IsDefined();
 }
 
-string Util::GetString(iterator it, string field)
+string GetString(iterator it, string field)
 {
 	return (*it)[field].as<string>();
 }
 
-double Util::GetNumber(iterator it, string field)
+double GetNumber(iterator it, string field)
 {
 	return (*it)[field].as<double>();
 }
 
-long Util::GetLongNumber(iterator it, string field)
+long GetLongNumber(iterator it, string field)
 {
 	return (*it)[field].as<long>();
 }
 
-bool Util::GetBool(iterator it, string field)
+bool GetBool(iterator it, string field)
 {
 	string result = GetString(it, field);
 	to_lower(result);
 	return result == "true" || result == "1";	
 }
-// ~~ stormy::common::yaml::Util
+// ~~ stormy::common::yaml::util
 }}}

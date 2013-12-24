@@ -43,19 +43,19 @@ const std::string time_pattern = "[0-9]{1, 2}:[0-9]{1, 2}";
 const std::string hex_md5_pattern = "[0-9a-f]{32}";
 	
 template<typename T, typename V>
-bool Contains( T seq, V key )
+bool Contains(T seq, V key)
 {
   return find(seq.begin(), seq.end(), key) != seq.end();
 }
 
 template<typename T, typename V>
-void Each( const T& data, V func )
+void Each(const T& data, V func)
 {
   std::for_each(data.begin(), data.end(), func);
 }
 
 template<typename T, typename V>
-T Last( V seq )
+T Last(V seq)
 {
   if(seq.empty()) return T();
 	return *(--seq.end());

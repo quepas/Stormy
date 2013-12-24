@@ -80,7 +80,7 @@ void BaseConfig::OpenFromFile(string path)
 {
 	Node root = LoadFile(path);
 	if(root.IsSequence()) {
-		Util::ForEach(root, [&](Node node) {
+		Each(root, [&](Node node) {
 			ReadAndAddEntry(node);
 		});		
 	} else if(root.IsMap()) {
