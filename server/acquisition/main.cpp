@@ -8,7 +8,7 @@
 #include "MeteoUtils.h"
 #include "MeteoData.h"
 #include "rest_service.h"
-#include "AcquisitionScheduler.h"
+#include "acquisition_scheduler.h"
 
 #include "../../common/db_expiration_engine.h"
 
@@ -31,8 +31,8 @@ int main(int argc, char** argv)
 	dbHandler.clearTypesData();
 	dbHandler.insertTypesData(meteoTypeCfg.getConfiguration());
 	
-	AcquisitionScheduler acqSecheduler;
-	acqSecheduler.scheduleManyAcquisition(meteoStationsCfg.getConfiguration());
+	stormy::acquisition::Scheduler acqSecheduler;
+	acqSecheduler.Schedule(meteoStationsCfg.getConfiguration());
 
   stormy::common::db::expiration::Engine expiration_engine(dbHandler);
   expiration_engine.ScheduleEverySeconds(3600);
