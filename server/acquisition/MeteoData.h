@@ -8,7 +8,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/any.hpp>
 
-#include "MeteoConst.h"
+#include "acquisition_constant.h"
 
 namespace Stormy
 {
@@ -34,7 +34,7 @@ namespace Stormy
 				:	timestamp(),
 					station(new Station()),
 					data() {
-				data[Const::reasonKey] = reason;
+				data[stormy::acquisition::constant::reasonKey] = reason;
 			}
 
 			~Measurement() {

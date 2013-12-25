@@ -66,9 +66,9 @@ Stormy::MeasurementPtr Parser::ParseFromURL(string url)
 			string value = trim_copy(it -> second);
 
 			if(value != "-") {
-				if(valueType == Stormy::Meteo::Const::number)
+				if(valueType == acquisition::constant::number)
 					result -> data[id] = Stormy::MeteoUtils::extractTemperature(value);
-				else if(valueType == Stormy::Meteo::Const::text)
+				else if(valueType == acquisition::constant::text)
 					result -> data[id] = value;
 			}
 		}
@@ -91,14 +91,14 @@ Stormy::MeasurementPtr Parser::ParseFromStation(Stormy::Meteo::Station station)
 	if(result) {
 		auto data = map<string, any>();
 		data = result -> data;
-		result -> data[Stormy::Meteo::Const::stationId] = station.stationId;
+		result -> data[acquisition::constant::stationId] = station.stationId;
 
 		Timestamp timestamp;
-		if(data.find(Stormy::Meteo::Const::date) != data.end()
-			&& data.find(Stormy::Meteo::Const::time) != data.end())
+		if(data.find(acquisition::constant::date) != data.end()
+			&& data.find(acquisition::constant::time) != data.end())
 		{
-			string date = any_cast<string>(data[Stormy::Meteo::Const::date]);
-			string time = any_cast<string>(data[Stormy::Meteo::Const::time]);
+			string date = any_cast<string>(data[acquisition::constant::date]);
+			string time = any_cast<string>(data[acquisition::constant::time]);
 
 			if(stormy::common::IsDate(date)
 				&& stormy::common::IsTime(time))
@@ -111,7 +111,7 @@ Stormy::MeasurementPtr Parser::ParseFromStation(Stormy::Meteo::Station station)
 			}
 		}
 		result -> timestamp = timestamp;
-		result -> data[Stormy::Meteo::Const::mongoId] =
+		result -> data[acquisition::constant::mongoId] =
 			NumberFormatter::format(timestamp.epochTime());
 	}
 	return result;

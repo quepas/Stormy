@@ -9,7 +9,7 @@
 
 #include "TypeConfiguration.h"
 #include "MeteoUtils.h"
-#include "MeteoConst.h"
+#include "acquisition_constant.h"
 #include "../../common/util.h"
 
 using std::time_t;
@@ -65,7 +65,7 @@ void MongoDBHandler::insertMeteoData( MeasurementPtr measurement )
 		bsonBuilder.append(key, value);
 	}
 	string stationId = measurement -> station -> stationId;
-	connection.insert(MeteoUtils::getMeteoDb() + "." + Const::stationIdPrefix
+	connection.insert(MeteoUtils::getMeteoDb() + "." + stormy::acquisition::constant::stationIdPrefix
 		+ stationId, bsonBuilder.obj());
 }
 
@@ -86,11 +86,11 @@ void MongoDBHandler::insertStationData( StationPtr data )
 {
 	if(!connected_ || !data.get()) return;
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(Const::mongoId, data -> stationId);
-	bsonBuilder.append(Const::name, data -> name);
-	bsonBuilder.append(Const::parserClass, data -> parserClass);
-	bsonBuilder.append(Const::refreshTime, data -> refreshTime);
-	bsonBuilder.append(Const::url, data -> url);
+	bsonBuilder.append(stormy::acquisition::constant::mongoId, data -> stationId);
+	bsonBuilder.append(stormy::acquisition::constant::name, data -> name);
+	bsonBuilder.append(stormy::acquisition::constant::parserClass, data -> parserClass);
+	bsonBuilder.append(stormy::acquisition::constant::refreshTime, data -> refreshTime);
+	bsonBuilder.append(stormy::acquisition::constant::url, data -> url);
 	connection.insert(MeteoUtils::getStationDb(), bsonBuilder.obj());
 }
 
@@ -104,11 +104,11 @@ StationPtrVector MongoDBHandler::getStationsData()
 	while( cursor -> more() ) {    
 		BSONObj current = cursor -> next();
 		StationPtr station(new Station());
-		station -> stationId = current.getStringField(Const::mongoId.c_str());
-		station -> name = current.getStringField(Const::name.c_str());
-		station -> parserClass = current.getStringField(Const::parserClass.c_str());
-		station -> refreshTime = current.getIntField(Const::refreshTime.c_str());
-		station -> url = current.getStringField(Const::url.c_str());
+		station -> stationId = current.getStringField(stormy::acquisition::constant::mongoId.c_str());
+		station -> name = current.getStringField(stormy::acquisition::constant::name.c_str());
+		station -> parserClass = current.getStringField(stormy::acquisition::constant::parserClass.c_str());
+		station -> refreshTime = current.getIntField(stormy::acquisition::constant::refreshTime.c_str());
+		station -> url = current.getStringField(stormy::acquisition::constant::url.c_str());
 		result.push_back(station);
 	}
 	return result;
@@ -121,11 +121,11 @@ MeasurementPtr MongoDBHandler::getCurrentMeteoTypeData( string stationId, string
 
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
-			Const::stationIdPrefix + stationId, Query().sort("_id", 0), 1);
+			stormy::acquisition::constant::stationIdPrefix + stationId, Query().sort("_id", 0), 1);
 	if(cursor -> more()) {
 		BSONObj current = cursor -> next();
 		result -> timestamp = Timestamp::fromEpochTime(
-			NumberParser::parse64(current.getStringField(Const::mongoId.c_str())));
+			NumberParser::parse64(current.getStringField(stormy::acquisition::constant::mongoId.c_str())));
 		if(current.hasField(typeId)) {
 			result -> data[typeId] = string(current.getStringField(typeId.c_str()));
 		}
@@ -140,12 +140,12 @@ MeasurementPtrVector MongoDBHandler::getCurrentMeteoTypeDatas( string stationId,
 
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
-			Const::stationIdPrefix + stationId, BSONObj());
+			stormy::acquisition::constant::stationIdPrefix + stationId, BSONObj());
 	while(cursor -> more()) {
 		BSONObj current = cursor -> next();
 		MeasurementPtr measurement(new Measurement());
 		measurement -> timestamp = Timestamp::fromEpochTime(
-			NumberParser::parse64(current.getStringField(Const::mongoId.c_str())));
+			NumberParser::parse64(current.getStringField(stormy::acquisition::constant::mongoId.c_str())));
 		if(current.hasField(typeId)) {
 			measurement -> data[typeId] =
 				string(current.getStringField(typeId.c_str()));
@@ -163,7 +163,7 @@ MeasurementPtrVector MongoDBHandler::getMeteoData(string stationId)
 	TypePtrVector types = getTypesData();
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
-			Const::stationIdPrefix + stationId, BSONObj());
+			stormy::acquisition::constant::stationIdPrefix + stationId, BSONObj());
 	while( cursor -> more() ) {
 		BSONObj current = cursor -> next();
 		set<string> availableFields;
@@ -175,17 +175,17 @@ MeasurementPtrVector MongoDBHandler::getMeteoData(string stationId)
 			if(availableFields.find(id) != availableFields.end()) {
 				TypePtr type = TypeConfiguration::getTypeById(id, types);
 				string value = current.getStringField(id.c_str());
-				if(type -> valueType == Const::number)
+				if(type -> valueType == stormy::acquisition::constant::number)
 					measurement -> data[id]= MeteoUtils::extractTemperature(value);
-				else if(type ->valueType == Const::text)
+				else if(type ->valueType == stormy::acquisition::constant::text)
 					measurement -> data[id]= value;
 			}
 		}
-		measurement -> data[Const::mongoId] =
-			string(current.getStringField(Const::mongoId.c_str()));
-		if(current.hasField(Const::reasonKey.c_str())) {
-			measurement -> data[Const::reasonKey] =
-				string(current.getStringField(Const::reasonKey.c_str()));
+		measurement -> data[stormy::acquisition::constant::mongoId] =
+			string(current.getStringField(stormy::acquisition::constant::mongoId.c_str()));
+		if(current.hasField(stormy::acquisition::constant::reasonKey.c_str())) {
+			measurement -> data[stormy::acquisition::constant::reasonKey] =
+				string(current.getStringField(stormy::acquisition::constant::reasonKey.c_str()));
 		}
 		result.push_back(measurement);
 	}
@@ -200,7 +200,7 @@ MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, st
 	TypePtrVector types = getTypesData();
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(MeteoUtils::getMeteoDb() + "." +
-		Const::stationIdPrefix + stationId, BSONObj());
+		stormy::acquisition::constant::stationIdPrefix + stationId, BSONObj());
 	while( cursor -> more() ) {
 		BSONObj current = cursor -> next();
 		set<string> availableFields;
@@ -212,17 +212,17 @@ MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, st
 			if(availableFields.find(id) != availableFields.end()) {
 				TypePtr type = TypeConfiguration::getTypeById(id, types);
 				string value = current.getStringField(id.c_str());
-				if(type -> valueType == Const::number)
+				if(type -> valueType == stormy::acquisition::constant::number)
 					measurement -> data[id]= MeteoUtils::extractTemperature(value);
-				else if(type ->valueType == Const::text)
+				else if(type ->valueType == stormy::acquisition::constant::text)
 					measurement -> data[id]= value;
 			}
 		}
-		string timestampFromId = current.getStringField(Const::mongoId.c_str());
-		measurement -> data[Const::mongoId] = timestampFromId;			
-		if(current.hasField(Const::reasonKey.c_str())) {
-			measurement -> data[Const::reasonKey] =
-				string(current.getStringField(Const::reasonKey.c_str()));
+		string timestampFromId = current.getStringField(stormy::acquisition::constant::mongoId.c_str());
+		measurement -> data[stormy::acquisition::constant::mongoId] = timestampFromId;			
+		if(current.hasField(stormy::acquisition::constant::reasonKey.c_str())) {
+			measurement -> data[stormy::acquisition::constant::reasonKey] =
+				string(current.getStringField(stormy::acquisition::constant::reasonKey.c_str()));
 		}
 		if(NumberParser::parseUnsigned64(timestampFromId) > NumberParser::parseUnsigned64(timestamp))								
 			result.push_back(measurement);		
@@ -240,12 +240,12 @@ TypePtrVector MongoDBHandler::getTypesData()
 	while( cursor -> more() ) {    
 		BSONObj current = cursor -> next();
 		TypePtr type(new Type());
-		type -> id = current.getStringField(Const::id.c_str());
-		type -> equivalents.push_back(current.getStringField(Const::equivalents.c_str()));
-		type -> valueType = current.getStringField(Const::type.c_str());
-		type -> valueUnit = current.getStringField(Const::unit.c_str());
-		type -> valueFormat = current.getStringField(Const::format.c_str());
-		type -> isMeteo = current.getBoolField(Const::isMeteo.c_str());		
+		type -> id = current.getStringField(stormy::acquisition::constant::id.c_str());
+		type -> equivalents.push_back(current.getStringField(stormy::acquisition::constant::equivalents.c_str()));
+		type -> valueType = current.getStringField(stormy::acquisition::constant::type.c_str());
+		type -> valueUnit = current.getStringField(stormy::acquisition::constant::unit.c_str());
+		type -> valueFormat = current.getStringField(stormy::acquisition::constant::format.c_str());
+		type -> isMeteo = current.getBoolField(stormy::acquisition::constant::isMeteo.c_str());		
 		result.push_back(type);
 	}
 	return result;
@@ -256,12 +256,12 @@ bool MongoDBHandler::insertTypesData( const TypePtrVector& data )
 	if(!connected_ || data.empty()) return false;
 	stormy::common::Each(data, [&](TypePtr type) {		
 		BSONObjBuilder bsonBuilder;
-		bsonBuilder.append(Const::id, type -> id);
-		bsonBuilder.append(Const::equivalents, type -> equivalents[0]);
-		bsonBuilder.append(Const::type, type -> valueType);
-		bsonBuilder.append(Const::unit, type -> valueUnit);
-		bsonBuilder.append(Const::format, type -> valueFormat);
-		bsonBuilder.append(Const::isMeteo, type -> isMeteo);
+		bsonBuilder.append(stormy::acquisition::constant::id, type -> id);
+		bsonBuilder.append(stormy::acquisition::constant::equivalents, type -> equivalents[0]);
+		bsonBuilder.append(stormy::acquisition::constant::type, type -> valueType);
+		bsonBuilder.append(stormy::acquisition::constant::unit, type -> valueUnit);
+		bsonBuilder.append(stormy::acquisition::constant::format, type -> valueFormat);
+		bsonBuilder.append(stormy::acquisition::constant::isMeteo, type -> isMeteo);
 		connection.insert(MeteoUtils::getTypeDb(), bsonBuilder.obj());
 	});
 	return true;
@@ -282,8 +282,8 @@ void MongoDBHandler::ExpireData()
   
   for (auto it = stations_uid.begin(); it != stations_uid.end(); ++it) {   
     connection.remove(
-      MeteoUtils::getMeteoDb() + "." + Const::stationIdPrefix + *it, 
-      QUERY(Const::mongoId << LT << NumberFormatter::format(expiration_time)));    
+      MeteoUtils::getMeteoDb() + "." + stormy::acquisition::constant::stationIdPrefix + *it, 
+      QUERY(stormy::acquisition::constant::mongoId << LT << NumberFormatter::format(expiration_time)));    
   }
 }
 
@@ -298,7 +298,7 @@ vector<string> MongoDBHandler::FetchStationsUID()
   while (cursor->more()) {
     auto current_value = cursor->next();
     string station_uid = current_value
-      .getStringField(Const::mongoId.c_str());
+      .getStringField(stormy::acquisition::constant::mongoId.c_str());
     result.push_back(station_uid);
   }
   return result;

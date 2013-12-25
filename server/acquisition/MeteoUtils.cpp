@@ -4,10 +4,9 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
 #include "../../common/util.h"
-#include "MeteoConst.h"
+#include "acquisition_constant.h"
 
 using namespace Stormy;
-using namespace Meteo;
 
 double MeteoUtils::extractTemperature( std::string text )
 {
@@ -37,15 +36,15 @@ long MeteoUtils::convertMinutesToMiliseconds( long minutes )
 
 std::string MeteoUtils::getMeteoDb()
 {
-	return Const::mongoDb + "." + Const::mongoMeteo;
+	return stormy::acquisition::constant::mongoDb + "." + stormy::acquisition::constant::mongoMeteo;
 }
 
 std::string MeteoUtils::getStationDb()
 {
-	return Const::mongoDb + "." + Const::mongoStation;
+	return stormy::acquisition::constant::mongoDb + "." + stormy::acquisition::constant::mongoStation;
 }
 
 std::string Stormy::MeteoUtils::getTypeDb()
 {
-	return Const::mongoDb + "." + Const::mongoType;
+	return stormy::acquisition::constant::mongoDb + "." + stormy::acquisition::constant::mongoType;
 }

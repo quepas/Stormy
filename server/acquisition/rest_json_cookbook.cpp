@@ -1,6 +1,6 @@
 #include "rest_json_cookbook.h"
 
-#include "MeteoConst.h"
+#include "acquisition_constant.h"
 #include "rest_constant.h"
 #include "../../common/util.h"
 
@@ -23,13 +23,13 @@ string PrepareStation(Stormy::StationPtr station)
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(
-    wrapAsJSONString(Stormy::Meteo::Const::id), station -> stationId);
+    wrapAsJSONString(acquisition::constant::id), station -> stationId);
 	bsonBuilder.append(
-    wrapAsJSONString(Stormy::Meteo::Const::name), station -> name);
+    wrapAsJSONString(acquisition::constant::name), station -> name);
 	bsonBuilder.append(
-    wrapAsJSONString(Stormy::Meteo::Const::url), station -> url);
+    wrapAsJSONString(acquisition::constant::url), station -> url);
 	bsonBuilder.append(
-    wrapAsJSONString(Stormy::Meteo::Const::refreshTime), 
+    wrapAsJSONString(acquisition::constant::refreshTime), 
     station -> refreshTime);
 	return bsonBuilder.obj().toString();
 }
@@ -50,10 +50,10 @@ string cookbook::PrepareCombinedMeasurement(
   Stormy::MeasurementPtr measurement)
 {
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(wrapAsJSONString(Stormy::Meteo::Const::id),
-		common::ToString(measurement -> data[Stormy::Meteo::Const::mongoId]));
+	bsonBuilder.append(wrapAsJSONString(acquisition::constant::id),
+		common::ToString(measurement -> data[acquisition::constant::mongoId]));
 	common::Each(measurement -> data, [&](pair<string, any> pair) {
-		if(pair.first != Stormy::Meteo::Const::mongoId) {
+		if(pair.first != acquisition::constant::mongoId) {
 			bsonBuilder.append(
         wrapAsJSONString(pair.first), common::ToString(pair.second));
 		}
@@ -83,17 +83,17 @@ string cookbook::PrepareMetric(Stormy::TypePtr type)
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(
-    wrapAsJSONString(Stormy::Meteo::Const::code), type -> id);
+    wrapAsJSONString(acquisition::constant::code), type -> id);
 	bsonBuilder.append(
-    wrapAsJSONString(Stormy::Meteo::Const::name), type -> equivalents[0]);
+    wrapAsJSONString(acquisition::constant::name), type -> equivalents[0]);
 	bsonBuilder.append(
-    wrapAsJSONString(Stormy::Meteo::Const::type), type -> valueType);
+    wrapAsJSONString(acquisition::constant::type), type -> valueType);
 	bsonBuilder.append(
-    wrapAsJSONString(Stormy::Meteo::Const::unit), type -> valueUnit);
+    wrapAsJSONString(acquisition::constant::unit), type -> valueUnit);
 	string format = type -> valueFormat;
 	if(!format.empty()) {
 		bsonBuilder.append(
-      wrapAsJSONString(Stormy::Meteo::Const::format), type -> valueFormat);
+      wrapAsJSONString(acquisition::constant::format), type -> valueFormat);
   }
 	return bsonBuilder.obj().toString();
 }
@@ -116,11 +116,11 @@ string cookbook::PrepareMeasurement(Stormy::MeasurementPtr measurement)
 	if(!measurement || measurement -> data.empty()) 
     return constant::emptyJSON;
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(wrapAsJSONString(Stormy::Meteo::Const::timestamp),
+	bsonBuilder.append(wrapAsJSONString(acquisition::constant::timestamp),
 		NumberFormatter::format(measurement -> timestamp.epochTime()));
 	auto pair = measurement -> data.begin();
 	bsonBuilder.append(wrapAsJSONString(
-    Stormy::Meteo::Const::data), 
+    acquisition::constant::data), 
     common::ToString(pair -> second));
 	return bsonBuilder.obj().toString();
 }
@@ -157,5 +157,5 @@ string cookbook::PrepareInfo(
   content += "]}";
   return content;
 }
-// ~~ stormy::rest::json::Cookbook
+// ~~ rest::json::Cookbook
 }}}}
