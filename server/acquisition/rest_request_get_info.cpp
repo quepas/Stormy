@@ -1,6 +1,6 @@
 #include "rest_request_get_info.h"
 
-#include "TypeConfiguration.h"
+#include "acquisition_config_metrics.h"
 #include "rest_constant.h"
 #include "rest_json_cookbook.h"
 
@@ -35,8 +35,8 @@ void GetInfo::handleRequest(
 
 	if(station_uid_.empty()) {
 		auto typesCfg =
-			new Stormy::Meteo::TypeConfiguration("config/meteo_data_type_config.yaml");
-		ostr << json::cookbook::PrepareInfo("A", typesCfg -> getConfiguration());
+			new acquisition::config::Metrics("config/meteo_data_type_config.yaml");
+		ostr << json::cookbook::PrepareInfo("A", typesCfg -> Configuration());
 	} else {
 		ostr << constant::emptyJSON;
 	}

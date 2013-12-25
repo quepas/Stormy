@@ -56,12 +56,12 @@ Stormy::MeasurementPtr Parser::ParseFromURL(string url)
 	{
 		map<string, string> data =
 			mapper::PairsFromSequence(pFuncResult);
-		auto types = new Stormy::Meteo::TypeConfiguration("config/meteo_data_type_config.yaml");
+		auto types = new acquisition::config::Metrics("config/meteo_data_type_config.yaml");
 
 		// ~TODO: move to PyObjectMapper		
 		for(auto it = data.begin(); it != data.end(); ++it) {
-			string id = types -> getTypeIdByEquivalent(it -> first);
-			Stormy::TypePtr type = types -> getFullTypeById(id);
+			string id = types -> GetMetricsIdByEquivalent(it -> first);
+			Stormy::TypePtr type = types -> GetMetricsById(id);
 			string valueType = to_lower_copy(type -> valueType);
 			string value = trim_copy(it -> second);
 

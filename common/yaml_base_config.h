@@ -20,7 +20,7 @@ public:
 	std::vector<std::string> GetFields(uint16_t index = 0);
 	uint16_t Size();
 
-   std::string AsString(std::string field, uint16_t index = 0);
+  std::string AsString(std::string field, uint16_t index = 0);
 	int AsInt(std::string field, uint16_t index = 0);
 	double AsDouble(std::string field, uint16_t index = 0);
 	bool AsBool(std::string field, uint16_t index = 0);

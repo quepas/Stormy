@@ -6,7 +6,7 @@
 #include <Python.h>
 
 #include "MeteoData.h"
-#include "TypeConfiguration.h"
+#include "acquisition_config_metrics.h"
 
 namespace stormy {
   namespace py {
@@ -14,7 +14,7 @@ namespace stormy {
 
 Stormy::Meteo::Measurement* ToMeasurementWithMetrics(
   std::map<std::string, std::string>& map, 
-  Stormy::Meteo::TypeConfiguration* rules);
+  acquisition::config::Metrics* rules);
 
 std::vector<PyObject*> ItemsFromSequence(PyObject* sequence);
 PyObject* PairKey(PyObject* dict);

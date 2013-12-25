@@ -7,7 +7,7 @@
 #include <Poco/NumberParser.h>
 #include <Poco/NumberFormatter.h>
 
-#include "TypeConfiguration.h"
+#include "acquisition_config_metrics.h"
 #include "acquisition_util.h"
 #include "acquisition_constant.h"
 #include "../../common/util.h"
@@ -173,7 +173,7 @@ MeasurementPtrVector MongoDBHandler::getMeteoData(string stationId)
 		for(auto it = types.begin(); it != types.end(); ++it) {
 			string id = (*it) -> id;
 			if(availableFields.find(id) != availableFields.end()) {
-				TypePtr type = TypeConfiguration::getTypeById(id, types);
+				TypePtr type = stormy::acquisition::config::Metrics::GetMetricsById(id, types);
 				string value = current.getStringField(id.c_str());
 				if(type -> valueType == stormy::acquisition::constant::number)
 					measurement -> data[id]= stormy::acquisition::util::ExtractTemperature(value);
@@ -210,7 +210,7 @@ MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, st
 		for(auto it = types.begin(); it != types.end(); ++it) {
 			string id = (*it) -> id;
 			if(availableFields.find(id) != availableFields.end()) {
-				TypePtr type = TypeConfiguration::getTypeById(id, types);
+				TypePtr type = stormy::acquisition::config::Metrics::GetMetricsById(id, types);
 				string value = current.getStringField(id.c_str());
 				if(type -> valueType == stormy::acquisition::constant::number)
 					measurement -> data[id]= stormy::acquisition::util::ExtractTemperature(value);
