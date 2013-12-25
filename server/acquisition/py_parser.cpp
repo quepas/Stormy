@@ -83,15 +83,23 @@ Stormy::MeasurementPtr Parser::ParseFromURL(string url)
 	}
 }
 
-Stormy::MeasurementPtr Parser::ParseFromStation(Stormy::Meteo::Station station)
+Stormy::MeasurementPtr Parser::ParseFromStation(common::entity::Station station)
 {
 	Stormy::MeasurementPtr result = ParseFromURL(station.url);
-	result -> station = new Stormy::Meteo::Station(station);
-	
+  // TODO: remove this dependency (deep copy)
+  auto ptr_station = new Stormy::Meteo::Station();
+  ptr_station->url = station.url;
+  ptr_station->name = station.name;
+  ptr_station->parserClass = station.parser_class;
+  ptr_station->refreshTime = station.refresh_time;
+  ptr_station->stationId = station.uid;
+	result -> station = ptr_station;
+	// ~~
+
 	if(result) {
 		auto data = map<string, any>();
 		data = result -> data;
-		result -> data[acquisition::constant::stationId] = station.stationId;
+		result -> data[acquisition::constant::stationId] = station.uid;
 
 		Timestamp timestamp;
 		if(data.find(acquisition::constant::date) != data.end()

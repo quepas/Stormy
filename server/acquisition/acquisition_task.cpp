@@ -2,15 +2,16 @@
 
 #include <Python.h>
 
+using namespace stormy::common;
 using Poco::Logger;
 
 namespace stormy {
   namespace acquisition {
 
-Task::Task(Stormy::Meteo::Station station)
+Task::Task(entity::Station station)
 	:	logger_(Logger::get("acquisition/Task")),
     station_(station),
-		py_parser_(new py::Parser(station_.parserClass)),
+		py_parser_(new py::Parser(station_.parser_class)),
 		database_handler_(Stormy::MongoDBHandler::get())
 {
 	
@@ -23,7 +24,7 @@ Task::~Task()
 
 void Task::run()
 {
-	logger_.information("[acquisition/Task] Acquire weather from " + station_.stationId);
+	logger_.information("[acquisition/Task] Acquire weather from " + station_.uid);
 	database_handler_.insertMeteoData(
     py_parser_ -> ParseFromStation(station_));
 }

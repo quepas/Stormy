@@ -1,5 +1,6 @@
 #include "acquisition_config_station.h"
 
+#include <yaml-cpp/yaml.h>
 #include "../../common/yaml_util.h"
 #include "../../common/util.h"
 
@@ -48,16 +49,16 @@ bool Station::load(string filepath)
 			return false;
 		}
 
-		Stormy::StationPtr meteoStation(new Stormy::Meteo::Station());
-		meteoStation -> url = common::yaml::GetString(it, "url");
-		meteoStation -> stationId = common::MD5(meteoStation -> url);
-		meteoStation -> parserClass = common::yaml::GetString(it, "parserClass");
-		meteoStation -> refreshTime = common::yaml::GetLongNumber(it, "refreshTime");
+		common::entity::Station station;
+		station.url = common::yaml::GetString(it, "url");
+		station.uid = common::MD5(station.url);
+		station.parser_class = common::yaml::GetString(it, "parserClass");
+		station.refresh_time = common::yaml::GetLongNumber(it, "refreshTime");
 
 		if(common::yaml::IsDefined(it, "name"))
-			meteoStation -> name = common::yaml::GetString(it, "name");
+			station.name = common::yaml::GetString(it, "name");
 
-		configuration_.push_back(meteoStation);
+		configuration_.push_back(station);
 	}
 	return true;
 }

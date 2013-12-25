@@ -3,7 +3,7 @@
 #include <Poco/Util/TimerTask.h>
 #include <Poco/Logger.h>
 
-#include "MeteoData.h"
+#include "../../common/entity_station.h"
 #include "py_parser.h"
 #include "MongoDBHandler.h"
 
@@ -13,12 +13,12 @@ namespace stormy {
 class Task : public Poco::Util::TimerTask
 {
 public:
-  Task(Stormy::Meteo::Station station);
+  Task(common::entity::Station station);
   ~Task();
 
   void run() override;
 private:
-  Stormy::Meteo::Station station_;
+  common::entity::Station station_;
   py::Parser* py_parser_;
   Stormy::MongoDBHandler& database_handler_;
   Poco::Logger& logger_;

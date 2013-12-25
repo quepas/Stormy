@@ -75,22 +75,22 @@ void MongoDBHandler::clearStationsData()
 	connection.dropCollection(stormy::acquisition::util::GetStationDb());
 }
 
-void MongoDBHandler::insertStationsData( const StationPtrVector& data )
+void MongoDBHandler::insertStationsData(const std::vector<entity::Station>& stations)
 {
 	if(!connected_) return;
-	for(auto it = data.begin(); it != data.end(); ++it)
+	for(auto it = stations.begin(); it != stations.end(); ++it)
 		insertStationData(*it);
 }
 
-void MongoDBHandler::insertStationData( StationPtr data )
+void MongoDBHandler::insertStationData(entity::Station station)
 {
-	if(!connected_ || !data.get()) return;
+	if(!connected_) return;
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(stormy::acquisition::constant::mongoId, data -> stationId);
-	bsonBuilder.append(stormy::acquisition::constant::name, data -> name);
-	bsonBuilder.append(stormy::acquisition::constant::parserClass, data -> parserClass);
-	bsonBuilder.append(stormy::acquisition::constant::refreshTime, data -> refreshTime);
-	bsonBuilder.append(stormy::acquisition::constant::url, data -> url);
+	bsonBuilder.append(stormy::acquisition::constant::mongoId, station.uid);
+	bsonBuilder.append(stormy::acquisition::constant::name, station.name);
+	bsonBuilder.append(stormy::acquisition::constant::parserClass, station.parser_class);
+	bsonBuilder.append(stormy::acquisition::constant::refreshTime, station.refresh_time);
+	bsonBuilder.append(stormy::acquisition::constant::url, station.url);
 	connection.insert(stormy::acquisition::util::GetStationDb(), bsonBuilder.obj());
 }
 

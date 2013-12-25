@@ -3,6 +3,7 @@
 #include <string>
 #include <Poco/Logger.h>
 
+#include "../../common/entity_station.h"
 #include "MeteoData.h"
 
 namespace stormy {
@@ -14,7 +15,7 @@ public:
   Parser(std::string parser_class);
   ~Parser();
 
-  Stormy::MeasurementPtr ParseFromStation(Stormy::Meteo::Station station);
+  Stormy::MeasurementPtr ParseFromStation(common::entity::Station station);
 private:
   Stormy::MeasurementPtr ParseFromURL(std::string url);
 

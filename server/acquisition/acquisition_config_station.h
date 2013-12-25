@@ -1,8 +1,7 @@
 #pragma once
 
-#include "yaml-cpp/yaml.h"
-
-#include "MeteoData.h"
+#include <vector>
+#include "../../common/entity_station.h"
 
 namespace stormy {
   namespace acquisition {
@@ -14,13 +13,13 @@ public:
   Station(std::string filepath);
   ~Station();
 
-  Stormy::StationPtrVector getConfiguration() { 
+  std::vector<common::entity::Station> getConfiguration() { 
     return configuration_; 
   }
 
 private:
   bool load(std::string filepath);
-  Stormy::StationPtrVector configuration_;
+  std::vector<common::entity::Station> configuration_;
 };
 // ~~ stormy::acquisition::config::Station
 }}}

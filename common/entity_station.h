@@ -13,7 +13,10 @@ struct Station
 	std::string name;
 	std::string url;
 	uint32_t refresh_time;
-	std::tm last_update;	
+	std::tm last_update;
+
+  // non-entity fields
+  std::string parser_class;
 };
 // ~~ stormy::common::entity::Station
 }}}

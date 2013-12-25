@@ -1,8 +1,9 @@
 #pragma once
 
+#include <vector>
 #include <Poco/Util/Timer.h>
 
-#include "MeteoData.h"
+#include "../../common/entity_station.h"
 
 namespace stormy {
   namespace acquisition {
@@ -13,10 +14,8 @@ public:
   Scheduler();
   ~Scheduler();
 
-  void Schedule(Stormy::StationPtr station);
-  void Schedule(const Stormy::StationPtrVector& stations);
-private:
-  Stormy::StationPtrVector acquiredStations;
+  void Schedule(common::entity::Station station);
+  void Schedule(const std::vector<common::entity::Station>& stations);
 };
 // ~~ stormy::acquisition::Scheduler
 }}

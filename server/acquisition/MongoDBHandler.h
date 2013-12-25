@@ -6,6 +6,7 @@
 
 #include "../../common/db_handler.h"
 #include "../../common/db_has_data_expiration.h"
+#include "../../common/entity_station.h"
 #include "MeteoData.h"
 
 using namespace stormy::common;
@@ -26,8 +27,8 @@ namespace Stormy
 			MeasurementPtrVector getCurrentMeteoTypeDatas(std::string stationId, std::string typeId);
 
 			void clearStationsData();
-			void insertStationsData(const StationPtrVector& data);
-			void insertStationData(StationPtr data);
+			void insertStationsData(const std::vector<entity::Station>& stations);
+			void insertStationData(entity::Station station);
 			StationPtrVector getStationsData();
 
 			bool clearTypesData();
