@@ -7,6 +7,7 @@
 #include "../../common/db_handler.h"
 #include "../../common/db_has_data_expiration.h"
 #include "../../common/entity_station.h"
+#include "../../common/entity_metrics.h"
 #include "MeteoData.h"
 
 using namespace stormy::common;
@@ -32,8 +33,8 @@ namespace Stormy
 			StationPtrVector getStationsData();
 
 			bool clearTypesData();
-			bool insertTypesData(const TypePtrVector& data);
-			TypePtrVector getTypesData();			
+			bool insertTypesData(const std::vector<entity::Metrics>& metrics_vec);
+			std::vector<entity::Metrics> getTypesData();			
 
 			static MongoDBHandler& get() {
 				static MongoDBHandler instance;

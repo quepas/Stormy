@@ -4,6 +4,7 @@
 #include "../../common/yaml_util.h"
 #include "../../common/util.h"
 
+using namespace stormy::common;
 using std::string;
 using YAML::Node;
 using YAML::LoadFile;
@@ -33,30 +34,30 @@ bool Station::load(string filepath)
 
 	for(auto it = root.begin(); it != root.end(); ++it)
 	{
-		if(!common::yaml::IsDefined(it, "url"))
+		if(!yaml::IsDefined(it, "url"))
 		{
 			//std::cout << "Field url is not defined" << std::endl;
 			return false;
 		}
-		if(!common::yaml::IsDefined(it, "parserClass"))
+		if(!yaml::IsDefined(it, "parserClass"))
 		{
 			//std::cout << "Field parserClass is not defined" << std::endl;
 			return false;
 		}
-		if(!common::yaml::IsDefined(it, "refreshTime"))
+		if(!yaml::IsDefined(it, "refreshTime"))
 		{
 			//std::cout << "Field refreshTime is not defined" << std::endl;
 			return false;
 		}
 
-		common::entity::Station station;
-		station.url = common::yaml::GetString(it, "url");
-		station.uid = common::MD5(station.url);
-		station.parser_class = common::yaml::GetString(it, "parserClass");
-		station.refresh_time = common::yaml::GetLongNumber(it, "refreshTime");
+		entity::Station station;
+		station.url = yaml::GetString(it, "url");
+		station.uid = MD5(station.url);
+		station.parser_class = yaml::GetString(it, "parserClass");
+		station.refresh_time = yaml::GetLongNumber(it, "refreshTime");
 
-		if(common::yaml::IsDefined(it, "name"))
-			station.name = common::yaml::GetString(it, "name");
+		if(yaml::IsDefined(it, "name"))
+			station.name = yaml::GetString(it, "name");
 
 		configuration_.push_back(station);
 	}

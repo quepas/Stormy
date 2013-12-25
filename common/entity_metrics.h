@@ -13,6 +13,9 @@ struct Metrics
 	std::string type;
 	std::string unit;
 	std::string format;
+
+  // non-entity fields
+  bool is_meteo;
 };
 // ~~ stormy::common::entity::Metrics
 }}}

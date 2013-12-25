@@ -13,6 +13,7 @@
 #include "../../common/util.h"
 
 using std::time_t;
+using std::vector;
 using Poco::NumberFormatter;
 
 using namespace Stormy;
@@ -160,7 +161,7 @@ MeasurementPtrVector MongoDBHandler::getMeteoData(string stationId)
 	auto result = MeasurementPtrVector();
 	if(!connected_) return result;
 	
-	TypePtrVector types = getTypesData();
+	vector<entity::Metrics> types = getTypesData();
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(stormy::acquisition::util::GetMeteoDb() + "." +
 			stormy::acquisition::constant::stationIdPrefix + stationId, BSONObj());
@@ -171,13 +172,13 @@ MeasurementPtrVector MongoDBHandler::getMeteoData(string stationId)
 
 		MeasurementPtr measurement(new Measurement());
 		for(auto it = types.begin(); it != types.end(); ++it) {
-			string id = (*it) -> id;
+			string id = it->code;
 			if(availableFields.find(id) != availableFields.end()) {
-				TypePtr type = stormy::acquisition::config::Metrics::GetMetricsById(id, types);
+				entity::Metrics metrics = stormy::acquisition::config::Metrics::GetMetricsById(id, types);
 				string value = current.getStringField(id.c_str());
-				if(type -> valueType == stormy::acquisition::constant::number)
+				if(metrics.type == stormy::acquisition::constant::number)
 					measurement -> data[id]= stormy::acquisition::util::ExtractTemperature(value);
-				else if(type ->valueType == stormy::acquisition::constant::text)
+				else if(metrics.type == stormy::acquisition::constant::text)
 					measurement -> data[id]= value;
 			}
 		}
@@ -197,7 +198,7 @@ MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, st
 	auto result = MeasurementPtrVector();
 	if(!connected_) return result;
 	
-	TypePtrVector types = getTypesData();
+	vector<entity::Metrics> types = getTypesData();
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(stormy::acquisition::util::GetMeteoDb() + "." +
 		stormy::acquisition::constant::stationIdPrefix + stationId, BSONObj());
@@ -208,13 +209,13 @@ MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, st
 
 		MeasurementPtr measurement(new Measurement());
 		for(auto it = types.begin(); it != types.end(); ++it) {
-			string id = (*it) -> id;
+			string id = it->code;
 			if(availableFields.find(id) != availableFields.end()) {
-				TypePtr type = stormy::acquisition::config::Metrics::GetMetricsById(id, types);
+				entity::Metrics type = stormy::acquisition::config::Metrics::GetMetricsById(id, types);
 				string value = current.getStringField(id.c_str());
-				if(type -> valueType == stormy::acquisition::constant::number)
+				if(type.type == stormy::acquisition::constant::number)
 					measurement -> data[id]= stormy::acquisition::util::ExtractTemperature(value);
-				else if(type ->valueType == stormy::acquisition::constant::text)
+				else if(type.type == stormy::acquisition::constant::text)
 					measurement -> data[id]= value;
 			}
 		}
@@ -230,38 +231,38 @@ MeasurementPtrVector MongoDBHandler::getMeteoDataNewerThan( string stationId, st
 	return result;
 }
 
-TypePtrVector MongoDBHandler::getTypesData()
+vector<entity::Metrics> MongoDBHandler::getTypesData()
 {
-	TypePtrVector result;
+	vector<entity::Metrics> result;
 	if(!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(stormy::acquisition::util::GetTypeDb(), BSONObj());
 	while( cursor -> more() ) {    
 		BSONObj current = cursor -> next();
-		TypePtr type(new Type());
-		type -> id = current.getStringField(stormy::acquisition::constant::id.c_str());
-		type -> equivalents.push_back(current.getStringField(stormy::acquisition::constant::equivalents.c_str()));
-		type -> valueType = current.getStringField(stormy::acquisition::constant::type.c_str());
-		type -> valueUnit = current.getStringField(stormy::acquisition::constant::unit.c_str());
-		type -> valueFormat = current.getStringField(stormy::acquisition::constant::format.c_str());
-		type -> isMeteo = current.getBoolField(stormy::acquisition::constant::isMeteo.c_str());		
-		result.push_back(type);
+		entity::Metrics metrics;
+		metrics.code = current.getStringField(stormy::acquisition::constant::id.c_str());
+		metrics.equivalents = current.getStringField(stormy::acquisition::constant::equivalents.c_str());
+		metrics.type = current.getStringField(stormy::acquisition::constant::type.c_str());
+		metrics.unit = current.getStringField(stormy::acquisition::constant::unit.c_str());
+		metrics.format = current.getStringField(stormy::acquisition::constant::format.c_str());
+		metrics.is_meteo = current.getBoolField(stormy::acquisition::constant::isMeteo.c_str());		
+		result.push_back(metrics);
 	}
 	return result;
 }
 
-bool MongoDBHandler::insertTypesData( const TypePtrVector& data )
+bool MongoDBHandler::insertTypesData(const vector<entity::Metrics>& metrics_vec)
 {
-	if(!connected_ || data.empty()) return false;
-	stormy::common::Each(data, [&](TypePtr type) {		
+	if(!connected_ || metrics_vec.empty()) return false;
+	stormy::common::Each(metrics_vec, [&](entity::Metrics metrics) {		
 		BSONObjBuilder bsonBuilder;
-		bsonBuilder.append(stormy::acquisition::constant::id, type -> id);
-		bsonBuilder.append(stormy::acquisition::constant::equivalents, type -> equivalents[0]);
-		bsonBuilder.append(stormy::acquisition::constant::type, type -> valueType);
-		bsonBuilder.append(stormy::acquisition::constant::unit, type -> valueUnit);
-		bsonBuilder.append(stormy::acquisition::constant::format, type -> valueFormat);
-		bsonBuilder.append(stormy::acquisition::constant::isMeteo, type -> isMeteo);
+		bsonBuilder.append(stormy::acquisition::constant::id, metrics.code);
+		bsonBuilder.append(stormy::acquisition::constant::equivalents, metrics.equivalents);
+		bsonBuilder.append(stormy::acquisition::constant::type, metrics.type);
+		bsonBuilder.append(stormy::acquisition::constant::unit, metrics.unit);
+		bsonBuilder.append(stormy::acquisition::constant::format, metrics.format);
+		bsonBuilder.append(stormy::acquisition::constant::isMeteo, metrics.is_meteo);
 		connection.insert(stormy::acquisition::util::GetTypeDb(), bsonBuilder.obj());
 	});
 	return true;

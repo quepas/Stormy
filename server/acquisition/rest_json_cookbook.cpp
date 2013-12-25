@@ -8,6 +8,7 @@
 #include <boost/any.hpp>
 #include <Poco/NumberFormatter.h>
 
+using namespace stormy::common;
 using boost::any;
 using std::string;
 using std::pair;
@@ -37,7 +38,7 @@ string PrepareStation(Stormy::StationPtr station)
 string cookbook::PrepareStations(const Stormy::StationPtrVector& stations)
 {
 	string content = "{\"stations\":[";
-	common::Each(stations, [&](Stormy::StationPtr station) {
+	Each(stations, [&](Stormy::StationPtr station) {
 		content += PrepareStation(station) + ",";
 	});
 	if(stations.size() > 0)
@@ -51,11 +52,11 @@ string cookbook::PrepareCombinedMeasurement(
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(acquisition::constant::id),
-		common::ToString(measurement -> data[acquisition::constant::mongoId]));
-	common::Each(measurement -> data, [&](pair<string, any> pair) {
+		ToString(measurement -> data[acquisition::constant::mongoId]));
+	Each(measurement -> data, [&](pair<string, any> pair) {
 		if(pair.first != acquisition::constant::mongoId) {
 			bsonBuilder.append(
-        wrapAsJSONString(pair.first), common::ToString(pair.second));
+        wrapAsJSONString(pair.first), ToString(pair.second));
 		}
 	});
 	return bsonBuilder.obj().toString();
@@ -65,7 +66,7 @@ string cookbook::PrepareCombinedMeasurements(
   const Stormy::MeasurementPtrVector& measurements)
 {
 	string content = "{\"meteo\":[";
-	common::Each(measurements, [&](Stormy::MeasurementPtr measurement) {
+	Each(measurements, [&](Stormy::MeasurementPtr measurement) {
 		content += PrepareCombinedMeasurement(measurement) + ",";
 	});
 	if(measurements.size() > 0)
@@ -79,33 +80,33 @@ string cookbook::wrapAsJSONString(string label)
 	return "\"" + label + "\"";
 }
 
-string cookbook::PrepareMetric(Stormy::TypePtr type)
+string cookbook::PrepareMetric(entity::Metrics metrics)
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::code), type -> id);
+    wrapAsJSONString(acquisition::constant::code), metrics.code);
 	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::name), type -> equivalents[0]);
+    wrapAsJSONString(acquisition::constant::name), metrics.equivalents);
 	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::type), type -> valueType);
+    wrapAsJSONString(acquisition::constant::type), metrics.type);
 	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::unit), type -> valueUnit);
-	string format = type -> valueFormat;
+    wrapAsJSONString(acquisition::constant::unit), metrics.unit);
+	string format = metrics.format;
 	if(!format.empty()) {
 		bsonBuilder.append(
-      wrapAsJSONString(acquisition::constant::format), type -> valueFormat);
+      wrapAsJSONString(acquisition::constant::format), metrics.format);
   }
 	return bsonBuilder.obj().toString();
 }
 
-string cookbook::PrepareMetrics(const Stormy::TypePtrVector& types)
+string cookbook::PrepareMetrics(const std::vector<entity::Metrics>& metrics_vec)
 {
 	string content = "{\"metrics\":[";
-	common::Each(types, [&](Stormy::TypePtr type) {
-		if(type -> isMeteo)
-			content += PrepareMetric(type) + ",";
+	Each(metrics_vec, [&](entity::Metrics metrics) {
+		if(metrics.is_meteo)
+			content += PrepareMetric(metrics) + ",";
 	});
-	if(types.size() > 0)
+	if(metrics_vec.size() > 0)
 		content.pop_back();	// remove unnecessary coma
 	content += "]}";
 	return content;
@@ -121,7 +122,7 @@ string cookbook::PrepareMeasurement(Stormy::MeasurementPtr measurement)
 	auto pair = measurement -> data.begin();
 	bsonBuilder.append(wrapAsJSONString(
     acquisition::constant::data), 
-    common::ToString(pair -> second));
+    ToString(pair -> second));
 	return bsonBuilder.obj().toString();
 }
 
@@ -129,7 +130,7 @@ string cookbook::PrepareMeasurements(
   const Stormy::MeasurementPtrVector& measurements)
 {
 	string content = "{\"measurements\":[";
-	common::Each(measurements, [&](Stormy::MeasurementPtr measurement) {
+	Each(measurements, [&](Stormy::MeasurementPtr measurement) {
 		if(!measurement -> data.empty())
 			content += PrepareMeasurement(measurement) + ",";
 	});
@@ -141,18 +142,18 @@ string cookbook::PrepareMeasurements(
 
 string cookbook::PrepareInfo(
   const string& server_type, 
-  const Stormy::TypePtrVector& types)
+  const std::vector<entity::Metrics>& metrics_vec)
 {
   string server_info = "{" + wrapAsJSONString("server") + ":{";
   server_info += wrapAsJSONString("type") + ":";
   server_info += wrapAsJSONString(server_type) + "},";
 
   string content = server_info + "\"metrics\":[";
-  common::Each(types, [&](Stormy::TypePtr type) {
-    if(type -> isMeteo)
-      content += PrepareMetric(type) + ",";
+  Each(metrics_vec, [&](entity::Metrics metrics) {
+    if (metrics.is_meteo)
+      content += PrepareMetric(metrics) + ",";
   });
-  if(types.size() > 0)
+  if(metrics_vec.size() > 0)
     content.pop_back();	// remove unnecessary coma
   content += "]}";
   return content;

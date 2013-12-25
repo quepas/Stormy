@@ -1,6 +1,9 @@
 #pragma once
 
+#include "../../common/entity_metrics.h"
 #include "MeteoData.h"
+
+#include <vector>
 
 namespace stormy {
   namespace rest {
@@ -15,8 +18,8 @@ std::string PrepareCombinedMeasurement(
 std::string PrepareCombinedMeasurements(
   const Stormy::MeasurementPtrVector& measurements);
 
-std::string PrepareMetric(Stormy::TypePtr type);
-std::string PrepareMetrics(const Stormy::TypePtrVector& type);
+std::string PrepareMetric(common::entity::Metrics metrics);
+std::string PrepareMetrics(const std::vector<common::entity::Metrics>& metrics_vec);
 
 std::string PrepareMeasurement(
   Stormy::MeasurementPtr measurement);
@@ -25,7 +28,7 @@ std::string PrepareMeasurements(
 
 std::string PrepareInfo(
   const std::string& server_type, 
-  const Stormy::TypePtrVector& type);
+  const std::vector<common::entity::Metrics>& metrics_vec);
 
 static std::string wrapAsJSONString(std::string label);
 // ~~ stormy::rest::json::Cookbook

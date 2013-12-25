@@ -4,6 +4,7 @@
 #include <boost/algorithm/string.hpp>
 #include "../../common/yaml_util.h"
 
+using namespace stormy::common;
 using boost::equal;
 using std::string;
 using std::vector;
@@ -33,42 +34,42 @@ bool Metrics::Load(string filepath)
 
 	for (auto it = root.begin(); it != root.end(); ++it)
 	{		
-		if (common::yaml::IsDefined(it, "id"))
+		if (yaml::IsDefined(it, "id"))
 		{
-			string id = common::yaml::GetString(it, "id");
-			if (!common::yaml::IsDefined(it, "valueType")) {
+			string id = yaml::GetString(it, "id");
+			if (!yaml::IsDefined(it, "valueType")) {
 				//cout << "For " << id << " valueType is not defined" << endl;
 				continue;
 			}
-			string valueType = common::yaml::GetString(it, "valueType");
-			if (!common::yaml::IsDefined(it, "valueUnit")) {
+			string valueType = yaml::GetString(it, "valueType");
+			if (!yaml::IsDefined(it, "valueUnit")) {
 				//cout << "For " << id << " valueUnit is not defined" << endl;
 				continue;
 			}
-			string valueUnit = common::yaml::GetString(it, "valueUnit");
-			if (!common::yaml::IsDefined(it, "equivalents")) {
+			string valueUnit = yaml::GetString(it, "valueUnit");
+			if (!yaml::IsDefined(it, "equivalents")) {
 				//cout << "For " << id << " equivalents is not defined" << endl;
 				continue;
 			}
-			string equivalents = common::yaml::GetString(it, "equivalents");
+			string equivalents = yaml::GetString(it, "equivalents");
 			vector<string> splitedEquivalents;
 			boost::split(splitedEquivalents, equivalents, boost::is_any_of(";,"));
 
 			string valueFormat = "";
-			if (common::yaml::IsDefined(it, "valueFormat")) {
-				valueFormat = common::yaml::GetString(it, "valueFormat");
+			if (yaml::IsDefined(it, "valueFormat")) {
+				valueFormat = yaml::GetString(it, "valueFormat");
 			}
 			bool isMeteo = true;
-			if (common::yaml::IsDefined(it, "isMeteo")) {
-				isMeteo = common::yaml::GetBool(it, "isMeteo");
+			if (yaml::IsDefined(it, "isMeteo")) {
+				isMeteo = yaml::GetBool(it, "isMeteo");
 			}
-			Stormy::TypePtr type(new Stormy::Meteo::Type());
-			type -> id = id;
-			type -> valueType = valueType;
-			type -> valueUnit = valueUnit;
-			type -> equivalents = splitedEquivalents;
-			type -> valueFormat = valueFormat;
-			type -> isMeteo = isMeteo;
+			entity::Metrics type;
+			type.code = id;
+			type.type = valueType;
+			type.unit = valueUnit;
+			type.equivalents = splitedEquivalents[0];
+			type.format = valueFormat;
+			type.is_meteo = isMeteo;
 			configuration_.push_back(type);
 		}
 	}
@@ -78,8 +79,9 @@ bool Metrics::Load(string filepath)
 string Metrics::GetMetricsIdByEquivalent(string equivalent)
 {
 	for (auto it = configuration_.begin(); it != configuration_.end(); ++it) {
-		string id = (*it) -> id;
-		vector<string> equivalents = (*it) -> equivalents;
+		string id = it->code;
+		vector<string> equivalents;
+    equivalents.push_back(it->equivalents);
 		for (auto it = equivalents.begin(); it != equivalents.end(); ++it) {
 			if(equal(equivalent, *it))
 				return id;
@@ -88,35 +90,35 @@ string Metrics::GetMetricsIdByEquivalent(string equivalent)
 	return "_none";
 }
 
-Stormy::TypePtr Metrics::GetMetricsById(string id)
+entity::Metrics Metrics::GetMetricsById(string id)
 {
 	for (auto it = configuration_.begin(); it != configuration_.end(); ++it) {
-		Stormy::TypePtr result = *it;
-		if(equal(id, result -> id))
+		entity::Metrics result = *it;
+		if(equal(id, result.code))
 			return result;
 	}
-	return Stormy::TypePtr(nullptr);
+	return entity::Metrics();
 }
 
 string Metrics::GetFirstEquivalentByMetricsId(string id)
 {
-	Stormy::TypePtr type = GetMetricsById(id);
-	if (type != nullptr && type -> equivalents.size() > 0) {
-		return type -> equivalents[0];
+	entity::Metrics type = GetMetricsById(id);
+	if (!type.equivalents.empty()) {
+		return type.equivalents;
 	}
 	return "_none";
 }
 
-Stormy::TypePtr Metrics::GetMetricsById(
+entity::Metrics Metrics::GetMetricsById(
   string id, 
-  Stormy::TypePtrVector types)
+  vector<entity::Metrics> types)
 {
 	for (auto it = types.begin(); it != types.end(); ++it) {
-		if ((*it) -> id == id) {
+		if (it->code == id) {
 			return *it;
 		}
 	}
-	return Stormy::TypePtr(nullptr);
+	return entity::Metrics();
 }
 // ~~ stormy::acquisition::config::Metrics
 }}}

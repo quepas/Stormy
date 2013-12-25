@@ -14,6 +14,7 @@
 #include <Poco/NumberFormatter.h>
 #include <Poco/Timestamp.h>
 
+using namespace stormy::common;
 using boost::any;
 using boost::any_cast;
 using boost::to_lower_copy;
@@ -61,8 +62,8 @@ Stormy::MeasurementPtr Parser::ParseFromURL(string url)
 		// ~TODO: move to PyObjectMapper		
 		for(auto it = data.begin(); it != data.end(); ++it) {
 			string id = types -> GetMetricsIdByEquivalent(it -> first);
-			Stormy::TypePtr type = types -> GetMetricsById(id);
-			string valueType = to_lower_copy(type -> valueType);
+			entity::Metrics type = types -> GetMetricsById(id);
+			string valueType = to_lower_copy(type.type);
 			string value = trim_copy(it -> second);
 
 			if(value != "-") {
@@ -83,7 +84,7 @@ Stormy::MeasurementPtr Parser::ParseFromURL(string url)
 	}
 }
 
-Stormy::MeasurementPtr Parser::ParseFromStation(common::entity::Station station)
+Stormy::MeasurementPtr Parser::ParseFromStation(entity::Station station)
 {
 	Stormy::MeasurementPtr result = ParseFromURL(station.url);
   // TODO: remove this dependency (deep copy)
@@ -108,8 +109,8 @@ Stormy::MeasurementPtr Parser::ParseFromStation(common::entity::Station station)
 			string date = any_cast<string>(data[acquisition::constant::date]);
 			string time = any_cast<string>(data[acquisition::constant::time]);
 
-			if(stormy::common::IsDate(date)
-				&& stormy::common::IsTime(time))
+			if(IsDate(date)
+				&& IsTime(time))
 			{
 				string dateTime = date + " " + time;
 				int diffTimeZone;

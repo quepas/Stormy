@@ -1,7 +1,9 @@
 #pragma once
 
+#include "../../common/entity_metrics.h"
+
 #include <string>
-#include "MeteoData.h"
+#include <vector>
 
 namespace stormy {
   namespace acquisition {
@@ -13,20 +15,20 @@ public:
   Metrics(std::string filepath);
   ~Metrics();
 
-  Stormy::TypePtrVector Configuration() {
+  std::vector<common::entity::Metrics> Configuration() {
     return configuration_;
   }
 
   std::string GetMetricsIdByEquivalent(std::string equivalent);
   std::string GetFirstEquivalentByMetricsId(std::string id);
-  Stormy::TypePtr GetMetricsById(std::string id);
+  common::entity::Metrics GetMetricsById(std::string id);
 
-  static Stormy::TypePtr GetMetricsById(
+  static common::entity::Metrics GetMetricsById(
     std::string id, 
-    Stormy::TypePtrVector types);
+    std::vector<common::entity::Metrics> types);
 private:
   bool Load(std::string filepath);
-  Stormy::TypePtrVector configuration_;
+  std::vector<common::entity::Metrics> configuration_;
 };
 // ~~ stormy::acquisition::config::Metrics
 }}}
