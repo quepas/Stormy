@@ -2,7 +2,7 @@
 
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
-#include "JSONUtils.h"
+#include "rest_json_cookbook.h"
 #include "rest_constant.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
@@ -42,14 +42,14 @@ void GetMeteo::handleRequest(
 		if(type_id_.empty()) {
 			if(timestamp_.empty()) {				
 				Stormy::MeasurementPtrVector meteo = dbHandler.getMeteoData(station_uid_);
-				ostr << Stormy::JSONUtils::prepareJSONForMeasurements(meteo);
+				ostr << json::cookbook::PrepareCombinedMeasurements(meteo);
 			} else {				
 				Stormy::MeasurementPtrVector meteo = dbHandler.getMeteoDataNewerThan(station_uid_, timestamp_);
-				ostr << Stormy::JSONUtils::prepareJSONForMeasurements(meteo);
+				ostr << json::cookbook::PrepareCombinedMeasurements(meteo);
 			}			
 		} else {
 			Stormy::MeasurementPtrVector singleMeteo = dbHandler.getCurrentMeteoTypeDatas(station_uid_, type_id_);
-			ostr << Stormy::JSONUtils::prepareJSONForSingleMeasurements(singleMeteo);
+			ostr << json::cookbook::PrepareMeasurements(singleMeteo);
 		}
 	} else {
 		ostr << constant::emptyJSON;

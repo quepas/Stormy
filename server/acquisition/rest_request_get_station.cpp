@@ -2,7 +2,7 @@
 
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
-#include "JSONUtils.h"
+#include "rest_json_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
@@ -31,7 +31,7 @@ void GetStation::handleRequest(
 {
 	ostream& ostr = response.send();
 	Stormy::StationPtrVector stations = Stormy::MongoDBHandler::get().getStationsData();
-	ostr << Stormy::JSONUtils::prepareJSONForStations(stations);
+	ostr << json::cookbook::PrepareStations(stations);
 }
 // ~~ stormy::rest::request::GetStation
 }}}

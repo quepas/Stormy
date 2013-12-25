@@ -2,7 +2,7 @@
 
 #include "TypeConfiguration.h"
 #include "rest_constant.h"
-#include "JSONUtils.h"
+#include "rest_json_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
@@ -36,7 +36,7 @@ void GetInfo::handleRequest(
 	if(station_uid_.empty()) {
 		auto typesCfg =
 			new Stormy::Meteo::TypeConfiguration("config/meteo_data_type_config.yaml");
-		ostr << Stormy::JSONUtils::prepareJSONForInfo("A", typesCfg -> getConfiguration());
+		ostr << json::cookbook::PrepareInfo("A", typesCfg -> getConfiguration());
 	} else {
 		ostr << constant::emptyJSON;
 	}

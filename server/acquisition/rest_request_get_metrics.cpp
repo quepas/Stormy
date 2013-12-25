@@ -1,7 +1,7 @@
 #include "rest_request_get_metrics.h"
 
 #include "TypeConfiguration.h"
-#include "JSONUtils.h"
+#include "rest_json_cookbook.h"
 #include "rest_constant.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
@@ -36,7 +36,7 @@ void GetMetrics::handleRequest(
 		new Stormy::Meteo::TypeConfiguration("config/meteo_data_type_config.yaml");
 
 	if(station_uid_.empty()) {
-		ostr << Stormy::JSONUtils::prepareJSONForAvailableTypes(
+		ostr << json::cookbook::PrepareMetrics(
 			typesCfg->getConfiguration());
 	} else {
 		ostr << stormy::rest::constant::emptyJSON;
