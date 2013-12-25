@@ -1,24 +1,20 @@
 #pragma once
 
 #include <Poco/Net/HTTPRequestHandler.h>
-#include <Poco/Net/HTTPServerRequest.h>
-#include <Poco/Net/HTTPServerResponse.h>
 
-#include "MeteoData.h"
+namespace stormy {
+  namespace rest {
+    namespace request {
 
-using Poco::Net::HTTPRequestHandler;
-using Poco::Net::HTTPServerRequest;
-using Poco::Net::HTTPServerResponse;
-
-namespace Stormy
-{
-	class GetStationRequest : public HTTPRequestHandler
+	class GetStation : public Poco::Net::HTTPRequestHandler
 	{
 		public:
-			GetStationRequest();
-			~GetStationRequest();
+			GetStation();
+			~GetStation();
 
-			void handleRequest(HTTPServerRequest& request,
-				HTTPServerResponse& response);			
+			void handleRequest(
+        Poco::Net::HTTPServerRequest& request,
+				Poco::Net::HTTPServerResponse& response) override;
 	};
-}
+// ~~ stormy::rest::request::GetStation
+}}}

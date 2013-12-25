@@ -16,8 +16,10 @@ using Poco::Util::Application;
 namespace stormy {
   namespace rest {
 
-Service::Service(db::Storage* db_storage, 
-  db::Aggregate* db_aggregation, uint16_t port /*= 8070*/)
+Service::Service(
+  db::Storage* db_storage, 
+  db::Aggregate* db_aggregation, 
+  uint16_t port /*= 8070*/)
   : port_(port),
     logger_(Logger::get("rest")),
     db_storage_(db_storage),

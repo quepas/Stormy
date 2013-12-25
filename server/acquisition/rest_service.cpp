@@ -1,49 +1,57 @@
-#include "HttpServer.h"
+#include "rest_service.h"
 
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocket.h>
 
-#include "GetRequestFactory.h"
+#include "rest_request_factory.h"
 
-using namespace Stormy;
-
+using std::string;
+using std::vector;
+using Poco::Util::Application;
 using Poco::Net::HTTPServer;
 using Poco::Net::HTTPServerParams;
 using Poco::Net::ServerSocket;
 
-HttpServer::HttpServer(unsigned int _port /* = 8080 */)
-	:	port(_port)
+namespace stormy {
+  namespace rest {
+
+Service::Service(uint16_t port /* = 8080 */)
+	:	port_(port)
 {
 
 }
 
-HttpServer::~HttpServer()
+Service::~Service()
 {
 
 }
 
-void HttpServer::initialized( Application& self )
+void Service::initialized(Application& self)
 {
 	loadConfiguration();
 	ServerApplication::initialize(self);
 }
 
-void HttpServer::unitialized()
+void Service::unitialized()
 {
 	ServerApplication::uninitialize();
 }
 
-int HttpServer::main( const std::vector<std::string>& args )
+int Service::main(const vector<string>& args)
 {
 	unsigned short configuredPort = (unsigned short)
-		config().getInt("HttpServer.port", port);
+		config().getInt("Service.port", port_);
 
 	ServerSocket serverSocket(configuredPort);
-	HTTPServer httpServer(new GetRequestFactory(),
-		serverSocket, new HTTPServerParams);
+	HTTPServer httpServer(
+    new request::Factory(),
+		serverSocket, 
+    new HTTPServerParams);
 	httpServer.start();
 	waitForTerminationRequest();
 	httpServer.stop();
 
 	return Application::EXIT_OK;
 }
+// ~~ stormy::rest::Service
+}}

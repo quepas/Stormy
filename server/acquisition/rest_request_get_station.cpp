@@ -1,25 +1,37 @@
-#include "GetStationRequest.h"
+#include "rest_request_get_station.h"
 
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
 #include "JSONUtils.h"
 
-using namespace Stormy;
-using Meteo::Station;
+#include <Poco/Net/HTTPServerRequest.h>
+#include <Poco/Net/HTTPServerResponse.h>
 
-Stormy::GetStationRequest::GetStationRequest()
+using std::ostream;
+using Poco::Net::HTTPServerRequest;
+using Poco::Net::HTTPServerResponse;
+
+namespace stormy {
+  namespace rest {
+    namespace request {
+
+GetStation::GetStation()
 {
 
 }
 
-Stormy::GetStationRequest::~GetStationRequest()
+GetStation::~GetStation()
 {
 
 }
 
-void Stormy::GetStationRequest::handleRequest( HTTPServerRequest& request, HTTPServerResponse& response )
+void GetStation::handleRequest(
+  HTTPServerRequest& request, 
+  HTTPServerResponse& response)
 {
-	std::ostream& ostr = response.send();
-	StationPtrVector stations = MongoDBHandler::get().getStationsData();
-	ostr << JSONUtils::prepareJSONForStations(stations);
+	ostream& ostr = response.send();
+	Stormy::StationPtrVector stations = Stormy::MongoDBHandler::get().getStationsData();
+	ostr << Stormy::JSONUtils::prepareJSONForStations(stations);
 }
+// ~~ stormy::rest::request::GetStation
+}}}

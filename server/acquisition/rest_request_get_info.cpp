@@ -1,33 +1,45 @@
-#include "GetInfoRequest.h"
+#include "rest_request_get_info.h"
 
 #include "TypeConfiguration.h"
 #include "rest_constant.h"
 #include "JSONUtils.h"
 
-using namespace Stormy;
-using namespace Meteo;
-using Meteo::TypeConfiguration;
+#include <Poco/Net/HTTPServerRequest.h>
+#include <Poco/Net/HTTPServerResponse.h>
 
-Stormy::GetInfoRequest::GetInfoRequest( std::string _stationId /*= ""*/ )
-	:	stationId(_stationId)
+using std::string;
+using std::ostream;
+using Poco::Net::HTTPServerRequest;
+using Poco::Net::HTTPServerResponse;
+
+namespace stormy {
+  namespace rest {
+    namespace request {
+
+GetInfo::GetInfo(string _stationId /*= ""*/)
+	:	station_uid_(_stationId)
 {
 
 }
 
-Stormy::GetInfoRequest::~GetInfoRequest()
+GetInfo::~GetInfo()
 {
 
 }
 
-void Stormy::GetInfoRequest::handleRequest( HTTPServerRequest& request, HTTPServerResponse& response )
+void GetInfo::handleRequest(
+  HTTPServerRequest& request, 
+  HTTPServerResponse& response)
 {
-	std::ostream& ostr = response.send();
+	ostream& ostr = response.send();
 
-	if(stationId.empty()) {
-		TypeConfiguration* typesCfg =
-			new TypeConfiguration("config/meteo_data_type_config.yaml");
-		ostr << JSONUtils::prepareJSONForInfo("A", typesCfg -> getConfiguration());
+	if(station_uid_.empty()) {
+		auto typesCfg =
+			new Stormy::Meteo::TypeConfiguration("config/meteo_data_type_config.yaml");
+		ostr << Stormy::JSONUtils::prepareJSONForInfo("A", typesCfg -> getConfiguration());
 	} else {
-		ostr << stormy::rest::constant::emptyJSON;
+		ostr << constant::emptyJSON;
 	}
 }
+// ~~ stormy::rest::request::GetInfo
+}}}

@@ -24,7 +24,8 @@ GetInfo::~GetInfo()
 
 }
 
-void GetInfo::handleRequest(HTTPServerRequest& request, 
+void GetInfo::handleRequest(
+  HTTPServerRequest& request, 
   HTTPServerResponse& response)
 {  
   ostream& stream_response = response.send();

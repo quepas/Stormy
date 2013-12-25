@@ -1,23 +1,24 @@
 #pragma once
 
-#include <Poco/Net/HTTPRequestHandler.h>
+#include <Poco/Logger.h>
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPRequestHandlerFactory.h>
 
-using Poco::Net::HTTPServerRequest;
-using Poco::Net::HTTPRequestHandler;
-using Poco::Net::HTTPRequestHandlerFactory;
+namespace stormy {
+  namespace rest {
+    namespace request {
 
-namespace Stormy
+class Factory : public Poco::Net::HTTPRequestHandlerFactory
 {
-	class GetRequestFactory : public HTTPRequestHandlerFactory
-	{
-		public:
-			GetRequestFactory();
-			~GetRequestFactory();
+public:
+  Factory();
+  ~Factory();
 
-			HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request);
+  Poco::Net::HTTPRequestHandler* createRequestHandler(
+    const Poco::Net::HTTPServerRequest& request) override;
 
-		private:
-	};
-}
+private:
+  Poco::Logger& logger_;
+};
+// ~~ stormy::rest::request::Factory
+}}}

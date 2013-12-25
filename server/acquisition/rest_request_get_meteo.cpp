@@ -1,49 +1,59 @@
-#include "GetMeteoRequest.h"
+#include "rest_request_get_meteo.h"
 
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
 #include "JSONUtils.h"
-#include "TypeConfiguration.h"
 #include "rest_constant.h"
 
-#include <boost/any.hpp>
-#include <boost/lexical_cast.hpp>
+#include <Poco/Net/HTTPServerRequest.h>
+#include <Poco/Net/HTTPServerResponse.h>
 
-using namespace Stormy;
-using namespace Meteo;
-using namespace std;
+using std::string;
+using std::ostream;
+using Poco::Net::HTTPServerRequest;
+using Poco::Net::HTTPServerResponse;
 
-GetMeteoRequest::GetMeteoRequest(string _stationId, 
-	string _typeId /* ="" */, string _timestamp /* = ""*/)
-	:	stationId(_stationId), typeId(_typeId), timestamp(_timestamp)
+namespace stormy {
+  namespace rest {
+    namespace request {
+
+GetMeteo::GetMeteo(
+  string station_uid, 
+	string type_id /* ="" */, 
+  string timestamp /* = ""*/)
+	:	station_uid_(station_uid), type_id_(type_id), timestamp_(timestamp)
 {
 
 }
 
-GetMeteoRequest::~GetMeteoRequest()
+GetMeteo::~GetMeteo()
 {
 
 }
 
-void GetMeteoRequest::handleRequest( HTTPServerRequest& request, HTTPServerResponse& response )
+void GetMeteo::handleRequest(
+  HTTPServerRequest& request, 
+  HTTPServerResponse& response)
 {
 	ostream& ostr = response.send();
 
-	MongoDBHandler& dbHandler = MongoDBHandler::get();	
-	if(stationId != stormy::rest::constant::none) {
-		if(typeId.empty()) {
-			if(timestamp.empty()) {				
-				MeasurementPtrVector meteo = dbHandler.getMeteoData(stationId);
-				ostr << JSONUtils::prepareJSONForMeasurements(meteo);
+	Stormy::MongoDBHandler& dbHandler = Stormy::MongoDBHandler::get();	
+	if(station_uid_ != constant::none) {
+		if(type_id_.empty()) {
+			if(timestamp_.empty()) {				
+				Stormy::MeasurementPtrVector meteo = dbHandler.getMeteoData(station_uid_);
+				ostr << Stormy::JSONUtils::prepareJSONForMeasurements(meteo);
 			} else {				
-				MeasurementPtrVector meteo = dbHandler.getMeteoDataNewerThan(stationId, timestamp);
-				ostr << JSONUtils::prepareJSONForMeasurements(meteo);
+				Stormy::MeasurementPtrVector meteo = dbHandler.getMeteoDataNewerThan(station_uid_, timestamp_);
+				ostr << Stormy::JSONUtils::prepareJSONForMeasurements(meteo);
 			}			
 		} else {
-			MeasurementPtrVector singleMeteo = dbHandler.getCurrentMeteoTypeDatas(stationId, typeId);
-			ostr << JSONUtils::prepareJSONForSingleMeasurements(singleMeteo);
+			Stormy::MeasurementPtrVector singleMeteo = dbHandler.getCurrentMeteoTypeDatas(station_uid_, type_id_);
+			ostr << Stormy::JSONUtils::prepareJSONForSingleMeasurements(singleMeteo);
 		}
 	} else {
-		ostr << stormy::rest::constant::emptyJSON;
+		ostr << constant::emptyJSON;
 	}
 }
+// ~~ stormy::rest::request::GetMeteo
+}}}

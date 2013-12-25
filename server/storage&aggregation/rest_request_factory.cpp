@@ -21,7 +21,7 @@ namespace stormy {
     namespace request {
 
 Factory::Factory(db::Storage* db_storage, db::Aggregate* db_aggregation)
-  : logger_(Logger::get("rest")),
+  : logger_(Logger::get("rest/Factory")),
     db_storage_(db_storage),
     db_aggregation_(db_aggregation_)
 {

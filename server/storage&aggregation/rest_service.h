@@ -13,8 +13,10 @@ namespace stormy {
 class Service : public Poco::Util::ServerApplication
 {
 public:
-  Service(db::Storage* db_storage, 
-    db::Aggregate* db_aggregation, uint16_t port = 8070);
+  Service(
+    db::Storage* db_storage, 
+    db::Aggregate* db_aggregation, 
+    uint16_t port = 8070);
   ~Service();
 
 protected:

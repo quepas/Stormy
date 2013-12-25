@@ -9,7 +9,7 @@
 #include "../../common/util.h"
 #include "MeteoUtils.h"
 #include "MeteoData.h"
-#include "HttpServer.h"
+#include "rest_service.h"
 #include "AcquisitionScheduler.h"
 
 #include "../../common/db_expiration_engine.h"
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
   stormy::common::db::expiration::Engine expiration_engine(dbHandler);
   expiration_engine.ScheduleEverySeconds(3600);
 
-	Stormy::HttpServer httpServer;
+	stormy::rest::Service httpServer;
 	httpServer.run(argc, argv);  
   
 	getchar();

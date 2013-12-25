@@ -1,25 +1,24 @@
 #pragma once
 
+#include <cstdint>
 #include <Poco/Util/ServerApplication.h>
 
-using Poco::Util::Application;
-using Poco::Util::ServerApplication;
+namespace stormy {
+  namespace rest {
 
-namespace Stormy
+class Service : public Poco::Util::ServerApplication
 {
-	class HttpServer : public ServerApplication
-	{
-		public:
-			HttpServer(unsigned int _port = 8080);
-			~HttpServer();
+public:
+  Service(uint16_t port = 8080);
+  ~Service();
 
-		protected:
+protected:
+  void initialized(Poco::Util::Application& self);
+  void unitialized();
+  int main(const std::vector<std::string>& args);
 
-			void initialized(Application& self);
-			void unitialized();
-			int main(const std::vector<std::string>& args);
-
-		private:
-			unsigned int port;
-	};
-}
+private:
+  unsigned int port_;
+};
+// ~~ stormy::rest::Service
+}}

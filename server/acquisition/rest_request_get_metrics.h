@@ -1,27 +1,24 @@
 #pragma once
 
+#include <string>
 #include <Poco/Net/HTTPRequestHandler.h>
-#include <Poco/Net/HTTPServerRequest.h>
-#include <Poco/Net/HTTPServerResponse.h>
 
-using Poco::Net::HTTPRequestHandler;
-using Poco::Net::HTTPServerRequest;
-using Poco::Net::HTTPServerResponse;
+namespace stormy {
+  namespace rest {
+    namespace request {
 
-namespace Stormy
+class GetMetrics : public Poco::Net::HTTPRequestHandler
 {
-	namespace REST
-	{
-		class GetMetricsRequest : public HTTPRequestHandler
-		{
-		public:
-			GetMetricsRequest(std::string _stationId = "");
-			~GetMetricsRequest();
+public:
+  GetMetrics(std::string station_uid = "");
+  ~GetMetrics();
 
-			void handleRequest(HTTPServerRequest& request, 
-				HTTPServerResponse& response);
-		private:
-			std::string stationId;
-		};
-	}
-}
+  void handleRequest(
+    Poco::Net::HTTPServerRequest& request, 
+    Poco::Net::HTTPServerResponse& response) override;
+
+private:
+  std::string station_uid_;
+};
+// ~~ stormy::rest::request::GetMetrics
+}}}
