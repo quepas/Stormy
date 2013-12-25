@@ -1,7 +1,7 @@
 #include "acquisition_scheduler.h"
 
 #include "acquisition_task.h"
-#include "MeteoUtils.h"
+#include "acquisition_util.h"
 
 namespace stormy {
   namespace acquisition {
@@ -19,7 +19,7 @@ Scheduler::~Scheduler()
 void Scheduler::Schedule(Stormy::StationPtr station)
 {
 	schedule(new Task(*(station.get())), 0,
-		Stormy::MeteoUtils::convertMinutesToMiliseconds(station -> refreshTime));
+		util::MinutesToMiliseconds(station -> refreshTime));
 }
 
 void Scheduler::Schedule(const Stormy::StationPtrVector& stations)

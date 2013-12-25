@@ -1,9 +1,9 @@
 #include "py_parser.h"
 
+#include "acquisition_util.h"
 #include "py_function.h"
 #include "py_mapper.h"
 #include "../../common/util.h"
-#include "MeteoUtils.h"
 
 #include <map>
 #include <boost/any.hpp>
@@ -67,7 +67,7 @@ Stormy::MeasurementPtr Parser::ParseFromURL(string url)
 
 			if(value != "-") {
 				if(valueType == acquisition::constant::number)
-					result -> data[id] = Stormy::MeteoUtils::extractTemperature(value);
+					result -> data[id] = acquisition::util::ExtractTemperature(value);
 				else if(valueType == acquisition::constant::text)
 					result -> data[id] = value;
 			}

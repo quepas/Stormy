@@ -5,7 +5,6 @@
 #include "StationConfiguration.h"
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
-#include "MeteoUtils.h"
 #include "MeteoData.h"
 #include "rest_service.h"
 #include "acquisition_scheduler.h"
