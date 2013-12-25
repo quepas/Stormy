@@ -1,20 +1,25 @@
 #pragma once
 
 #include <string>
+#include <Poco/Logger.h>
+
 #include "MeteoData.h"
 
-namespace Stormy
+namespace stormy {
+  namespace py {
+
+class Parser
 {
-	class PyParserWrapper
-	{
-		public:
-			PyParserWrapper(std::string _pyParserModuleName);
-			~PyParserWrapper();
+public:
+  Parser(std::string parser_class);
+  ~Parser();
 
-			MeasurementPtr parseFromStation(Meteo::Station station);
-		private:
-			MeasurementPtr parseFromURL(std::string url);
+  Stormy::MeasurementPtr ParseFromStation(Stormy::Meteo::Station station);
+private:
+  Stormy::MeasurementPtr ParseFromURL(std::string url);
 
-			std::string pyParserModuleName;
-	};
-}
+  std::string parser_class_;
+  Poco::Logger& logger_;
+};
+// ~~ stormy::py::Parser
+}}

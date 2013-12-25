@@ -8,7 +8,7 @@ using namespace Stormy::Meteo;
 
 AcquisitionTask::AcquisitionTask(Station _station)
 	:	station(_station),
-		pyParser(new PyParserWrapper(station.parserClass)),
+		pyParser(new stormy::py::Parser(station.parserClass)),
 		dbHandler(MongoDBHandler::get())
 {
 	
@@ -25,5 +25,5 @@ void AcquisitionTask::run()
 		<< station.stationId << " (Every "
 		<< station.refreshTime << " minutes.)" << std::endl;
 
-	dbHandler.insertMeteoData(pyParser -> parseFromStation(station));
+	dbHandler.insertMeteoData(pyParser -> ParseFromStation(station));
 }

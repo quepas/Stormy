@@ -2,7 +2,7 @@
 
 #include <Poco/Util/TimerTask.h>
 #include "MeteoData.h"
-#include "PyParserWrapper.h"
+#include "py_parser.h"
 #include "MongoDBHandler.h"
 
 namespace Stormy
@@ -16,7 +16,7 @@ namespace Stormy
 			void run();
 		private:
 			Meteo::Station station;
-			PyParserWrapper* pyParser;
+			stormy::py::Parser* pyParser;
 			MongoDBHandler& dbHandler;
 	};
 }

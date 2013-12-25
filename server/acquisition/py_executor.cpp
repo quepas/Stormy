@@ -1,30 +1,35 @@
-#include "PyExecutor.h"
+#include "py_executor.h"
 
 #include <Python.h>
-#include <iostream>
 
-Stormy::PyExecutor::PyExecutor()
+using Poco::Logger;
+
+namespace stormy {
+  namespace py {
+
+Executor::Executor()
+  : logger_(Logger::get("py/Executor"))
 {
-	if(!init())
-	{
+	if (!Init()) {
 		if(Py_IsInitialized())
-			std::cout << "PyExecutor already initialized" << std::endl;
+			logger_.warning("[py/Executor] Already initialized.");
 		else
-			std::cout << "Couldn't init PyExecutor" << std::endl;
+			logger_.error("[py/Executor] Couldn't initialize.");
 	}
 }
 
-Stormy::PyExecutor::~PyExecutor()
+Executor::~Executor()
 {
 	Py_Finalize();
 }
 
-bool Stormy::PyExecutor::init()
+bool Executor::Init()
 {
-	if(!Py_IsInitialized())
-	{
+	if (!Py_IsInitialized()) {
 		Py_Initialize();
 		return true;
 	}
 	return false;
 }
+// ~~ stormy::py::Executor
+}}

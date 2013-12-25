@@ -2,19 +2,24 @@
 
 #include <string>
 #include <Python.h>
+#include <Poco/Logger.h>
 
-namespace Stormy
+namespace stormy {
+  namespace py {
+
+class Function
 {
-	class PyFunction
-	{
-		public:
-			PyFunction(std::string moduleName, std::string functionName);
-			~PyFunction();
+public:
+  Function(std::string module_name, std::string function_name);
+  ~Function();
 
-			PyObject* operator()(PyObject* pyArgs = nullptr);
-		private:
-			bool init(std::string moduleName, std::string functionName);
-			bool properInit;
-			PyObject* pyFunction;
-	};
-}
+  PyObject* operator()(PyObject* py_args = nullptr);
+private:
+  bool Init(std::string module_name, std::string function_name);
+
+  bool proper_init_;
+  PyObject* py_function_;
+  Poco::Logger& logger_;
+};
+// ~~ stormy::py::Function
+}}

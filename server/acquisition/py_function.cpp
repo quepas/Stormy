@@ -1,73 +1,63 @@
-#include "PyFunction.h"
+#include "py_function.h"
 
-#include <iostream>
+using std::string;
+using Poco::Logger;
 
-using namespace Stormy;
+namespace stormy {
+  namespace py {
 
-Stormy::PyFunction::PyFunction( std::string moduleName, std::string functionName )
-	:	pyFunction(nullptr)
+Function::Function(string module_name, string function_name)
+	:	logger_(Logger::get("py/Function")),
+    py_function_(nullptr)
 {
-	properInit = init(moduleName, functionName);
+	proper_init_ = Init(module_name, function_name);
 }
 
-Stormy::PyFunction::~PyFunction()
+Function::~Function()
 {
-	Py_DECREF(pyFunction);
+	Py_DECREF(py_function_);
 }
 
-PyObject* Stormy::PyFunction::operator()( PyObject* pyArgs /*= nullptr*/ )
+PyObject* Function::operator()(PyObject* py_args /*= nullptr*/)
 {
-	if(!Py_IsInitialized())
-	{
-		std::cout << "Call Py_ExecutorInit() first" << std::endl;
-		Py_DECREF(pyArgs);
+	if (!Py_IsInitialized()) {
+		logger_.error("[py/Function] Call PY_EXECUTOR_INIT() first.");
+		Py_DECREF(py_args);
 		return nullptr;
 	}
-
-	if(properInit)
-	{
-		return PyObject_CallObject(pyFunction, pyArgs);
+	if (proper_init_) {
+		return PyObject_CallObject(py_function_, py_args);
 	}
-	Py_DECREF(pyArgs);
+	Py_DECREF(py_args);
 	return nullptr;
 }
 
-bool Stormy::PyFunction::init( std::string moduleName, std::string functionName )
+bool Function::Init(string module_name, string function_name)
 {
-	if(!Py_IsInitialized())
-	{
-		std::cout << "Call Py_ExecutorInit() first" << std::endl;
+	if (!Py_IsInitialized()) {
+		logger_.error("[py/Function] Call Py_ExecutorInit() first.");
 		return false;
 	}
-
-	PyObject* pyModuleName = PyUnicode_FromString(moduleName.c_str());
-	if(!pyModuleName)
-	{
-		std::cout << "Module name is wrong" << std::endl;
-		Py_DECREF(pyModuleName);
+	PyObject* py_module_name = PyUnicode_FromString(module_name.c_str());
+	if (!py_module_name) {
+		logger_.error("[py/Function] Wrong module name.");
+		Py_DECREF(py_module_name);
 		return false;
 	}
-
-	PyObject* pyModuleData = PyImport_Import(pyModuleName);
-	Py_DECREF(pyModuleName);
-	if(!pyModuleData)
-	{
-		std::cout << "Couldn't import given module" << std::endl;
-		Py_DECREF(pyModuleName);
+	PyObject* py_module_data = PyImport_Import(py_module_name);
+	Py_DECREF(py_module_name);
+	if (!py_module_data) {
+		logger_.error("[py/Function] Couldn't import given module.");
+		Py_DECREF(py_module_name);
 		return false;
 	}
-
-	pyFunction = PyObject_GetAttrString(pyModuleData, functionName.c_str());
-	Py_DECREF(pyModuleData);
-	if(!pyFunction || !PyCallable_Check(pyFunction))
-	{
-		std::cout << "Couldn't load given function" << std::endl;
+	py_function_ = PyObject_GetAttrString(py_module_data, function_name.c_str());
+	Py_DECREF(py_module_data);
+	if (!py_function_ || !PyCallable_Check(py_function_))	{
+		logger_.error("[py/Function] Couldn't import given function.");
 		return false;
 	}
-
 	return true;
 }
-
-
-
-
+// ~~ stormy::py::Function
+}}

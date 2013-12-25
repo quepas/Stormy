@@ -1,9 +1,7 @@
 #include <iostream>
 
-#include "PyParserWrapper.h"
-#include "PyObjectMapper.h"
-#include "PyExecutor.h"
-#include "PyFunction.h"
+#include "py_executor.h"
+#include "TypeConfiguration.h"
 #include "StationConfiguration.h"
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
@@ -22,7 +20,7 @@ using namespace Meteo;
 int main(int argc, char** argv)
 {
 	std::cout << "++++++++++++++++ Acquisition Module ++++++++++++++++" << std::endl;
-	Py_ExecutorInit();
+	PY_EXECUTOR_INIT();
 	StationConfiguration meteoStationsCfg("config/meteo_stations_config.yaml");
 	TypeConfiguration meteoTypeCfg("config/meteo_data_type_config.yaml");
 
