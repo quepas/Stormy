@@ -12,6 +12,7 @@ using namespace stormy::common;
 using boost::any;
 using std::string;
 using std::pair;
+using std::vector;
 using mongo::BSONObjBuilder;
 using Poco::NumberFormatter;
 
@@ -20,25 +21,22 @@ namespace stormy {
     namespace json {
       namespace cookbook {
 
-string PrepareStation(Stormy::StationPtr station)
+string PrepareStation(entity::Station station)
 {
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::id), station -> stationId);
-	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::name), station -> name);
-	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::url), station -> url);
-	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::refreshTime), 
-    station -> refreshTime);
+	bsonBuilder
+    .append(wrapAsJSONString(acquisition::constant::id), station.uid)
+    .append(wrapAsJSONString(acquisition::constant::name), station.name)
+    .append(wrapAsJSONString(acquisition::constant::url), station.url)
+	  .append(wrapAsJSONString(acquisition::constant::refreshTime), 
+      station.refresh_time);
 	return bsonBuilder.obj().toString();
 }
 
-string cookbook::PrepareStations(const Stormy::StationPtrVector& stations)
+string cookbook::PrepareStations(const vector<entity::Station>& stations)
 {
 	string content = "{\"stations\":[";
-	Each(stations, [&](Stormy::StationPtr station) {
+	Each(stations, [&](entity::Station station) {
 		content += PrepareStation(station) + ",";
 	});
 	if(stations.size() > 0)
@@ -99,7 +97,7 @@ string cookbook::PrepareMetric(entity::Metrics metrics)
 	return bsonBuilder.obj().toString();
 }
 
-string cookbook::PrepareMetrics(const std::vector<entity::Metrics>& metrics_vec)
+string cookbook::PrepareMetrics(const vector<entity::Metrics>& metrics_vec)
 {
 	string content = "{\"metrics\":[";
 	Each(metrics_vec, [&](entity::Metrics metrics) {
@@ -142,7 +140,7 @@ string cookbook::PrepareMeasurements(
 
 string cookbook::PrepareInfo(
   const string& server_type, 
-  const std::vector<entity::Metrics>& metrics_vec)
+  const vector<entity::Metrics>& metrics_vec)
 {
   string server_info = "{" + wrapAsJSONString("server") + ":{";
   server_info += wrapAsJSONString("type") + ":";

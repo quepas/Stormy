@@ -12,6 +12,7 @@
 #include "acquisition_constant.h"
 #include "../../common/util.h"
 
+using namespace stormy::common;
 using std::time_t;
 using std::vector;
 using Poco::NumberFormatter;
@@ -95,21 +96,21 @@ void MongoDBHandler::insertStationData(entity::Station station)
 	connection.insert(stormy::acquisition::util::GetStationDb(), bsonBuilder.obj());
 }
 
-StationPtrVector MongoDBHandler::getStationsData()
+vector<entity::Station> MongoDBHandler::getStationsData()
 {
-	auto result = StationPtrVector();
+	auto result = vector<entity::Station>();
 	if(!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
 		connection.query(stormy::acquisition::util::GetStationDb(), BSONObj());
 	while( cursor -> more() ) {    
 		BSONObj current = cursor -> next();
-		StationPtr station(new Station());
-		station -> stationId = current.getStringField(stormy::acquisition::constant::mongoId.c_str());
-		station -> name = current.getStringField(stormy::acquisition::constant::name.c_str());
-		station -> parserClass = current.getStringField(stormy::acquisition::constant::parserClass.c_str());
-		station -> refreshTime = current.getIntField(stormy::acquisition::constant::refreshTime.c_str());
-		station -> url = current.getStringField(stormy::acquisition::constant::url.c_str());
+		entity::Station station;
+		station.uid = current.getStringField(stormy::acquisition::constant::mongoId.c_str());
+		station.name = current.getStringField(stormy::acquisition::constant::name.c_str());
+		station.parser_class = current.getStringField(stormy::acquisition::constant::parserClass.c_str());
+		station.refresh_time = current.getIntField(stormy::acquisition::constant::refreshTime.c_str());
+		station.url = current.getStringField(stormy::acquisition::constant::url.c_str());
 		result.push_back(station);
 	}
 	return result;

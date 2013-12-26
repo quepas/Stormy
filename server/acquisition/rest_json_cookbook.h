@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../common/entity_metrics.h"
+#include "../../common/entity_station.h"
 #include "MeteoData.h"
 
 #include <vector>
@@ -10,8 +11,9 @@ namespace stormy {
     namespace json {
       namespace cookbook {
 
-std::string PrepareStation(Stormy::StationPtr station);
-std::string PrepareStations(const Stormy::StationPtrVector& stations);
+std::string PrepareStation(common::entity::Station station);
+std::string PrepareStations(
+  const std::vector<common::entity::Station>& stations);
 
 std::string PrepareCombinedMeasurement(
   Stormy::MeasurementPtr measurement);

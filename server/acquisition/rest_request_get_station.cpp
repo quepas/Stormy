@@ -30,7 +30,7 @@ void GetStation::handleRequest(
   HTTPServerResponse& response)
 {
 	ostream& ostr = response.send();
-	Stormy::StationPtrVector stations = Stormy::MongoDBHandler::get().getStationsData();
+	auto stations = Stormy::MongoDBHandler::get().getStationsData();
 	ostr << json::cookbook::PrepareStations(stations);
 }
 // ~~ stormy::rest::request::GetStation

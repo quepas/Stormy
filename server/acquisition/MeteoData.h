@@ -45,24 +45,8 @@ namespace Stormy
 			Station* station;
 			std::map<std::string, boost::any> data;
 		};
-
-		struct Type
-		{
-			std::string id;
-			std::string valueType;
-			std::string valueUnit;
-			std::string valueFormat;
-			std::vector<std::string> equivalents;
-			bool isMeteo;
-		};
 	}
 
 	typedef std::shared_ptr<Meteo::Measurement> MeasurementPtr;
 	typedef std::vector<MeasurementPtr> MeasurementPtrVector;
-
-	typedef std::shared_ptr<Meteo::Station> StationPtr;
-	typedef std::vector<StationPtr> StationPtrVector;
-
-	typedef std::shared_ptr<Meteo::Type> TypePtr;
-	typedef std::vector<TypePtr> TypePtrVector;
 }
