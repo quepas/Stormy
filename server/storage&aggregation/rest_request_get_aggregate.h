@@ -1,7 +1,7 @@
 #pragma once
 
 #include "db_aggregate.h"
-#include "rest_util_uri_parser.h"
+#include "../../common/rest_uri_parser.h"
 
 #include <Poco/Net/HTTPRequestHandler.h>
 
@@ -20,7 +20,7 @@ public:
 
 private:
   db::Aggregate* aggregate_database_;
-  util::URIParser uri_parser_;
+  common::rest::URIParser uri_parser_;
 };
 // ~~ stormy::rest::request::GetAggregate
 }}}

@@ -6,8 +6,8 @@
 #include <Poco/URI.h>
 
 namespace stormy {
-  namespace rest {
-    namespace util {
+  namespace common {
+    namespace rest {    
 
 class URIParser
 {
@@ -21,5 +21,5 @@ public:
 private:
   Poco::URI uri_;
 };
-// ~~ stormy::rest::util::URIParser
+// ~~ stormy::common::rest::URIParser
 }}}

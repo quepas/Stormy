@@ -1,4 +1,4 @@
-#include "rest_util_uri_parser.h"
+#include "rest_uri_parser.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -11,8 +11,8 @@ using boost::split;
 using boost::is_any_of;
 
 namespace stormy {
-  namespace rest {
-    namespace util {
+  namespace common {
+    namespace rest { 
 
 URIParser::URIParser(string raw_uri)
   : uri_(raw_uri)
@@ -53,5 +53,5 @@ map<string, string> URIParser::getQuerySegments()
   }
   return query_segments;
 }
-// ~~ stormy::rest::util::URIParser
+// ~~ stormy::common::rest::URIParser
 }}}

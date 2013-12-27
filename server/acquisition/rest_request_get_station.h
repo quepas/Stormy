@@ -9,7 +9,7 @@ namespace stormy {
 	class GetStation : public Poco::Net::HTTPRequestHandler
 	{
 		public:
-			GetStation();
+			GetStation(std::string uri);
 			~GetStation();
 
 			void handleRequest(

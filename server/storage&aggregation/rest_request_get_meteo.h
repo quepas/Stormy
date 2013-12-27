@@ -1,7 +1,7 @@
 #pragma once
 
 #include "db_storage.h"
-#include "rest_util_uri_parser.h"
+#include "../../common/rest_uri_parser.h"
 
 #include <Poco/Net/HTTPRequestHandler.h>
 
@@ -23,7 +23,7 @@ public:
 
 private:
   db::Storage* storage_database_;
-  util::URIParser uri_parser_;
+  common::rest::URIParser uri_parser_;
 };
 // ~~ stormy::test::request::GetMeteo
 }}}

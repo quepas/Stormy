@@ -6,6 +6,9 @@
 #include "rest_request_get_info.h"
 #include "rest_constant.h"
 #include "../../common/util.h"
+#include "../../common/rest_constant.h"
+
+using namespace stormy::common;
 
 using std::string;
 using Poco::Logger;
@@ -27,26 +30,26 @@ Factory::~Factory()
 
 }
 
-HTTPRequestHandler* Factory::createRequestHandler
-	( const HTTPServerRequest& request )
+HTTPRequestHandler* Factory::createRequestHandler(
+  const HTTPServerRequest& request)
 {
   string URI = request.getURI();
   logger_.information("[rest/Factory] Handling request: " + URI);
 
-	if(stormy::common::IsMatch(URI, constant::stationPattern))
+	if(IsMatch(URI, common::rest::constant::station_request_pattern))
 		return new GetStation();
-	if(stormy::common::IsMatch(URI, constant::metricsPattern))
+	if(IsMatch(URI, constant::metricsPattern))
 		return new GetMetrics();
-	if(stormy::common::IsMatch(URI, constant::meteoStationIdPattern))
-		return new GetMeteo(stormy::common::ExtractMD5(URI));	
-	if(stormy::common::IsMatch(URI, constant::meteoStationIdTimestampPattern))		
-		return new GetMeteo(stormy::common::ExtractMD5(URI), "", 
-			stormy::common::ExtractURIEndPathSegment(URI));
-	if(stormy::common::IsMatch(URI, constant::meteoStationIdTypePattern)) {
-		return new GetMeteo(stormy::common::ExtractMD5(URI),
-			stormy::common::ExtractURIEndPathSegment(URI));
+	if(IsMatch(URI, constant::meteoStationIdPattern))
+		return new GetMeteo(ExtractMD5(URI));	
+	if(IsMatch(URI, constant::meteoStationIdTimestampPattern))		
+		return new GetMeteo(ExtractMD5(URI), "", 
+			ExtractURIEndPathSegment(URI));
+	if(IsMatch(URI, constant::meteoStationIdTypePattern)) {
+		return new GetMeteo(ExtractMD5(URI),
+			ExtractURIEndPathSegment(URI));
 	}
-	if(stormy::common::IsMatch(URI, constant::infoPattern))
+	if(IsMatch(URI, constant::infoPattern))
 		return new GetInfo("");
 
 	return nullptr;
