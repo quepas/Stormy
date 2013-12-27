@@ -39,17 +39,19 @@ const uint16_t default_from_last_hours = 24;
  *  JSON constants
  */
 const std::string json_id = "id";
-const std::string json_uid = "uid";
-const std::string json_name = "name";
+const std::string json_uid = "\"uid\":";
+const std::string json_name = "\"name\":";
 const std::string json_code = "code";
-const std::string json_url = "url";
+const std::string json_url = "\"url\":";
 const std::string json_type = "type";
+const std::string json_error = "\"error\":";
+const std::string json_msg = "\"msg\":";
 const std::string json_server_marker = "server";
 const std::string json_seconds = "seconds";
-const std::string json_refresh_time = "refresh_time";
-const std::string json_parser_class = "parser_class";
+const std::string json_refresh_time = "\"refresh_time\":";
+const std::string json_parser_class = "\"parser_class\":";
 const std::string json_stations_data_marker = "stations";
-const std::string json_station_uids_data_marker = "\"station_uids\"";
+const std::string json_station_uids = "\"station_uids\":";
 const std::string json_measurement_size_marker = "size";
 const std::string json_measurement_data_marker = "measurements";
 const std::string json_measurement_time_marker = "times";

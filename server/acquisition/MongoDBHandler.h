@@ -39,6 +39,7 @@ namespace Stormy
 			void insertStationsData(const std::vector<entity::Station>& stations);
 			void insertStationData(entity::Station station);
 			std::vector<entity::Station> getStationsData();
+      entity::Station GetStationByUID(std::string uid);
 
 			bool clearTypesData();
 			bool insertTypesData(const std::vector<entity::Metrics>& metrics_vec);

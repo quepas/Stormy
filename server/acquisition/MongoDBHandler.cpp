@@ -350,3 +350,17 @@ vector<string> MongoDBHandler::FetchStationsUID()
   }
   return result;
 }
+
+entity::Station MongoDBHandler::GetStationByUID(string uid)
+{
+  // TODO: reimplement this!
+  auto stations = getStationsData();
+  entity::Station result;
+  result.uid = "";
+
+  for (auto it = stations.begin(); it != stations.end(); ++it) {
+    if (uid == it->uid)
+      return *it;
+  }
+  return result;
+}

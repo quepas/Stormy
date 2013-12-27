@@ -30,7 +30,8 @@ GetMeteo::~GetMeteo()
 
 }
 
-void GetMeteo::handleRequest(HTTPServerRequest& request, 
+void GetMeteo::handleRequest(
+  HTTPServerRequest& request, 
   HTTPServerResponse& response )
 { 
   auto path_segments = uri_parser_.getPathSegments();
