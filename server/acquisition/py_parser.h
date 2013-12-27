@@ -1,10 +1,11 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <Poco/Logger.h>
 
 #include "../../common/entity_station.h"
-#include "MeteoData.h"
+#include "../../common/entity_measurement.h"
 
 namespace stormy {
   namespace py {
@@ -15,9 +16,11 @@ public:
   Parser(std::string parser_class);
   ~Parser();
 
-  Stormy::MeasurementPtr ParseFromStation(common::entity::Station station);
+  std::vector<common::entity::Measurement> 
+    ParseFromStation(common::entity::Station station);
 private:
-  Stormy::MeasurementPtr ParseFromURL(std::string url);
+  std::vector<common::entity::Measurement> 
+    ParseFromURL(std::string url);
 
   std::string parser_class_;
   Poco::Logger& logger_;

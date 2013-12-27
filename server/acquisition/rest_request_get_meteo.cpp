@@ -41,14 +41,14 @@ void GetMeteo::handleRequest(
 	if(station_uid_ != constant::none) {
 		if(type_id_.empty()) {
 			if(timestamp_.empty()) {				
-				Stormy::MeasurementPtrVector meteo = dbHandler.getMeteoData(station_uid_);
+				auto meteo = dbHandler.getMeteoData(station_uid_);
 				ostr << json::cookbook::PrepareCombinedMeasurements(meteo);
 			} else {				
-				Stormy::MeasurementPtrVector meteo = dbHandler.getMeteoDataNewerThan(station_uid_, timestamp_);
+				auto meteo = dbHandler.getMeteoDataNewerThan(station_uid_, timestamp_);
 				ostr << json::cookbook::PrepareCombinedMeasurements(meteo);
 			}			
 		} else {
-			Stormy::MeasurementPtrVector singleMeteo = dbHandler.getCurrentMeteoTypeDatas(station_uid_, type_id_);
+			auto singleMeteo = dbHandler.getCurrentMeteoTypeDatas(station_uid_, type_id_);
 			ostr << json::cookbook::PrepareMeasurements(singleMeteo);
 		}
 	} else {

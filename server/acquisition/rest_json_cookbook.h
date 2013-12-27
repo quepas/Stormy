@@ -2,7 +2,7 @@
 
 #include "../../common/entity_metrics.h"
 #include "../../common/entity_station.h"
-#include "MeteoData.h"
+#include "../../common/entity_measurement.h"
 
 #include <vector>
 
@@ -16,17 +16,17 @@ std::string PrepareStations(
   const std::vector<common::entity::Station>& stations);
 
 std::string PrepareCombinedMeasurement(
-  Stormy::MeasurementPtr measurement);
+  const std::vector<common::entity::Measurement>& measurement);
 std::string PrepareCombinedMeasurements(
-  const Stormy::MeasurementPtrVector& measurements);
+  const std::vector<common::entity::Measurement>& measurements);
 
 std::string PrepareMetric(common::entity::Metrics metrics);
 std::string PrepareMetrics(const std::vector<common::entity::Metrics>& metrics_vec);
 
 std::string PrepareMeasurement(
-  Stormy::MeasurementPtr measurement);
+  const std::vector<common::entity::Measurement>& measurement);
 std::string PrepareMeasurements(
-  const Stormy::MeasurementPtrVector& measurements);
+  const std::vector<common::entity::Measurement>& measurements);
 
 std::string PrepareInfo(
   const std::string& server_type, 

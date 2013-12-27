@@ -46,29 +46,29 @@ string cookbook::PrepareStations(const vector<entity::Station>& stations)
 }
 
 string cookbook::PrepareCombinedMeasurement(
-  Stormy::MeasurementPtr measurement)
+  const std::vector<entity::Measurement>& measurement)
 {
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(wrapAsJSONString(acquisition::constant::id),
+/*	bsonBuilder.append(wrapAsJSONString(acquisition::constant::id),
 		ToString(measurement -> data[acquisition::constant::mongoId]));
 	Each(measurement -> data, [&](pair<string, any> pair) {
 		if(pair.first != acquisition::constant::mongoId) {
 			bsonBuilder.append(
         wrapAsJSONString(pair.first), ToString(pair.second));
 		}
-	});
+	});*/
 	return bsonBuilder.obj().toString();
 }
 
 string cookbook::PrepareCombinedMeasurements(
-  const Stormy::MeasurementPtrVector& measurements)
+  const std::vector<entity::Measurement>& measurements)
 {
 	string content = "{\"meteo\":[";
-	Each(measurements, [&](Stormy::MeasurementPtr measurement) {
+	/*Each(measurements, [&](Stormy::MeasurementPtr measurement) {
 		content += PrepareCombinedMeasurement(measurement) + ",";
 	});
 	if(measurements.size() > 0)
-		content.pop_back();	// remove unnecessary comma
+		content.pop_back();	// remove unnecessary comma*/
 	content += "]}";
 	return content;
 }
@@ -110,9 +110,10 @@ string cookbook::PrepareMetrics(const vector<entity::Metrics>& metrics_vec)
 	return content;
 }
 
-string cookbook::PrepareMeasurement(Stormy::MeasurementPtr measurement)
+string cookbook::PrepareMeasurement(
+  const std::vector<entity::Measurement>& measurement)
 {
-	if(!measurement || measurement -> data.empty()) 
+	/*if(!measurement || measurement -> data.empty()) 
     return constant::emptyJSON;
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(wrapAsJSONString(acquisition::constant::timestamp),
@@ -121,19 +122,20 @@ string cookbook::PrepareMeasurement(Stormy::MeasurementPtr measurement)
 	bsonBuilder.append(wrapAsJSONString(
     acquisition::constant::data), 
     ToString(pair -> second));
-	return bsonBuilder.obj().toString();
+	return bsonBuilder.obj().toString();*/
+  return "{}";
 }
 
 string cookbook::PrepareMeasurements(
-  const Stormy::MeasurementPtrVector& measurements)
+  const std::vector<entity::Measurement>& measurements)
 {
 	string content = "{\"measurements\":[";
-	Each(measurements, [&](Stormy::MeasurementPtr measurement) {
+	/*Each(measurements, [&](Stormy::MeasurementPtr measurement) {
 		if(!measurement -> data.empty())
 			content += PrepareMeasurement(measurement) + ",";
 	});
 	if(measurements.size() > 0)
-		content.pop_back();	// remove unnecessary coma
+		content.pop_back();	// remove unnecessary coma*/
 	content += "]}";
 	return content;
 }

@@ -21,6 +21,8 @@ using boost::to_lower_copy;
 using boost::trim_copy;
 using std::map;
 using std::string;
+using std::vector;
+using std::tm;
 using Poco::DateTime;
 using Poco::DateTimeParser;
 using Poco::Logger;
@@ -42,7 +44,7 @@ Parser::~Parser()
 
 }
 
-Stormy::MeasurementPtr Parser::ParseFromURL(string url)
+vector<entity::Measurement> Parser::ParseFromURL(string url)
 {
 	logger_.information("[py/Parser] Parsing from " + url + ".");
 	PyObject* pArgs = PyTuple_New(1);
@@ -52,26 +54,32 @@ Stormy::MeasurementPtr Parser::ParseFromURL(string url)
 	PyObject* pFuncResult = Function(parser_class_.c_str(), "run")(pArgs);
 	Py_DECREF(pArgs);
 	
-	Stormy::MeasurementPtr result(new Stormy::Meteo::Measurement());
-	if(pFuncResult != nullptr)
+	std::vector<common::entity::Measurement> result;
+	if (pFuncResult != nullptr)
 	{
 		map<string, string> data =
 			mapper::PairsFromSequence(pFuncResult);
 		auto types = new acquisition::config::Metrics("config/meteo_data_type_config.yaml");
 
 		// ~TODO: move to PyObjectMapper		
-		for(auto it = data.begin(); it != data.end(); ++it) {
+		for (auto it = data.begin(); it != data.end(); ++it) {
+      entity::Measurement measure;     
 			string id = types -> GetMetricsIdByEquivalent(it -> first);
+      measure.code = id;
 			entity::Metrics type = types -> GetMetricsById(id);
-			string valueType = to_lower_copy(type.type);
+			string valueType = to_lower_copy(type.type);      
 			string value = trim_copy(it -> second);
 
-			if(value != "-") {
-				if(valueType == acquisition::constant::number)
-					result -> data[id] = acquisition::util::ExtractTemperature(value);
-				else if(valueType == acquisition::constant::text)
-					result -> data[id] = value;
+			if (value != "-") {
+				if (valueType == acquisition::constant::number) {
+          // TODO: temporary, fix this
+					measure.value_text = NumberFormatter::format(
+            acquisition::util::ExtractTemperature(value));
+        } else if (valueType == acquisition::constant::text) {
+					measure.value_text = value;
+        }
 			}
+      result.push_back(measure);
 		}
 		delete types;
 		Py_DECREF(pFuncResult);
@@ -84,44 +92,35 @@ Stormy::MeasurementPtr Parser::ParseFromURL(string url)
 	}
 }
 
-Stormy::MeasurementPtr Parser::ParseFromStation(entity::Station station)
+vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
 {
-	Stormy::MeasurementPtr result = ParseFromURL(station.url);
-  // TODO: remove this dependency (deep copy)
-  auto ptr_station = new Stormy::Meteo::Station();
-  ptr_station->url = station.url;
-  ptr_station->name = station.name;
-  ptr_station->parserClass = station.parser_class;
-  ptr_station->refreshTime = station.refresh_time;
-  ptr_station->stationId = station.uid;
-	result -> station = ptr_station;
-	// ~~
+	auto result = ParseFromURL(station.url); 
+	if(!result.empty()) {
+    string date;
+    string time;
+    for (auto it = result.begin(); it != result.end(); ++it) {      
+      if (it->code == acquisition::constant::date) {
+        date = it->value_text;
+      } else if (it->code == acquisition::constant::time) {
+        time = it->value_text;
+      }
+    }
 
-	if(result) {
-		auto data = map<string, any>();
-		data = result -> data;
-		result -> data[acquisition::constant::stationId] = station.uid;
-
-		Timestamp timestamp;
-		if(data.find(acquisition::constant::date) != data.end()
-			&& data.find(acquisition::constant::time) != data.end())
-		{
-			string date = any_cast<string>(data[acquisition::constant::date]);
-			string time = any_cast<string>(data[acquisition::constant::time]);
-
-			if(IsDate(date)
-				&& IsTime(time))
-			{
-				string dateTime = date + " " + time;
-				int diffTimeZone;
-				DateTime acqDateTime =
-					DateTimeParser::parse(dateTime, diffTimeZone);
-				timestamp = acqDateTime.timestamp();
-			}
-		}
-		result -> timestamp = timestamp;
-		result -> data[acquisition::constant::mongoId] =
-			NumberFormatter::format(timestamp.epochTime());
+		tm timestamp;
+    if(IsDate(date) && IsTime(time))
+    {
+      string dateTime = date + " " + time;
+      int diffTimeZone;
+      DateTime acqDateTime =
+        DateTimeParser::parse(dateTime, diffTimeZone);
+      time_t time = acqDateTime.timestamp().epochTime();
+      timestamp = *gmtime(&time);
+    }
+		
+    for (auto it = result.begin(); it != result.end(); ++it) {
+      it->station_uid = station.uid;
+      it->timestamp = timestamp;
+    }		
 	}
 	return result;
 }

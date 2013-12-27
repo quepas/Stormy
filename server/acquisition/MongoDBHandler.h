@@ -8,6 +8,7 @@
 #include "../../common/db_has_data_expiration.h"
 #include "../../common/entity_station.h"
 #include "../../common/entity_metrics.h"
+#include "../../common/entity_measurement.h"
 #include "MeteoData.h"
 
 using namespace stormy::common;
@@ -21,11 +22,18 @@ namespace Stormy
       std::vector<std::string> FetchStationsUID();
 
 			void clearMeteosData();
-			void insertMeteoData(MeasurementPtr meteoData);
-			MeasurementPtrVector getMeteoData(std::string stationId);
-			MeasurementPtrVector getMeteoDataNewerThan(std::string stationId, std::string timestamp);
-			MeasurementPtr getCurrentMeteoTypeData(std::string stationId, std::string typeId);
-			MeasurementPtrVector getCurrentMeteoTypeDatas(std::string stationId, std::string typeId);
+			void insertMeteoData(std::vector<entity::Measurement> meteoData);
+			std::vector<entity::Measurement> getMeteoData(
+        std::string stationId);
+			std::vector<entity::Measurement> getMeteoDataNewerThan(
+        std::string stationId, 
+        std::string timestamp);
+			std::vector<entity::Measurement> getCurrentMeteoTypeData(
+        std::string stationId, 
+        std::string typeId);
+			std::vector<entity::Measurement> getCurrentMeteoTypeDatas(
+        std::string stationId, 
+        std::string typeId);
 
 			void clearStationsData();
 			void insertStationsData(const std::vector<entity::Station>& stations);
