@@ -21,7 +21,6 @@ using std::string;
 using Poco::NumberFormatter;
 
 using namespace Stormy;
-using namespace Meteo;
 using namespace Poco;
 using namespace mongo;
 

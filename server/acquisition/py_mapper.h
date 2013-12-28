@@ -5,7 +5,6 @@
 #include <string>
 #include <Python.h>
 
-#include "MeteoData.h"
 #include "acquisition_config_metrics.h"
 
 namespace stormy {

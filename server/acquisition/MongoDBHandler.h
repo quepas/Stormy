@@ -11,7 +11,6 @@
 #include "../../common/entity_station.h"
 #include "../../common/entity_metrics.h"
 #include "../../common/entity_measurement.h"
-#include "MeteoData.h"
 
 using namespace stormy::common;
 

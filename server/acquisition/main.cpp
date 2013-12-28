@@ -5,7 +5,6 @@
 #include "acquisition_config_station.h"
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
-#include "MeteoData.h"
 #include "rest_service.h"
 #include "acquisition_scheduler.h"
 
@@ -14,7 +13,6 @@
 #include <sstream>
 
 using namespace Stormy;
-using namespace Meteo;
 
 int main(int argc, char** argv)
 {
