@@ -3,10 +3,6 @@
 #include <iostream>
 
 #include <ctime>
-#include <boost/algorithm/string.hpp>
-#include <boost/any.hpp>
-#include <Poco/Timestamp.h>
-#include <Poco/NumberParser.h>
 #include <Poco/NumberFormatter.h>
 
 #include "acquisition_config_metrics.h"
@@ -21,15 +17,15 @@ using std::mktime;
 using std::vector;
 using std::make_pair;
 using std::map;
+using std::string;
 using Poco::NumberFormatter;
 
 using namespace Stormy;
 using namespace Meteo;
 using namespace Poco;
-using namespace std;
 using namespace mongo;
 
-MongoDBHandler::MongoDBHandler( string dbAddress /*= "localhost"*/ )
+MongoDBHandler::MongoDBHandler(string dbAddress /*= "localhost"*/)
 	:	connection(DBClientConnection()),
     Handler("MongoDB")
 {
@@ -42,7 +38,7 @@ MongoDBHandler::~MongoDBHandler()
 
 }
 
-void MongoDBHandler::connect( string dbAddress )
+void MongoDBHandler::connect(string dbAddress)
 {
 	try {
 		connection.connect(dbAddress);
@@ -54,7 +50,7 @@ void MongoDBHandler::connect( string dbAddress )
 	}
 }
 
-void MongoDBHandler::insertMeteoData(std::vector<entity::Measurement> measurement)
+void MongoDBHandler::insertMeteoData(vector<entity::Measurement> measurement)
 {
 	if(!connected_ || measurement.empty()) return;
 
@@ -247,6 +243,7 @@ map<time_t, vector<entity::Measurement>>
     for (auto it = available_fields.begin(); it != available_fields.end(); ++it) {
       entity::Measurement measure;
       measure.code = *it;
+      measure.station_uid = station_uid;
       auto field = current_measure_set.getField(measure.code);
 
       if (*it != stormy::acquisition::constant::mongoId) {        
@@ -262,6 +259,9 @@ map<time_t, vector<entity::Measurement>>
       } else {        
         current_ts = field.numberLong();
       }     
+    }
+    for (auto m_it = measure_set.begin(); m_it != measure_set.end(); ++m_it) {
+      m_it->timestamp = *std::gmtime(&current_ts);
     }
     result.insert(make_pair(current_ts, measure_set));
   }
