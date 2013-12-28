@@ -3,35 +3,37 @@
 #include <vector>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
+#include <Poco/NumberParser.h>
 #include "../../common/util.h"
 #include "acquisition_constant.h"
 
 using boost::trim;
 using boost::replace_all;
-using boost::split;
-using boost::is_any_of;
+using boost::regex;
+using boost::smatch;
+using boost::regex_search;
 using std::string;
 using std::vector;
 using std::time_t;
+using Poco::NumberParser;
 
 namespace stormy {
   namespace acquisition {
     namespace util {
 
-double ExtractTemperature(string text)
+bool TryExtractFirstNumeric(string text, double& out_value)
 {
-	vector<string> splited;
-	trim(text);
-	replace_all(text, ",", ".");
-	split(splited, text, is_any_of(" "));
-
-	for(auto it = splited.begin(); it != splited.end(); ++it) {
-		string value = *it;
-		if(common::IsNumeric(value)) {
-			return common::ToDouble(value);
-		}
-	}
-	return 0.0;
+  vector<string> splited;
+  trim(text);
+  replace_all(text, ",", ".");
+  regex regex("-?[0-9]+([.][0-9]+)?");
+  smatch match;
+  if(regex_search(text, match, regex)) {
+    out_value = NumberParser::parseFloat(match[0]);
+    return true;
+  }
+  out_value = 0.0;
+  return false;
 }
 
 time_t SecondsToMiliseconds(time_t seconds)
