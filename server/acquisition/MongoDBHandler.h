@@ -22,11 +22,8 @@ namespace Stormy
 		public:						
       void ExpireData() override;
       std::vector<std::string> FetchStationsUID();
-
-			void clearMeteosData();
-			void insertMeteoData(std::vector<entity::Measurement> meteoData);
-			std::vector<entity::Measurement> getMeteoData(
-        std::string stationId);
+			
+			void insertMeteoData(std::vector<entity::Measurement> meteoData);			
 
 			void clearStationsData();
 			void insertStationsData(const std::vector<entity::Station>& stations);

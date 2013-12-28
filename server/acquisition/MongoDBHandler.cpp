@@ -54,12 +54,6 @@ void MongoDBHandler::connect( string dbAddress )
 	}
 }
 
-void MongoDBHandler::clearMeteosData()
-{
-	if(!connected_) return;
-	connection.dropCollection(stormy::acquisition::util::GetMeteoDb());
-}
-
 void MongoDBHandler::insertMeteoData(std::vector<entity::Measurement> measurement)
 {
 	if(!connected_ || measurement.empty()) return;
@@ -127,47 +121,6 @@ vector<entity::Station> MongoDBHandler::getStationsData()
 		station.refresh_time = current.getIntField(stormy::acquisition::constant::refreshTime.c_str());
 		station.url = current.getStringField(stormy::acquisition::constant::url.c_str());
 		result.push_back(station);
-	}
-	return result;
-}
-
-vector<entity::Measurement> MongoDBHandler::getMeteoData(string station_uid)
-{
-	auto result = vector<entity::Measurement>();
-	if (!connected_) return result;
-	
-	vector<entity::Metrics> types = getTypesData();
-	auto_ptr<DBClientCursor> cursor = connection.query(
-    stormy::acquisition::util::GetMeteoDb() + 
-      "." +
-		  stormy::acquisition::constant::stationIdPrefix + 
-      station_uid, 
-    BSONObj());
-	while (cursor->more()) {
-		BSONObj current = cursor->next();
-		set<string> availableFields;
-		current.getFieldNames(availableFields);
-
-		entity::Measurement measure;
-		for (auto it = types.begin(); it != types.end(); ++it) {
-			string id = it->code;
-      measure.code = id;
-			if(availableFields.find(id) != availableFields.end()) {
-				entity::Metrics metrics = 
-          stormy::acquisition::config::Metrics::GetMetricsById(id, types);
-				string value = current.getStringField(id.c_str());
-				//if(metrics.type == stormy::acquisition::constant::number)
-				//	measure.value_number = NumberParser::parse64(value);
-				//else if(metrics.type == stormy::acquisition::constant::text)
-					measure.value_text = value;
-			}
-		}
-    // TODO: fix locale time issue
-    time_t time = current.getIntField(stormy::acquisition::constant::mongoId.c_str()) + 3600;
-    measure.timestamp = *std::gmtime(&time);
-//    measure.station_uid = station_uid;
-		
-		result.push_back(measure);
 	}
 	return result;
 }
