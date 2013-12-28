@@ -1,6 +1,8 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
+#include <map>
 #include <vector>
 #include <mongo/client/dbclient.h>
 
@@ -25,21 +27,21 @@ namespace Stormy
 			void insertMeteoData(std::vector<entity::Measurement> meteoData);
 			std::vector<entity::Measurement> getMeteoData(
         std::string stationId);
-			std::vector<entity::Measurement> getMeteoDataNewerThan(
-        std::string stationId, 
-        std::string timestamp);
-			std::vector<entity::Measurement> getCurrentMeteoTypeData(
-        std::string stationId, 
-        std::string typeId);
-			std::vector<entity::Measurement> getCurrentMeteoTypeDatas(
-        std::string stationId, 
-        std::string typeId);
 
 			void clearStationsData();
 			void insertStationsData(const std::vector<entity::Station>& stations);
 			void insertStationData(entity::Station station);
 			std::vector<entity::Station> getStationsData();
+
       entity::Station GetStationByUID(std::string uid);
+      uint32_t CountMeasureSetsForStationByUID(std::string uid);
+
+      std::map<std::time_t, std::vector<entity::Measurement>> 
+        GetMeasureSetsForStationBetweenTS(
+          std::string station_uid, 
+          std::time_t from, 
+          std::time_t to);
+
 
 			bool clearTypesData();
 			bool insertTypesData(const std::vector<entity::Metrics>& metrics_vec);

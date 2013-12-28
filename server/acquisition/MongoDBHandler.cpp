@@ -1,5 +1,7 @@
 #include "MongoDBHandler.h"
 
+#include <iostream>
+
 #include <ctime>
 #include <boost/algorithm/string.hpp>
 #include <boost/any.hpp>
@@ -17,6 +19,8 @@ using std::time_t;
 using std::gmtime;
 using std::mktime;
 using std::vector;
+using std::make_pair;
+using std::map;
 using Poco::NumberFormatter;
 
 using namespace Stormy;
@@ -62,16 +66,24 @@ void MongoDBHandler::insertMeteoData(std::vector<entity::Measurement> measuremen
 
   string station_uid = measurement[0].station_uid;
   tm timestamp = measurement[0].timestamp;
+  auto metrics = getTypesData();
 
 	BSONObjBuilder bsonBuilder;
   for (auto it = measurement.begin(); it != measurement.end(); ++it) {
-    string key = it->code;
-    string value = it->value_text;
-    bsonBuilder.append(key, value);
+    string code = it->code;
+
+    for (auto m_it = metrics.begin(); m_it != metrics.end(); ++m_it) {
+      if(m_it->code == code && m_it->is_meteo) {
+        if(m_it->type == "number")
+          bsonBuilder.append(code, it->value_number);
+        else
+          bsonBuilder.append(code, it->value_text);
+      }
+    }        
   }
   bsonBuilder.append(
     stormy::acquisition::constant::mongoId, 
-    NumberFormatter::format(mktime(&timestamp)));
+    mktime(&timestamp));
 	
 	connection.insert(
     stormy::acquisition::util::GetMeteoDb() + 
@@ -126,67 +138,6 @@ vector<entity::Station> MongoDBHandler::getStationsData()
 	return result;
 }
 
-vector<entity::Measurement> MongoDBHandler::getCurrentMeteoTypeData(
-  string station_uid, 
-  string metrics_code)
-{
-	auto result = vector<entity::Measurement>();
-	if (!connected_) return result;
-
-	auto_ptr<DBClientCursor> cursor = connection.query(
-      stormy::acquisition::util::GetMeteoDb() + 
-        "." +
-			  stormy::acquisition::constant::stationIdPrefix + 
-        station_uid, 
-      Query().sort("_id", 0), 
-      1);
-	if (cursor -> more()) {
-    entity::Measurement measure;   
-		BSONObj current = cursor->next();
-    time_t time = NumberParser::parse64(current
-      .getStringField(stormy::acquisition::constant::mongoId.c_str()));
-    measure.timestamp = *std::gmtime(&time);
-      
-		if(current.hasField(metrics_code)) {
-      measure.code = metrics_code;
-      measure.station_uid = station_uid;
-      measure.value_text = string(current.getStringField(metrics_code.c_str()));
-      result.push_back(measure);
-		}    
-	}
-	return result;
-}
-
-vector<entity::Measurement> MongoDBHandler::getCurrentMeteoTypeDatas(
-  string station_uid, 
-  string metrics_code)
-{
-	auto result = vector<entity::Measurement>();
-	if (!connected_) return result;
-
-	auto_ptr<DBClientCursor> cursor = connection.query(
-    stormy::acquisition::util::GetMeteoDb() + 
-      "." +
-      stormy::acquisition::constant::stationIdPrefix + 
-      station_uid, 
-    BSONObj());
-	while (cursor->more()) {
-		BSONObj current = cursor->next();
-    entity::Measurement measure;
-    time_t time = NumberParser::parse64(current
-      .getStringField(stormy::acquisition::constant::mongoId.c_str()));
-    measure.timestamp = *std::gmtime(&time);
-
-		if (current.hasField(metrics_code)) {      
-      measure.code = metrics_code;
-      measure.station_uid = station_uid;
-      measure.value_text = string(current.getStringField(metrics_code.c_str()));
-			result.push_back(measure);
-		}
-	}
-	return result;
-}
-
 vector<entity::Measurement> MongoDBHandler::getMeteoData(string station_uid)
 {
 	auto result = vector<entity::Measurement>();
@@ -212,67 +163,18 @@ vector<entity::Measurement> MongoDBHandler::getMeteoData(string station_uid)
 				entity::Metrics metrics = 
           stormy::acquisition::config::Metrics::GetMetricsById(id, types);
 				string value = current.getStringField(id.c_str());
-				if(metrics.type == stormy::acquisition::constant::number)
-					measure.value_number = NumberParser::parse64(value);
-				else if(metrics.type == stormy::acquisition::constant::text)
+				//if(metrics.type == stormy::acquisition::constant::number)
+				//	measure.value_number = NumberParser::parse64(value);
+				//else if(metrics.type == stormy::acquisition::constant::text)
 					measure.value_text = value;
 			}
 		}
-    time_t time = NumberParser::parse64(current
-      .getStringField(stormy::acquisition::constant::mongoId.c_str()));
+    // TODO: fix locale time issue
+    time_t time = current.getIntField(stormy::acquisition::constant::mongoId.c_str()) + 3600;
     measure.timestamp = *std::gmtime(&time);
-    measure.station_uid = station_uid;
+//    measure.station_uid = station_uid;
 		
-    /*
-		if(current.hasField(stormy::acquisition::constant::reasonKey.c_str())) {
-			measurement -> data[stormy::acquisition::constant::reasonKey] =
-				string(current.getStringField(stormy::acquisition::constant::reasonKey.c_str()));
-		}*/
 		result.push_back(measure);
-	}
-	return result;
-}
-
-vector<entity::Measurement> MongoDBHandler::getMeteoDataNewerThan(
-  string station_uid, 
-  string requested_measure_ts)
-{
-	auto result = vector<entity::Measurement>();
-	if(!connected_) return result;
-	
-	vector<entity::Metrics> types = getTypesData();
-	auto_ptr<DBClientCursor> cursor =
-		connection.query(stormy::acquisition::util::GetMeteoDb() + "." +
-		stormy::acquisition::constant::stationIdPrefix + station_uid, BSONObj());
-	while( cursor -> more() ) {
-		BSONObj current = cursor -> next();
-		set<string> availableFields;
-		current.getFieldNames(availableFields);
-
-		entity::Measurement measure;
-		for(auto it = types.begin(); it != types.end(); ++it) {
-			string id = it->code;
-      measure.code = id;
-			if(availableFields.find(id) != availableFields.end()) {
-				entity::Metrics type = stormy::acquisition::config::Metrics::GetMetricsById(id, types);
-				string value = current.getStringField(id.c_str());
-        if(type.type == stormy::acquisition::constant::number)
-          measure.value_number = NumberParser::parse64(value);
-        else if(type.type == stormy::acquisition::constant::text)
-          measure.value_text = value;
-			}
-		}
-    time_t fetched_measure_ts = NumberParser::parse64(current
-      .getStringField(stormy::acquisition::constant::mongoId.c_str()));
-    measure.timestamp = *std::gmtime(&fetched_measure_ts);
-    measure.station_uid = station_uid;
-    /*
-		if(current.hasField(stormy::acquisition::constant::reasonKey.c_str())) {
-			measurement -> data[stormy::acquisition::constant::reasonKey] =
-				string(current.getStringField(stormy::acquisition::constant::reasonKey.c_str()));
-		}*/
-		if(fetched_measure_ts > NumberParser::parseUnsigned64(requested_measure_ts))								
-			result.push_back(measure);		
 	}
 	return result;
 }
@@ -363,4 +265,54 @@ entity::Station MongoDBHandler::GetStationByUID(string uid)
       return *it;
   }
   return result;
+}
+
+uint32_t MongoDBHandler::CountMeasureSetsForStationByUID(string uid)
+{
+  return connection.count(
+    stormy::acquisition::util::GetMeteoDb() +
+    "." +
+    stormy::acquisition::constant::stationIdPrefix +
+    uid);
+}
+
+map<time_t, vector<entity::Measurement>> 
+  MongoDBHandler::GetMeasureSetsForStationBetweenTS(
+    string station_uid, 
+    time_t from, 
+    time_t to)
+{
+  auto result = map<time_t, vector<entity::Measurement>>();
+  if(!ValidateConnection()) return result;
+
+  auto_ptr<DBClientCursor> cursor = connection.query(
+    stormy::acquisition::util::GetMeteoDb() +
+      "." +
+      stormy::acquisition::constant::stationIdPrefix +
+      station_uid,
+    QUERY(stormy::acquisition::constant::mongoId << GTE << from << LTE << to));
+
+  while (cursor->more()) {
+    auto current_measure_set = cursor->next();
+    set<string> available_fields;
+    current_measure_set.getFieldNames(available_fields);
+    auto measure_set = vector<entity::Measurement>();
+    time_t current_ts = 0;
+    for (auto it = available_fields.begin(); it != available_fields.end(); ++it) {
+      entity::Measurement measure;
+      measure.code = *it;
+      auto field = current_measure_set.getField(measure.code);
+
+      if (*it != stormy::acquisition::constant::mongoId) {        
+        if (field.isNumber())
+          measure.value_number = field.numberDouble();
+        else
+          measure.value_text = field.String();     
+        measure_set.push_back(measure);
+      } else {        
+        current_ts = field.numberLong();
+      }     
+    }
+    result.insert(make_pair(current_ts, measure_set));
+  }
 }
