@@ -40,8 +40,10 @@ HTTPRequestHandler* Factory::createRequestHandler(
       IsMatch(URI, common::rest::constant::station_info_request_pattern)) {
 		return new GetStation(URI);
   }
-  if(IsMatch(URI, common::rest::constant::meteo_request_pattern) ||
+  if(IsMatch(URI, common::rest::constant::meteo_request_pattern) ||      
       IsMatch(URI, common::rest::constant::meteo_station_uid_request_pattern) ||
+      IsMatch(URI, common::rest::constant::meteo_station_uid_request_pattern + 
+        common::rest::constant::uri_query_vars_pattern) ||
       IsMatch(URI, common::rest::constant::meteo_station_uid_ts_request_pattern)) {
     return new GetMeteo(URI);
   }

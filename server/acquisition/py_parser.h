@@ -19,9 +19,6 @@ public:
   std::vector<common::entity::Measurement> 
     ParseFromStation(common::entity::Station station);
 private:
-  std::vector<common::entity::Measurement> 
-    ParseFromURL(std::string url);
-
   std::string parser_class_;
   Poco::Logger& logger_;
 };

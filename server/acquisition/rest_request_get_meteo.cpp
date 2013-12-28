@@ -3,24 +3,35 @@
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
 #include "../../common/rest_cookbook.h"
+#include "../../common/rest_constant.h"
 #include "rest_json_cookbook.h"
-#include "rest_constant.h"
 
 #include <ctime>
 #include <cstdint>
 #include <map>
+#include <vector>
+#include <boost/range/adaptor/map.hpp>
+#include <boost/range/algorithm/copy.hpp>
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
+#include <Poco/NumberParser.h>
 
 using namespace stormy::common::rest;
+using boost::copy;
+using boost::adaptors::map_keys;
+using std::back_inserter;
 using std::map;
 using std::make_pair;
 using std::string;
 using std::stol;
 using std::ostream;
 using std::time_t;
+using std::time;
+using std::vector;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
+using Poco::NumberParser;
+using Poco::UInt64;
 
 namespace stormy {
   namespace rest {
@@ -61,14 +72,41 @@ void GetMeteo::handleRequest(
   }
   // api: /meteo/:station_uid
   else if (path_segments.size() == 2) {
-    auto measurements = database_handler.getMeteoData(path_segments[1]);
-    ostr << cookbook::PrepareMeteoTimestamps(measurements);
+    if (query_segments.empty()) {
+      auto measurements = database_handler
+        .GetAllMeasureSetsForStation(path_segments[1]);
+      vector<time_t> keys;
+      copy(measurements | map_keys, back_inserter(keys));      
+      ostr << cookbook::PrepareMeteoTimestamps(keys);
+    } else {
+      auto from_index = query_segments.find(constant::from_parameter);
+      auto to_index = query_segments.find(constant::to_parameter);
+
+      time_t from_ts = 0, to_ts = LocaltimeNow();
+      UInt64 temporary_ts;
+      if (from_index != query_segments.end()) {
+        if (NumberParser::tryParseUnsigned64(
+            from_index->second, temporary_ts)) {
+          from_ts = temporary_ts;
+        }
+      }
+      if (to_index != query_segments.end()) {
+        if (NumberParser::tryParseUnsigned64(
+          to_index->second, temporary_ts)) {
+            to_ts = temporary_ts;
+        }
+      }
+      auto measurements = database_handler
+        .GetMeasureSetsForStationBetweenTS(path_segments[1], from_ts, to_ts);
+      ostr << cookbook::PrepareMeteoSets(measurements);
+    }
   }
   // api: /meteo/:station_uid/:timestamp
   else if (path_segments.size() == 3) {
     time_t timestamp = stol(path_segments[2]);
 
-    auto measurements = database_handler.GetMeasureSetsForStationBetweenTS(path_segments[1], timestamp, timestamp);
+    auto measurements = database_handler
+      .GetMeasureSetsForStationAndTS(path_segments[1], timestamp);
     ostr << cookbook::PrepareMeteoSets(measurements);
   }
 }

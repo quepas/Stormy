@@ -41,6 +41,12 @@ namespace Stormy
           std::string station_uid, 
           std::time_t from, 
           std::time_t to);
+      std::map<std::time_t, std::vector<entity::Measurement>> 
+        GetMeasureSetsForStationAndTS(
+        std::string station_uid, 
+        std::time_t ts);
+      std::map<std::time_t, std::vector<entity::Measurement>>
+        GetAllMeasureSetsForStation(std::string station_uid);
 
 
 			bool clearTypesData();

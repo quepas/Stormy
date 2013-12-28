@@ -44,11 +44,6 @@ Parser::~Parser()
 
 }
 
-vector<entity::Measurement> Parser::ParseFromURL(string url)
-{
-	
-}
-
 vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
 {
   logger_.information("[py/Parser] Parsing from " + station.url + ".");
@@ -56,7 +51,7 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
   PyObject* pURLValue = PyUnicode_FromString(station.url.c_str());
   PyTuple_SetItem(pArgs, 0, pURLValue);
 
-  PyObject* pFuncResult = Function(parser_class_.c_str(), "run")(pArgs);
+  PyObject* pFuncResult = py::Function(parser_class_.c_str(), "run")(pArgs);
   Py_DECREF(pArgs);
 
   vector<entity::Measurement> result;
@@ -70,6 +65,7 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
       entity::Measurement measure;     
       string metrics_code = types->GetMetricsIdByEquivalent(it->first);
       measure.code = metrics_code;
+      measure.station_uid = station.uid;
       entity::Metrics metrics = types->GetMetricsById(metrics_code);
       string str_value = trim_copy(it->second);
 
@@ -105,12 +101,12 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
       int diffTimeZone;
       DateTime acqDateTime =
         DateTimeParser::parse(dateTime, diffTimeZone);
+      acqDateTime.makeLocal(3600);
       time_t time = acqDateTime.timestamp().epochTime();
       timestamp = *gmtime(&time);
     }
     for (auto it = result.begin(); it != result.end(); ++it) {
-      it->timestamp = timestamp;
-      it->station_uid = station.uid;
+      it->timestamp = timestamp;      
     }
     delete types;
     Py_DECREF(pFuncResult);

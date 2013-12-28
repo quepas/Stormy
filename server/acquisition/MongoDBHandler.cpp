@@ -297,10 +297,14 @@ map<time_t, vector<entity::Measurement>>
       auto field = current_measure_set.getField(measure.code);
 
       if (*it != stormy::acquisition::constant::mongoId) {        
-        if (field.isNumber())
+        if (field.isNumber()) {
           measure.value_number = field.numberDouble();
-        else
-          measure.value_text = field.String();     
+          measure.is_numeric = true;
+        }
+        else {
+          measure.value_text = field.String();
+          measure.is_numeric = false;
+        }
         measure_set.push_back(measure);
       } else {        
         current_ts = field.numberLong();
@@ -308,4 +312,16 @@ map<time_t, vector<entity::Measurement>>
     }
     result.insert(make_pair(current_ts, measure_set));
   }
+}
+
+map<time_t, vector<entity::Measurement>> MongoDBHandler::
+  GetMeasureSetsForStationAndTS(string station_uid, time_t ts)
+{
+  return GetMeasureSetsForStationBetweenTS(station_uid, ts, ts);
+}
+
+map<time_t, vector<entity::Measurement>> MongoDBHandler::
+  GetAllMeasureSetsForStation(string station_uid)
+{
+  return GetMeasureSetsForStationBetweenTS(station_uid, 0, LocaltimeNow());
 }

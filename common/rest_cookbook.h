@@ -30,6 +30,8 @@ std::string PrepareMeteoCountPerStation(
 // api: /meteo/:station_uid
 std::string PrepareMeteoTimestamps(
   const std::vector<entity::Measurement>& measurements);
+std::string PrepareMeteoTimestamps(
+  const std::vector<std::time_t>& timestamps);
 // api: /meteo/:station_uid/:timestamp
 std::string PrepareMeteoSets(
   const std::map<std::time_t, std::vector<entity::Measurement>>& ts_measure_sets_map);

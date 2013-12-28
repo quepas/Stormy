@@ -92,11 +92,21 @@ string PrepareMeteoCountPerStation(
 
 string PrepareMeteoTimestamps(const vector<entity::Measurement>& measurements)
 {
-  vector<string> measurement_ids;
-  string content = constant::json_measurements;
+  vector<time_t> timestamps;
   for (auto it = measurements.begin(); it != measurements.end(); ++it) {
     auto timestamp = it->timestamp;
-    measurement_ids.push_back(to_string(mktime(&timestamp)));
+    timestamps.push_back(mktime(&timestamp));
+  }
+  return PrepareMeteoTimestamps(timestamps);
+}
+
+string PrepareMeteoTimestamps(const vector<time_t>& timestamps)
+{
+  vector<string> measurement_ids;
+  string content = constant::json_measurements;
+  for (auto it = timestamps.begin(); it != timestamps.end(); ++it) {
+    auto timestamp = *it;
+    measurement_ids.push_back(to_string(timestamp));
   }
   content += WrapAsList(join(measurement_ids, ","));
   return WrapAsJSON(content);
