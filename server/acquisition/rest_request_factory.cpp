@@ -40,9 +40,16 @@ HTTPRequestHandler* Factory::createRequestHandler(
       IsMatch(URI, common::rest::constant::station_info_request_pattern)) {
 		return new GetStation(URI);
   }
+  if(IsMatch(URI, common::rest::constant::meteo_request_pattern) ||
+      IsMatch(URI, common::rest::constant::meteo_station_uid_request_pattern) ||
+      IsMatch(URI, common::rest::constant::meteo_station_uid_ts_request_pattern)) {
+    return new GetMeteo(URI);
+  }
+
+
 	if(IsMatch(URI, constant::metricsPattern))
 		return new GetMetrics();
-	if(IsMatch(URI, constant::meteoStationIdPattern))
+	/*if(IsMatch(URI, constant::meteoStationIdPattern))
 		return new GetMeteo(ExtractMD5(URI));	
 	if(IsMatch(URI, constant::meteoStationIdTimestampPattern))		
 		return new GetMeteo(ExtractMD5(URI), "", 
@@ -50,7 +57,7 @@ HTTPRequestHandler* Factory::createRequestHandler(
 	if(IsMatch(URI, constant::meteoStationIdTypePattern)) {
 		return new GetMeteo(ExtractMD5(URI),
 			ExtractURIEndPathSegment(URI));
-	}
+	}*/
 	if(IsMatch(URI, constant::infoPattern))
 		return new GetInfo("");
 

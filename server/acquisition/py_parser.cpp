@@ -66,20 +66,24 @@ vector<entity::Measurement> Parser::ParseFromURL(string url)
       entity::Measurement measure;     
 			string id = types -> GetMetricsIdByEquivalent(it -> first);
       measure.code = id;
-			entity::Metrics type = types -> GetMetricsById(id);
-			string valueType = to_lower_copy(type.type);      
+			entity::Metrics metrics = types -> GetMetricsById(id);
+			string metrics_type = to_lower_copy(metrics.type);      
 			string value = trim_copy(it -> second);
 
-			if (value != "-") {
-				if (valueType == acquisition::constant::number) {
-          // TODO: temporary, fix this
-					measure.value_text = NumberFormatter::format(
-            acquisition::util::ExtractTemperature(value));
-        } else if (valueType == acquisition::constant::text) {
+			if (value != "-" && !value.empty()) {
+				if (metrics_type == acquisition::constant::number) {
+          double out_value;
+          if (acquisition::util::TryExtractFirstNumeric(value, out_value)) {
+            measure.value_number = out_value;
+            measure.is_numeric = true;
+            result.push_back(measure);
+          }
+        } else if (metrics_type == acquisition::constant::text) {
 					measure.value_text = value;
+          measure.is_numeric = false;
+          result.push_back(measure);
         }
-			}
-      result.push_back(measure);
+			}      
 		}
 		delete types;
 		Py_DECREF(pFuncResult);

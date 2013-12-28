@@ -33,24 +33,25 @@ void GetStation::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response)
 {
+  auto& database_handler = Stormy::MongoDBHandler::get();
   auto path_segments = uri_parser_.getPathSegments();
   ostream& ostr = response.send();
-
+  
   // api: /station
   if (path_segments.size() == 1) {
-     auto stations = Stormy::MongoDBHandler::get().getStationsData();
+     auto stations = database_handler.getStationsData();
      ostr << cookbook::PrepareStationUIDs(stations);
-  } 
+  }
   // api: /station/:station_uid
   else if (path_segments.size() == 2) {
-    auto station = Stormy::MongoDBHandler::get()
-      .GetStationByUID(path_segments[1]);
+    auto station = database_handler.GetStationByUID(path_segments[1]);
 
-    if(!station.uid.empty())
+    if(!station.uid.empty()) {
       ostr << cookbook::PrepareStationInfo(station);
-    else
+    } else {
       ostr << cookbook::PrepareError(
         "Bad station UID.", "Use proper station UID.");
+    }
   }
 }
 // ~~ stormy::rest::request::GetStation

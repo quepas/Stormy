@@ -8,16 +8,18 @@ namespace stormy {
     namespace rest {
       namespace constant {      
 
-// api: /aggregate/:station_id
-const std::string aggregate_request_pattern = "/aggregate/[0-9a-f]{32}/?";        
-// api: /meteo/:station_id
-const std::string meteo_request_pattern = "/meteo/[0-9a-f]{32}/?";
-// api: /meteo/:station_id/:timestamp
-const std::string meteo_timestamp_request_pattern = "/meteo/[0-9a-f]{32}/[0-9]{10}/?";
 // api: /station
 const std::string station_request_pattern = "/station/?";   
 // api: /station/:station_uid
 const std::string station_info_request_pattern = "/station/[0-9a-f]{32}/?";
+// api: /meteo
+const std::string meteo_request_pattern = "/meteo/?";
+// api: /meteo/:station_id
+const std::string meteo_station_uid_request_pattern = "/meteo/[0-9a-f]{32}/?";
+// api: /meteo/:station_id/:timestamp
+const std::string meteo_station_uid_ts_request_pattern = "/meteo/[0-9a-f]{32}/[0-9]{10}/?";
+// api: /aggregate/:station_id
+const std::string aggregate_request_pattern = "/aggregate/[0-9a-f]{32}/?";
 // api: /info
 const std::string info_request_pattern = "/info/?";
 // api query: ?param_one=value1&param_two=value2 (...)
@@ -42,18 +44,22 @@ const std::string json_id = "id";
 const std::string json_uid = "\"uid\":";
 const std::string json_name = "\"name\":";
 const std::string json_code = "code";
+const std::string json_count = "\"count\":";
 const std::string json_url = "\"url\":";
 const std::string json_type = "type";
 const std::string json_error = "\"error\":";
 const std::string json_msg = "\"msg\":";
+const std::string json_measurements = "\"measurements\":";
+const std::string json_timestamp = "\"timestamp\":";
+const std::string json_data = "\"data\":";
 const std::string json_server_marker = "server";
 const std::string json_seconds = "seconds";
 const std::string json_refresh_time = "\"refresh_time\":";
 const std::string json_parser_class = "\"parser_class\":";
 const std::string json_stations_data_marker = "stations";
+const std::string json_station_uid = "\"station_uid\":";
 const std::string json_station_uids = "\"station_uids\":";
 const std::string json_measurement_size_marker = "size";
-const std::string json_measurement_data_marker = "measurements";
 const std::string json_measurement_time_marker = "times";
 const std::string json_available_metrics_marker = "available_metrics";
 const std::string json_available_periods_marker = "available_periods";

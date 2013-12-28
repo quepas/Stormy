@@ -65,18 +65,5 @@ map<string, string> PairsFromSequence(PyObject* dictSequence)
 	}
 	return result;
 }
-
-Stormy::Meteo::Measurement* ToMeasurementWithMetrics(
-  map<string, string>& map, 
-  acquisition::config::Metrics* rules)
-{
-	Stormy::Meteo::Measurement* result = new Stormy::Meteo::Measurement();
-	for(auto it = map.begin(); it != map.end(); ++it)
-	{
-		string key = it -> first;
-		string value = it -> second;
-	}
-	return result;
-}
 // ~~ stormy::py::mapper
 }}}

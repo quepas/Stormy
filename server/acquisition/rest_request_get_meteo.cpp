@@ -2,14 +2,23 @@
 
 #include "MongoDBHandler.h"
 #include "../../common/util.h"
+#include "../../common/rest_cookbook.h"
 #include "rest_json_cookbook.h"
 #include "rest_constant.h"
 
+#include <ctime>
+#include <cstdint>
+#include <map>
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
+using namespace stormy::common::rest;
+using std::map;
+using std::make_pair;
 using std::string;
+using std::stol;
 using std::ostream;
+using std::time_t;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 
@@ -17,11 +26,8 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMeteo::GetMeteo(
-  string station_uid, 
-	string type_id /* ="" */, 
-  string timestamp /* = ""*/)
-	:	station_uid_(station_uid), type_id_(type_id), timestamp_(timestamp)
+GetMeteo::GetMeteo(string uri)
+	:	uri_parser_(uri)
 {
 
 }
@@ -34,26 +40,37 @@ GetMeteo::~GetMeteo()
 void GetMeteo::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response)
-{
-	ostream& ostr = response.send();
+{	
+	auto& database_handler = Stormy::MongoDBHandler::get();
+  auto path_segments = uri_parser_.getPathSegments();
+  auto query_segments = uri_parser_.getQuerySegments();
+  ostream& ostr = response.send();
 
-	Stormy::MongoDBHandler& dbHandler = Stormy::MongoDBHandler::get();	
-	if(station_uid_ != constant::none) {
-		if(type_id_.empty()) {
-			if(timestamp_.empty()) {				
-				auto meteo = dbHandler.getMeteoData(station_uid_);
-				ostr << json::cookbook::PrepareCombinedMeasurements(meteo);
-			} else {				
-				auto meteo = dbHandler.getMeteoDataNewerThan(station_uid_, timestamp_);
-				ostr << json::cookbook::PrepareCombinedMeasurements(meteo);
-			}			
-		} else {
-			auto singleMeteo = dbHandler.getCurrentMeteoTypeDatas(station_uid_, type_id_);
-			ostr << json::cookbook::PrepareMeasurements(singleMeteo);
-		}
-	} else {
-		ostr << constant::emptyJSON;
-	}
+  // api: /meteo
+  if (path_segments.size() == 1) {
+    auto stations = database_handler.getStationsData();
+    auto uid_size_map = map<string, uint32_t>();
+
+    for (auto it = stations.begin(); it != stations.end(); ++it) {
+      uint32_t count = database_handler
+        .CountMeasureSetsForStationByUID(it->uid);
+      if (count > 0) 
+        uid_size_map.insert(make_pair(it->uid, count));      
+    }
+    ostr << cookbook::PrepareMeteoCountPerStation(uid_size_map);
+  }
+  // api: /meteo/:station_uid
+  else if (path_segments.size() == 2) {
+    auto measurements = database_handler.getMeteoData(path_segments[1]);
+    ostr << cookbook::PrepareMeteoTimestamps(measurements);
+  }
+  // api: /meteo/:station_uid/:timestamp
+  else if (path_segments.size() == 3) {
+    time_t timestamp = stol(path_segments[2]);
+
+    auto measurements = database_handler.GetMeasureSetsForStationBetweenTS(path_segments[1], timestamp, timestamp);
+    ostr << cookbook::PrepareMeteoSets(measurements);
+  }
 }
 // ~~ stormy::rest::request::GetMeteo
 }}}

@@ -15,6 +15,9 @@ struct Measurement
 	std::string value_text;
 	double value_number;
 	std::tm timestamp;
+
+  // non-entity fields
+  bool is_numeric;
 };
 // ~~ stormy::common::entity::Measurement
 }}}

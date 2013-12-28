@@ -12,10 +12,6 @@ namespace stormy {
   namespace py {
     namespace mapper {
 
-Stormy::Meteo::Measurement* ToMeasurementWithMetrics(
-  std::map<std::string, std::string>& map, 
-  acquisition::config::Metrics* rules);
-
 std::vector<PyObject*> ItemsFromSequence(PyObject* sequence);
 PyObject* PairKey(PyObject* dict);
 PyObject* PairValue(PyObject* dict);

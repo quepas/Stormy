@@ -1,8 +1,11 @@
 #pragma once
 
 #include "entity_station.h"
+#include "entity_measurement.h"
 
+#include <ctime>
 #include <string>
+#include <map>
 #include <vector>
 
 namespace stormy {
@@ -14,15 +17,29 @@ std::string PrepareError(
   std::string error = "Bad request", 
   std::string msg = "");
 
+// api: /station
 std::string PrepareStationUIDs(
   const std::vector<entity::Station>& stations);
+// api: /station/:station_uid
 std::string PrepareStationInfo(
   const entity::Station& station);
+
+// api: /meteo
+std::string PrepareMeteoCountPerStation(
+  const std::map<std::string, uint32_t>& uid_size_map);
+// api: /meteo/:station_uid
+std::string PrepareMeteoTimestamps(
+  const std::vector<entity::Measurement>& measurements);
+// api: /meteo/:station_uid/:timestamp
+std::string PrepareMeteoSets(
+  const std::map<std::time_t, std::vector<entity::Measurement>>& ts_measure_sets_map);
+std::string PrepareMeteoSet(std::time_t ts, const std::vector<entity::Measurement>& measure_set);
 
 template<typename T>
 std::string WrapAsString(const T value);
 template<typename T>
 std::string WrapAsList(const T values);
+std::string WrapAsJSON(std::string content);
 
 // ~~ stormy::common::rest::cookbook
 }}}}
