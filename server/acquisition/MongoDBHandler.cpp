@@ -65,26 +65,19 @@ void MongoDBHandler::insertMeteoData(std::vector<entity::Measurement> measuremen
 	if(!connected_ || measurement.empty()) return;
 
   string station_uid = measurement[0].station_uid;
-  tm timestamp = measurement[0].timestamp;
-  auto metrics = getTypesData();
+  tm timestamp = measurement[0].timestamp;  
 
 	BSONObjBuilder bsonBuilder;
   for (auto it = measurement.begin(); it != measurement.end(); ++it) {
-    string code = it->code;
-
-    for (auto m_it = metrics.begin(); m_it != metrics.end(); ++m_it) {
-      if(m_it->code == code && m_it->is_meteo) {
-        if(m_it->type == "number")
-          bsonBuilder.append(code, it->value_number);
-        else
-          bsonBuilder.append(code, it->value_text);
-      }
-    }        
+    string code = it->code;    
+    if(it->is_numeric)
+      bsonBuilder.append(code, it->value_number);
+    else
+      bsonBuilder.append(code, it->value_text);
   }
   bsonBuilder.append(
     stormy::acquisition::constant::mongoId, 
-    mktime(&timestamp));
-	
+    mktime(&timestamp));	
 	connection.insert(
     stormy::acquisition::util::GetMeteoDb() + 
       "." + 
