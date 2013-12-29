@@ -3,7 +3,6 @@
 #include "../../common/rest_cookbook.h"
 #include "db_mongo_handler.h"
 #include "acquisition_config_metrics.h"
-#include "rest_constant.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>

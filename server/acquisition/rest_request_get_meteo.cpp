@@ -3,7 +3,6 @@
 #include "../../common/util.h"
 #include "../../common/rest_cookbook.h"
 #include "../../common/rest_constant.h"
-#include "rest_json_cookbook.h"
 #include "db_mongo_handler.h"
 
 #include <ctime>

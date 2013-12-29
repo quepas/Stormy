@@ -3,7 +3,6 @@
 #include "../../common/util.h"
 #include "../../common/rest_cookbook.h"
 #include "db_mongo_handler.h"
-#include "rest_json_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
