@@ -1,7 +1,9 @@
 #pragma once
 
+#include "../../common/rest_uri_parser.h"
 #include "db_storage.h"
 
+#include <string>
 #include <Poco/Net/HTTPRequestHandler.h>
 
 namespace stormy {
@@ -11,7 +13,7 @@ namespace stormy {
 class GetStation : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetStation(db::Storage* storage_database);
+  GetStation(std::string uri, db::Storage* storage_database);
   ~GetStation();
 
   void handleRequest(Poco::Net::HTTPServerRequest& request, 
@@ -19,6 +21,7 @@ public:
 
 private:
   db::Storage* storage_database_;
+  common::rest::URIParser uri_parser_;
 };
 // ~~ stormy::rest::request::GetStation
 }}}

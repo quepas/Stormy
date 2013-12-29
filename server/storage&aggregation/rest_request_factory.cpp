@@ -39,8 +39,9 @@ HTTPRequestHandler* Factory::createRequestHandler(
   string URI = request.getURI();
   logger_.information("[rest/Factory] Handling request: " + URI);
 
-  if (IsMatch(URI, constant::station_request_pattern)) {
-    return new GetStation(db_storage_);
+  if (IsMatch(URI, constant::station_request_pattern) ||
+        IsMatch(URI, constant::station_info_request_pattern)) {
+    return new GetStation(URI, db_storage_);
   } else if (IsMatch(URI, constant::aggregate_request_pattern)) {
     return new GetAggregate(URI, db_aggregation_);
   } else if (IsMatch(URI, constant::meteo_request_pattern + 

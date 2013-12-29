@@ -63,7 +63,7 @@ void Storage::insertStations(const vector<entity::Station>& stations)
 	});
 }
 
-entity::Station Storage::getStationByUID(string uid)
+entity::Station Storage::GetStationByUID(string uid)
 {
 	entity::Station station;
 	TRY

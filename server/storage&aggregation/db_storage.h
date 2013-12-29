@@ -78,7 +78,7 @@ public:
   void insertStation(common::entity::Station station);
   void insertStations(const std::vector<common::entity::Station>& stations);
   bool existsStationByUID(std::string uid);
-  common::entity::Station getStationByUID(std::string uid);								
+  common::entity::Station GetStationByUID(std::string uid);								
 
   // measurements			
   std::tm findNewestMeasureTimeByStationUID(std::string uid);			

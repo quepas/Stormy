@@ -69,7 +69,6 @@ string PrepareStationInfo(const entity::Station& station)
   string station_info =  
     constant::json_uid + WrapAsString(station.uid) + "," +
     constant::json_name + WrapAsString(station.name) + "," +
-    constant::json_parser_class + WrapAsString(station.parser_class) + "," +
     constant::json_refresh_time + NumberFormatter::format(station.refresh_time) + "," +
     constant::json_url + WrapAsString(station.url);
   content += WrapAsJSON(station_info);
