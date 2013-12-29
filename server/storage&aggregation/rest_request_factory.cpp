@@ -4,8 +4,8 @@
 #include "rest_request_get_aggregate.h"
 #include "rest_request_get_meteo.h"
 #include "rest_request_get_info.h"
-#include "rest_request_bad.h"
 
+#include "../../common/rest_request_bad.h"
 #include "../../common/util.h"
 #include "../../common/rest_constant.h"
 
@@ -50,7 +50,7 @@ HTTPRequestHandler* Factory::createRequestHandler(
   } else if (IsMatch(URI, constant::info_request_pattern)) {
     return new GetInfo(db_storage_);
   } else {
-    return new Bad(URI);
+    return new common::rest::request::Bad(URI);
   }
 }
 // ~~ stormy::rest::request::Factory

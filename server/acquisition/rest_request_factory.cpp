@@ -6,6 +6,7 @@
 #include "rest_request_get_info.h"
 #include "../../common/util.h"
 #include "../../common/rest_constant.h"
+#include "../../common/rest_request_bad.h"
 
 using namespace stormy::common;
 using namespace stormy::common::rest;
@@ -40,22 +41,22 @@ HTTPRequestHandler* Factory::createRequestHandler(
       IsMatch(URI, constant::station_info_request_pattern)) {
 		return new GetStation(URI);
   }
-  if(IsMatch(URI, constant::meteo_request_pattern) ||      
+  else if(IsMatch(URI, constant::meteo_request_pattern) ||      
       IsMatch(URI, constant::meteo_station_uid_request_pattern) ||
-      IsMatch(URI, 
-        constant::meteo_station_uid_request_pattern + 
-        constant::uri_query_vars_pattern) ||
+      IsMatch(URI, constant::meteo_station_uid_request_pattern + 
+                   constant::uri_query_vars_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
     return new GetMeteo(URI);
   }
-	if(IsMatch(URI, constant::metrics_request_pattern) ||
+	else if(IsMatch(URI, constant::metrics_request_pattern) ||
       IsMatch(URI, constant::metrics_info_request_pattern)) {
 		return new GetMetrics(URI);
   }
-	if(IsMatch(URI, constant::info_request_pattern))
+	else if(IsMatch(URI, constant::info_request_pattern)) {
 		return new GetInfo();
-
-  return nullptr;
+  } else {
+    return new common::rest::request::Bad(URI);
+  }
 }
 // ~~ stormy::rest::request::Factory
 }}}
