@@ -155,5 +155,17 @@ string PrepareMetricsCodes(const vector<entity::Metrics>& metrics_vec)
   content += WrapAsList(join(metrics_codes, ","));
   return WrapAsJSON(content);
 }
+
+string PrepareMetricsInfo(const entity::Metrics& metrics)
+{
+  string content = 
+    constant::json_code + WrapAsString(metrics.code) + "," +
+    constant::json_equivalents + WrapAsString(metrics.equivalents) + "," +
+    constant::json_type + WrapAsString(metrics.type) + "," +
+    constant::json_unit + WrapAsString(metrics.unit) + "," +
+    constant::json_format + WrapAsString(metrics.format);
+  return WrapAsJSON(content);
+}
+
 // ~~ stormy::common::rest::cookbook
 }}}}

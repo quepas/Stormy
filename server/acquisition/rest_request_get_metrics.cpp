@@ -36,12 +36,17 @@ void GetMetrics::handleRequest(
 	ostream& ostr = response.send();
 	auto& database_handler = db::MongoHandler::get();
   auto path_segments = uri_parser_.getPathSegments();
+  auto metrics = database_handler.GetMetrics();
 
-	if (path_segments.size() == 1) {
-    auto metrics = database_handler.getTypesData();
+	if (path_segments.size() == 1) {    
     ostr << cookbook::PrepareMetricsCodes(metrics);
   } else if (path_segments.size() == 2) {
-    // detailed info
+    for (auto it = metrics.begin(); it != metrics.end(); ++it) {
+      if (it->code == path_segments[1]) {
+        ostr << cookbook::PrepareMetricsInfo(*it);
+        break;
+      }
+    }
   } else {
     cookbook::PrepareError(
       "Bad request. Too much URI segments", 

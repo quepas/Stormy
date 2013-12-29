@@ -125,17 +125,17 @@ vector<entity::Station> MongoHandler::getStationsData()
 	return result;
 }
 
-vector<entity::Metrics> MongoHandler::getTypesData()
+vector<entity::Metrics> MongoHandler::GetMetrics()
 {
 	vector<entity::Metrics> result;
 	if(!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
-		connection.query(constant::db_type, BSONObj());
+		connection.query(constant::db_metrics, BSONObj());
 	while( cursor -> more() ) {    
 		BSONObj current = cursor -> next();
 		entity::Metrics metrics;
-		metrics.code = current.getStringField(constant::id.c_str());
+		metrics.code = current.getStringField(constant::mongo_id.c_str());
 		metrics.equivalents = current.getStringField(
       constant::equivalents.c_str());
 		metrics.type = current.getStringField(constant::type.c_str());
@@ -147,27 +147,27 @@ vector<entity::Metrics> MongoHandler::getTypesData()
 	return result;
 }
 
-bool MongoHandler::insertTypesData(
+bool MongoHandler::InsertMetrics(
   const vector<entity::Metrics>& metrics_vec)
 {
 	if(!connected_ || metrics_vec.empty()) return false;
 	stormy::common::Each(metrics_vec, [&](entity::Metrics metrics) {		
 		BSONObjBuilder bsonBuilder;
-		bsonBuilder.append(constant::id, metrics.code);
+		bsonBuilder.append(constant::mongo_id, metrics.code);
 		bsonBuilder.append(constant::equivalents, metrics.equivalents);
 		bsonBuilder.append(constant::type, metrics.type);
 		bsonBuilder.append(constant::unit, metrics.unit);
 		bsonBuilder.append(constant::format, metrics.format);
 		bsonBuilder.append(constant::is_meteo, metrics.is_meteo);
-		connection.insert(constant::db_type, bsonBuilder.obj());
+		connection.insert(constant::db_metrics, bsonBuilder.obj());
 	});
 	return true;
 }
 
-bool MongoHandler::clearTypesData()
+bool MongoHandler::RemoveMetrics()
 {
 	if(!connected_) return false;
-	connection.dropCollection(constant::db_type);
+	connection.dropCollection(constant::db_metrics);
 	return true;
 }
 

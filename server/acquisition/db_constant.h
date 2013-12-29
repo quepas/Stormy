@@ -8,7 +8,7 @@ const std::string mongo_id = "_id";
 const std::string mongo_db_name = "test";
 const std::string mongo_meteo_coll = "meteo";
 const std::string mongo_station_coll = "station";
-const std::string mongo_metrics_coll = "type";
+const std::string mongo_metrics_coll = "metrics";
 const std::string id = "id";
 const std::string code = "code";
 const std::string station_uid_prefix = "S";
@@ -29,6 +29,6 @@ const std::string is_meteo = "isMeteo";
 
 const std::string db_meteo = mongo_db_name + "." + mongo_meteo_coll;
 const std::string db_station = mongo_db_name + "." + mongo_station_coll;
-const std::string db_type = mongo_db_name + "." + mongo_metrics_coll;
+const std::string db_metrics = mongo_db_name + "." + mongo_metrics_coll;
 // ~~ stormy::db::constant
 }}}

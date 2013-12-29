@@ -45,9 +45,10 @@ public:
   std::map<std::time_t, std::vector<common::entity::Measurement>>
     GetAllMeasureSetsForStation(std::string station_uid);
 
-  bool clearTypesData();
-  bool insertTypesData(const std::vector<common::entity::Metrics>& metrics_vec);
-  std::vector<common::entity::Metrics> getTypesData();			
+  bool RemoveMetrics();
+  bool InsertMetrics(
+    const std::vector<common::entity::Metrics>& metrics_vec);
+  std::vector<common::entity::Metrics> GetMetrics();
 
   static MongoHandler& get() {
     static MongoHandler instance;

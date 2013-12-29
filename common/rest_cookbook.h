@@ -41,6 +41,8 @@ std::string PrepareMeteoSet(std::time_t ts, const std::vector<entity::Measuremen
 // api: /metrics
 std::string PrepareMetricsCodes(
   const std::vector<entity::Metrics>& metrics_vec);
+// api: /metrics/:metrics_code
+std::string PrepareMetricsInfo(const entity::Metrics& metrics);
 
 template<typename T>
 std::string WrapAsString(const T value);

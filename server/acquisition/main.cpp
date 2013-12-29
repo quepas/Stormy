@@ -23,8 +23,8 @@ int main(int argc, char** argv)
   dbHandler.set_expiration_seconds(3600 * 72);
 	dbHandler.clearStationsData();
 	dbHandler.insertStationsData(meteoStationsCfg.getConfiguration());
-	dbHandler.clearTypesData();
-	dbHandler.insertTypesData(meteoTypeCfg.Configuration());
+	dbHandler.RemoveMetrics();
+	dbHandler.InsertMetrics(meteoTypeCfg.Configuration());
 	
 	stormy::acquisition::Scheduler acqSecheduler;
 	acqSecheduler.Schedule(meteoStationsCfg.getConfiguration());
