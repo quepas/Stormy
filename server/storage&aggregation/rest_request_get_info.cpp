@@ -1,9 +1,11 @@
 #include "rest_request_get_info.h"
 
+#include "../../common/rest_cookbook.h"
+
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
-#include "rest_json_cookbook.h"
+using namespace stormy::common::rest;
 
 using std::ostream;
 using Poco::Net::HTTPServerRequest;
@@ -28,11 +30,9 @@ void GetInfo::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response)
 {  
-  ostream& stream_response = response.send();
-  stream_response << 
-    json::Cookbook::PrepareServerInfo(
-      database_storage_->GetMetrics(), 
-      database_storage_->GetPeriods());
+  ostream& ostr = response.send();
+  ostr << cookbook::
+    PrepareServerInfo("Storage&Aggregation Server #1", "S&A", "UTC/GMT +1");
 }
 // ~~ stormy::rest::request::GetInfo
 }}}
