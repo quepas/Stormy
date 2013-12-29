@@ -12,7 +12,7 @@ Task::Task(entity::Station station)
 	:	logger_(Logger::get("acquisition/Task")),
     station_(station),
 		py_parser_(new py::Parser(station_.parser_class)),
-		database_handler_(Stormy::MongoDBHandler::get())
+		database_handler_(db::MongoHandler::get())
 {
 	
 }

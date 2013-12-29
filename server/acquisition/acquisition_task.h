@@ -5,7 +5,7 @@
 
 #include "../../common/entity_station.h"
 #include "py_parser.h"
-#include "MongoDBHandler.h"
+#include "db_mongo_handler.h"
 
 namespace stormy {
   namespace acquisition {
@@ -20,7 +20,7 @@ public:
 private:
   common::entity::Station station_;
   py::Parser* py_parser_;
-  Stormy::MongoDBHandler& database_handler_;
+  db::MongoHandler& database_handler_;
   Poco::Logger& logger_;
 };
 // ~~ stormy::acquisition::Task

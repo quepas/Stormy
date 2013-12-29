@@ -1,7 +1,7 @@
 #include "py_parser.h"
 
 #include "acquisition_util.h"
-#include "acquisition_constant.h"
+#include "db_constant.h"
 #include "py_function.h"
 #include "py_mapper.h"
 #include "../../common/util.h"
@@ -70,23 +70,23 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
       entity::Metrics metrics = types->GetMetricsById(metrics_code);
       string str_value = trim_copy(it->second);
 
-      if(metrics_code == acquisition::constant::date) {
+      if(metrics_code == db::constant::date) {
         date = str_value;
-      } else if(metrics_code == acquisition::constant::time) {
+      } else if(metrics_code == db::constant::time) {
         time = str_value;
       }     
       if (metrics.is_meteo) {
         string metrics_type = to_lower_copy(metrics.type);      			  
 
         if (str_value != "-" && !str_value.empty()) {
-          if (metrics_type == acquisition::constant::number) {
+          if (metrics_type == db::constant::number) {
             double out_value;
             if (acquisition::util::TryExtractFirstNumeric(str_value, out_value)) {
               measure.value_number = out_value;
               measure.is_numeric = true;
               result.push_back(measure);
             }
-          } else if (metrics_type == acquisition::constant::text) {
+          } else if (metrics_type == db::constant::text) {
             measure.value_text = str_value;
             measure.is_numeric = false;
             result.push_back(measure);

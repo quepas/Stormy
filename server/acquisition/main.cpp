@@ -3,7 +3,7 @@
 #include "py_executor.h"
 #include "acquisition_config_metrics.h"
 #include "acquisition_config_station.h"
-#include "MongoDBHandler.h"
+#include "db_mongo_handler.h"
 #include "../../common/util.h"
 #include "rest_service.h"
 #include "acquisition_scheduler.h"
@@ -12,8 +12,6 @@
 
 #include <sstream>
 
-using namespace Stormy;
-
 int main(int argc, char** argv)
 {
 	std::cout << "++++++++++++++++ Acquisition Module ++++++++++++++++" << std::endl;
@@ -21,7 +19,7 @@ int main(int argc, char** argv)
 	stormy::acquisition::config::Station meteoStationsCfg("config/meteo_stations_config.yaml");
 	stormy::acquisition::config::Metrics meteoTypeCfg("config/meteo_data_type_config.yaml");
 
-	MongoDBHandler& dbHandler = MongoDBHandler::get();
+	auto& dbHandler = stormy::db::MongoHandler::get();
   dbHandler.set_expiration_seconds(3600 * 72);
 	dbHandler.clearStationsData();
 	dbHandler.insertStationsData(meteoStationsCfg.getConfiguration());

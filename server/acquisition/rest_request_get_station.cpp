@@ -1,8 +1,8 @@
 #include "rest_request_get_station.h"
 
-#include "MongoDBHandler.h"
 #include "../../common/util.h"
 #include "../../common/rest_cookbook.h"
+#include "db_mongo_handler.h"
 #include "rest_json_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
@@ -33,7 +33,7 @@ void GetStation::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response)
 {
-  auto& database_handler = Stormy::MongoDBHandler::get();
+  auto& database_handler = db::MongoHandler::get();
   auto path_segments = uri_parser_.getPathSegments();
   ostream& ostr = response.send();
   

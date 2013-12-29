@@ -5,7 +5,6 @@
 #include <boost/regex.hpp>
 #include <Poco/NumberParser.h>
 #include "../../common/util.h"
-#include "acquisition_constant.h"
 
 using boost::trim;
 using boost::replace_all;
@@ -44,21 +43,6 @@ time_t SecondsToMiliseconds(time_t seconds)
 time_t MinutesToMiliseconds(time_t minutes)
 {
 	return SecondsToMiliseconds(minutes * 60);
-}
-
-string GetMeteoDb()
-{
-	return constant::mongoDb + "." + constant::mongoMeteo;
-}
-
-string GetStationDb()
-{
-	return constant::mongoDb + "." + constant::mongoStation;
-}
-
-string GetTypeDb()
-{
-	return constant::mongoDb + "." + constant::mongoType;
 }
 // ~~ stormy::acquisition::util
 }}}

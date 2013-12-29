@@ -1,10 +1,10 @@
 #include "rest_request_get_meteo.h"
 
-#include "MongoDBHandler.h"
 #include "../../common/util.h"
 #include "../../common/rest_cookbook.h"
 #include "../../common/rest_constant.h"
 #include "rest_json_cookbook.h"
+#include "db_mongo_handler.h"
 
 #include <ctime>
 #include <cstdint>
@@ -52,7 +52,7 @@ void GetMeteo::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response)
 {	
-	auto& database_handler = Stormy::MongoDBHandler::get();
+	auto& database_handler = db::MongoHandler::get();
   auto path_segments = uri_parser_.getPathSegments();
   auto query_segments = uri_parser_.getQuerySegments();
   ostream& ostr = response.send();
@@ -82,7 +82,7 @@ void GetMeteo::handleRequest(
       auto from_index = query_segments.find(constant::from_parameter);
       auto to_index = query_segments.find(constant::to_parameter);
 
-      time_t from_ts = 0, to_ts = LocaltimeNow();
+      time_t from_ts = 0, to_ts = common::LocaltimeNow();
       UInt64 temporary_ts;
       if (from_index != query_segments.end()) {
         if (NumberParser::tryParseUnsigned64(

@@ -1,55 +1,63 @@
-#include "MongoDBHandler.h"
+#include "db_mongo_handler.h"
 
-#include <iostream>
-
-#include <ctime>
 #include <Poco/NumberFormatter.h>
 
 #include "acquisition_config_metrics.h"
 #include "acquisition_util.h"
-#include "acquisition_constant.h"
+#include "db_constant.h"
 #include "../../common/util.h"
 
 using namespace stormy::common;
+using std::auto_ptr;
 using std::time_t;
 using std::gmtime;
 using std::mktime;
 using std::vector;
 using std::make_pair;
 using std::map;
+using std::set;
 using std::string;
 using Poco::NumberFormatter;
+using Poco::Logger;
+using mongo::DBClientConnection;
+using mongo::DBClientCursor;
+using mongo::DBException;
+using mongo::BSONObj;
+using mongo::BSONObjBuilder;
+using mongo::LT;
+using mongo::LTE;
+using mongo::GTE;
 
-using namespace Stormy;
-using namespace Poco;
-using namespace mongo;
+namespace stormy {
+  namespace db {
 
-MongoDBHandler::MongoDBHandler(string dbAddress /*= "localhost"*/)
-	:	connection(DBClientConnection()),
+MongoHandler::MongoHandler(string dbAddress /*= "localhost"*/)
+  : logger_(Logger::get("db/MongoHandler")),	
+    connection(DBClientConnection()),
     Handler("MongoDB")
 {
 	if(!dbAddress.empty())
 		connect(dbAddress);
 }
 
-MongoDBHandler::~MongoDBHandler()
+MongoHandler::~MongoHandler()
 {
 
 }
 
-void MongoDBHandler::connect(string dbAddress)
+void MongoHandler::connect(string dbAddress)
 {
 	try {
 		connection.connect(dbAddress);
-		cout << "Connected to MongoDB database: " << dbAddress << endl;
+		logger_.information("[db/MongoHandler] Connected to MongoDB database: " + dbAddress);
 		connected_ = true;      
 	} catch (const DBException& e) {
-		cout << "[ERROR]: " << e.what() << endl;
+		logger_.error("[db/MongoHandler] Exception: " + string(e.what()));
 		connected_ = false;
 	}
 }
 
-void MongoDBHandler::insertMeteoData(vector<entity::Measurement> measurement)
+void MongoHandler::insertMeteoData(vector<entity::Measurement> measurement)
 {
 	if(!connected_ || measurement.empty()) return;
 
@@ -64,137 +72,137 @@ void MongoDBHandler::insertMeteoData(vector<entity::Measurement> measurement)
     else
       bsonBuilder.append(code, it->value_text);
   }
-  bsonBuilder.append(
-    stormy::acquisition::constant::mongoId, 
-    mktime(&timestamp));	
-	connection.insert(
-    stormy::acquisition::util::GetMeteoDb() + 
-      "." + 
-      stormy::acquisition::constant::stationIdPrefix + 
-      station_uid, 
-    bsonBuilder.obj());
+  bsonBuilder.append(constant::mongo_id, mktime(&timestamp));	
+	connection.insert(constant::db_meteo + "." + constant::station_uid_prefix + 
+      station_uid, bsonBuilder.obj());
 }
 
-void MongoDBHandler::clearStationsData()
+void MongoHandler::clearStationsData()
 {
 	if(!connected_) return;
-	connection.dropCollection(stormy::acquisition::util::GetStationDb());
+	connection.dropCollection(constant::db_station);
 }
 
-void MongoDBHandler::insertStationsData(const std::vector<entity::Station>& stations)
+void MongoHandler::insertStationsData(
+  const std::vector<entity::Station>& stations)
 {
 	if(!connected_) return;
 	for(auto it = stations.begin(); it != stations.end(); ++it)
 		insertStationData(*it);
 }
 
-void MongoDBHandler::insertStationData(entity::Station station)
+void MongoHandler::insertStationData(entity::Station station)
 {
 	if(!connected_) return;
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(stormy::acquisition::constant::mongoId, station.uid);
-	bsonBuilder.append(stormy::acquisition::constant::name, station.name);
-	bsonBuilder.append(stormy::acquisition::constant::parserClass, station.parser_class);
-	bsonBuilder.append(stormy::acquisition::constant::refreshTime, station.refresh_time);
-	bsonBuilder.append(stormy::acquisition::constant::url, station.url);
-	connection.insert(stormy::acquisition::util::GetStationDb(), bsonBuilder.obj());
+	bsonBuilder.append(constant::mongo_id, station.uid);
+	bsonBuilder.append(constant::name, station.name);
+	bsonBuilder.append(constant::parser_class, station.parser_class);
+	bsonBuilder.append(constant::refresh_time, station.refresh_time);
+	bsonBuilder.append(constant::url, station.url);
+	connection.insert(constant::db_station, bsonBuilder.obj());
 }
 
-vector<entity::Station> MongoDBHandler::getStationsData()
+vector<entity::Station> MongoHandler::getStationsData()
 {
 	auto result = vector<entity::Station>();
 	if (!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
-		connection.query(stormy::acquisition::util::GetStationDb(), BSONObj());
+		connection.query(constant::db_station, BSONObj());
 	while (cursor->more()) {    
 		BSONObj current = cursor->next();
 		entity::Station station;
-		station.uid = current.getStringField(stormy::acquisition::constant::mongoId.c_str());
-		station.name = current.getStringField(stormy::acquisition::constant::name.c_str());
-		station.parser_class = current.getStringField(stormy::acquisition::constant::parserClass.c_str());
-		station.refresh_time = current.getIntField(stormy::acquisition::constant::refreshTime.c_str());
-		station.url = current.getStringField(stormy::acquisition::constant::url.c_str());
+		station.uid = current.getStringField(constant::mongo_id.c_str());
+		station.name = current.getStringField(constant::name.c_str());
+		station.parser_class = current.getStringField(
+      constant::parser_class.c_str());
+		station.refresh_time = current.getIntField(
+      constant::refresh_time.c_str());
+		station.url = current.getStringField(constant::url.c_str());
 		result.push_back(station);
 	}
 	return result;
 }
 
-vector<entity::Metrics> MongoDBHandler::getTypesData()
+vector<entity::Metrics> MongoHandler::getTypesData()
 {
 	vector<entity::Metrics> result;
 	if(!connected_) return result;
 
 	auto_ptr<DBClientCursor> cursor =
-		connection.query(stormy::acquisition::util::GetTypeDb(), BSONObj());
+		connection.query(constant::db_type, BSONObj());
 	while( cursor -> more() ) {    
 		BSONObj current = cursor -> next();
 		entity::Metrics metrics;
-		metrics.code = current.getStringField(stormy::acquisition::constant::id.c_str());
-		metrics.equivalents = current.getStringField(stormy::acquisition::constant::equivalents.c_str());
-		metrics.type = current.getStringField(stormy::acquisition::constant::type.c_str());
-		metrics.unit = current.getStringField(stormy::acquisition::constant::unit.c_str());
-		metrics.format = current.getStringField(stormy::acquisition::constant::format.c_str());
-		metrics.is_meteo = current.getBoolField(stormy::acquisition::constant::isMeteo.c_str());		
+		metrics.code = current.getStringField(constant::id.c_str());
+		metrics.equivalents = current.getStringField(
+      constant::equivalents.c_str());
+		metrics.type = current.getStringField(constant::type.c_str());
+		metrics.unit = current.getStringField(constant::unit.c_str());
+		metrics.format = current.getStringField(constant::format.c_str());
+		metrics.is_meteo = current.getBoolField(constant::is_meteo.c_str());		
 		result.push_back(metrics);
 	}
 	return result;
 }
 
-bool MongoDBHandler::insertTypesData(const vector<entity::Metrics>& metrics_vec)
+bool MongoHandler::insertTypesData(
+  const vector<entity::Metrics>& metrics_vec)
 {
 	if(!connected_ || metrics_vec.empty()) return false;
 	stormy::common::Each(metrics_vec, [&](entity::Metrics metrics) {		
 		BSONObjBuilder bsonBuilder;
-		bsonBuilder.append(stormy::acquisition::constant::id, metrics.code);
-		bsonBuilder.append(stormy::acquisition::constant::equivalents, metrics.equivalents);
-		bsonBuilder.append(stormy::acquisition::constant::type, metrics.type);
-		bsonBuilder.append(stormy::acquisition::constant::unit, metrics.unit);
-		bsonBuilder.append(stormy::acquisition::constant::format, metrics.format);
-		bsonBuilder.append(stormy::acquisition::constant::isMeteo, metrics.is_meteo);
-		connection.insert(stormy::acquisition::util::GetTypeDb(), bsonBuilder.obj());
+		bsonBuilder.append(constant::id, metrics.code);
+		bsonBuilder.append(constant::equivalents, metrics.equivalents);
+		bsonBuilder.append(constant::type, metrics.type);
+		bsonBuilder.append(constant::unit, metrics.unit);
+		bsonBuilder.append(constant::format, metrics.format);
+		bsonBuilder.append(constant::is_meteo, metrics.is_meteo);
+		connection.insert(constant::db_type, bsonBuilder.obj());
 	});
 	return true;
 }
 
-bool MongoDBHandler::clearTypesData()
+bool MongoHandler::clearTypesData()
 {
 	if(!connected_) return false;
-	connection.dropCollection(stormy::acquisition::util::GetTypeDb());
+	connection.dropCollection(constant::db_type);
 	return true;
 }
 
-void MongoDBHandler::ExpireData()
+void MongoHandler::ExpireData()
 {
   if(!ValidateConnection()) return;
   auto stations_uid = FetchStationsUID();
-  time_t expiration_time = stormy::common::LocaltimeNow() - expiration_seconds();  
+  time_t expiration_time = common::LocaltimeNow() - expiration_seconds();  
   
   for (auto it = stations_uid.begin(); it != stations_uid.end(); ++it) {   
     connection.remove(
-      stormy::acquisition::util::GetMeteoDb() + "." + stormy::acquisition::constant::stationIdPrefix + *it, 
-      QUERY(stormy::acquisition::constant::mongoId << LT << NumberFormatter::format(expiration_time)));    
+      constant::db_meteo + "." + constant::station_uid_prefix + *it, 
+      QUERY(constant::mongo_id << LT << 
+              NumberFormatter::format(expiration_time)));    
   }
 }
 
-vector<string> MongoDBHandler::FetchStationsUID()
+vector<string> MongoHandler::FetchStationsUID()
 {
   auto result = vector<string>();
   if(!ValidateConnection()) return result;
 
   auto_ptr<DBClientCursor> cursor = 
-    connection.query(stormy::acquisition::util::GetStationDb(), BSONObj());
+    connection.query(constant::db_station, BSONObj());
 
   while (cursor->more()) {
     auto current_value = cursor->next();
     string station_uid = current_value
-      .getStringField(stormy::acquisition::constant::mongoId.c_str());
+      .getStringField(constant::mongo_id.c_str());
     result.push_back(station_uid);
   }
   return result;
 }
 
-entity::Station MongoDBHandler::GetStationByUID(string uid)
+entity::Station MongoHandler::GetStationByUID(string uid)
 {
   // TODO: reimplement this!
   auto stations = getStationsData();
@@ -208,17 +216,14 @@ entity::Station MongoDBHandler::GetStationByUID(string uid)
   return result;
 }
 
-uint32_t MongoDBHandler::CountMeasureSetsForStationByUID(string uid)
+uint32_t MongoHandler::CountMeasureSetsForStationByUID(string uid)
 {
-  return connection.count(
-    stormy::acquisition::util::GetMeteoDb() +
-    "." +
-    stormy::acquisition::constant::stationIdPrefix +
-    uid);
+  return connection.count(constant::db_meteo + "." +
+    constant::station_uid_prefix + uid);
 }
 
 map<time_t, vector<entity::Measurement>> 
-  MongoDBHandler::GetMeasureSetsForStationBetweenTS(
+  MongoHandler::GetMeasureSetsForStationBetweenTS(
     string station_uid, 
     time_t from, 
     time_t to)
@@ -226,12 +231,9 @@ map<time_t, vector<entity::Measurement>>
   auto result = map<time_t, vector<entity::Measurement>>();
   if(!ValidateConnection()) return result;
 
-  auto_ptr<DBClientCursor> cursor = connection.query(
-    stormy::acquisition::util::GetMeteoDb() +
-      "." +
-      stormy::acquisition::constant::stationIdPrefix +
-      station_uid,
-    QUERY(stormy::acquisition::constant::mongoId << GTE << from << LTE << to));
+  auto_ptr<DBClientCursor> cursor = connection.query(constant::db_meteo + 
+    "." + constant::station_uid_prefix + station_uid,
+    QUERY(constant::mongo_id << GTE << from << LTE << to));
 
   while (cursor->more()) {
     auto current_measure_set = cursor->next();
@@ -245,7 +247,7 @@ map<time_t, vector<entity::Measurement>>
       measure.station_uid = station_uid;
       auto field = current_measure_set.getField(measure.code);
 
-      if (*it != stormy::acquisition::constant::mongoId) {        
+      if (*it != constant::mongo_id) {        
         if (field.isNumber()) {
           measure.value_number = field.numberDouble();
           measure.is_numeric = true;
@@ -266,14 +268,16 @@ map<time_t, vector<entity::Measurement>>
   }
 }
 
-map<time_t, vector<entity::Measurement>> MongoDBHandler::
+map<time_t, vector<entity::Measurement>> MongoHandler::
   GetMeasureSetsForStationAndTS(string station_uid, time_t ts)
 {
   return GetMeasureSetsForStationBetweenTS(station_uid, ts, ts);
 }
 
-map<time_t, vector<entity::Measurement>> MongoDBHandler::
+map<time_t, vector<entity::Measurement>> MongoHandler::
   GetAllMeasureSetsForStation(string station_uid)
 {
   return GetMeasureSetsForStationBetweenTS(station_uid, 0, LocaltimeNow());
 }
+// ~~ stormy::db::MongoHandler
+}}

@@ -1,6 +1,6 @@
 #include "rest_json_cookbook.h"
 
-#include "acquisition_constant.h"
+#include "db_constant.h"
 #include "rest_constant.h"
 #include "../../common/util.h"
 
@@ -25,10 +25,10 @@ string PrepareStation(entity::Station station)
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder
-    .append(wrapAsJSONString(acquisition::constant::id), station.uid)
-    .append(wrapAsJSONString(acquisition::constant::name), station.name)
-    .append(wrapAsJSONString(acquisition::constant::url), station.url)
-	  .append(wrapAsJSONString(acquisition::constant::refreshTime), 
+    .append(wrapAsJSONString(db::constant::id), station.uid)
+    .append(wrapAsJSONString(db::constant::name), station.name)
+    .append(wrapAsJSONString(db::constant::url), station.url)
+	  .append(wrapAsJSONString(db::constant::refresh_time), 
       station.refresh_time);
 	return bsonBuilder.obj().toString();
 }
@@ -49,10 +49,10 @@ string cookbook::PrepareCombinedMeasurement(
   const std::vector<entity::Measurement>& measurement)
 {
 	BSONObjBuilder bsonBuilder;
-/*	bsonBuilder.append(wrapAsJSONString(acquisition::constant::id),
-		ToString(measurement -> data[acquisition::constant::mongoId]));
+/*	bsonBuilder.append(wrapAsJSONString(db::constant::id),
+		ToString(measurement -> data[db::constant::mongoId]));
 	Each(measurement -> data, [&](pair<string, any> pair) {
-		if(pair.first != acquisition::constant::mongoId) {
+		if(pair.first != db::constant::mongoId) {
 			bsonBuilder.append(
         wrapAsJSONString(pair.first), ToString(pair.second));
 		}
@@ -82,17 +82,17 @@ string cookbook::PrepareMetric(entity::Metrics metrics)
 {
 	BSONObjBuilder bsonBuilder;
 	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::code), metrics.code);
+    wrapAsJSONString(db::constant::code), metrics.code);
 	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::name), metrics.equivalents);
+    wrapAsJSONString(db::constant::name), metrics.equivalents);
 	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::type), metrics.type);
+    wrapAsJSONString(db::constant::type), metrics.type);
 	bsonBuilder.append(
-    wrapAsJSONString(acquisition::constant::unit), metrics.unit);
+    wrapAsJSONString(db::constant::unit), metrics.unit);
 	string format = metrics.format;
 	if(!format.empty()) {
 		bsonBuilder.append(
-      wrapAsJSONString(acquisition::constant::format), metrics.format);
+      wrapAsJSONString(db::constant::format), metrics.format);
   }
 	return bsonBuilder.obj().toString();
 }
@@ -116,11 +116,11 @@ string cookbook::PrepareMeasurement(
 	/*if(!measurement || measurement -> data.empty()) 
     return constant::emptyJSON;
 	BSONObjBuilder bsonBuilder;
-	bsonBuilder.append(wrapAsJSONString(acquisition::constant::timestamp),
+	bsonBuilder.append(wrapAsJSONString(db::constant::timestamp),
 		NumberFormatter::format(measurement -> timestamp.epochTime()));
 	auto pair = measurement -> data.begin();
 	bsonBuilder.append(wrapAsJSONString(
-    acquisition::constant::data), 
+    db::constant::data), 
     ToString(pair -> second));
 	return bsonBuilder.obj().toString();*/
   return "{}";
