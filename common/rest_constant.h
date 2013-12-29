@@ -61,19 +61,18 @@ const std::string json_measurements = "\"measurements\":";
 const std::string json_timestamp = "\"timestamp\":";
 const std::string json_data = "\"data\":";
 const std::string json_server_marker = "server";
-const std::string json_seconds = "seconds";
+const std::string json_seconds = "\"seconds\":";
 const std::string json_refresh_time = "\"refresh_time\":";
 const std::string json_parser_class = "\"parser_class\":";
 const std::string json_stations_data_marker = "stations";
 const std::string json_station_uid = "\"station_uid\":";
 const std::string json_station_uids = "\"station_uids\":";
-const std::string json_measurement_size_marker = "size";
-const std::string json_measurement_time_marker = "times";
+const std::string json_size = "\"size\":";
+const std::string json_times = "\"times\":";
 const std::string json_available_metrics_marker = "available_metrics";
 const std::string json_available_periods_marker = "available_periods";
 const std::string json_empty = "{}";
 const std::string json_acquistion_server_type = "A";
 const std::string json_storage_and_aggregation_server_type = "S&A";
-
 // ~~ stormy::common::rest::const;
 }}}}

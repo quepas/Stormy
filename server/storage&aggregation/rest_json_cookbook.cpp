@@ -92,12 +92,12 @@ string Cookbook::PrepareTypedMeasurement(const map<time_t, string>& measurements
     data_content.pop_back();
   }    
   content.append("{");
-  content.append(WrapAsJSONString(constant::json_measurement_size_marker));
-  content.append(":" + NumberFormatter::format(measurements.size()) + ",");
-  content.append(WrapAsJSONString(constant::json_measurement_time_marker));
-  content.append(":[" + time_content + "],");
-  content.append(WrapAsJSONString(constant::json_measurement_data_marker));
-  content.append(":[" + data_content + "]}");
+  content.append(constant::json_size);
+  content.append(NumberFormatter::format(measurements.size()) + ",");
+  content.append(constant::json_times);
+  content.append("[" + time_content + "],");
+  content.append(constant::json_measurements);
+  content.append("[" + data_content + "]}");
   return content;  
 }
 
@@ -118,9 +118,9 @@ string Cookbook::PreparePeriodSequence(const vector<Period>& periods)
   string sequence = "[";
   for (auto it = periods.begin(); it != periods.end(); ++it) {
     string element = "{";
-    element += WrapAsJSONString(constant::json_name) + ":";
+    element += constant::json_name;
     element += WrapAsJSONString(it->name) + ",";
-    element += WrapAsJSONString(constant::json_seconds) + ":";
+    element += constant::json_seconds;
     element += NumberFormatter::format(it->seconds);
     element += "}";
     sequence += element + ",";    
