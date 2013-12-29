@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <map>
 
 #include <Poco/Logger.h>
 #include <Poco/Timestamp.h>
@@ -22,10 +23,10 @@ public:
 
   std::string FetchDataAsStringAt(std::string resource) const;
   std::vector<common::entity::Station> FetchStationsAt() const;
-  std::vector<common::entity::Measurement> 
+  std::map<std::time_t, std::vector<common::entity::Measurement>>
     FetchMeasurementsForStationAt(
       std::string station_uid) const;
-  std::vector<common::entity::Measurement> 
+  std::map<std::time_t, std::vector<common::entity::Measurement>>
     FetchMeasurementsForStationNewerThanAt(
       std::string station_uid, 
       Poco::Timestamp timestamp) const;

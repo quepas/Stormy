@@ -1,6 +1,10 @@
 #include "acquisition_task.h"
 
+#include <ctime>
 #include <cstdint>
+#include <map>
+#include <boost/range/adaptor/map.hpp>
+#include <boost/range/algorithm/copy.hpp>
 #include <Poco/NumberFormatter.h>
 #include <Poco/Stopwatch.h>
 
@@ -10,8 +14,13 @@
 #include "acquisition_json_util.h"
 
 using namespace stormy::common;
+using boost::copy;
+using boost::adaptors::map_values;
+using std::back_inserter;
 using std::string;
 using std::vector;
+using std::map;
+using std::time_t;
 using Poco::Logger;
 using Poco::NumberFormatter;
 using Poco::Stopwatch;
@@ -53,17 +62,22 @@ void Task::run()
 		auto newestMeasureForStation =
 			dbStorage -> findNewestMeasureTimeByStationUID(station.uid);
 
-		vector<entity::Measurement> measurements;		
+		map<time_t, vector<entity::Measurement>> measurement_sets;		
 		if(newestMeasureForStation.epochMicroseconds() != 0) {
-			measurements = http_connector.FetchMeasurementsForStationNewerThanAt(
+			measurement_sets = http_connector.FetchMeasurementsForStationNewerThanAt(
 					station.uid, newestMeasureForStation);
 		} else {
-			measurements = http_connector.FetchMeasurementsForStationAt(
+			measurement_sets = http_connector.FetchMeasurementsForStationAt(
 				station.uid);
 		}
-		measurementCounter += measurements.size();
-		dbStorage -> InsertMeasurements(measurements);		
-		measurements.clear();
+    vector<entity::Measurement> measures;
+    for (auto it = measurement_sets.begin(); it != measurement_sets.end(); ++it) {
+      auto measure_set = it->second;
+      copy(measure_set, back_inserter(measures));
+    }
+		measurementCounter += measures.size();
+		dbStorage -> InsertMeasurements(measures);		
+		measurement_sets.clear();
 	});
 	logger_.notice("[acquisition/Task] Fetched " + 
     NumberFormatter::format(measurementCounter) + 

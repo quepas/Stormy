@@ -1,7 +1,9 @@
 #pragma once
 
+#include <ctime>
 #include <string>
 #include <vector>
+#include <map>
 
 #include "../../common/entity_station.h"
 #include "../../common/entity_metrics.h"
@@ -13,8 +15,8 @@ namespace stormy {
 
 common::entity::Station ExtractStation(std::string json_response);
 
-std::vector<common::entity::Measurement>	
-  ExtractMeasurements(std::string content);
+std::map<std::time_t, std::vector<common::entity::Measurement>>
+  ExtractMeasureSets(std::string content, std::string station_uid);
 common::entity::Metrics ExtractMetrics(std::string json_response);
 
 std::vector<std::string> ExtractSimpleListElements(

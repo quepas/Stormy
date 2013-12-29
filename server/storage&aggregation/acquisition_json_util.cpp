@@ -10,6 +10,8 @@ using namespace stormy::common;
 
 using std::string;
 using std::vector;
+using std::map;
+using std::make_pair;
 using std::time_t;
 using Json::Reader;
 using Json::Value;
@@ -37,34 +39,45 @@ entity::Station ExtractStation(string json_response)
 	return station;
 }
 
-vector<entity::Measurement> ExtractMeasurements(string content)
+map<time_t, vector<entity::Measurement>> 
+  ExtractMeasureSets(string json_response, string station_uid)
 {
-	auto result = vector<entity::Measurement>();
+	map<time_t, vector<entity::Measurement>> result;
 	Reader reader;
 	Value root;
-	reader.parse(content, root, false);
+	reader.parse(json_response, root, false);
 	
-	if(root["meteo"].isArray()) 
+	if (root["measurements"].isArray()) 
 	{
-		Value meteo = root["meteo"];		
-		for (auto it = meteo.begin(); it != meteo.end(); ++it) {
-      auto entry = *it;
-			auto members = entry.getMemberNames();
-			time_t timestamp = 
-				NumberParser::parseUnsigned64(entry["id"].asString());
-			
-			for(auto member_it = members.begin();
-            member_it != members.end(); ++member_it) {				
-				std::string key = *member_it;				
-				std::string value = entry[key].asString();
-			
-				entity::Measurement measurement;
-				measurement.timestamp = *gmtime(&timestamp);
-				measurement.code = key;
-				measurement.value_text = value;								
-				result.push_back(measurement);
-			}			
-		}		
+		Value measure_sets = root["measurements"];		
+		for (auto it = measure_sets.begin(); it != measure_sets.end(); ++it) {
+      vector<entity::Measurement> measure_vec;
+      Value measure_set = *it;
+      time_t measure_set_time;
+
+      if (measure_set["timestamp"].isNumeric() && !measure_set["data"].isNull()) {
+        measure_set_time = measure_set["timestamp"].asUInt64();
+        Value data_set = measure_set["data"];
+        auto data_members = data_set.getMemberNames();
+        
+        for (auto m_it = data_members.begin(); m_it != data_members.end(); ++m_it) {
+          entity::Measurement measure;
+          measure.code = *m_it;
+          measure.timestamp = *gmtime(&measure_set_time);
+          measure.station_uid = station_uid;          
+          
+          if (data_set[measure.code].isNumeric()) {
+            measure.value_number = data_set[measure.code].asFloat();
+            measure.is_numeric = true;
+          } else {
+            measure.value_text = data_set[measure.code].asString();
+            measure.is_numeric = false;
+          }
+          measure_vec.push_back(measure);
+        }
+        result.insert(make_pair(measure_set_time, measure_vec));
+      }
+    }
 	}
 	return result;
 }

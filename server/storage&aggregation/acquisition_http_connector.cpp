@@ -1,6 +1,5 @@
 #include "acquisition_http_connector.h"
 
-#include <iostream>
 #include <Poco/Net/HTTPClientSession.h>
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>
@@ -16,6 +15,8 @@ using std::istream;
 using std::string;
 using std::shared_ptr;
 using std::vector;
+using std::map;
+using std::time_t;
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
 using Poco::Net::HTTPResponse;
@@ -72,31 +73,23 @@ vector<entity::Station>
   return stations;
 }
 
-vector<entity::Measurement>
+map<time_t, vector<entity::Measurement>>
   HTTPConnector::FetchMeasurementsForStationAt(string station_uid) const
 {
-	string resource = "/meteo/" + station_uid;
-	string content = FetchDataAsStringAt(resource);
-	auto measurements = json::ExtractMeasurements(content);
-
-  for (auto it = measurements.begin(); it != measurements.end(); ++it) {
-    it -> station_uid = station_uid;
-  }
+	string resource = "/meteo/" + station_uid + "?from=0";
+	string json_response = FetchDataAsStringAt(resource);
+	auto measurements = json::ExtractMeasureSets(json_response, station_uid);
 	return measurements;
 }
 
-vector<entity::Measurement> 
+map<time_t, vector<entity::Measurement>>
   HTTPConnector::FetchMeasurementsForStationNewerThanAt(
     string station_uid, Timestamp timestamp) const
 {
-	string resource = "/meteo/" + station_uid + "/" + 
+	string resource = "/meteo/" + station_uid + "?from=" +
 		NumberFormatter::format(timestamp.epochMicroseconds());
-	string content = FetchDataAsStringAt(resource);
-	auto measurements = json::ExtractMeasurements(content);
-
-  for (auto it = measurements.begin(); it != measurements.end(); ++it) {
-    it -> station_uid = station_uid;
-  }
+	string json_response = FetchDataAsStringAt(resource);
+	auto measurements = json::ExtractMeasureSets(json_response, station_uid);
 	return measurements;
 }
 
