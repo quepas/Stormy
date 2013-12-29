@@ -44,6 +44,12 @@ std::string PrepareMetricsCodes(
 // api: /metrics/:metrics_code
 std::string PrepareMetricsInfo(const entity::Metrics& metrics);
 
+// api: /info
+std::string PrepareServerInfo(
+  std::string name, 
+  std::string type, 
+  std::string timezone);
+
 template<typename T>
 std::string WrapAsString(const T value);
 template<typename T>

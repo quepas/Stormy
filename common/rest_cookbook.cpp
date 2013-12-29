@@ -58,7 +58,7 @@ string PrepareStationUIDs(const vector<entity::Station>& stations)
   }
   return
     "{" + 
-      constant::json_station_uids + 
+      constant::json_stations +
         WrapAsList(join(wrapped_station_uids, ",")) +
     "}";
 }
@@ -164,6 +164,21 @@ string PrepareMetricsInfo(const entity::Metrics& metrics)
     constant::json_type + WrapAsString(metrics.type) + "," +
     constant::json_unit + WrapAsString(metrics.unit) + "," +
     constant::json_format + WrapAsString(metrics.format);
+  return WrapAsJSON(content);
+}
+
+string PrepareServerInfo(string name, string type, string timezone)
+{
+  string content = constant::json_server;
+  time_t current_time = time(nullptr) + 3600;
+  string str_time = asctime(gmtime(&current_time));
+  str_time.pop_back();  // remove new line character
+  string server_info =
+    constant::json_name + WrapAsString(name) + "," +
+    constant::json_type + WrapAsString(type) + "," +
+    constant::json_timezone + WrapAsString(timezone) + "," +
+    constant::json_time + WrapAsString(str_time);
+  content += WrapAsJSON(server_info);
   return WrapAsJSON(content);
 }
 

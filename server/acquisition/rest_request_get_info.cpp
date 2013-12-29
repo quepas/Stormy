@@ -1,12 +1,11 @@
 #include "rest_request_get_info.h"
 
-#include "acquisition_config_metrics.h"
-#include "rest_constant.h"
-#include "rest_json_cookbook.h"
+#include "../../common/rest_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
+using namespace stormy::common::rest;
 using std::string;
 using std::ostream;
 using Poco::Net::HTTPServerRequest;
@@ -16,8 +15,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetInfo::GetInfo(string _stationId /*= ""*/)
-	:	station_uid_(_stationId)
+GetInfo::GetInfo()
 {
 
 }
@@ -32,14 +30,8 @@ void GetInfo::handleRequest(
   HTTPServerResponse& response)
 {
 	ostream& ostr = response.send();
-
-	if(station_uid_.empty()) {
-		auto typesCfg =
-			new acquisition::config::Metrics("config/meteo_data_type_config.yaml");
-		ostr << json::cookbook::PrepareInfo("A", typesCfg -> Configuration());
-	} else {
-		ostr << constant::emptyJSON;
-	}
+  ostr << cookbook::
+    PrepareServerInfo("Acquisition Server #1", "A", "UTC/GMT +1");
 }
 // ~~ stormy::rest::request::GetInfo
 }}}

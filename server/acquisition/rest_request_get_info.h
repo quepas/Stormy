@@ -9,15 +9,12 @@ namespace stormy {
 class GetInfo : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetInfo(std::string station_uid = "");
+  GetInfo();
   ~GetInfo();
 
   void handleRequest(
     Poco::Net::HTTPServerRequest& request,
     Poco::Net::HTTPServerResponse& response) override;
-
-private:
-  std::string station_uid_;
 };
 // ~~ stormy::rest::request::GetInfo
 }}}

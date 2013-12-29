@@ -52,10 +52,10 @@ HTTPRequestHandler* Factory::createRequestHandler(
       IsMatch(URI, constant::metrics_info_request_pattern)) {
 		return new GetMetrics(URI);
   }
-	/*if(IsMatch(URI, constant::infoPattern))
-		return new GetInfo("");*/
+	if(IsMatch(URI, constant::info_request_pattern))
+		return new GetInfo();
 
-	return nullptr;
+  return nullptr;
 }
 // ~~ stormy::rest::request::Factory
 }}}
