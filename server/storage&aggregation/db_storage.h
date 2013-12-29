@@ -25,14 +25,6 @@ public:
   Storage(common::db::Setting* storageDB);
   ~Storage();
 
-  // new style
-  std::vector<common::entity::Station> GetStations();
-  uint32_t CountStations();
-  std::vector<aggregation::entity::Task> GetTasks();
-  std::vector<aggregation::entity::Period> GetPeriods();   
-  std::vector<common::entity::Metrics> GetMetrics();
-  std::vector<std::string> GetMetricsCodes();
-
   bool DeleteTask(uint16_t id);
   bool DeleteTask(std::string period_name, std::string station_uid);
   bool CreateTask(std::string period_name, std::string station_uid);
@@ -42,12 +34,7 @@ public:
   bool UpdateStationLastUpdate(std::string station_uid, std::tm timestamp);
   std::tm GetStationLastUpdate(std::string station_uid);
 
-  // station other methods
-  std::vector<std::string> GetStationUIDs();
-  std::string GetStationName(std::string uid);
-
   std::tm GetOldestStationMeasureTime(std::string uid);
-  int CountStationMeasures(std::string uid);
 
   // TODO: fix this! need entity::Measurement
   std::vector<std::string> GetStationMeasure(
@@ -73,21 +60,29 @@ public:
     const common::entity::Measurement& measure);
   void InsertMeasureAsNumeric(
     const common::entity::Measurement& measure);
-  void UpdateStationLastUpdateIfNeeded(std::string station_uid, std::tm last_update);
+  uint64_t CountAllMeasurements();
+  uint64_t CountStationMeasurements(std::string uid);
+  uint32_t CountAllStations();
+
+  std::vector<common::entity::Station> GetStations();  
+  std::vector<aggregation::entity::Task> GetTasks();
+  std::vector<aggregation::entity::Period> GetPeriods();   
+  std::vector<common::entity::Metrics> GetMetrics();
+  std::vector<std::string> GetMetricsCodes();
+
+  void UpdateStationLastUpdateIfNeeded(
+    std::string station_uid, 
+    std::tm last_update);
 
   // stations					 
   void insertStation(common::entity::Station station);
   void insertStations(const std::vector<common::entity::Station>& stations);
-  void clearAllStation();
   bool existsStationByUID(std::string uid);
   common::entity::Station getStationByUID(std::string uid);								
 
   // measurements			
   std::tm findNewestMeasureTimeByStationUID(std::string uid);			
-  Poco::Timestamp findOldestMeasureTimeByStationUID(std::string uid);
-  bool existsAnyMeasurementFromStation(std::string uid);
-  uint64_t countMeasurementFromStation(std::string uid);
-  uint32_t countAllMeasurements();
+  Poco::Timestamp findOldestMeasureTimeByStationUID(std::string uid);    
 
   // metrics
   bool insertOneMetrics(common::entity::Metrics metrics);

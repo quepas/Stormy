@@ -63,14 +63,6 @@ void Storage::insertStations(const vector<entity::Station>& stations)
 	});
 }
 
-
-void Storage::clearAllStation()
-{
-	TRY
-	sql << "DELETE FROM station";
-	CATCH_MSG("[StorageDB] clearAllStation(): ")
-}
-
 entity::Station Storage::getStationByUID(string uid)
 {
 	entity::Station station;
@@ -151,7 +143,7 @@ void Storage::InsertMeasureAsNumeric(const entity::Measurement& measure)
 tm Storage::findNewestMeasureTimeByStationUID(string station_uid)
 {	
   tm newest_measure_time;
-	if(existsAnyMeasurementFromStation(station_uid)) {
+	if(CountStationMeasurements(station_uid) > 0) {
 		TRY
     sql << "SELECT max(timestamp) FROM measurement "
       "WHERE station_uid = :station_uid",
@@ -164,7 +156,7 @@ tm Storage::findNewestMeasureTimeByStationUID(string station_uid)
 Timestamp Storage::findOldestMeasureTimeByStationUID(string uid)
 {
 	time_t time = 0;
-	if(countMeasurementFromStation(uid) > 0) {
+	if(CountStationMeasurements(uid) > 0) {
 		TRY		
 		// TODO: fix acquisition 'time zone' time respect
 		sql << "SELECT EXTRACT(EPOCH FROM ("
@@ -211,27 +203,16 @@ bool Storage::existsMetricsByCode(const string& code)
 	return count > 0;
 }
 
-bool Storage::existsAnyMeasurementFromStation(string uid)
+uint64_t Storage::CountAllMeasurements()
 {
-	uint32_t count = 0;
-	TRY
-	sql << "SELECT count(*) FROM measurement WHERE "
-		"station_uid = :uid",
-		into(count), use(uid);
-	CATCH_MSG("[StorageDB] existsAnyMeasurementFromStation(): ")
-	return count > 0;
-}
-
-uint32_t Storage::countAllMeasurements()
-{
-	uint32_t count = 0;
+	uint64_t count = 0;
 	TRY
 	sql << "SELECT count(*) FROM measurement", into(count);
-	CATCH_MSG("[StorageDB] countAllMeasurements(): ")
+	CATCH_MSG("[db/Storage] CountAllMeasurements: ")
 	return count;
 }
 
-uint32_t Storage::CountStations()
+uint32_t Storage::CountAllStations()
 {
 	uint32_t count = 0;
 	TRY
@@ -240,13 +221,13 @@ uint32_t Storage::CountStations()
 	return count;
 }
 
-uint64_t Storage::countMeasurementFromStation(string uid)
+uint64_t Storage::CountStationMeasurements(string uid)
 {
 	uint64_t count = 0;
 	TRY
 	sql << "SELECT count(*) FROM measurement "
-		"WHERE uid = :uid", use(uid), into(count);
-	CATCH_MSG("[StorageDB] countMeasurementFromStation() ")
+		"WHERE station_uid = :uid", use(uid), into(count);
+	CATCH_MSG("[db/Storage] countMeasurementFromStation() ")
 	return count;
 }
 
@@ -343,18 +324,6 @@ bool Storage::DeleteTask(string period_name, string station_uid)
 	return false;
 }
 
-vector<string> Storage::GetStationUIDs()
-{
-  auto station_uids = vector<string>();
-  TRY
-  rowset<row> rs = (sql.prepare << "SELECT uid FROM station");
-  for (auto it = rs.begin(); it != rs.end(); ++it) {
-    station_uids.push_back(it->get<string>("uid"));
-  }
-  CATCH_MSG("[Storage] GetStationUIDs():\n\t")
-  return station_uids;
-}
-
 map<time_t, string> Storage::GetMeasurement(
   string station_uid, string metrics_code, tm begin, tm end)
 {
@@ -416,16 +385,6 @@ vector<string> Storage::GetStationMeasure(string station_uid,
   return result;
 }
 
-string Storage::GetStationName(string uid)
-{
-  string result;
-  TRY
-  sql << "SELECT name FROM station WHERE uid = :uid", 
-    use(uid), into(result);
-  CATCH_MSG("[Storage] GetStationName():\n\t")
-  return result;
-}
-
 tm Storage::GetOldestStationMeasureTime(string uid)
 {
   time_t time = 0;
@@ -435,16 +394,6 @@ tm Storage::GetOldestStationMeasureTime(string uid)
     use(uid), into(time);
   CATCH_MSG("[Storage] GetOldestStationMeasureTime():\n\t")
   return *gmtime(&time);
-}
-
-int Storage::CountStationMeasures(string uid)
-{
-  int count = 0;
-  TRY
-  sql << "SELECT count(*) FROM measurement WHERE station_uid = :uid",
-    use(uid), into(count);
-  CATCH_MSG("[Storage] CountStationMeasures():\n\t")
-  return count;
 }
 
 bool Storage::UpdateTaskCurrentTime(uint32_t id, tm timestamp)

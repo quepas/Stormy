@@ -39,7 +39,7 @@ void Initial::run()
     "] Running. Aggregated period [" + current_ts + " - ...]");
 
   // check if any measurements exists
-  if(storage_->CountStationMeasures(task_entity_.station_uid) > 0) {
+  if(storage_->CountStationMeasurements(task_entity_.station_uid) > 0) {
     // find oldest measure for station_uid
     tm oldest_measure = storage_->
       GetOldestStationMeasureTime(task_entity_.station_uid);

@@ -34,9 +34,9 @@ int main(int argc, char** argv) {
   
   logger.information("==== Storage & Aggregation started. ====");	  
 	logger.information("Measurements in storage: " + 
-    NumberFormatter::format(storage.countAllMeasurements()));
+    NumberFormatter::format(storage.CountAllMeasurements()));
 	logger.information("Available stations: " + 
-    NumberFormatter::format(storage.CountStations()));
+    NumberFormatter::format(storage.CountAllStations()));
 	logger.information(
     "-------------------------------------------------------------"
 		"-------------------------------------------------------------");
