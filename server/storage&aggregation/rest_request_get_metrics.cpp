@@ -1,8 +1,6 @@
 #include "rest_request_get_metrics.h"
 
 #include "../../common/rest_cookbook.h"
-#include "db_mongo_handler.h"
-#include "acquisition_config_metrics.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
@@ -17,11 +15,12 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMetrics::GetMetrics(string uri)
-  : uri_parser_(uri)
+GetMetrics::GetMetrics(string uri, db::Storage* storage_database)
+  : uri_parser_(uri),
+    storage_database_(storage_database)
 {
 
-}
+ }
 
 GetMetrics::~GetMetrics()
 {
@@ -30,14 +29,13 @@ GetMetrics::~GetMetrics()
 
 void GetMetrics::handleRequest(
   HTTPServerRequest& request, 
-	HTTPServerResponse& response)
+  HTTPServerResponse& response)
 {
-	ostream& ostr = response.send();
-	auto& database_handler = db::MongoHandler::get();
+  ostream& ostr = response.send();
   auto path_segments = uri_parser_.getPathSegments();
-  auto metrics = database_handler.GetMetrics();
+  auto metrics = storage_database_->GetMetrics();
 
-	if (path_segments.size() == 1) {    
+  if (path_segments.size() == 1) {    
     ostr << cookbook::PrepareMetricsCodes(metrics);
   } else if (path_segments.size() == 2) {
     for (auto it = metrics.begin(); it != metrics.end(); ++it) {
@@ -53,7 +51,7 @@ void GetMetrics::handleRequest(
     ostr << cookbook::PrepareError(
       "Bad request. Too much URI segments", 
       "Create proper metrics request.");
-  }
+}
 }
 // ~~ stormy::rest::request::GetMetrics
 }}}

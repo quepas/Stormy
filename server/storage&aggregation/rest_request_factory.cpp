@@ -4,6 +4,7 @@
 #include "rest_request_get_aggregate.h"
 #include "rest_request_get_meteo.h"
 #include "rest_request_get_info.h"
+#include "rest_request_get_metrics.h"
 
 #include "../../common/rest_request_bad.h"
 #include "../../common/util.h"
@@ -49,6 +50,9 @@ HTTPRequestHandler* Factory::createRequestHandler(
     return new GetMeteo(URI, db_storage_);
   } else if (IsMatch(URI, constant::info_request_pattern)) {
     return new GetInfo(db_storage_);
+  } else if(IsMatch(URI, constant::metrics_request_pattern) ||
+              IsMatch(URI, constant::metrics_info_request_pattern)) {
+      return new GetMetrics(URI, db_storage_);
   } else {
     return new common::rest::request::Bad(URI);
   }

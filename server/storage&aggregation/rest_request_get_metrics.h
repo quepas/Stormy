@@ -10,19 +10,19 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-class GetStation : public Poco::Net::HTTPRequestHandler
+class GetMetrics : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetStation(std::string uri, db::Storage* storage_database);
-  ~GetStation();
+  GetMetrics(std::string uri, db::Storage* storage_database);
+  ~GetMetrics();
 
   void handleRequest(
     Poco::Net::HTTPServerRequest& request, 
-    Poco::Net::HTTPServerResponse& response);
+    Poco::Net::HTTPServerResponse& response) override;
 
 private:
   db::Storage* storage_database_;
   common::rest::URIParser uri_parser_;
 };
-// ~~ stormy::rest::request::GetStation
+// ~~ stormy::rest::request::GetMetrics
 }}}
