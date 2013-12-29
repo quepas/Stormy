@@ -1,12 +1,14 @@
 #include "rest_request_get_metrics.h"
 
+#include "../../common/rest_cookbook.h"
+#include "db_mongo_handler.h"
 #include "acquisition_config_metrics.h"
-#include "rest_json_cookbook.h"
 #include "rest_constant.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
+using namespace stormy::common::rest;
 using std::string;
 using std::ostream;
 using Poco::Net::HTTPServerRequest;
@@ -16,8 +18,8 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMetrics::GetMetrics(string station_uid /*= ""*/)
-	:	station_uid_(station_uid)
+GetMetrics::GetMetrics(string uri)
+  : uri_parser_(uri)
 {
 
 }
@@ -32,16 +34,19 @@ void GetMetrics::handleRequest(
 	HTTPServerResponse& response)
 {
 	ostream& ostr = response.send();
-	auto typesCfg =
-		new acquisition::config::Metrics("config/meteo_data_type_config.yaml");
+	auto& database_handler = db::MongoHandler::get();
+  auto path_segments = uri_parser_.getPathSegments();
 
-	if(station_uid_.empty()) {
-		ostr << json::cookbook::PrepareMetrics(
-			typesCfg->Configuration());
-	} else {
-		ostr << stormy::rest::constant::emptyJSON;
-	}
-	
+	if (path_segments.size() == 1) {
+    auto metrics = database_handler.getTypesData();
+    ostr << cookbook::PrepareMetricsCodes(metrics);
+  } else if (path_segments.size() == 2) {
+    // detailed info
+  } else {
+    cookbook::PrepareError(
+      "Bad request. Too much URI segments", 
+      "Create proper metrics request.");
+  }
 }
 // ~~ stormy::rest::request::GetMetrics
 }}}

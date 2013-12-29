@@ -20,6 +20,10 @@ const std::string meteo_station_uid_request_pattern = "/meteo/[0-9a-f]{32}/?";
 const std::string meteo_station_uid_ts_request_pattern = "/meteo/[0-9a-f]{32}/[0-9]{10}/?";
 // api: /aggregate/:station_id
 const std::string aggregate_request_pattern = "/aggregate/[0-9a-f]{32}/?";
+// api: /metrics
+const std::string metrics_request_pattern = "/metrics/?";
+// api: /metrics/:metrics_code
+const std::string metrics_info_request_pattern = "/metrics/[a-zA-Z0-9]+/?";
 // api: /info
 const std::string info_request_pattern = "/info/?";
 // api query: ?param_one=value1&param_two=value2 (...)
@@ -47,6 +51,7 @@ const std::string json_code = "code";
 const std::string json_count = "\"count\":";
 const std::string json_url = "\"url\":";
 const std::string json_type = "type";
+const std::string json_metrics = "\"metrics\":";
 const std::string json_error = "\"error\":";
 const std::string json_msg = "\"msg\":";
 const std::string json_measurements = "\"measurements\":";

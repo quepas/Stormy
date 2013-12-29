@@ -143,5 +143,17 @@ string PrepareMeteoSet(
   return WrapAsJSON(content);
 }
 
+string PrepareMetricsCodes(const vector<entity::Metrics>& metrics_vec)
+{
+  vector<string> metrics_codes;
+  string content = constant::json_metrics;
+  for (auto it = metrics_vec.begin(); it != metrics_vec.end(); ++it) {
+    if (it->is_meteo) {
+      metrics_codes.push_back(WrapAsString(it->code));
+    }
+  }
+  content += WrapAsList(join(metrics_codes, ","));
+  return WrapAsJSON(content);
+}
 // ~~ stormy::common::rest::cookbook
 }}}}

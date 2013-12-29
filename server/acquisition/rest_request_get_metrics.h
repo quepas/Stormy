@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../common/rest_uri_parser.h"
+
 #include <string>
 #include <Poco/Net/HTTPRequestHandler.h>
 
@@ -10,7 +12,7 @@ namespace stormy {
 class GetMetrics : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetMetrics(std::string station_uid = "");
+  GetMetrics(std::string uri);
   ~GetMetrics();
 
   void handleRequest(
@@ -18,7 +20,7 @@ public:
     Poco::Net::HTTPServerResponse& response) override;
 
 private:
-  std::string station_uid_;
+  common::rest::URIParser uri_parser_;
 };
 // ~~ stormy::rest::request::GetMetrics
 }}}

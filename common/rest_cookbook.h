@@ -2,6 +2,7 @@
 
 #include "entity_station.h"
 #include "entity_measurement.h"
+#include "entity_metrics.h"
 
 #include <ctime>
 #include <string>
@@ -36,6 +37,10 @@ std::string PrepareMeteoTimestamps(
 std::string PrepareMeteoSets(
   const std::map<std::time_t, std::vector<entity::Measurement>>& ts_measure_sets_map);
 std::string PrepareMeteoSet(std::time_t ts, const std::vector<entity::Measurement>& measure_set);
+
+// api: /metrics
+std::string PrepareMetricsCodes(
+  const std::vector<entity::Metrics>& metrics_vec);
 
 template<typename T>
 std::string WrapAsString(const T value);

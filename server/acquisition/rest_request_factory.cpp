@@ -48,9 +48,9 @@ HTTPRequestHandler* Factory::createRequestHandler(
       IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
     return new GetMeteo(URI);
   }
-	/*if(IsMatch(URI, constant::metricsPattern))
-		return new GetMetrics();	
-	if(IsMatch(URI, constant::infoPattern))
+	if(IsMatch(URI, constant::metrics_request_pattern))
+		return new GetMetrics(URI);
+	/*if(IsMatch(URI, constant::infoPattern))
 		return new GetInfo("");*/
 
 	return nullptr;
