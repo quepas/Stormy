@@ -5,6 +5,7 @@
 #include <Poco/Net/HTTPResponse.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/NumberFormatter.h>
+#include <Poco/Timespan.h>
 
 #include "../../common/util.h"
 #include "acquisition_json_util.h"
@@ -24,7 +25,6 @@ using Poco::Logger;
 using Poco::NumberFormatter;
 using Poco::StreamCopier;
 using Poco::Timespan;
-using Poco::Timestamp;
 
 namespace stormy {
   namespace acquisition {
@@ -74,20 +74,10 @@ vector<entity::Station>
 }
 
 map<time_t, vector<entity::Measurement>>
-  HTTPConnector::FetchMeasurementsForStationAt(string station_uid) const
+  HTTPConnector::FetchMeasureSets(string station_uid, time_t from_time) const
 {
-	string resource = "/meteo/" + station_uid + "?from=0";
-	string json_response = FetchDataAsStringAt(resource);
-	auto measurements = json::ExtractMeasureSets(json_response, station_uid);
-	return measurements;
-}
-
-map<time_t, vector<entity::Measurement>>
-  HTTPConnector::FetchMeasurementsForStationNewerThanAt(
-    string station_uid, Timestamp timestamp) const
-{
-	string resource = "/meteo/" + station_uid + "?from=" +
-		NumberFormatter::format(timestamp.epochMicroseconds());
+  string resource = "/meteo/" + station_uid + "?from=" + 
+    NumberFormatter::format(from_time);
 	string json_response = FetchDataAsStringAt(resource);
 	auto measurements = json::ExtractMeasureSets(json_response, station_uid);
 	return measurements;

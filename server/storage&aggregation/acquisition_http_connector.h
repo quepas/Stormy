@@ -1,12 +1,12 @@
 #pragma once
 
+#include <ctime>
 #include <cstdint>
 #include <string>
 #include <vector>
 #include <map>
 
 #include <Poco/Logger.h>
-#include <Poco/Timestamp.h>
 
 #include "../../common/entity_station.h"
 #include "../../common/entity_measurement.h"
@@ -24,12 +24,7 @@ public:
   std::string FetchDataAsStringAt(std::string resource) const;
   std::vector<common::entity::Station> FetchStationsAt() const;
   std::map<std::time_t, std::vector<common::entity::Measurement>>
-    FetchMeasurementsForStationAt(
-      std::string station_uid) const;
-  std::map<std::time_t, std::vector<common::entity::Measurement>>
-    FetchMeasurementsForStationNewerThanAt(
-      std::string station_uid, 
-      Poco::Timestamp timestamp) const;
+    FetchMeasureSets(std::string station_uid, std::time_t from_time) const;  
   std::vector<common::entity::Metrics> FetchMetricsAt() const;
 
 private:

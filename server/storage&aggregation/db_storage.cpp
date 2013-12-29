@@ -3,10 +3,13 @@
 #include <exception>
 #include <iostream>
 
+#include <boost/range/algorithm/copy.hpp>
 #include <postgresql/soci-postgresql.h>
 
 using namespace stormy::common;
 
+using boost::copy;
+using std::back_inserter;
 using std::map;
 using std::string;
 using std::tm;
@@ -89,52 +92,73 @@ bool Storage::existsStationByUID(string uid)
   return count > 0;
 }
 
-bool Storage::InsertMeasurements(const vector<entity::Measurement>& measurements)
+void Storage::InsertMeasureSets(
+  const map<time_t, vector<entity::Measurement>>& measure_sets)
 {
-	if(!measurements.empty()) {
-		TRY		
-		for(auto it = measurements.begin(); it != measurements.end(); ++it) {
-			string metricsCode = it->code;
-      auto metrics = GetMetricsCodes();
-			if(Contains(metrics, metricsCode)) {
-        string station_uid = it->station_uid;
-        auto current_tm = it->timestamp;
-        time_t current_ts = mktime(&current_tm);
-			  sql << "INSERT INTO measurement(code, value_text, station_uid, timestamp)"
-				  "values(:code, :value_text, :station_uid, to_timestamp(:timestamp))", 
-				  use(metricsCode),
-				  use(it->value_text), 
-				  use(station_uid),
-				  use(current_ts);
-      
-        auto station_last_update = &GetStationLastUpdate(station_uid);
-        if (current_ts > mktime(station_last_update)) {          
-          //cout << "Newer measure time for station uid: " << station_uid << endl;
-          //cout << "\tInsertet data time: " << asctime(gmtime(&current_ts)) << endl;
-          UpdateStationLastUpdate(station_uid, *gmtime(&current_ts));
-          //cout << "\tStation last update: " << asctime(station_last_update) << endl;
-        }
-      }
-		}
-		return true;
-		CATCH_MSG("[StorageDB] insertMeasurements(): ")			
-	}	
-	return false;
+  vector<entity::Measurement> measures;
+  for (auto it = measure_sets.begin(); it != measure_sets.end(); ++it) {
+    copy(it->second, back_inserter(measures));
+  }
+  for (auto m_it = measures.begin(); m_it != measures.end(); ++m_it) {
+    if (m_it->is_numeric)
+      InsertMeasureAsNumeric(*m_it);
+    else
+      InsertMeasureAsText(*m_it);
+  }
 }
 
-Timestamp Storage::findNewestMeasureTimeByStationUID(string uid)
+void Storage::UpdateStationLastUpdateIfNeeded(
+  string station_uid,
+  tm last_update)
+{
+  time_t station_last_update = mktime(&GetStationLastUpdate(station_uid));
+  time_t measure_last_update = mktime(&last_update);
+  if (measure_last_update > station_last_update) {
+    TRY
+    sql << "UPDATE station SET last_update = :last_update "
+      "WHERE uid = :uid", use(last_update), use(station_uid);
+    CATCH_MSG("[db/Storage] UpdateStationLastUpdateIfNeeded: ")
+  }
+}
+
+
+void Storage::InsertMeasureAsText(const entity::Measurement& measure)
+{
+  TRY  
+  sql << "INSERT INTO measurement(code, value_text, station_uid, timestamp)"
+    "values(:code, :value_text, :station_uid, :timestamp", 
+    use(measure.code),
+    use(measure.value_text), 
+    use(measure.station_uid),
+    use(measure.timestamp);
+  CATCH_MSG("[db/Storage] InsertMeasureAsText: ")
+  UpdateStationLastUpdateIfNeeded(measure.station_uid, measure.timestamp);
+}
+
+void Storage::InsertMeasureAsNumeric(const entity::Measurement& measure)
+{
+  TRY  
+  sql << "INSERT INTO measurement(code, value_number, station_uid, timestamp)"
+    "values(:code, :value_number, :station_uid, :timestamp)", 
+    use(measure.code),
+    use(measure.value_number), 
+    use(measure.station_uid),
+    use(measure.timestamp);
+  CATCH_MSG("[db/Storage] InsertMeasureAsText: ")
+  UpdateStationLastUpdateIfNeeded(measure.station_uid, measure.timestamp);
+}
+
+tm Storage::findNewestMeasureTimeByStationUID(string station_uid)
 {	
-	time_t time = 0;
-	if(!uid.empty() && existsAnyMeasurementFromStation(uid)) {
+  tm newest_measure_time;
+	if(existsAnyMeasurementFromStation(station_uid)) {
 		TRY
-		// TODO: fix time zone
-		sql << "SELECT EXTRACT(EPOCH FROM ("
-			"SELECT max(timestamp) FROM measurement WHERE "
-			"station_uid = :uid) - interval '1 hour')",
-			into(time), use(uid);
-		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
+    sql << "SELECT max(timestamp) FROM measurement "
+      "WHERE station_uid = :station_uid",
+      into(newest_measure_time), use(station_uid);
+		CATCH_MSG("[db/Storage] findNewestMeasureTimeByStationUID: ")
 	}
-	return Timestamp(time);
+	return newest_measure_time;
 }
 
 Timestamp Storage::findOldestMeasureTimeByStationUID(string uid)

@@ -66,10 +66,14 @@ public:
     std::string station_uid, 
     std::string metrics_code, 
     uint16_t from_last_hours);
-
-  // TODO: refactor this
-  bool InsertMeasurements(
-    const std::vector<common::entity::Measurement>& measurements);
+  
+  void InsertMeasureSets(
+    const std::map<std::time_t, std::vector<common::entity::Measurement>>& measure_sets);
+  void InsertMeasureAsText(
+    const common::entity::Measurement& measure);
+  void InsertMeasureAsNumeric(
+    const common::entity::Measurement& measure);
+  void UpdateStationLastUpdateIfNeeded(std::string station_uid, std::tm last_update);
 
   // stations					 
   void insertStation(common::entity::Station station);
@@ -79,7 +83,7 @@ public:
   common::entity::Station getStationByUID(std::string uid);								
 
   // measurements			
-  Poco::Timestamp findNewestMeasureTimeByStationUID(std::string uid);			
+  std::tm findNewestMeasureTimeByStationUID(std::string uid);			
   Poco::Timestamp findOldestMeasureTimeByStationUID(std::string uid);
   bool existsAnyMeasurementFromStation(std::string uid);
   uint64_t countMeasurementFromStation(std::string uid);
