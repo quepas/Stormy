@@ -65,14 +65,15 @@ string PrepareStationUIDs(const vector<entity::Station>& stations)
 
 string PrepareStationInfo(const entity::Station& station)
 {
-  return
-    "{" +
-      constant::json_uid + WrapAsString(station.uid) + "," +
-      constant::json_name + WrapAsString(station.name) + "," +
-      constant::json_parser_class + WrapAsString(station.parser_class) + "," +
-      constant::json_refresh_time + WrapAsString(station.refresh_time) + "," +
-      constant::json_url + WrapAsString(station.url) +
-    "}";
+  string content = constant::json_station;
+  string station_info =  
+    constant::json_uid + WrapAsString(station.uid) + "," +
+    constant::json_name + WrapAsString(station.name) + "," +
+    constant::json_parser_class + WrapAsString(station.parser_class) + "," +
+    constant::json_refresh_time + NumberFormatter::format(station.refresh_time) + "," +
+    constant::json_url + WrapAsString(station.url);
+  content += WrapAsJSON(station_info);
+  return WrapAsJSON(content);
 }
 
 string PrepareMeteoCountPerStation(
@@ -158,12 +159,14 @@ string PrepareMetricsCodes(const vector<entity::Metrics>& metrics_vec)
 
 string PrepareMetricsInfo(const entity::Metrics& metrics)
 {
-  string content = 
+  string content = constant::json_metrics;
+  string metrics_info =
     constant::json_code + WrapAsString(metrics.code) + "," +
     constant::json_equivalents + WrapAsString(metrics.equivalents) + "," +
     constant::json_type + WrapAsString(metrics.type) + "," +
     constant::json_unit + WrapAsString(metrics.unit) + "," +
     constant::json_format + WrapAsString(metrics.format);
+  content += WrapAsJSON(metrics_info);
   return WrapAsJSON(content);
 }
 

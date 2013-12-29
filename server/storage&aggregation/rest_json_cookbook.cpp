@@ -23,7 +23,7 @@ namespace stormy {
 string Cookbook::PrepareServerInfo(const vector<Metrics>& metrics, 
   const std::vector<aggregation::entity::Period>& periods)
 {
-  string content = "{" + WrapAsJSONString(constant::json_server_marker) + ":{";
+  string content = "{" + constant::json_server + "{";
   content += WrapAsJSONString(constant::json_type) + ":";
   content += WrapAsJSONString(constant::json_storage_and_aggregation_server_type) + "},";
   content += WrapAsJSONString(constant::json_available_metrics_marker) + ":";
@@ -61,7 +61,7 @@ string Cookbook::PrepareStation(const Station& station)
 
 string Cookbook::PrepareStations(const vector<Station>& stations)
 {
-  string content = "{\"" + constant::json_stations_data_marker + "\":[";
+  string content = "{\"" + constant::json_stations + "\":[";
   for (auto it = stations.begin(); it != stations.end(); ++it) {
     content += PrepareStation(*it) + ",";
   } 

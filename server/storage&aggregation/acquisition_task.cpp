@@ -1,6 +1,5 @@
 #include "acquisition_task.h"
 
-#include <iostream>
 #include <cstdint>
 #include <Poco/NumberFormatter.h>
 #include <Poco/Stopwatch.h>
@@ -38,7 +37,7 @@ void Task::run()
 	stopwatch.start();	
 	HTTPConnector http_connector(server->host, server->port);
 
-	logger_.notice("[AcquisitionTask] Start fetching data from " + 
+	logger_.notice("[acquisition/Task] Start fetching data from " + 
     server -> name);
 	// metrics
 	auto metrics = http_connector.FetchMetricsAt();
@@ -66,7 +65,7 @@ void Task::run()
 		dbStorage -> InsertMeasurements(measurements);		
 		measurements.clear();
 	});
-	logger_.notice("[AcquisitionTask] Fetched " + 
+	logger_.notice("[acquisition/Task] Fetched " + 
     NumberFormatter::format(measurementCounter) + 
     " measurements. It took: " + 
     NumberFormatter::format(stopwatch.elapsed() / 1000.0) + "ms.");

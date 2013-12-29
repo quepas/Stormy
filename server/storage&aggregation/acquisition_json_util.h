@@ -11,11 +11,14 @@ namespace stormy {
   namespace acquisition {
     namespace json {
 
-std::vector<common::entity::Station> 
-  ExtractStations(std::string content);
+common::entity::Station ExtractStation(std::string json_response);
+
 std::vector<common::entity::Measurement>	
   ExtractMeasurements(std::string content);
-std::vector<common::entity::Metrics> 
-  ExtractMetrics(std::string content);
+common::entity::Metrics ExtractMetrics(std::string json_response);
+
+std::vector<std::string> ExtractSimpleListElements(
+  std::string json_response, 
+  std::string list_key);
 // ~~ stormy::acquisition::json::util
 }}}

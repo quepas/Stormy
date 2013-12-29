@@ -20,27 +20,21 @@ namespace stormy {
   namespace acquisition {
     namespace json {
 
-vector<entity::Station> ExtractStations(string content)
+entity::Station ExtractStation(string json_response)
 {
-	auto result = vector<entity::Station>();	
+	entity::Station station;
 	Reader reader;
 	Value root;
-	reader.parse(content, root, false);
-	
-	if(root["stations"].isArray()) 
+	reader.parse(json_response, root, false);	
+	if(!root["station"].isNull()) 
 	{
-		Value stations = root["stations"];
-    for (auto it = stations.begin(); it != stations.end(); ++it) {
-      auto entry = *it;
-      entity::Station station;			
-			station.uid = entry["id"].asString();
-			station.name = entry["name"].asString();
-			station.url = entry["url"].asString();
-			station.refresh_time = entry["refresh_time"].asInt();
-			result.push_back(station);
-		}
+		Value entry = root["station"];    	
+		station.uid = entry["uid"].asString();
+		station.name = entry["name"].asString();
+		station.url = entry["url"].asString();
+		station.refresh_time = entry["refresh_time"].asInt();
 	}
-	return result;
+	return station;
 }
 
 vector<entity::Measurement> ExtractMeasurements(string content)
@@ -75,29 +69,39 @@ vector<entity::Measurement> ExtractMeasurements(string content)
 	return result;
 }
 
-vector<entity::Metrics> ExtractMetrics(string content)
+entity::Metrics ExtractMetrics(string json_response)
 {
-	auto result = vector<entity::Metrics>();
-
+	entity::Metrics metrics;
 	Reader reader;
 	Value root;
-	reader.parse(content, root, false);
-
-	if(root["metrics"].isArray()) 
+	reader.parse(json_response, root, false);
+	if(!root["metrics"].isNull()) 
 	{
-		Value metrics = root["metrics"];
-		for (auto it = metrics.begin(); it != metrics.end(); ++it) {
-      auto entry = *it;
-			entity::Metrics metric;
-			metric.code = entry["code"].asString();
-			metric.equivalents = entry["name"].asString();	
-			metric.type = entry["type"].asString();
-			metric.unit = entry["unit"].asString();
-			metric.format = entry["format"].asString();
-			result.push_back(metric);
-    }
+		Value entry = root["metrics"];	
+		metrics.code = entry["code"].asString();
+		metrics.equivalents = entry["equivalents"].asString();	
+		metrics.type = entry["type"].asString();
+		metrics.unit = entry["unit"].asString();
+		metrics.format = entry["format"].asString();
 	}
-	return result;
+	return metrics;
 }
+
+vector<string> ExtractSimpleListElements(string json_response, string list_key)
+{
+  vector<string> list_elements;
+  Reader reader;
+  Value root;
+  reader.parse(json_response, root, false);
+
+  if (root[list_key].isArray()) {
+    Value metrics = root[list_key];
+    for (auto it = metrics.begin(); it != metrics.end(); ++it) {      
+      list_elements.push_back((*it).asString());
+    }
+  }
+  return list_elements;
+}
+
 // ~~ stormy::acquisition::json::util
 }}}

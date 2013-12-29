@@ -37,7 +37,8 @@ int main(int argc, char** argv) {
     NumberFormatter::format(storage.countAllMeasurements()));
 	logger.information("Available stations: " + 
     NumberFormatter::format(storage.CountStations()));
-	logger.information("-------------------------------------------------------------"
+	logger.information(
+    "-------------------------------------------------------------"
 		"-------------------------------------------------------------");
 	// display current configurations
 	logger.information("=== Acquisition Servers: ");
@@ -54,14 +55,15 @@ int main(int argc, char** argv) {
 	logger.information("\t" + storageDBcfg.Configuration()->ToString());
 	logger.information("=== Aggregation database: ");
 	logger.information("\t" + aggregationDBcfg.Configuration()->ToString());
-	logger.information("-------------------------------------------------------------"
+	logger.information(
+    "-------------------------------------------------------------"
 		"-------------------------------------------------------------");
 
 	acquisition::Scheduler scheduler(&storage);
 	scheduler.Schedule(acquisitionServersCfg.Configuration());	
 
-	aggregation::Engine aggregation_engine(&storage, &aggregation);
-	aggregation_engine.Start();
+	/*aggregation::Engine aggregation_engine(&storage, &aggregation);
+	aggregation_engine.Start();*/
   
   auto& rest_service = rest::Service(&storage, &aggregation);
   rest_service.run(argc, argv);

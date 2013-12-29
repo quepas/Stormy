@@ -9,7 +9,6 @@ def run(text, encoding="UTF-8"):
     parser = MeteoBDataParser()
     parser.data=[]
     parser.parseFromHtml(text, encoding)
-    #print(parser.data)
     return parser.data
 
 class MeteoBDataParser(HTMLParser):
@@ -54,7 +53,6 @@ class MeteoBDataParser(HTMLParser):
     def parseSingleRow(self, tr):
         if len(tr) == 2:
             dictItem = {tr[0][0].text : tr[1][0].text}
-            #print(dictItem)
             return dictItem
 
     def extractTable(self, text):

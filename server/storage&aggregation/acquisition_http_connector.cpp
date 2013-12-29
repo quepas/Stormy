@@ -58,9 +58,18 @@ string HTTPConnector::FetchDataAsStringAt(string resource) const
 vector<entity::Station>
   HTTPConnector::FetchStationsAt() const
 {
+  vector<entity::Station> stations;
 	string resource = "/station";
-	string content = FetchDataAsStringAt(resource);
-	return json::ExtractStations(content);
+	string json_response = FetchDataAsStringAt(resource);
+  auto stations_uids = 
+    json::ExtractSimpleListElements(json_response, "stations");
+
+  for (auto it = stations_uids.begin(); it != stations_uids.end(); ++it) {
+    resource = "/station/" + *it;
+    json_response = FetchDataAsStringAt(resource);
+    stations.push_back(json::ExtractStation(json_response));
+  }
+  return stations;
 }
 
 vector<entity::Measurement>
@@ -93,9 +102,18 @@ vector<entity::Measurement>
 
 vector<entity::Metrics> HTTPConnector::FetchMetricsAt() const
 {
-	string resource = "/metrics";
-	string content = FetchDataAsStringAt(resource);
-	return json::ExtractMetrics(content);
+	vector<entity::Metrics> metrics;
+  string resource = "/metrics";
+	string json_response = FetchDataAsStringAt(resource);
+  auto metrics_codes = 
+    json::ExtractSimpleListElements(json_response, "metrics");
+
+  for (auto it = metrics_codes.begin(); it != metrics_codes.end(); ++it) {
+    resource = "/metrics/" + *it;
+    json_response = FetchDataAsStringAt(resource);
+    metrics.push_back(json::ExtractMetrics(json_response));
+  }	
+  return metrics;
 }
 // ~~ stormy::acquisition::HTTPConnector
 }}
