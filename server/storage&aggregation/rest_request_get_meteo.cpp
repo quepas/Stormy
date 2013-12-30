@@ -1,15 +1,22 @@
 #include "rest_request_get_meteo.h"
 
 #include "../../common/rest_constant.h"
-#include "rest_json_cookbook.h"
+#include "../../common/rest_cookbook.h"
+#include "../../common/entity_station.h"
 
+#include <map>
+#include <vector>
 #include <Poco/NumberParser.h>
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 
+using namespace stormy::common;
 using namespace stormy::common::rest;
+
 using std::ostream;
 using std::string;
+using std::map;
+using std::vector;
 using Poco::NumberParser;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
@@ -18,7 +25,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMeteo::GetMeteo(string uri, db::Storage* storage_database ) 
+GetMeteo::GetMeteo(string uri, db::Storage* storage_database) 
   : uri_parser_(uri),
     storage_database_(storage_database)
 {
@@ -34,6 +41,25 @@ void GetMeteo::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response )
 { 
+  //auto& database_handler = db::MongoHandler::get();
+  auto path_segments = uri_parser_.getPathSegments();
+  auto query_segments = uri_parser_.getQuerySegments();
+  ostream& ostr = response.send();
+
+  // api: /meteo
+  if (path_segments.size() == 1) {
+    auto stations = storage_database_->GetStations();
+    vector<entity::Station> stations_with_any_meteo;
+
+    for (auto it = stations.begin(); it != stations.end(); ++it) {
+      uint32_t count = storage_database_->CountStationMeasurements(it->uid);
+      if (count > 0) 
+        stations_with_any_meteo.push_back(*it);
+    }
+    ostr << cookbook::PrepareStationUIDsWithAnyMeteo(stations_with_any_meteo);
+  }
+
+  /*
   auto path_segments = uri_parser_.getPathSegments();
   auto query_segments = uri_parser_.getQuerySegments();
   auto metrics_index = query_segments.find(constant::type_parameter);
@@ -56,7 +82,7 @@ void GetMeteo::handleRequest(
         station_id, metrics_code, hours));
   } else {
     stream_response << json::Cookbook::PrepareEmpty();
-  }
+  }*/
 }
 // ~~ stormy::test::request::GetMeteo
 }}}

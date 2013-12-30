@@ -26,6 +26,8 @@ std::string PrepareStationInfo(
   const entity::Station& station);
 
 // api: /meteo
+std::string PrepareStationUIDsWithAnyMeteo(
+  const std::vector<entity::Station>& stations);
 std::string PrepareMeteoCountPerStation(
   const std::map<std::string, uint32_t>& uid_size_map);
 // api: /meteo/:station_uid

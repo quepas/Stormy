@@ -3,6 +3,7 @@
 #include "../../common/util.h"
 #include "../../common/rest_cookbook.h"
 #include "../../common/rest_constant.h"
+#include "../../common/entity_station.h"
 #include "db_mongo_handler.h"
 
 #include <ctime>
@@ -15,7 +16,9 @@
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/NumberParser.h>
 
+using namespace stormy::common;
 using namespace stormy::common::rest;
+
 using boost::copy;
 using boost::adaptors::map_keys;
 using std::back_inserter;
@@ -59,15 +62,15 @@ void GetMeteo::handleRequest(
   // api: /meteo
   if (path_segments.size() == 1) {
     auto stations = database_handler.getStationsData();
-    auto uid_size_map = map<string, uint32_t>();
+    vector<entity::Station> stations_with_any_meteo;
 
     for (auto it = stations.begin(); it != stations.end(); ++it) {
       uint32_t count = database_handler
         .CountMeasureSetsForStationByUID(it->uid);
       if (count > 0) 
-        uid_size_map.insert(make_pair(it->uid, count));      
+        stations_with_any_meteo.push_back(*it);
     }
-    ostr << cookbook::PrepareMeteoCountPerStation(uid_size_map);
+    ostr << cookbook::PrepareStationUIDsWithAnyMeteo(stations_with_any_meteo);
   }
   // api: /meteo/:station_uid
   else if (path_segments.size() == 2) {

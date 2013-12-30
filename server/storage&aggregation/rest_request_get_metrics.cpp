@@ -20,7 +20,7 @@ GetMetrics::GetMetrics(string uri, db::Storage* storage_database)
     storage_database_(storage_database)
 {
 
- }
+}
 
 GetMetrics::~GetMetrics()
 {

@@ -75,6 +75,17 @@ string PrepareStationInfo(const entity::Station& station)
   return WrapAsJSON(content);
 }
 
+string PrepareStationUIDsWithAnyMeteo(const vector<entity::Station>& stations)
+{
+  vector<string> station_uids;
+  string content = constant::json_measurements;
+  for (auto it = stations.begin(); it != stations.end(); ++it) {
+    station_uids.push_back(it->uid);
+  }
+  content += WrapAsList(join(station_uids, ","));
+  return WrapAsJSON(content);
+}
+
 string PrepareMeteoCountPerStation(
   const map<string, uint32_t>& uid_count_map)
 {
@@ -183,6 +194,5 @@ string PrepareServerInfo(string name, string type, string timezone)
   content += WrapAsJSON(server_info);
   return WrapAsJSON(content);
 }
-
 // ~~ stormy::common::rest::cookbook
 }}}}
