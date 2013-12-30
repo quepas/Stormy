@@ -11,6 +11,7 @@ using namespace stormy::common;
 using boost::copy;
 using std::back_inserter;
 using std::map;
+using std::make_pair;
 using std::string;
 using std::tm;
 using std::time_t;
@@ -22,12 +23,13 @@ using soci::use;
 using soci::into;
 using soci::row;
 using soci::rowset;
+using soci::i_null;
 
 namespace stormy {
   namespace db {
 
 Storage::Storage(common::db::Setting* storageDB)
-	:	logger_(Logger::get("aggregation")),
+	:	logger_(Logger::get("aggregation_main_thread")),
     configuration(storageDB)
 {	
 	connect();
@@ -117,8 +119,9 @@ void Storage::UpdateStationLastUpdateIfNeeded(
 void Storage::InsertMeasureAsText(const entity::Measurement& measure)
 {
   TRY  
-  sql << "INSERT INTO measurement(code, value_text, station_uid, timestamp)"
-    "values(:code, :value_text, :station_uid, :timestamp", 
+  sql << "INSERT INTO measurement"
+    "(code, value_text, value_number, station_uid, timestamp)"
+    "values(:code, :value_text, NULL, :station_uid, :timestamp)", 
     use(measure.code),
     use(measure.value_text), 
     use(measure.station_uid),
@@ -130,10 +133,11 @@ void Storage::InsertMeasureAsText(const entity::Measurement& measure)
 void Storage::InsertMeasureAsNumeric(const entity::Measurement& measure)
 {
   TRY  
-  sql << "INSERT INTO measurement(code, value_number, station_uid, timestamp)"
-    "values(:code, :value_number, :station_uid, :timestamp)", 
+  sql << "INSERT INTO measurement"
+    "(code, value_number, value_text, station_uid, timestamp)"
+    "values(:code, :value_number, NULL, :station_uid, :timestamp)", 
     use(measure.code),
-    use(measure.value_number), 
+    use(measure.value_number),
     use(measure.station_uid),
     use(measure.timestamp);
   CATCH_MSG("[db/Storage] InsertMeasureAsText: ")
@@ -447,6 +451,85 @@ bool Storage::CreateTask(string period_name, string station_uid)
 	return true;
 	CATCH_MSG("[Storage] CreateTask(period, station):\n\t")
 	return false;
+}
+
+vector<tm> Storage::SelectDistinctMeasureTSForStationBetweenTS(
+  string station_uid,
+  tm from,
+  tm to)
+{
+  vector<tm> distinct_timestamps;
+  rowset<row> rs = (sql.prepare <<
+    "SELECT DISTINCT timestamp "
+      "FROM measurement "
+      "WHERE station_uid = :station_uid "
+      "AND timestamp >= :from_ts "
+      "AND timestamp <= :to_ts "
+      "ORDER BY timestamp ",
+    use(station_uid), use(from), use(to));
+
+  for (auto row = rs.begin(); row != rs.end(); ++row) {    
+    distinct_timestamps.push_back(row->get<tm>(0));
+  }
+  return distinct_timestamps;
+}
+
+map<time_t, vector<entity::Measurement>> 
+  Storage::GetMeasureSetsForStationBetweenTS(
+    string station_uid, 
+    time_t from, 
+    time_t to)
+{
+  map<time_t, vector<entity::Measurement>> measure_sets;  
+  tm from_time = *localtime(&from);
+  tm to_time = *localtime(&to);
+
+  vector<tm> measure_set_times = 
+    SelectDistinctMeasureTSForStationBetweenTS(station_uid, from_time, to_time);
+  for (auto mst_it = measure_set_times.begin(); 
+        mst_it != measure_set_times.end(); ++mst_it) {
+    vector<entity::Measurement> measures;
+    rowset<row> rs = (sql.prepare << 
+      "SELECT * FROM measurement "
+        "WHERE station_uid = :station_uid "
+        "AND timestamp = :ms_time ", 
+      use(station_uid), use(*mst_it));
+
+    for (auto row = rs.begin(); row != rs.end(); ++row) {    
+      entity::Measurement measure;
+      measure.id = row->get<int>(0);
+      measure.code = row->get<string>(1);
+      measure.station_uid = row->get<string>(2);
+
+      const auto& value_text_ind = row->get_indicator(3);
+      if (value_text_ind != i_null) {
+        measure.value_text = row->get<string>(3);
+        measure.is_numeric = false;
+      }
+      const auto& value_number_ind = row->get_indicator(4);
+      if (value_number_ind != i_null) {
+        measure.value_number = row->get<double>(4);
+        measure.is_numeric = true;
+      }
+      measure.timestamp = row->get<tm>(5);
+      measures.push_back(measure);
+    }
+    time_t measure_set_time = mktime(&(*mst_it))+3600;
+    measure_sets.insert(make_pair(measure_set_time, measures));
+  }
+  return measure_sets;
+}
+
+map<time_t, vector<entity::Measurement>> 
+  Storage::GetMeasureSetsForStationAndTS(string station_uid, time_t time )
+{
+  return GetMeasureSetsForStationBetweenTS(station_uid, time, time);
+}
+
+map<time_t, vector<entity::Measurement>> 
+  Storage::GetAllMeasureSetsForStation(string station_uid)
+{
+  return GetMeasureSetsForStationBetweenTS(station_uid, 0, LocaltimeNow());
 }
 // ~~ stormy::db::Storage
 }}

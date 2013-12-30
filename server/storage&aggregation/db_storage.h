@@ -54,6 +54,24 @@ public:
     std::string metrics_code, 
     uint16_t from_last_hours);
   
+  std::vector<std::tm> SelectDistinctMeasureTSForStationBetweenTS(
+    std::string station_uid,
+    std::tm from,
+    std::tm to);
+
+  std::map<std::time_t, std::vector<common::entity::Measurement>>
+    GetMeasureSetsForStationBetweenTS(
+      std::string station_uid,
+      std::time_t from,
+      std::time_t to);
+  std::map<std::time_t, std::vector<common::entity::Measurement>>
+    GetMeasureSetsForStationAndTS(
+      std::string station_uid, 
+      std::time_t time);
+  std::map<std::time_t, std::vector<common::entity::Measurement>>
+    GetAllMeasureSetsForStation(
+      std::string station_uid);
+
   void InsertMeasureSets(
     const std::map<std::time_t, std::vector<common::entity::Measurement>>& measure_sets);
   void InsertMeasureAsText(
