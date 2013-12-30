@@ -12,7 +12,8 @@ function ConnectCtrl() {
 
 function AppCtrl($scope, $http) {
 	$scope.updateMeteo = function() {
-		$http.get('/acq/meteo/' + $scope.currentStation.id + '/' + $scope.currentType.code)
+		console.log($scope.metrics.code)
+		$http.get('/acq/meteo/' + $scope.station.uid + '/' + $scope.metrics.code)
 			.success(function(data) {
 				$scope.currentMeteo = data.measurements
 				var context = document.getElementById("meteoChart").getContext("2d")
@@ -20,14 +21,29 @@ function AppCtrl($scope, $http) {
 			})
 	}
 
-	$http.get('/acq/station').success(function(data) {
-		$scope.stations = data.stations
-		$scope.currentStation = $scope.stations[0]
+	// Fetch station data
+	$http.get('/station').success(function(data) {
+		var station_uids = data.stations
+		var stations_info = []
+		for (var i = 0; i < station_uids.length; ++i) {
+			$http.get('/station/' + station_uids[i]).success(function(data) {
+				stations_info.push(data.station)
+			})
+		}
+		$scope.all_stations = stations_info
+		$scope.station = $scope.all_stations[0]
 	})
-
-	$http.get('/acq/info').success(function(data) {
-		$scope.availableTypes = data.metrics
-		$scope.currentType = $scope.availableTypes[0]
+	// Fetch metrics data
+	$http.get('/metrics').success(function(data) {
+		var metrics_codes = data.metrics
+		var metrics_info = []
+		for (var i = 0; i < metrics_codes.length; ++i) {
+			$http.get('/metrics/' + metrics_codes[i]).success(function(data) {
+				metrics_info.push(data.metrics)
+			})
+		}
+		$scope.all_metrics = metrics_info
+        $scope.metrics = $scope.all_metrics[0]
 	})
 }
 

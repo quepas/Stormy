@@ -15,21 +15,48 @@ app.post('/app', function(req, res) {
 	acqHost = req.body.address
 	acqPort = req.body.port
 
-	console.log('[INFO]: Loggin into app on server ' + acqHost + ':' + acqPort)
+	console.log('[INFO] Loggin into app on server ' + acqHost + ':' + acqPort)
 	return res.redirect('#' + req.url)
 })
 
-// AcqREST mappings
-app.get('/acq/station', function(req, res) {
-	console.log('[INFO]: Get stations data')
-
+// Stormy REST Api
+app.get('/station', function(req, res) {
+	console.log('[INFO] Get stations UID list.')
 	http.get(prepareConnectOptions('/station'),
 		function(rawData) {
 			collectAndSendRawData(res, rawData)
 		}
 	)
 })
+app.get('/station/:station_uid', function(req, res) {
+	var station_uid = req.params.station_uid;
+	console.log('[INFO] Get station details: ' + station_uid )
+	http.get(prepareConnectOptions('/station/' + station_uid),
+		function(rawData) {
+			collectAndSendRawData(res, rawData)
+		}
+	)
+})
+app.get('/metrics', function(req, res) {
+	console.log('[INFO] Get metrics codes list.')
+	http.get(prepareConnectOptions('/metrics'),
+		function(rawData) {
+			collectAndSendRawData(res, rawData)
+		}
+	)
+})
+app.get('/metrics/:metrics_code', function(req, res) {
+	var metrics_code = req.params.metrics_code;
+	console.log('[INFO] Get metrics details: ' + metrics_code )
+	http.get(prepareConnectOptions('/metrics/' + metrics_code),
+		function(rawData) {
+			collectAndSendRawData(res, rawData)
+		}
+	)
+})
 
+
+///////////////////// obsolate
 app.get('/acq/meteo/:stationId', function(req, res) {
 	console.log("[INFO]: Get meteo for stationId")
 
