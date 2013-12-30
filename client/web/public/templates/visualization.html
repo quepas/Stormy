@@ -1,15 +1,15 @@
 <div class="wrapper">
 	<div class="left"><canvas id="meteoChart" width="1000" height="500"></canvas></div>
 	<div class="right">
-		<select ng-model="station" ng-options="c.name for c in all_stations" ng-change="updateMeteo()"></select>
-		<select ng-model="metrics" ng-options="c.equivalents for c in all_metrics" ng-change="updateMeteo()"></select>
+		<select ng-model="station" ng-options="c.name for c in all_stations" ng-change="UpdateMeteo()"></select>
+		<select ng-model="metrics" ng-options="c.equivalents for c in all_metrics" ng-change="UpdateChart()"></select>
 		<div>
 			</br><strong>ID:</strong> {{station.uid}}
 			</br><strong>URL:</strong> <a href="{{station.url}}">{{station.url}}</a>
 			</br><strong>Refresh time:</strong> {{station.refresh_time}}
 		</div>
 		<a href='#/' class="btn btn-danger">Back</a>
-		<a class="btn btn-success" ng-click="updateMeteo()">Refresh</a>
+		<a class="btn btn-success" ng-click="UpdateMeteo()">Refresh</a>
 	</div>
 </div>
 

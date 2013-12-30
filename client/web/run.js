@@ -29,7 +29,7 @@ app.get('/station', function(req, res) {
 	)
 })
 app.get('/station/:station_uid', function(req, res) {
-	var station_uid = req.params.station_uid;
+	var station_uid = req.params.station_uid
 	console.log('[INFO] Get station details: ' + station_uid )
 	http.get(prepareConnectOptions('/station/' + station_uid),
 		function(rawData) {
@@ -46,9 +46,19 @@ app.get('/metrics', function(req, res) {
 	)
 })
 app.get('/metrics/:metrics_code', function(req, res) {
-	var metrics_code = req.params.metrics_code;
+	var metrics_code = req.params.metrics_code
 	console.log('[INFO] Get metrics details: ' + metrics_code )
 	http.get(prepareConnectOptions('/metrics/' + metrics_code),
+		function(rawData) {
+			collectAndSendRawData(res, rawData)
+		}
+	)
+})
+app.get('/meteo/:station_uid', function(req, res) {
+	var station_uid = req.params.station_uid
+	var from_ts = req.query.from;
+	console.log('[INFO] Fetched station meteo: ' + station_uid + '. From: ' + from_ts)
+	http.get(prepareConnectOptions('/meteo/' + station_uid + "?from=" + from_ts),
 		function(rawData) {
 			collectAndSendRawData(res, rawData)
 		}

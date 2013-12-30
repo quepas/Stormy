@@ -11,14 +11,16 @@ function ConnectCtrl() {
 }
 
 function AppCtrl($scope, $http) {
-	$scope.updateMeteo = function() {
-		console.log($scope.metrics.code)
-		$http.get('/acq/meteo/' + $scope.station.uid + '/' + $scope.metrics.code)
-			.success(function(data) {
-				$scope.currentMeteo = data.measurements
-				var context = document.getElementById("meteoChart").getContext("2d")
-				var meteoChart = new Chart(context).Line(prepareData($scope.currentMeteo))
-			})
+	$scope.UpdateMeteo = function() {
+		$http.get('/meteo/' + $scope.station.uid + '?from=' + 0).success(function(data) {
+			$scope.measurements = data.measurements
+			var context = document.getElementById("meteoChart").getContext("2d")
+			var meteoChart = new Chart(context).Line(PrepareData($scope.measurements, $scope.metrics.code))
+		})
+	}
+	$scope.UpdateChart = function() {
+		var context = document.getElementById("meteoChart").getContext("2d")
+		var meteoChart = new Chart(context).Line(PrepareData($scope.measurements, $scope.metrics.code))
 	}
 
 	// Fetch station data
@@ -48,20 +50,17 @@ function AppCtrl($scope, $http) {
 }
 
 ///////////////////////////////// help functions /////////////////////////////////
-function prepareData(meteoData) {
+function PrepareData(measurements, metrics_code) {
 	var meteoLabels = []
 	var meteoValues = []
 	var startIndex = 0;
 	var fixedLength = 30
-	var length = meteoData.length
+	var length = measurements.length
 
-	if(length > fixedLength) {
-		startIndex = length - fixedLength;
-	}
+	for(var i = 0; i < measurements.length; i++) {
+		meteoLabels[i] = ''//formatTimestamp(measurements[startIndex + i].timestamp)
+		meteoValues[i] = measurements[i].data[metrics_code]
 
-	for(var i = 0; i < fixedLength; i++) {
-		meteoLabels[i] = formatTimestamp(meteoData[startIndex + i].timestamp)
-		meteoValues[i] = meteoData[startIndex + i].data
 		if(i == 0) {
 			meteoValues[i] -= 0.00001 // HACK for: https://github.com/nnnick/Chart.js/issues/242
 		}
