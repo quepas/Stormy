@@ -14,7 +14,7 @@
 
 int main(int argc, char** argv)
 {
-	std::cout << "++++++++++++++++ Acquisition Module ++++++++++++++++" << std::endl;
+	std::cout << "==== Aqcuisition started. ====" << std::endl;
 	PY_EXECUTOR_INIT();
 	stormy::acquisition::config::Station meteoStationsCfg("config/meteo_stations_config.yaml");
 	stormy::acquisition::config::Metrics meteoTypeCfg("config/meteo_data_type_config.yaml");
