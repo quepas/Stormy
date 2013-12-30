@@ -80,7 +80,7 @@ string PrepareStationUIDsWithAnyMeteo(const vector<entity::Station>& stations)
   vector<string> station_uids;
   string content = constant::json_measurements;
   for (auto it = stations.begin(); it != stations.end(); ++it) {
-    station_uids.push_back(it->uid);
+    station_uids.push_back(WrapAsString(it->uid));
   }
   content += WrapAsList(join(station_uids, ","));
   return WrapAsJSON(content);
