@@ -57,3 +57,11 @@ client/web/public/js/angular.js
 client/web/public/js/Chart.js
 client/web/public/css/bootstrap.min.css
 client/web/public/css/bootstrap.css
+client/web/public/css/datetimepicker.css
+client/web/public/fonts
+client/web/public/img/glyph*.*
+client/web/public/js/angular*
+client/web/public/js/moment*
+client/web/public/js/bootstrap*
+client/web/public/js/datetimepicker*
+client/web/public/js/jquery*

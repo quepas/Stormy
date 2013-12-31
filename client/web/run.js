@@ -57,8 +57,9 @@ app.get('/metrics/:metrics_code', function(req, res) {
 app.get('/meteo/:station_uid', function(req, res) {
 	var station_uid = req.params.station_uid
 	var from_ts = req.query.from;
-	console.log('[INFO] Fetched station meteo: ' + station_uid + '. From: ' + from_ts)
-	http.get(prepareConnectOptions('/meteo/' + station_uid + "?from=" + from_ts),
+	var to_ts = req.query.to;
+	console.log('[INFO] Fetched station meteo: ' + station_uid + '. From: ' + from_ts + ', to: ' + to_ts)
+	http.get(prepareConnectOptions('/meteo/' + station_uid + '?from=' + from_ts + '&to=' + to_ts),
 		function(rawData) {
 			collectAndSendRawData(res, rawData)
 		}

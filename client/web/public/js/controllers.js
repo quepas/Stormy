@@ -1,4 +1,4 @@
-var mainModule = angular.module('StormyWebApp', [])
+var mainModule = angular.module('StormyWebApp', ['ngRoute', 'ui.bootstrap.datetimepicker'])
 
 mainModule.config(function($routeProvider) {
 	$routeProvider
@@ -12,7 +12,17 @@ function ConnectCtrl() {
 
 function AppCtrl($scope, $http) {
 	$scope.UpdateMeteo = function() {
-		$http.get('/meteo/' + $scope.station.uid + '?from=' + 0).success(function(data) {
+		var from = 0;
+		var to = moment().unix() + 3600;
+		if ($scope.from !== undefined) {
+			from = moment($scope.from.date).unix() + 3600;
+		}
+		if ($scope.to !== undefined) {
+			to = moment($scope.to.date).unix() + 3600;
+		}
+
+
+		$http.get('/meteo/' + $scope.station.uid + '?from=' + from + '&to=' + to).success(function(data) {
 			$scope.measurements = data.measurements
 			var context = document.getElementById("meteoChart").getContext("2d")
 			var meteoChart = new Chart(context).Line(PrepareData($scope.measurements, $scope.metrics.code))
