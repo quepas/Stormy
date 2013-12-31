@@ -362,9 +362,10 @@ map<time_t, string> Storage::GetMeasurementFromLast(
 vector<string> Storage::GetMetricsCodes()
 {
   static auto metrics = GetMetrics();
-  auto result = vector<string>(metrics.size());
+  auto result = vector<string>();
   for (auto it = metrics.begin(); it != metrics.end(); ++it) {
-    result.push_back(it->code);
+    if (!it->code.empty())
+      result.push_back(it->code);
   }
   return result;
 }
@@ -480,6 +481,9 @@ map<time_t, vector<entity::Measurement>>
     time_t from, 
     time_t to)
 {
+  // Quick fix: make utc (representation in db)
+  if (from > 3600) from -= 3600;
+  if (to > 3600) to -= 3600;
   map<time_t, vector<entity::Measurement>> measure_sets;  
   tm from_time = *localtime(&from);
   tm to_time = *localtime(&to);

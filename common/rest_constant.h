@@ -26,13 +26,17 @@ const std::string metrics_request_pattern = "/metrics/?";
 const std::string metrics_info_request_pattern = "/metrics/[a-zA-Z0-9]+/?";
 // api: /info
 const std::string info_request_pattern = "/info/?";
+// api: /export
+const std::string export_request_pattern = "/export/?";
+// api: /export/:station_id
+const std::string export_station_uid_request_pattern = "/export/[0-9a-f]{32}/?";
 // api query: ?param_one=value1&param_two=value2 (...)
-const std::string uri_query_vars_pattern = ".([a-zA-Z_]+=[a-zA-Z0-9]+&?)*";
+const std::string uri_query_vars_pattern = ".([a-zA-Z_]+=[a-zA-Z0-9,]+&?)*";
 /*
  * api available parameters (as filters)
  */
-// ?type=:metrics_code
-const std::string type_parameter = "type";
+// ?metrics=:metrics_code
+const std::string metrics_parameter = "metrics";
 // ?from=:timestamp
 const std::string from_parameter = "from";
 // ?to=:timestamp
@@ -41,6 +45,13 @@ const std::string to_parameter = "to";
 const std::string from_last_hours_parameter = "from_last_hours";
 const uint16_t default_from_last_hours = 24;
 
+/*
+ *  CSV constants
+ */
+const std::string csv_delimiter = ";";
+const std::string csv_new_line = "\n";
+const std::string csv_timestamp = "timestamp";
+const std::string csv_missing_value = "-";
 /*
  *  JSON constants
  */

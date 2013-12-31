@@ -25,7 +25,7 @@ std::string PrepareStationUIDs(
 std::string PrepareStationInfo(
   const entity::Station& station);
 
-// api: /meteo
+// api: /meteo, /export
 std::string PrepareStationUIDsWithAnyMeteo(
   const std::vector<entity::Station>& stations);
 std::string PrepareMeteoCountPerStation(

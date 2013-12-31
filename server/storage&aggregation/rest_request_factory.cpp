@@ -5,6 +5,7 @@
 #include "rest_request_get_meteo.h"
 #include "rest_request_get_info.h"
 #include "rest_request_get_metrics.h"
+#include "rest_request_get_export.h"
 
 #include "../../common/rest_request_bad.h"
 #include "../../common/util.h"
@@ -45,7 +46,7 @@ HTTPRequestHandler* Factory::createRequestHandler(
     return new GetStation(URI, db_storage_);
   } else if (IsMatch(URI, constant::aggregate_request_pattern)) {
     return new GetAggregate(URI, db_aggregation_);
-  } else if(IsMatch(URI, constant::meteo_request_pattern) ||      
+  } else if (IsMatch(URI, constant::meteo_request_pattern) ||      
               IsMatch(URI, constant::meteo_station_uid_request_pattern) ||
               IsMatch(URI, constant::meteo_station_uid_request_pattern + 
                            constant::uri_query_vars_pattern) ||
@@ -53,9 +54,14 @@ HTTPRequestHandler* Factory::createRequestHandler(
     return new GetMeteo(URI, db_storage_);
   } else if (IsMatch(URI, constant::info_request_pattern)) {
     return new GetInfo(db_storage_);
-  } else if(IsMatch(URI, constant::metrics_request_pattern) ||
+  } else if (IsMatch(URI, constant::metrics_request_pattern) ||
               IsMatch(URI, constant::metrics_info_request_pattern)) {
-      return new GetMetrics(URI, db_storage_);
+    return new GetMetrics(URI, db_storage_);
+  } else if (IsMatch(URI, constant::export_request_pattern) ||
+              IsMatch(URI, constant::export_station_uid_request_pattern) ||
+              IsMatch(URI, constant::export_station_uid_request_pattern +
+                           constant::uri_query_vars_pattern)) {
+    return new GetExport(URI, db_storage_);
   } else {
     return new common::rest::request::Bad(URI);
   }
