@@ -31,9 +31,9 @@ int main(int argc, char** argv) {
   db::Storage storage_for_aggregation(storageDBcfg.Configuration());
   db::Storage storage_for_rest(storageDBcfg.Configuration());
 	db::Aggregate aggregation(
-    aggregationDBcfg.Configuration(), &storage_for_aggregation);
+    &aggregationDBcfg.Configuration(), &storage_for_aggregation);
   db::Aggregate aggregation_for_rest(
-    aggregationDBcfg.Configuration(), &storage_for_rest);
+    &aggregationDBcfg.Configuration(), &storage_for_rest);
   
   logger.information("==== Storage & Aggregation started. ====");	  
 	logger.information("Measurements in storage: " + 
@@ -55,9 +55,9 @@ int main(int argc, char** argv) {
 			logger.information("\t" + setting.ToString());
 	});
 	logger.information("=== Storage database: ");
-	logger.information("\t" + storageDBcfg.Configuration()->ToString());
+	logger.information("\t" + storageDBcfg.Configuration().ToString());
 	logger.information("=== Aggregation database: ");
-	logger.information("\t" + aggregationDBcfg.Configuration()->ToString());
+	logger.information("\t" + aggregationDBcfg.Configuration().ToString());
 	logger.information(
     "-------------------------------------------------------------"
 		"-------------------------------------------------------------");

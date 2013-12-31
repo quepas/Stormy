@@ -27,9 +27,9 @@ using soci::i_null;
 namespace stormy {
   namespace db {
 
-Storage::Storage(common::db::Setting* storageDB)
+Storage::Storage(common::db::Setting storage_setting)
 	:	logger_(Logger::get("aggregation_main_thread")),
-    configuration(storageDB)
+    configuration_(storage_setting)
 {	
 	connect();
 }
@@ -42,14 +42,14 @@ Storage::~Storage()
 void Storage::connect()
 {
 	TRY
-	sql.open(postgresql, configuration -> AsConnectionString());	
+	sql_.open(postgresql, configuration_.AsConnectionString());	
 	CATCH_MSG("[StorageDB] connect(): ")
 }
 
 void Storage::insertStation(entity::Station station)
 {
   TRY
-  sql << "INSERT INTO station(uid, name, url, refresh_time, last_update)"
+  sql_ << "INSERT INTO station(uid, name, url, refresh_time, last_update)"
     "values(:uid, :name, :url, :refresh_time, to_timestamp(0))",
     use(station.uid), use(station.name), 
     use(station.url), use(station.refresh_time);
@@ -68,7 +68,7 @@ entity::Station Storage::GetStationByUID(string uid)
 {
 	entity::Station station;
 	TRY
-	sql << "SELECT uid, name, url, refresh_time FROM station WHERE uid = :uid",
+	sql_ << "SELECT uid, name, url, refresh_time FROM station WHERE uid = :uid",
 		into(station.uid), into(station.name), into(station.url),
 		into(station.refresh_time), use(uid);
 	CATCH_MSG("[StorageDB] getStationByUID(): ")
@@ -79,7 +79,7 @@ bool Storage::existsStationByUID(string uid)
 {	
   int count = 0;
 	TRY
-  sql << "SELECT count(*) FROM station WHERE uid = :uid",
+  sql_ << "SELECT count(*) FROM station WHERE uid = :uid",
     into(count), use(uid);
 	CATCH_MSG("[StorageDB] existsStationByUID(): ")	
   return count > 0;
@@ -108,7 +108,7 @@ void Storage::UpdateStationLastUpdateIfNeeded(
   time_t measure_last_update = mktime(&last_update);
   if (measure_last_update > station_last_update) {
     TRY
-    sql << "UPDATE station SET last_update = :last_update "
+    sql_ << "UPDATE station SET last_update = :last_update "
       "WHERE uid = :uid", use(last_update), use(station_uid);
     CATCH_MSG("[db/Storage] UpdateStationLastUpdateIfNeeded: ")
   }
@@ -118,7 +118,7 @@ void Storage::UpdateStationLastUpdateIfNeeded(
 void Storage::InsertMeasureAsText(const entity::Measurement& measure)
 {
   TRY  
-  sql << "INSERT INTO measurement"
+  sql_ << "INSERT INTO measurement"
     "(code, value_text, value_number, station_uid, timestamp)"
     "values(:code, :value_text, NULL, :station_uid, :timestamp)", 
     use(measure.code),
@@ -132,7 +132,7 @@ void Storage::InsertMeasureAsText(const entity::Measurement& measure)
 void Storage::InsertMeasureAsNumeric(const entity::Measurement& measure)
 {
   TRY  
-  sql << "INSERT INTO measurement"
+  sql_ << "INSERT INTO measurement"
     "(code, value_number, value_text, station_uid, timestamp)"
     "values(:code, :value_number, NULL, :station_uid, :timestamp)", 
     use(measure.code),
@@ -148,7 +148,7 @@ tm Storage::findNewestMeasureTimeByStationUID(string station_uid)
   tm newest_measure_time;
 	if(CountStationMeasurements(station_uid) > 0) {
 		TRY
-    sql << "SELECT max(timestamp) FROM measurement "
+    sql_ << "SELECT max(timestamp) FROM measurement "
       "WHERE station_uid = :station_uid",
       into(newest_measure_time), use(station_uid);
 		CATCH_MSG("[db/Storage] findNewestMeasureTimeByStationUID: ")
@@ -159,7 +159,7 @@ tm Storage::findNewestMeasureTimeByStationUID(string station_uid)
 bool Storage::insertOneMetrics(entity::Metrics metrics)
 {
   TRY
-  sql << "INSERT INTO metrics(code, equivalents, type, unit, format)"
+  sql_ << "INSERT INTO metrics(code, equivalents, type, unit, format)"
     "values(:code, :equivalents, :type, :unit, :format)",
     use(metrics.code), use(metrics.equivalents),
     use(metrics.type), use(metrics.unit),
@@ -184,7 +184,7 @@ bool Storage::existsMetricsByCode(const string& code)
 {
 	uint32_t count = 0;
 	TRY
-	sql << "SELECT count(*) FROM metrics WHERE code = :code",
+	sql_ << "SELECT count(*) FROM metrics WHERE code = :code",
 		into(count), use(code);
 	CATCH_MSG("[StorageDB] existsMetricsByCode(): ")
 	return count > 0;
@@ -194,7 +194,7 @@ uint64_t Storage::CountAllMeasurements()
 {
 	uint64_t count = 0;
 	TRY
-	sql << "SELECT count(*) FROM measurement", into(count);
+	sql_ << "SELECT count(*) FROM measurement", into(count);
 	CATCH_MSG("[db/Storage] CountAllMeasurements: ")
 	return count;
 }
@@ -203,7 +203,7 @@ uint32_t Storage::CountAllStations()
 {
 	uint32_t count = 0;
 	TRY
-	sql << "SELECT count(uid) FROM station", into(count);
+	sql_ << "SELECT count(uid) FROM station", into(count);
 	CATCH_MSG("[StorageDB] countStation(): ")
 	return count;
 }
@@ -212,7 +212,7 @@ uint64_t Storage::CountStationMeasurements(string uid)
 {
 	uint64_t count = 0;
 	TRY
-	sql << "SELECT count(*) FROM measurement "
+	sql_ << "SELECT count(*) FROM measurement "
 		"WHERE station_uid = :uid", use(uid), into(count);
 	CATCH_MSG("[db/Storage] countMeasurementFromStation() ")
 	return count;
@@ -222,7 +222,7 @@ vector<entity::Station> Storage::GetStations()
 {
 	auto stations = vector<entity::Station>();
 	TRY
-	rowset<row> rs = (sql.prepare << "SELECT * FROM station");
+	rowset<row> rs = (sql_.prepare << "SELECT * FROM station");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
 		entity::Station element;
@@ -241,7 +241,7 @@ vector<entity::Metrics> Storage::GetMetrics()
 {
 	auto metrics = vector<entity::Metrics>();
 	TRY
-	rowset<row> rs = (sql.prepare << "SELECT * FROM metrics");
+	rowset<row> rs = (sql_.prepare << "SELECT * FROM metrics");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
 		entity::Metrics element;
@@ -261,7 +261,7 @@ vector<aggregation::entity::Task> Storage::GetTasks()
 {
 	auto tasks = vector<aggregation::entity::Task>();
 	TRY
-	rowset<row> rs = (sql.prepare << "SELECT * FROM aggregate_task");
+	rowset<row> rs = (sql_.prepare << "SELECT * FROM aggregate_task");
 	for (auto it = rs.begin(); it != rs.end(); ++it) {
 		row const& row = *it;
 		aggregation::entity::Task element;
@@ -279,7 +279,7 @@ vector<aggregation::entity::Period> Storage::GetPeriods()
 {
 	auto periods = vector<aggregation::entity::Period>();
 	TRY
-  rowset<row> rs = (sql.prepare << "SELECT name FROM aggregate_period");
+  rowset<row> rs = (sql_.prepare << "SELECT name FROM aggregate_period");
   for (auto it = rs.begin(); it != rs.end(); ++it) {
     const row& row = *it;
     aggregation::entity::Period element;
@@ -293,7 +293,7 @@ vector<aggregation::entity::Period> Storage::GetPeriods()
 bool Storage::DeleteTask(string period_name, string station_uid)
 {
 	TRY
-	sql << "DELETE FROM aggregate_task "
+	sql_ << "DELETE FROM aggregate_task "
 		"WHERE period_name = :period_name "
 		"AND station_uid = :station_uid",
 		use(period_name), use(station_uid);
@@ -317,7 +317,7 @@ tm Storage::GetOldestStationMeasureTime(string uid)
 {
   time_t time = 0;
   TRY
-  sql << "SELECT EXTRACT(EPOCH FROM "
+  sql_ << "SELECT EXTRACT(EPOCH FROM "
     "(SELECT min(timestamp) FROM measurement WHERE station_uid = :uid))",
     use(uid), into(time);
   CATCH_MSG("[Storage] GetOldestStationMeasureTime():\n\t")
@@ -327,7 +327,7 @@ tm Storage::GetOldestStationMeasureTime(string uid)
 bool Storage::UpdateTaskCurrentTime(uint32_t id, tm timestamp)
 {
   TRY
-  sql << "UPDATE aggregate_task SET current_ts = :timestamp "
+  sql_ << "UPDATE aggregate_task SET current_ts = :timestamp "
     "WHERE id = :id", use(timestamp), use(id);
   return true;
   CATCH_MSG("[Storage] UpdateTaskCurrentTime():\n\t")
@@ -338,7 +338,7 @@ tm Storage::CalculateAggregateEndTime(string period_name, tm start_time)
 {  
   time_t time = 0;
   TRY
-  sql << "SELECT EXTRACT(EPOCH FROM (SELECT (:start_time) + (SELECT period FROM aggregate_period "
+  sql_ << "SELECT EXTRACT(EPOCH FROM (SELECT (:start_time) + (SELECT period FROM aggregate_period "
     "WHERE name = :period_name)))", use(start_time),
     use(period_name), into(time);
   CATCH_MSG("[Storage] CalculateAggregateEndTime():\n\t")
@@ -349,7 +349,7 @@ tm Storage::GetStationLastUpdate(string station_uid)
 {
   time_t time = 0;
   TRY
-  sql << "SELECT EXTRACT(EPOCH FROM (SELECT last_update FROM station "
+  sql_ << "SELECT EXTRACT(EPOCH FROM (SELECT last_update FROM station "
     "WHERE uid = :uid))", use(station_uid), into(time);
   CATCH_MSG("[Storage] Exception at GetStationLastDataUpdate(station_uid):\n\t")
   return *gmtime(&time);
@@ -358,7 +358,7 @@ tm Storage::GetStationLastUpdate(string station_uid)
 bool Storage::CreateTask(string period_name, string station_uid)
 {
 	TRY
-	sql << "INSERT INTO aggregate_task "
+	sql_ << "INSERT INTO aggregate_task "
 		"(period_name, station_uid, current_ts)"
 		"VALUES(:period_name, :station_uid, to_timestamp(0))",
 		use(period_name), use(station_uid);
@@ -374,7 +374,7 @@ vector<tm> Storage::SelectDistinctMeasureTSForStationBetweenTS(
 {
   vector<tm> distinct_timestamps;
   TRY
-  rowset<row> rs = (sql.prepare <<
+  rowset<row> rs = (sql_.prepare <<
     "SELECT DISTINCT timestamp "
       "FROM measurement "
       "WHERE station_uid = :station_uid "
@@ -409,7 +409,7 @@ map<time_t, vector<entity::Measurement>>
         mst_it != measure_set_times.end(); ++mst_it) {
     vector<entity::Measurement> measures;
     TRY
-    rowset<row> rs = (sql.prepare << 
+    rowset<row> rs = (sql_.prepare << 
       "SELECT * FROM measurement "
         "WHERE station_uid = :station_uid "
         "AND timestamp = :ms_time ", 

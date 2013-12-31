@@ -21,7 +21,7 @@ namespace stormy {
 class Storage
 {
 public:
-  Storage(common::db::Setting* storageDB);
+  Storage(common::db::Setting storage_setting);
   ~Storage();
   
   bool DeleteTask(std::string period_name, std::string station_uid);
@@ -83,12 +83,15 @@ public:
   bool insertOneMetrics(common::entity::Metrics metrics);
   bool insertMetrics(const std::vector<common::entity::Metrics>& metrics);
   bool existsMetricsByCode(const std::string& code);
-		
+	
+  common::db::Setting Configuration() {
+    return configuration_;
+  }
 private:
   void connect();
 
-  common::db::Setting* configuration;
-  soci::session sql;
+  common::db::Setting configuration_;
+  soci::session sql_;
   Poco::Logger& logger_;
 };
 // ~~ stormy::db::Storage

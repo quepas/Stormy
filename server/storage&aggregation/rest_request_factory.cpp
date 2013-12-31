@@ -51,7 +51,7 @@ HTTPRequestHandler* Factory::createRequestHandler(
               IsMatch(URI, constant::meteo_station_uid_request_pattern + 
                            constant::uri_query_vars_pattern) ||
               IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
-    return new GetMeteo(URI, db_storage_);
+    return new GetMeteo(URI, db_storage_->Configuration());
   } else if (IsMatch(URI, constant::info_request_pattern)) {
     return new GetInfo(db_storage_);
   } else if (IsMatch(URI, constant::metrics_request_pattern) ||

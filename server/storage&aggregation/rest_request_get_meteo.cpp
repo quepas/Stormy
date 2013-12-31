@@ -1,5 +1,6 @@
 #include "rest_request_get_meteo.h"
 
+#include "db_storage.h"
 #include "../../common/rest_constant.h"
 #include "../../common/rest_cookbook.h"
 #include "../../common/entity_station.h"
@@ -31,9 +32,9 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMeteo::GetMeteo(string uri, db::Storage* storage_database) 
+GetMeteo::GetMeteo(string uri, common::db::Setting storage_setting) 
   : uri_parser_(uri),
-    storage_database_(storage_database)
+    storage_setting_(storage_setting)
 {
 
 }
@@ -47,17 +48,18 @@ void GetMeteo::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response )
 { 
+  db::Storage storage_database_(storage_setting_);
   auto path_segments = uri_parser_.getPathSegments();
   auto query_segments = uri_parser_.getQuerySegments();
   ostream& ostr = response.send();
 
   // api: /meteo
   if (path_segments.size() == 1) {
-    auto stations = storage_database_->GetStations();
+    auto stations = storage_database_.GetStations();
     vector<entity::Station> stations_with_any_meteo;
 
     for (auto it = stations.begin(); it != stations.end(); ++it) {
-      uint64_t count = storage_database_->CountStationMeasurements(it->uid);
+      uint64_t count = storage_database_.CountStationMeasurements(it->uid);
       if (count > 0) 
         stations_with_any_meteo.push_back(*it);
     }
@@ -66,8 +68,8 @@ void GetMeteo::handleRequest(
   // api: /meteo/:station_uid
   else if (path_segments.size() == 2) {
     if (query_segments.empty()) {
-      auto measurements = storage_database_->
-        GetAllMeasureSetsForStation(path_segments[1]);
+      auto measurements = storage_database_
+        .GetAllMeasureSetsForStation(path_segments[1]);
       vector<time_t> keys;
       copy(measurements | map_keys, back_inserter(keys));      
       ostr << cookbook::PrepareMeteoTimestamps(keys);
@@ -89,8 +91,8 @@ void GetMeteo::handleRequest(
             to_ts = temporary_ts;
         }
       }
-      auto measurements = storage_database_->
-        GetMeasureSetsForStationBetweenTS(path_segments[1], from_ts, to_ts);
+      auto measurements = storage_database_
+        .GetMeasureSetsForStationBetweenTS(path_segments[1], from_ts, to_ts);
       ostr << cookbook::PrepareMeteoSets(measurements);
     }
   }
@@ -98,8 +100,8 @@ void GetMeteo::handleRequest(
   else if (path_segments.size() == 3) {
     time_t timestamp = stol(path_segments[2]);
 
-    auto measurements = storage_database_->
-      GetMeasureSetsForStationAndTS(path_segments[1], timestamp);
+    auto measurements = storage_database_
+      .GetMeasureSetsForStationAndTS(path_segments[1], timestamp);
     ostr << cookbook::PrepareMeteoSets(measurements);
   }
 }
