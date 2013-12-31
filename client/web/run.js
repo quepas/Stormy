@@ -65,30 +65,19 @@ app.get('/meteo/:station_uid', function(req, res) {
 		}
 	)
 })
-
-
-///////////////////// obsolate
-app.get('/acq/meteo/:stationId', function(req, res) {
-	console.log("[INFO]: Get meteo for stationId")
-
-	http.get(prepareConnectOptions('/meteo/' + req.params.stationId),
+app.get('/export/:station_uid', function(req, res) {
+	var station_uid = req.params.station_uid
+	var from_ts = req.query.from;
+	var to_ts = req.query.to;
+	var metrics = req.query.metrics;
+	console.log('[INFO] Export meteo to csv for: ' + station_uid + '. From: ' + from_ts + ', to: ' + to_ts + ', metrics: ' + metrics)
+	http.get(prepareConnectOptions('/export/' + station_uid + '?from=' + from_ts + '&to=' + to_ts + '&metrics=' + metrics),
 		function(rawData) {
 			collectAndSendRawData(res, rawData)
 		}
 	)
 })
-
-app.get('/acq/meteo/:stationId/:typeId', function(req, res) {
-	console.log("[INFO]: Get current type meteo for stationId")
-
-	http.get(prepareConnectOptions('/meteo/' + req.params.stationId + '/' + req.params.typeId),
-		function(rawData) {
-			collectAndSendRawData(res, rawData)
-		}
-	)
-})
-
-app.get('/acq/info', function(req, res) {
+app.get('/info', function(req, res) {
 	console.log("[INFO]: Get info from server")
 
 	http.get(prepareConnectOptions('/info'),
