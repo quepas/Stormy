@@ -307,15 +307,6 @@ vector<aggregation::entity::Period> Storage::GetPeriods()
 	return periods;
 }
 
-bool Storage::DeleteTask(uint16_t id)
-{
-	TRY
-	sql << "DELETE FROM aggregate_task WHERE id = :id", use(id);
-	return true;
-	CATCH_MSG("[Storage] Exception at DeleteTask():\n\t")
-	return false;
-}
-
 bool Storage::DeleteTask(string period_name, string station_uid)
 {
 	TRY
@@ -369,16 +360,6 @@ tm Storage::CalculateAggregateEndTime(string period_name, tm start_time)
     use(period_name), into(time);
   CATCH_MSG("[Storage] CalculateAggregateEndTime():\n\t")
   return *gmtime(&time);
-}
-
-bool Storage::UpdateStationLastUpdate(string station_uid, tm timestamp)
-{
-  TRY
-  sql << "UPDATE station SET last_update = :last_update "
-    "WHERE uid = :uid", use(timestamp), use(station_uid);
-  return true;
-  CATCH_MSG("[Storage] UpdateStationLastUpdate(station_uid, timestamp):\n\t")
-  return false;
 }
 
 tm Storage::GetStationLastUpdate(string station_uid)

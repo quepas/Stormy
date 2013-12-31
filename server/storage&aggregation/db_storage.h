@@ -24,15 +24,11 @@ class Storage
 public:
   Storage(common::db::Setting* storageDB);
   ~Storage();
-
-  bool DeleteTask(uint16_t id);
+  
   bool DeleteTask(std::string period_name, std::string station_uid);
   bool CreateTask(std::string period_name, std::string station_uid);
   bool UpdateTaskCurrentTime(uint32_t id, std::tm timestamp);
-  std::tm CalculateAggregateEndTime(std::string period_name, std::tm start_time);
-
-  bool UpdateStationLastUpdate(std::string station_uid, std::tm timestamp);
-  std::tm GetStationLastUpdate(std::string station_uid);
+  std::tm CalculateAggregateEndTime(std::string period_name, std::tm start_time);  
 
   std::tm GetOldestStationMeasureTime(std::string uid);  
   
@@ -70,6 +66,7 @@ public:
   std::vector<common::entity::Metrics> GetMetrics();
   std::vector<std::string> GetMetricsCodes();
 
+  std::tm GetStationLastUpdate(std::string station_uid);
   void UpdateStationLastUpdateIfNeeded(
     std::string station_uid, 
     std::tm last_update);

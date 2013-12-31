@@ -22,18 +22,16 @@ public:
   ~Aggregate();
     
   // tasks
-  uint32_t GetTaskId(std::string station_uid, std::string period_name);
   std::tm GetTaskCurrentTS(uint32_t task_id);
-  std::string GetStationUIDFromTask(uint32_t task_id);     
+  std::string GetStationUIDFromTask(uint32_t task_id);
 
   // aggregate
   bool InsertAggregate(stormy::aggregation::entity::Aggregate aggregate);
-																
+
   Storage* database_storage() {
     return database_storage_;
   }
 private:  
-  uint32_t InsertTask(std::string station_uid, stormy::aggregation::Setting aggregation_setting);
   void Connect();
 
   common::db::Setting* database_setting_;

@@ -266,6 +266,7 @@ map<time_t, vector<entity::Measurement>>
     }
     result.insert(make_pair(current_ts, measure_set));
   }
+  return result;
 }
 
 map<time_t, vector<entity::Measurement>> MongoHandler::

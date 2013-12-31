@@ -31,34 +31,9 @@ void Aggregate::Connect()
 	CATCH_MSG("[AggregationDB] connect(): ")
 }
 
-uint32_t Aggregate::GetTaskId(string station_uid, string period_name)
-{
-	uint32_t id = 0;
-	TRY
-	sql << "SELECT id FROM aggregate_task "
-		"WHERE station_uid = :station_uid "
-		"AND period_name = :period_name "
-		"LIMIT 1",
-		use(station_uid), use(period_name), into(id);
-	CATCH_MSG("[AggregationDB] getTaskId(): ")
-	return id;
-}
-
-uint32_t Aggregate::InsertTask(string station_uid, stormy::aggregation::Setting aggregation)
-{
-	uint32_t id = 0;
-	TRY
-	sql << "INSERT INTO aggregate_task "
-		"(station_uid, period_name, current_ts) "
-		"VALUES(:station_uid, :period_name, to_timestamp(0)) RETURNING id",
-		use(station_uid), use(aggregation.name), into(id);
-	CATCH_MSG("[AggregationDB] insertTask(): ")
-	return id;
-}
-
 string Aggregate::GetStationUIDFromTask(uint32_t task_id)
 {
-	string station_uid = 0;
+	string station_uid = "";
 	TRY
 	sql << "SELECT station_uid FROM aggregate_task "
 		"WHERE id = :id", use(task_id), into(station_uid);
