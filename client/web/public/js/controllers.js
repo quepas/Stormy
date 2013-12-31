@@ -63,7 +63,7 @@ function ExportCtrl($scope, $http) {
 		});
 
 		$http.get('/export/' + $scope.station.uid + '?from=' + from + '&to=' + to + '&metrics=' + metrics).success(function(data) {
-			download('meteo_' + moment().unix(), data)
+			SaveAsCSV('meteo_' + moment().unix(), data)
 		})
 	}
 }
@@ -104,12 +104,12 @@ function formatTimestamp(timestamp) {
 	return currentDate.getUTCHours() + ':' + currentDate.getUTCMinutes() + ' '
 }
 
-		function download(filename, text) {
-    		var pom = document.createElement('a');
-    		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    		pom.setAttribute('download', filename + ".csv");
-    		pom.click();
-		}
+function SaveAsCSV(filename, text) {
+	var pom = document.createElement('a');
+	pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+	pom.setAttribute('download', filename + ".csv");
+    pom.click();
+}
 
 function FetchStationAndMetrics(http, scope) {
 	// Fetch station data
