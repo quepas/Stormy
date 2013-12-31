@@ -11,7 +11,7 @@ namespace stormy {
 
 Config::Config(string path)
 	:	BaseConfig(path),
-		configuration_(new Setting())
+		configuration_()
 {
 	MapIntoConfiguration();
 }
@@ -23,37 +23,36 @@ Config::~Config()
 
 void Config::MapIntoConfiguration()
 {
-	configuration_ = new Setting();
 	if(HasField("name")) {
-		configuration_ -> name = AsString("name");
+		configuration_.name = AsString("name");
 	}
 	if(HasField("host")) {
-		configuration_ -> host = AsString("host");
+		configuration_.host = AsString("host");
 	} else {
 		string defaultHost = "localhost";
 		logger_.warning("[StorageDB] No host data. Using default (" 
 			 + defaultHost + ").");	
-    configuration_ -> host = defaultHost;
+    configuration_.host = defaultHost;
 	}
 	if(HasField("port")) {
-		configuration_ -> port = AsInt("port");
+		configuration_.port = AsInt("port");
 	} else {
 		logger_.warning("[StorageDB] No port data. Using default (" 
 			 + NumberFormatter::format(Setting::defaultPort) + ").");
-		configuration_ -> port = Setting::defaultPort;
+		configuration_.port = Setting::defaultPort;
 	}
 	if(HasField("database")) {
-		configuration_ -> database = AsString("database");
+		configuration_.database = AsString("database");
 	} else {		
 		logger_.error("[StorageDB] No database name.");
 	}
 	if(HasField("user")) {
-		configuration_ -> user = AsString("user");
+		configuration_.user = AsString("user");
 	} else {
 		logger_.error("[StorageDB] No user name.");
 	}
 	if(HasField("password")) {
-		configuration_ -> password  = AsString("password");
+		configuration_.password  = AsString("password");
 	} else {
 		logger_.error("[StorageDB] No password.");
 	}
