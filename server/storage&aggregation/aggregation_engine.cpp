@@ -9,7 +9,7 @@ using std::make_pair;
 
 namespace stormy {
 	namespace aggregation {
-    
+
 Engine::Engine(
   db::Storage* storage, 
   db::Aggregate* aggregation)
@@ -211,5 +211,8 @@ bool Engine::DeleteUselessTask(
 {
 	return storage_->DeleteTask(period_name, station_uid);
 }
+
+
+
 // ~~ stormy::aggregation::Engine
 }}

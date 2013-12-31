@@ -74,7 +74,7 @@ void Scheduler::ScheduleAsInitialTask(entity::Task task_entity)
   auto scheduled_task = factory_
     .CreateDynamicTask(task::INITIAL, task_entity);
   scheduled_tasks_.push_back(scheduled_task);
-  schedule(scheduled_task, 0);
+  schedule(scheduled_task, 1000*60);
 }
 
 void Scheduler::ScheduleAsRegularTask(entity::Task task_entity)

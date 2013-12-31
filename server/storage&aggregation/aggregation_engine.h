@@ -2,6 +2,8 @@
 
 #include <string>
 #include <Poco/Logger.h>
+#include <Poco/Util/Timer.h>
+#include <Poco/Util/TimerTask.h>
 
 #include "../../common/entity_station.h"
 #include "../../common/entity_metrics.h"
@@ -24,6 +26,10 @@ enum BadTaskReason {
 class Engine
 {
 public:
+  // Re-init (re-fetch station data and validate aggregate_tasks)
+  class CyclicRestart;
+  class Restarter;
+
   Engine(db::Storage* storage, db::Aggregate* aggregation);			
   ~Engine();
 
@@ -61,6 +67,37 @@ private:
 				
   db::Storage* storage_;
   db::Aggregate* aggregation_;
+
+public:
+  class CyclicRestart : public Poco::Util::TimerTask
+  {
+  public:
+    CyclicRestart(Engine& engine)
+      : engine_(engine) {};
+
+    void run() override {
+      engine_.Restart();
+    };
+  private:
+    Engine& engine_;
+  };
+
+  class Restarter : public Poco::Util::Timer
+  {
+  public:
+    Restarter(std::time_t restart_seconds)
+      : restart_seconds_(restart_seconds) {};
+
+    void operator()(Engine& engine) {
+      std::time_t restart_miliseconds = restart_seconds_ * 1000;
+      schedule(
+        new CyclicRestart(engine), 
+        15 * 1000, 
+        static_cast<long>(restart_miliseconds));
+    };
+  private:
+    std::time_t restart_seconds_;    
+  };
 };
 // ~~ stormy::aggregation::Engine
 }}

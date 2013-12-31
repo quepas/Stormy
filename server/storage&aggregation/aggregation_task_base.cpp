@@ -26,7 +26,7 @@ Base::~Base()
 string Base::PrepareHeader(string task_type)
 {
   return "[aggregate/" + task_type + "#" +
-    NumberFormatter::format(task_entity_.id) + "]";
+    NumberFormatter::format(task_entity_.id) + "] ";
 }
 // ~~ stormy::aggregation::task::Base
 }}}

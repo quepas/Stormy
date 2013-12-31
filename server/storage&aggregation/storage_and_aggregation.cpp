@@ -19,9 +19,7 @@ using namespace stormy;
 using namespace Poco;
 
 int main(int argc, char** argv) {
-	AutoPtr<WindowsColorConsoleChannel> channel(new WindowsColorConsoleChannel);
-  (*channel).setProperty("informationColor", "gray");   
-  (*channel).setProperty("errorColor", "red");
+	AutoPtr<WindowsColorConsoleChannel> channel(new WindowsColorConsoleChannel);  
 	Logger::root().setChannel(channel);
 	Logger& logger = Logger::get("aggregation_main_thread");  
 	acquisition::Config acquisitionServersCfg("config/acquisition_servers.yaml");
@@ -29,14 +27,19 @@ int main(int argc, char** argv) {
 	common::db::Config storageDBcfg("config/storage_database.yaml");
 	common::db::Config aggregationDBcfg("config/aggregation_database.yaml");
 
-	db::Storage storage(storageDBcfg.Configuration());
-	db::Aggregate aggregation(aggregationDBcfg.Configuration(), &storage);
+	db::Storage storage_for_acquisition(storageDBcfg.Configuration());
+  db::Storage storage_for_aggregation(storageDBcfg.Configuration());
+  db::Storage storage_for_rest(storageDBcfg.Configuration());
+	db::Aggregate aggregation(
+    aggregationDBcfg.Configuration(), &storage_for_aggregation);
+  db::Aggregate aggregation_for_rest(
+    aggregationDBcfg.Configuration(), &storage_for_rest);
   
   logger.information("==== Storage & Aggregation started. ====");	  
 	logger.information("Measurements in storage: " + 
-    NumberFormatter::format(storage.CountAllMeasurements()));
+    NumberFormatter::format(storage_for_acquisition.CountAllMeasurements()));
 	logger.information("Available stations: " + 
-    NumberFormatter::format(storage.CountAllStations()));
+    NumberFormatter::format(storage_for_acquisition.CountAllStations()));
 	logger.information(
     "-------------------------------------------------------------"
 		"-------------------------------------------------------------");
@@ -59,12 +62,13 @@ int main(int argc, char** argv) {
     "-------------------------------------------------------------"
 		"-------------------------------------------------------------");
 
-	acquisition::Scheduler scheduler(&storage);
+	acquisition::Scheduler scheduler(&storage_for_acquisition);
 	scheduler.Schedule(acquisitionServersCfg.Configuration());	
 
-	/*aggregation::Engine aggregation_engine(&storage, &aggregation);
-	aggregation_engine.Start();*/
+	aggregation::Engine aggregation_engine(&storage_for_aggregation, &aggregation);
+  aggregation::Engine::Restarter asd(360);
+  asd(aggregation_engine);	
   
-  auto& rest_service = rest::Service(&storage, &aggregation);
+  auto& rest_service = rest::Service(&storage_for_rest, &aggregation_for_rest);
   rest_service.run(argc, argv);
 }
