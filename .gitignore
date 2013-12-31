@@ -52,6 +52,8 @@ test/
 bin/
 client/web/node_modules
 client/web/bower_components
-client/web/public/javascripts/angular.min.js
-client/web/public/javascripts/Chart.js
-client/web/public/stylesheets/bootstrap.min.css
+client/web/public/js/angular.min.js
+client/web/public/js/angular.js
+client/web/public/js/Chart.js
+client/web/public/css/bootstrap.min.css
+client/web/public/css/bootstrap.css
