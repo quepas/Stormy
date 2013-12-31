@@ -51,6 +51,7 @@ Release/
 test/
 bin/
 client/web/node_modules
+client/web/bower_components
 client/web/public/javascripts/angular.min.js
 client/web/public/javascripts/Chart.js
 client/web/public/stylesheets/bootstrap.min.css
