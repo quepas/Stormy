@@ -328,37 +328,6 @@ bool Storage::DeleteTask(string period_name, string station_uid)
 	return false;
 }
 
-map<time_t, string> Storage::GetMeasurement(
-  string station_uid, string metrics_code, tm begin, tm end)
-{
-  auto result = map<time_t, string>();
-  TRY
-    rowset<row> rs = 
-    (sql.prepare << "SELECT timestamp, value_text FROM measurement "
-      "WHERE station_uid = :station_uid "
-      "AND code = :metrics_code AND "
-      "timestamp >= :begin_time AND "
-      "timestamp < :end_time", 
-      use(station_uid), use(metrics_code), 
-      use(begin), use(end));
-  
-  for (auto it = rs.begin(); it != rs.end(); ++it) {
-    result.insert(make_pair(mktime(&it->get<tm>(0)), it->get<string>(1)));
-  }
-  CATCH_MSG("[Storage] GetMeasurement():\n\t")
-  return result;
-}
-
-map<time_t, string> Storage::GetMeasurementFromLast(
-  string station_uid, string metrics_code, uint16_t from_last_hours )
-{
-  time_t time_data = time(nullptr);
-  tm to_time = *localtime(&time_data);
-  time_data -= from_last_hours * 3600;
-  tm from_time = *localtime(&time_data);
-  return GetMeasurement(station_uid, metrics_code, from_time, to_time);
-}
-
 vector<string> Storage::GetMetricsCodes()
 {
   static auto metrics = GetMetrics();
@@ -367,26 +336,6 @@ vector<string> Storage::GetMetricsCodes()
     if (!it->code.empty())
       result.push_back(it->code);
   }
-  return result;
-}
-
-vector<string> Storage::GetStationMeasure(string station_uid, 
-  string metrics_code, tm begin_time, tm end_time)
-{
-  auto result = vector<string>();
-  TRY
-  rowset<row> rs = (sql.prepare << "SELECT value_text FROM measurement "
-    "WHERE station_uid = :station_udi "
-    "AND code = :metrics_code AND "
-    "timestamp >= :begin_time AND "
-    "timestamp < :end_time", 
-    use(station_uid), use(metrics_code), 
-    use(begin_time), use(end_time));
-
-  for (auto it = rs.begin(); it != rs.end(); ++it) {
-    result.push_back(it->get<string>(0));
-  }
-  CATCH_MSG("[Storage] GetStationMeasure():\n\t")
   return result;
 }
 
@@ -460,6 +409,7 @@ vector<tm> Storage::SelectDistinctMeasureTSForStationBetweenTS(
   tm to)
 {
   vector<tm> distinct_timestamps;
+  TRY
   rowset<row> rs = (sql.prepare <<
     "SELECT DISTINCT timestamp "
       "FROM measurement "
@@ -472,6 +422,7 @@ vector<tm> Storage::SelectDistinctMeasureTSForStationBetweenTS(
   for (auto row = rs.begin(); row != rs.end(); ++row) {    
     distinct_timestamps.push_back(row->get<tm>(0));
   }
+  CATCH_MSG("[db/Storage] SelectDistinctMeasureTSForStationBetweenTS: ")
   return distinct_timestamps;
 }
 
@@ -493,12 +444,13 @@ map<time_t, vector<entity::Measurement>>
   for (auto mst_it = measure_set_times.begin(); 
         mst_it != measure_set_times.end(); ++mst_it) {
     vector<entity::Measurement> measures;
+    TRY
     rowset<row> rs = (sql.prepare << 
       "SELECT * FROM measurement "
         "WHERE station_uid = :station_uid "
         "AND timestamp = :ms_time ", 
       use(station_uid), use(*mst_it));
-
+    
     for (auto row = rs.begin(); row != rs.end(); ++row) {    
       entity::Measurement measure;
       measure.id = row->get<int>(0);
@@ -518,6 +470,7 @@ map<time_t, vector<entity::Measurement>>
       measure.timestamp = row->get<tm>(5);
       measures.push_back(measure);
     }
+    CATCH_MSG("[db/Storage] GetMeasureSetsForStationBetweenTS: ")
     time_t measure_set_time = mktime(&(*mst_it))+3600;
     measure_sets.insert(make_pair(measure_set_time, measures));
   }

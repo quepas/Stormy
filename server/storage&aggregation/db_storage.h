@@ -34,25 +34,7 @@ public:
   bool UpdateStationLastUpdate(std::string station_uid, std::tm timestamp);
   std::tm GetStationLastUpdate(std::string station_uid);
 
-  std::tm GetOldestStationMeasureTime(std::string uid);
-
-  // TODO: fix this! need entity::Measurement
-  std::vector<std::string> GetStationMeasure(
-    std::string station_uid, 
-    std::string metrics_code, 
-    std::tm begin_time, 
-    std::tm end_time);
-
-  std::map<std::time_t, std::string> GetMeasurement(
-    std::string station_uid, 
-    std::string metrics_code,
-    std::tm begin, 
-    std::tm end);
-
-  std::map<std::time_t, std::string> GetMeasurementFromLast(
-    std::string station_uid, 
-    std::string metrics_code, 
-    uint16_t from_last_hours);
+  std::tm GetOldestStationMeasureTime(std::string uid);  
   
   std::vector<std::tm> SelectDistinctMeasureTSForStationBetweenTS(
     std::string station_uid,
