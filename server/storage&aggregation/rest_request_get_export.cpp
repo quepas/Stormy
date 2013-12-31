@@ -56,7 +56,7 @@ void GetExport::handleRequest(
     vector<entity::Station> stations_with_any_meteo;
 
     for (auto it = stations.begin(); it != stations.end(); ++it) {
-      uint32_t count = database_storage_->CountStationMeasurements(it->uid);
+      uint64_t count = database_storage_->CountStationMeasurements(it->uid);
       if (count > 0) 
         stations_with_any_meteo.push_back(*it);
     }

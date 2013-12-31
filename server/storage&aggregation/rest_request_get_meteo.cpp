@@ -57,7 +57,7 @@ void GetMeteo::handleRequest(
     vector<entity::Station> stations_with_any_meteo;
 
     for (auto it = stations.begin(); it != stations.end(); ++it) {
-      uint32_t count = storage_database_->CountStationMeasurements(it->uid);
+      uint64_t count = storage_database_->CountStationMeasurements(it->uid);
       if (count > 0) 
         stations_with_any_meteo.push_back(*it);
     }

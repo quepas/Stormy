@@ -17,7 +17,6 @@ using std::tm;
 using std::time_t;
 using std::vector;
 using Poco::Logger;
-using Poco::Timestamp;
 using soci::postgresql;
 using soci::use;
 using soci::into;
@@ -156,22 +155,6 @@ tm Storage::findNewestMeasureTimeByStationUID(string station_uid)
 	}
 	return newest_measure_time;
 }
-
-Timestamp Storage::findOldestMeasureTimeByStationUID(string uid)
-{
-	time_t time = 0;
-	if(CountStationMeasurements(uid) > 0) {
-		TRY		
-		// TODO: fix acquisition 'time zone' time respect
-		sql << "SELECT EXTRACT(EPOCH FROM ("
-			"SELECT min(timestamp) FROM measurement "
-			"WHERE station_uid = :station_uid) - interval '1 hour')",
-			into(time), use(uid);
-		CATCH_MSG("[StorageDB] findNewestMeasureTimeByStationUID(): ")
-	}
-	return Timestamp(time);
-}
-
 
 bool Storage::insertOneMetrics(entity::Metrics metrics)
 {

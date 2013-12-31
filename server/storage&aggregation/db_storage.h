@@ -3,7 +3,6 @@
 #include <string>
 #include <cstdint>
 #include <soci.h>
-#include <Poco/Timestamp.h>
 #include <Poco/Logger.h>
 
 #include "../../common/db_setting.h"
@@ -78,8 +77,7 @@ public:
   common::entity::Station GetStationByUID(std::string uid);								
 
   // measurements			
-  std::tm findNewestMeasureTimeByStationUID(std::string uid);			
-  Poco::Timestamp findOldestMeasureTimeByStationUID(std::string uid);    
+  std::tm findNewestMeasureTimeByStationUID(std::string uid);
 
   // metrics
   bool insertOneMetrics(common::entity::Metrics metrics);
