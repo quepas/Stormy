@@ -1,7 +1,6 @@
 #pragma once
 
-#include "db_storage.h"
-#include "db_aggregate.h"
+#include "../../common/db_setting.h"
 
 #include <cstdint>
 #include <Poco/Logger.h>
@@ -14,8 +13,8 @@ class Service : public Poco::Util::ServerApplication
 {
 public:
   Service(
-    db::Storage* db_storage, 
-    db::Aggregate* db_aggregation, 
+    common::db::Setting db_storage, 
+    common::db::Setting db_aggregation, 
     uint16_t port = 8070);
   ~Service();
 
@@ -28,8 +27,8 @@ private:
   uint16_t port_;
   Poco::Logger& logger_;
 
-  db::Storage* db_storage_;
-  db::Aggregate* db_aggregation_;
+  common::db::Setting db_storage_;
+  common::db::Setting db_aggregation_;
 };
 // ~~ stormy::rest::Service
 }}

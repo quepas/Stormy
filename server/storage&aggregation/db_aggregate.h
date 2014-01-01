@@ -18,7 +18,7 @@ namespace stormy {
 class Aggregate
 {
 public:
-  Aggregate(common::db::Setting* database_setting, Storage* database_storage);
+  Aggregate(common::db::Setting aggregate_setting, Storage* database_storage);
   ~Aggregate();
     
   // tasks
@@ -31,10 +31,13 @@ public:
   Storage* database_storage() {
     return database_storage_;
   }
+  common::db::Setting Configuration() {
+    return aggregate_setting_;
+  }
 private:  
   void Connect();
 
-  common::db::Setting* database_setting_;
+  common::db::Setting aggregate_setting_;
   Storage* database_storage_;
   soci::session sql;
   Poco::Logger& logger_;

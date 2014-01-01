@@ -24,16 +24,19 @@ int main(int argc, char** argv) {
 	Logger& logger = Logger::get("aggregation_main_thread");  
 	acquisition::Config acquisitionServersCfg("config/acquisition_servers.yaml");
 	aggregation::Config aggregationCfg("config/aggregation.yaml");
-	common::db::Config storageDBcfg("config/storage_database.yaml");
-	common::db::Config aggregationDBcfg("config/aggregation_database.yaml");
+	
+  auto storage_db_setting = 
+    common::db::Config("config/storage_database.yaml").Configuration();
+	auto aggregate_db_setting = 
+    common::db::Config("config/aggregation_database.yaml").Configuration();
 
-	db::Storage storage_for_acquisition(storageDBcfg.Configuration());
-  db::Storage storage_for_aggregation(storageDBcfg.Configuration());
-  db::Storage storage_for_rest(storageDBcfg.Configuration());
+	db::Storage storage_for_acquisition(storage_db_setting);
+  db::Storage storage_for_aggregation(storage_db_setting);
+  db::Storage storage_for_rest(storage_db_setting);
 	db::Aggregate aggregation(
-    &aggregationDBcfg.Configuration(), &storage_for_aggregation);
+    aggregate_db_setting, &storage_for_aggregation);
   db::Aggregate aggregation_for_rest(
-    &aggregationDBcfg.Configuration(), &storage_for_rest);
+    aggregate_db_setting, &storage_for_rest);
   
   logger.information("==== Storage & Aggregation started. ====");	  
 	logger.information("Measurements in storage: " + 
@@ -55,9 +58,9 @@ int main(int argc, char** argv) {
 			logger.information("\t" + setting.ToString());
 	});
 	logger.information("=== Storage database: ");
-	logger.information("\t" + storageDBcfg.Configuration().ToString());
+	logger.information("\t" + storage_db_setting.ToString());
 	logger.information("=== Aggregation database: ");
-	logger.information("\t" + aggregationDBcfg.Configuration().ToString());
+	logger.information("\t" + aggregate_db_setting.ToString());
 	logger.information(
     "-------------------------------------------------------------"
 		"-------------------------------------------------------------");
@@ -69,6 +72,6 @@ int main(int argc, char** argv) {
   aggregation::Engine::Restarter asd(360);
   asd(aggregation_engine);	
   
-  auto& rest_service = rest::Service(&storage_for_rest, &aggregation_for_rest);
+  rest::Service rest_service(storage_db_setting, aggregate_db_setting);
   rest_service.run(argc, argv);
 }

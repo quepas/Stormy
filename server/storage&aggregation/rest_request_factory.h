@@ -1,7 +1,6 @@
 #pragma once
 
-#include "db_storage.h"
-#include "db_aggregate.h"
+#include "../../common/db_setting.h"
 
 #include <Poco/Logger.h>
 #include <Poco/Net/HTTPServerRequest.h>
@@ -14,7 +13,7 @@ namespace stormy {
 class Factory : public Poco::Net::HTTPRequestHandlerFactory
 {
 public:
-  Factory(db::Storage* db_storage, db::Aggregate* db_aggregation);
+  Factory(common::db::Setting db_storage, common::db::Setting db_aggregation);
   ~Factory();
 
   Poco::Net::HTTPRequestHandler* createRequestHandler(
@@ -23,8 +22,8 @@ public:
 private:
   Poco::Logger& logger_;
 
-  db::Storage* db_storage_;
-  db::Aggregate* db_aggregation_;
+  common::db::Setting db_storage_;
+  common::db::Setting db_aggregation_;
 };
 // ~~ stormy::rest::request::Factory
 }}}

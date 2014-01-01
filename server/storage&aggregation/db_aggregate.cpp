@@ -11,9 +11,9 @@ using soci::into;
 namespace stormy {
   namespace db {
 
-Aggregate::Aggregate( common::db::Setting* database_setting, Storage* database_storage )
+Aggregate::Aggregate(common::db::Setting aggregate_setting, Storage* database_storage )
 	:	logger_(Logger::get("aggregation")),
-    database_setting_(database_setting),
+    aggregate_setting_(aggregate_setting),
 		database_storage_(database_storage)
 {
 	Connect();
@@ -27,7 +27,7 @@ Aggregate::~Aggregate()
 void Aggregate::Connect()
 {
 	TRY
-	sql.open(postgresql, database_setting_ -> AsConnectionString());
+	sql.open(postgresql, aggregate_setting_.AsConnectionString());
 	CATCH_MSG("[AggregationDB] connect(): ")
 }
 
