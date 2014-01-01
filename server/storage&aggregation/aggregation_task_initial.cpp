@@ -18,11 +18,11 @@ namespace stormy {
 
 Initial::Initial(
   entity::Task task_data, 
-  db::Storage* storage, 
-  db::Aggregate* aggregation, 
+  common::db::Setting storage_setting, 
+  common::db::Setting aggregate_setting,
   Scheduler* inner_scheduler)
-  : Base(task_data, storage, aggregation),
-    inner_scheduler_(inner_scheduler)
+  : Base(task_data, storage_setting, aggregate_setting),
+    inner_scheduler_(inner_scheduler)    
 {
 }
 
@@ -41,16 +41,16 @@ void Initial::run()
   logger_.information(PrepareHeader("InitialAggregation") + 
     "] Running. Aggregated period [" + current_ts + " - ...]");
 
-  while(storage_->CountStationMeasurements(task_entity_.station_uid) <= 0) {
+  while(storage_.CountStationMeasurements(task_entity_.station_uid) <= 0) {
     logger_.warning("Sleeping for 60 seconds");
     boost::this_thread::sleep_for(boost::chrono::seconds(60));
   }
 
   // check if any measurements exists
-  if(storage_->CountStationMeasurements(task_entity_.station_uid) > 0) {
+  if(storage_.CountStationMeasurements(task_entity_.station_uid) > 0) {
     // find oldest measure for station_uid
-    tm oldest_measure = storage_->
-      GetOldestStationMeasureTime(task_entity_.station_uid);
+    tm oldest_measure = storage_
+      .GetOldestStationMeasureTime(task_entity_.station_uid);
 
     logger_.information(PrepareHeader("InitialAggregation") +
       "Oldest measure from " + asctime(&oldest_measure));
@@ -59,7 +59,7 @@ void Initial::run()
     time_t oldest_measure_t = mktime(&oldest_measure);
 
     if (current_task_t < oldest_measure_t) {
-      storage_->UpdateTaskCurrentTime(task_entity_.id, oldest_measure);
+      storage_.UpdateTaskCurrentTime(task_entity_.id, oldest_measure);
       task_entity_.current_ts = oldest_measure;
     }
   }  

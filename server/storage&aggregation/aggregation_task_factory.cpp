@@ -8,25 +8,32 @@ namespace stormy {
     namespace task {
 
 Factory::Factory(
-  db::Storage* database_storage, 
-  db::Aggregate* database_aggregation) 
-  : database_storage_(database_storage),
-    database_aggregation_(database_aggregation),
+  common::db::Setting storage_setting, 
+  common::db::Setting aggregate_setting) 
+  : storage_setting_(storage_setting),
+    aggregate_setting_(aggregate_setting),
     inner_scheduler_(nullptr)
 {
 
 }
 
-Base* Factory::CreateDynamicTask(TaskType task_type, entity::Task task_entity)
+Base* Factory::CreateDynamicTask(
+  TaskType task_type, 
+  entity::Task task_entity)
 {
     switch (task_type) {
       case INITIAL: {
-        return new Initial(task_entity, 
-          database_storage_, database_aggregation_, inner_scheduler_);        
+        return new Initial(
+          task_entity, 
+          storage_setting_, 
+          aggregate_setting_, 
+          inner_scheduler_);        
       }
       case REGULAR: {
-        return new Regular(task_entity, 
-          database_storage_, database_aggregation_);
+        return new Regular(
+          task_entity, 
+          storage_setting_, 
+          aggregate_setting_);
       }      
     }
     return nullptr;

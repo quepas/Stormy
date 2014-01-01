@@ -23,9 +23,9 @@ namespace stormy {
 
 Regular::Regular(
   entity::Task task_data, 
-  db::Storage* storage, 
-  db::Aggregate* aggregation )
-  : Base(task_data, storage, aggregation)
+  common::db::Setting storage_setting, 
+  common::db::Setting aggregate_setting)
+  : Base(task_data, storage_setting, aggregate_setting)
 {
 
 }
@@ -38,9 +38,9 @@ Regular::~Regular()
 void Regular::run()
 {
   // update task current_ts
-  task_entity_.current_ts = aggregation_->GetTaskCurrentTS(
+  task_entity_.current_ts = aggregation_.GetTaskCurrentTS(
     task_entity_.id);
-  tm station_last_update_ts = storage_->GetStationLastUpdate(
+  tm station_last_update_ts = storage_.GetStationLastUpdate(
     task_entity_.station_uid);
   time_t station_last_update_time = mktime(&station_last_update_ts);
 
@@ -57,7 +57,7 @@ void Regular::run()
     //const auto& metrics_code = storage_->GetMetricsCodes();
     // IMPORTANT! : check if measurement is numeric
 
-    const auto& measure_sets = storage_->GetMeasureSetsForStationBetweenTS(
+    const auto& measure_sets = storage_.GetMeasureSetsForStationBetweenTS(
       task_entity_.station_uid, 
       current_time, 
       intrval_end_time-1);
@@ -84,7 +84,7 @@ void Regular::run()
         aggregate.start_time = task_entity_.current_ts;
         aggregate.value = aggregate_value;
         aggregate.sample_number = sample_number;        
-        aggregation_->InsertAggregate(aggregate);
+        aggregation_.InsertAggregate(aggregate);
 
         logger_.notice(PrepareHeader("Regular") + 
           "Period " + task_entity_.period_name + 
@@ -94,7 +94,7 @@ void Regular::run()
           ". Station: " + task_entity_.station_uid);
       }      
     }
-    storage_->UpdateTaskCurrentTime(task_entity_.id, interval_end_ts);
+    storage_.UpdateTaskCurrentTime(task_entity_.id, interval_end_ts);
   }  
 }
 // ~~ stormy::aggregation::task::Regular

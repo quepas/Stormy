@@ -5,6 +5,7 @@
 #include <Poco/Util/Timer.h>
 #include <Poco/Util/TimerTask.h>
 
+#include "../../common/db_setting.h"
 #include "../../common/entity_station.h"
 #include "../../common/entity_metrics.h"
 
@@ -30,7 +31,9 @@ public:
   class CyclicRestart;
   class Restarter;
 
-  Engine(db::Storage* storage, db::Aggregate* aggregation);			
+  Engine(
+    common::db::Setting storage_setting, 
+    common::db::Setting aggregate_setting);
   ~Engine();
 
   void Start();
@@ -65,8 +68,8 @@ private:
   Scheduler scheduler_;
   Poco::Logger& logger_;
 				
-  db::Storage* storage_;
-  db::Aggregate* aggregation_;
+  db::Storage storage_;
+  db::Aggregate aggregation_;
 
 public:
   class CyclicRestart : public Poco::Util::TimerTask

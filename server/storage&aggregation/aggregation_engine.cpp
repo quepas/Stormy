@@ -11,12 +11,12 @@ namespace stormy {
 	namespace aggregation {
 
 Engine::Engine(
-  db::Storage* storage, 
-  db::Aggregate* aggregation)
+  common::db::Setting storage_setting, 
+  common::db::Setting aggregate_setting)
   : logger_(Logger::get("aggregation")),
-    storage_(storage),
-    aggregation_(aggregation),
-    factory_(storage, aggregation),
+    storage_(storage_setting),
+    aggregation_(aggregate_setting),
+    factory_(storage_setting, aggregate_setting),
     scheduler_(factory_)
 {
 
@@ -172,10 +172,10 @@ bool Engine::FixTasks()
 void Engine::FetchAvailableData()
 {
 	ClearAvailableData();
-	available_stations_ = storage_->GetStations();
-	available_metrics_ = storage_->GetMetrics();
-	available_tasks_ = storage_->GetTasks();
-	available_periods_ = storage_->GetPeriods();
+	available_stations_ = storage_.GetStations();
+	available_metrics_ = storage_.GetMetrics();
+	available_tasks_ = storage_.GetTasks();
+	available_periods_ = storage_.GetPeriods();
 }
 
 void Engine::ClearAvailableData()
@@ -202,14 +202,14 @@ bool Engine::CreateMissingTask(
   std::string period_name, 
   std::string station_uid)
 {
-	return storage_->CreateTask(period_name, station_uid);
+	return storage_.CreateTask(period_name, station_uid);
 }
 
 bool Engine::DeleteUselessTask(
   std::string period_name, 
   std::string station_uid)
 {
-	return storage_->DeleteTask(period_name, station_uid);
+	return storage_.DeleteTask(period_name, station_uid);
 }
 
 

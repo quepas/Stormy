@@ -1,7 +1,6 @@
 #pragma once
 
-#include "db_storage.h"
-#include "db_aggregate.h"
+#include "../../common/db_setting.h"
 #include "aggregation_entity_task.h"
 #include "aggregation_task_base.h"
 
@@ -19,15 +18,17 @@ class Factory
 {
 public:   
   Factory() {};
-  Factory(db::Storage* database_storage, db::Aggregate* database_aggregation);
+  Factory(
+    common::db::Setting storage_setting, 
+    common::db::Setting aggregate_setting);
   ~Factory() {};
 
   Base* CreateDynamicTask(TaskType task_type, entity::Task task_entity);
   void SetInnerScheduler(Scheduler* inner_scheduler);
 
 private:
-  db::Storage* database_storage_;
-  db::Aggregate* database_aggregation_;
+  common::db::Setting storage_setting_;
+  common::db::Setting aggregate_setting_;  
   Scheduler* inner_scheduler_;
 };
 // ~~ stormy::aggregation::task::Factory
