@@ -16,18 +16,18 @@ Installation
 	+ 'angular-bootstrap-datetimepicker' (in 'client/web' directory type 'bower install angular-bootstrap-datetimepicker')
 * From 'bower_components' directories copy:
 	+ To 'client/web/public/js':
-		1. angular.min.js (from 'bower_components\angular')
-		2. angular-route.min.js (from 'bower_components\angular-route')
-		3. datetimepicker.js (from 'bower_components\angular-bootstrap-datetimepicker\src\js')
-		4. jquery.min.js (from 'bower_components\jquery')
-		5. moment.js (from 'bower_components\moment')
-	+ To 'client\web\public\css':
-		1. datetimepicker.css (from 'bower_components\angular-bootstrap-datetimepicker\src\css')
-* Download 'bootstrap 2.3.2' from 'http://getbootstrap.com/2.3.2/'
+		1. angular.min.js (from 'bower_components/angular')
+		2. angular-route.min.js (from 'bower_components/angular-route')
+		3. datetimepicker.js (from 'bower_components/angular-bootstrap-datetimepicker/src/js')
+		4. jquery.min.js (from 'bower_components/jquery')
+		5. moment.js (from 'bower_components/moment')
+	+ To 'client/web/public/css':
+		1. datetimepicker.css (from 'bower_components/angular-bootstrap-datetimepicker/src/css')
+* Download 'bootstrap 2.3.2' (http://getbootstrap.com/2.3.2/)
 	+ Copy 'bootstrap.min.js' to 'client/web/public/js'
-	+ Copy 'bootstrap.min.css' to 'client\web\public\css'
-	+ Copy 'glyphicons-halflings.png' to 'client\web\public\img'
-	+ Copy 'glyphicons-halflings-white.png' to 'client\web\public\img'
+	+ Copy 'bootstrap.min.css' to 'client/web/public/css'
+	+ Copy 'glyphicons-halflings.png' to 'client/web/public/img'
+	+ Copy 'glyphicons-halflings-white.png' to 'client/web/public/img'
 * Download 'Chart.js' (http://www.chartjs.org/) and copy it to 'client/web/public/js'
 
 Running
@@ -38,4 +38,4 @@ Open Command Prompt (cmd). Go to 'client/web' directory and run node server from
 Using
 -----
 
-Go to your browser and open 'http://127.0.0.1:1337' site. Type Stormy Acquisition or Storage&Aggregation Server host address and port. Click 'Connect' and enjoy it!
+Go to your browser and open http://127.0.0.1:1337 site. Type Stormy Acquisition or Storage&Aggregation Server host address and port. Click 'Connect' and enjoy it!
