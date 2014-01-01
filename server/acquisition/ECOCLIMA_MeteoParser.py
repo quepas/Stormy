@@ -5,6 +5,7 @@ from xml.dom import minidom
 
 def run(text, encoding="windows-1250"):
     parser = ECOCLIMA_MeteoParser()
+    parser.data = []
     parser.parseFromURL(text, encoding)
     return parser.data
 
@@ -19,6 +20,7 @@ class ECOCLIMA_MeteoParser():
         tbody = self.extractTBody(content);
         tbody = self.removeBadChars(tbody)
         self.parseTBody(tbody)
+        sock.close()
 
     def parseTBody(self, content):
         self.xml_dom = minidom.parseString(content)

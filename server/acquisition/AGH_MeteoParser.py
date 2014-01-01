@@ -17,6 +17,7 @@ class AGH_MeteoParser():
         sock = request.urlopen(url)
         content = str(sock.read(), encoding)
         self.parseXML(content)
+        sock.close()
 
     def parseXML(self, content):
         self.xml_dom = minidom.parseString(content)
