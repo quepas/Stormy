@@ -2,12 +2,14 @@
 
 #include "rest_constant.h"
 
-#include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <Poco/NumberFormatter.h>
 
 using boost::algorithm::join;
 using boost::lexical_cast;
+using boost::split;
+using boost::is_any_of;
 using std::to_string;
 using std::string;
 using std::map;
@@ -169,10 +171,13 @@ string PrepareMetricsCodes(const vector<entity::Metrics>& metrics_vec)
 
 string PrepareMetricsInfo(const entity::Metrics& metrics)
 {
+  vector<string> splitedEquivalents;
+  split(splitedEquivalents, metrics.equivalents, is_any_of(";,"));
+
   string content = constant::json_metrics;
   string metrics_info =
     constant::json_code + WrapAsString(metrics.code) + "," +
-    constant::json_equivalents + WrapAsString(metrics.equivalents) + "," +
+    constant::json_equivalents + WrapAsString(splitedEquivalents[0]) + "," +
     constant::json_type + WrapAsString(metrics.type) + "," +
     constant::json_unit + WrapAsString(metrics.unit) + "," +
     constant::json_format + WrapAsString(metrics.format);

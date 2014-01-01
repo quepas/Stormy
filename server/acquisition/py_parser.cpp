@@ -37,7 +37,8 @@ namespace stormy {
 
 Parser::Parser(string parser_class)
 	:	logger_(Logger::get("py/Parser")),
-    parser_class_(parser_class)
+    parser_class_(parser_class),
+    metrics_config_("config/meteo_data_type_config.yaml")
 {
 
 }
@@ -60,16 +61,15 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
   vector<entity::Measurement> result;
   if (pFuncResult != nullptr)
   {
-    auto data = mapper::PairsFromSequence(pFuncResult);
-    acquisition::config::Metrics types("config/meteo_data_type_config.yaml");				
+    auto data = mapper::PairsFromSequence(pFuncResult);    
     string date, time;
 
     for (auto it = data.begin(); it != data.end(); ++it) {
       entity::Measurement measure;     
-      string metrics_code = types.GetMetricsIdByEquivalent(it->first);
+      string metrics_code = metrics_config_.GetMetricsIdByEquivalent(it->first);
       measure.code = metrics_code;
       measure.station_uid = station.uid;
-      entity::Metrics metrics = types.GetMetricsById(metrics_code);
+      entity::Metrics metrics = metrics_config_.GetMetricsById(metrics_code);
       string str_value = trim_copy(it->second);
 
       if(metrics_code == db::constant::date) {

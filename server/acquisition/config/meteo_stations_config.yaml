@@ -238,3 +238,8 @@
   url: http://meteo24.nazwa.pl/mikolow/Current_Vantage.htm
   parserClass: ECOCLIMA_MeteoParser
   refreshTime: 75
+-
+  name: Przedsiebiorstwo Wodociągów i Kanalizacji Giżycko
+  url: http://pwikgizycko.pl/METEO/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75

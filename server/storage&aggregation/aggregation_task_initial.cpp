@@ -40,11 +40,11 @@ void Initial::run()
   logger_.information(PrepareHeader("Initial") + 
     " Period of interest from " + current_ts + ".");
 
-  while(storage_.CountStationMeasurements(task_entity_.station_uid) <= 0) {
+  /*while(storage_.CountStationMeasurements(task_entity_.station_uid) <= 0) {
     logger_.warning(
       PrepareHeader("Initial") + "No data. Sleeping for 60 seconds.");
     boost::this_thread::sleep_for(boost::chrono::seconds(60));
-  }
+  }*/
 
   // check if any measurements exists
   if(storage_.CountStationMeasurements(task_entity_.station_uid) > 0) {

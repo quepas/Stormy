@@ -23,15 +23,25 @@
   valueUnit: celsius
   equivalents: Temperatura odczuwalna
 -
+  id: soilTemperature
+  valueType: number
+  valueUnit: celsius
+  equivalents: Temp. przy gruncie
+-
   id: airHumidity
   valueType: number
   valueUnit: percent
-  equivalents: Wilgotność powietrza
+  equivalents: Wilgotność powietrza;Wilgotność
+-
+  id: wettingOfLeaves
+  valueType: number
+  valueUnit: unknown
+  equivalents: Zwilżenie liścia
 -
   id: atmosphericPressure
   valueType: number
   valueUnit: hectopascal
-  equivalents: Ciśnienie atmosferyczne
+  equivalents: Ciśnienie atmosferyczne;Ciśnienie
 -
   id: barometricPressure
   valueType: number
@@ -41,7 +51,7 @@
   id: windSpeed
   valueType: number
   valueUnit: meter_per_second
-  equivalents: Prędkość wiatru
+  equivalents: Prędkość wiatru;Kierunek i prędkość wiatru
 -
   id: windSpeedMax
   valueType: number
@@ -63,30 +73,45 @@
   valueUnit: meter_per_second
   equivalents: Prędkość średnia
 -
-  id: momentDrop
-  valueType: number
-  valueUnit: none
-  equivalents: Opad chwilowy
--
   id: uvRadiation
   valueType: number
   valueUnit: none
-  equivalents: Promieniowanie UV
+  equivalents: Promieniowanie UV;Promieniowanie UV (tylko w dzień)
 -
   id: solarRadiation
   valueType: number
   valueUnit: watt_per_square_meter
-  equivalents: Promieniowanie słoneczne
+  equivalents: Promieniowanie słoneczne;Promieniowanie słoneczne (tylko w dzień)
 -
   id: dewPoint
   valueType: number
   valueUnit: celsius
   equivalents: Punkt rosy
 -
-  id: drop
+  id: momentDrop
+  valueType: number
+  valueUnit: millimetre_per_hour
+  equivalents: Opad chwilowy;Aktualny opad deszczu
+-
+  id: stormyDrop
   valueType: number
   valueUnit: millimetre
-  equivalents: Opad
+  equivalents: Opad burzowy
+-
+  id: dropDaily
+  valueType: number
+  valueUnit: millimetre
+  equivalents: Opad;Dzisiejszy opad deszczu;Opad 24h
+-
+  id: dropMonthly
+  valueType: number
+  valueUnit: millimetre
+  equivalents: Opad miesięczny
+-
+  id: dropYearly
+  valueType: number
+  valueUnit: millimetre
+  equivalents: Opad roczny
 -
   id: hail
   valueType: number
@@ -107,3 +132,13 @@
   valueType: text
   valueUnit: none
   equivalents: Tendencja
+-
+  id: THW
+  valueType: number
+  valueUnit: celsiusz
+  equivalents: Współczynnik THW
+-
+  id: heatIndex
+  valueType: number
+  valueUnit: celsiusz
+  equivalents: Indeks ciepła

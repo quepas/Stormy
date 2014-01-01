@@ -6,6 +6,8 @@
 
 using namespace stormy::common;
 using boost::equal;
+using boost::split;
+using boost::is_any_of;
 using std::string;
 using std::vector;
 using YAML::Node;
@@ -51,9 +53,7 @@ bool Metrics::Load(string filepath)
 				//cout << "For " << id << " equivalents is not defined" << endl;
 				continue;
 			}
-			string equivalents = yaml::GetString(it, "equivalents");
-			vector<string> splitedEquivalents;
-			boost::split(splitedEquivalents, equivalents, boost::is_any_of(";,"));
+			string equivalents = yaml::GetString(it, "equivalents");			
 
 			string valueFormat = "";
 			if (yaml::IsDefined(it, "valueFormat")) {
@@ -67,7 +67,7 @@ bool Metrics::Load(string filepath)
 			type.code = id;
 			type.type = valueType;
 			type.unit = valueUnit;
-			type.equivalents = splitedEquivalents[0];
+			type.equivalents = equivalents;
 			type.format = valueFormat;
 			type.is_meteo = isMeteo;
 			configuration_.push_back(type);
@@ -81,8 +81,10 @@ string Metrics::GetMetricsIdByEquivalent(string equivalent)
 	for (auto it = configuration_.begin(); it != configuration_.end(); ++it) {
 		string id = it->code;
 		vector<string> equivalents;
-    equivalents.push_back(it->equivalents);
-		for (auto it = equivalents.begin(); it != equivalents.end(); ++it) {
+    vector<string> splitedEquivalents;
+    split(splitedEquivalents, it->equivalents, is_any_of(";,"));
+
+		for (auto it = splitedEquivalents.begin(); it != splitedEquivalents.end(); ++it) {
 			if(equal(equivalent, *it))
 				return id;
 		}
