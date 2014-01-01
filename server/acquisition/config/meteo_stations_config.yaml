@@ -163,3 +163,78 @@
   url: http://meteo24.nazwa.pl/jastrzebie1/Current_Vantage.htm
   parserClass: ECOCLIMA_MeteoParser
   refreshTime: 75
+-
+  name: Grupa Beskidzka GOPR Babia Góra
+  url: http://ftp.meteo24.nazwa.pl/Grupa_Beskidzka_GOPR_Babia_Gora/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Straż Pożarna w Dąbrowie Tarnowskiej
+  url: http://meteo24.nazwa.pl/dabrowa_tarnowska/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Zarząd Dróg i Służby Komunalne w Czerwionce-Leszczynach
+  url: http://meteo24.nazwa.pl/czerwionka_leszczyny/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Zespół Szkół Ponadgimnazjalnych w Białej Rawskiej
+  url: http://meteo24.nazwa.pl/biala_rawska/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Nadleśnictwo Świeradów Zdrój
+  url: http://meteo24.nazwa.pl/Swieradow_szkolka/Current_Vantage_Pro_Plus.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Urząd Miasta Sieradza
+  url: http://meteo24.nazwa.pl/sieradz/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Grupa Jurajska GOPR Podlesice
+  url: http://meteo24.nazwa.pl/podlesice/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Zakład Produkcyjno-Nasienny Henryków
+  url: http://meteo24.nazwa.pl/henrykow/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Starostwo Powiatowe w Chrzanowie
+  url: http://meteo24.nazwa.pl/chrzanow/Current_Vantage.html
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Zespół Szkół Technicznych Wodzislaw Śląski
+  url: http://meteo24.nazwa.pl/wodzislaw/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Państwowa Straż Pożarna Pszczyna
+  url: http://meteo24.nazwa.pl/Pszczyna/Current_Wizard.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Stacja Narciarska Ochodzita 1
+  url: http://meteo24.nazwa.pl/OH/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Stacja Narciarska Ochodzita 2
+  url: http://meteo24.nazwa.pl/OCHODZITA2/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: P.K. KOMAX Kęty
+  url: http://meteo24.nazwa.pl/kety/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Starostwo Powiatowe w Mikołowie
+  url: http://meteo24.nazwa.pl/mikolow/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
