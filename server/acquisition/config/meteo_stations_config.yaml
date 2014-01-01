@@ -1,80 +1,165 @@
 -
   name: Wisła Malinka
   url: http://stacjameteo.pl/dane/index.php?stacja=21
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Brenna
   url: http://stacjameteo.pl/dane/index.php?stacja=23
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Meteo na Jeziorze
   url: http://stacjameteo.pl/dane/index.php?stacja=24
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Frelichów
   url: http://stacjameteo.pl/dane/index.php?stacja=25
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Wisła Czarne Zapora
   url: http://stacjameteo.pl/dane/index.php?stacja=26
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Wisła Wielka Przystań
   url: http://stacjameteo.pl/dane/index.php?stacja=27
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Skoczów
   url: http://stacjameteo.pl/dane/index.php?stacja=28
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Wapienica Zapora
   url: http://stacjameteo.pl/dane/index.php?stacja=29
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Góra Żar
   url: http://stacjameteo.pl/dane/index.php?stacja=30
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Gubałówka
   url: http://stacjameteo.pl/dane/index.php?stacja=31
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Miasteczko Śląskie
   url: http://stacjameteo.pl/dane/index.php?stacja=32
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Szczecin
   url: http://stacjameteo.pl/dane/index.php?stacja=33
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Elbląg
   url: http://stacjameteo.pl/dane/index.php?stacja=34
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Włocławek
   url: http://stacjameteo.pl/dane/index.php?stacja=35
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Biebrza
   url: http://stacjameteo.pl/dane/index.php?stacja=37
-  parserClass: MeteoBParser
+  parserClass: Stacjameteo_MeteoParser
   refreshTime: 300
 -
   name: Akademia Górniczo-Hutnicza
   url: http://meteo.ftj.agh.edu.pl/meteo/meteo.xml
   parserClass: AGH_MeteoParser
   refreshTime: 30
+-
+  name: Urząd miejsca w Brzesku
+  url: http://meteo24.nazwa.pl/brzesko/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Urząd miejsca w Jaśle
+  url: http://meteo24.nazwa.pl/jaslo/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Zarząd Główny GOPR
+  url: http://meteo24.nazwa.pl/zakopane/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Zakład Produkcyjno Nasienny Ulhówek
+  url: http://meteo24.nazwa.pl/ulhowek/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Starostwo Powiatowe w Gołdap
+  url: http://meteo24.nazwa.pl/3M/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Starostwo Powiatowe w Węgorzewie
+  url: http://meteo24.nazwa.pl/2M/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Starostwo Powiatowe w Nidzicy
+  url: http://meteo24.nazwa.pl/5M/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Urząd Gminy Grodziczno
+  url: http://meteo24.nazwa.pl/6M/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Urząd Miasta i Gminy Miłomłyn
+  url: http://meteo24.nazwa.pl/7M/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Urząd Miasta i Gminy We Fromborku
+  url: http://meteo24.nazwa.pl/1M/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Gospodarstwo rolne PPHU Wieszczyczyn
+  url: http://meteo24.nazwa.pl/wieszczyczyn/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Zakład Gospodarki Odpadami w Jarocinie
+  url: http://meteo24.nazwa.pl/jarocin_zgo/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Odlewnia Żeliwa Gostyń
+  url: http://meteo24.nazwa.pl/gostyn/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: II LO w Leszno
+  url: http://meteo24.nazwa.pl/leszno/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Powiatowy Zarząd Dróg w Ostrowie Wielkopolskim
+  url: http://meteo24.nazwa.pl/sieroszewice/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Górnośląskie Przedsiębiorstwo Wodociągów w Katowicach
+  url: http://meteo24.nazwa.pl/GOCZ/Current_Vantage_Pro_Plus.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
+-
+  name: Przedsiębiorstwo Gospodarki Wodnej i Rekultywacji w Jastrzębie zdrój
+  url: http://meteo24.nazwa.pl/jastrzebie1/Current_Vantage.htm
+  parserClass: ECOCLIMA_MeteoParser
+  refreshTime: 75
