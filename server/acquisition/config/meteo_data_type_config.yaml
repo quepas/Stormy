@@ -33,15 +33,25 @@
   valueUnit: hectopascal
   equivalents: Ciśnienie atmosferyczne
 -
+  id: barometricPressure
+  valueType: number
+  valueUnit: hectopascal
+  equivalents: Ciśnienie barometryczne
+-
   id: windSpeed
   valueType: number
   valueUnit: meter_per_second
   equivalents: Prędkość wiatru
 -
+  id: windSpeedMax
+  valueType: number
+  valueUnit: meter_per_second
+  equivalents: Maksymalna prędkość wiatru
+-
   id: windDirectionAngle
   valueType: number
   valueUnit: angle
-  equivalents: Kierunek wiatru
+  equivalents: Kąt kierunku wiatru
 -
   id: windDirection
   valueType: text
@@ -72,3 +82,28 @@
   valueType: number
   valueUnit: celsius
   equivalents: Punkt rosy
+-
+  id: drop
+  valueType: number
+  valueUnit: millimetre
+  equivalents: Opad
+-
+  id: hail
+  valueType: number
+  valueUnit: hits_per_square_centimeter
+  equivalents: Grad
+-
+  id: dropIntensity
+  valueType: number
+  valueUnit: millimetre_per_hour
+  equivalents: Intensywność opadu
+-
+  id: hailIntensity
+  valueType: number
+  valueUnit: hits_per_square_centimeter_per_hour
+  equivalents: Intensywność gradu
+-
+  id: tendency
+  valueType: text
+  valueUnit: none
+  equivalents: Tendencja

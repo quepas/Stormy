@@ -2,74 +2,79 @@
   name: Wisła Malinka
   url: http://stacjameteo.pl/dane/index.php?stacja=21
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Brenna
   url: http://stacjameteo.pl/dane/index.php?stacja=23
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Meteo na Jeziorze
   url: http://stacjameteo.pl/dane/index.php?stacja=24
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Frelichów
   url: http://stacjameteo.pl/dane/index.php?stacja=25
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Wisła Czarne Zapora
   url: http://stacjameteo.pl/dane/index.php?stacja=26
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Wisła Wielka Przystań
   url: http://stacjameteo.pl/dane/index.php?stacja=27
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Skoczów
   url: http://stacjameteo.pl/dane/index.php?stacja=28
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Wapienica Zapora
   url: http://stacjameteo.pl/dane/index.php?stacja=29
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Góra Żar
   url: http://stacjameteo.pl/dane/index.php?stacja=30
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Gubałówka
   url: http://stacjameteo.pl/dane/index.php?stacja=31
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Miasteczko Śląskie
   url: http://stacjameteo.pl/dane/index.php?stacja=32
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Szczecin
   url: http://stacjameteo.pl/dane/index.php?stacja=33
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Elbląg
   url: http://stacjameteo.pl/dane/index.php?stacja=34
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Włocławek
   url: http://stacjameteo.pl/dane/index.php?stacja=35
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
 -
   name: Biebrza
   url: http://stacjameteo.pl/dane/index.php?stacja=37
   parserClass: MeteoBParser
-  refreshTime: 1
+  refreshTime: 300
+-
+  name: Akademia Górniczo-Hutnicza
+  url: http://meteo.ftj.agh.edu.pl/meteo/meteo.xml
+  parserClass: AGH_MeteoParser
+  refreshTime: 30

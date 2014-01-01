@@ -22,7 +22,7 @@ Scheduler::~Scheduler()
 void Scheduler::Schedule(entity::Station station)
 {
 	schedule(new Task(station), 0,
-		util::MinutesToMiliseconds(station.refresh_time));
+		util::SecondsToMiliseconds(station.refresh_time));
 }
 
 void Scheduler::Schedule(const vector<entity::Station>& stations)

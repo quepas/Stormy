@@ -6,6 +6,7 @@
 #include "py_mapper.h"
 #include "../../common/util.h"
 
+#include <ctime>
 #include <map>
 #include <boost/any.hpp>
 #include <boost/algorithm/string.hpp>
@@ -24,6 +25,7 @@ using std::map;
 using std::string;
 using std::vector;
 using std::tm;
+using std::time;
 using Poco::DateTime;
 using Poco::DateTimeParser;
 using Poco::Logger;
@@ -59,15 +61,15 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
   if (pFuncResult != nullptr)
   {
     auto data = mapper::PairsFromSequence(pFuncResult);
-    auto types = new acquisition::config::Metrics("config/meteo_data_type_config.yaml");				
+    acquisition::config::Metrics types("config/meteo_data_type_config.yaml");				
     string date, time;
 
     for (auto it = data.begin(); it != data.end(); ++it) {
       entity::Measurement measure;     
-      string metrics_code = types->GetMetricsIdByEquivalent(it->first);
+      string metrics_code = types.GetMetricsIdByEquivalent(it->first);
       measure.code = metrics_code;
       measure.station_uid = station.uid;
-      entity::Metrics metrics = types->GetMetricsById(metrics_code);
+      entity::Metrics metrics = types.GetMetricsById(metrics_code);
       string str_value = trim_copy(it->second);
 
       if(metrics_code == db::constant::date) {
@@ -94,22 +96,18 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
         }
       }
     }
-
-    tm timestamp;
-    if(IsDate(date) && IsTime(time))
-    {
-      string dateTime = date + " " + time;
-      int diffTimeZone;
-      DateTime acqDateTime =
-        DateTimeParser::parse(dateTime, diffTimeZone);
-      acqDateTime.makeLocal(3600);
-      time_t time = acqDateTime.timestamp().epochTime();
-      timestamp = *gmtime(&time);
+    time_t time_now = std::time(nullptr);
+    tm timestamp = *localtime(&time_now);
+    DateTime acquire_time;
+    int dtz;
+    if (DateTimeParser::tryParse(date + " " + time, acquire_time, dtz)) {
+      //acquire_time.makeLocal(3600);
+      time_t acquire_time_t = acquire_time.timestamp().epochTime();      
+      timestamp = *localtime(&acquire_time_t);
     }
     for (auto it = result.begin(); it != result.end(); ++it) {
       it->timestamp = timestamp;      
-    }
-    delete types;
+    }   
     Py_DECREF(pFuncResult);
     return result;
   }
