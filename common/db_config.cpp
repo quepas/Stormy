@@ -30,31 +30,31 @@ void Config::MapIntoConfiguration()
 		configuration_.host = AsString("host");
 	} else {
 		string defaultHost = "localhost";
-		logger_.warning("[StorageDB] No host data. Using default (" 
+		logger_.warning("[db/Config] No host data. Using default (" 
 			 + defaultHost + ").");	
     configuration_.host = defaultHost;
 	}
 	if(HasField("port")) {
 		configuration_.port = AsInt("port");
 	} else {
-		logger_.warning("[StorageDB] No port data. Using default (" 
+		logger_.warning("[db/Config] No port data. Using default (" 
 			 + NumberFormatter::format(Setting::defaultPort) + ").");
 		configuration_.port = Setting::defaultPort;
 	}
 	if(HasField("database")) {
 		configuration_.database = AsString("database");
 	} else {		
-		logger_.error("[StorageDB] No database name.");
+		logger_.error("[db/Config] No database name.");
 	}
 	if(HasField("user")) {
 		configuration_.user = AsString("user");
 	} else {
-		logger_.error("[StorageDB] No user name.");
+		logger_.error("[db/Config] No user name.");
 	}
 	if(HasField("password")) {
 		configuration_.password  = AsString("password");
 	} else {
-		logger_.error("[StorageDB] No password.");
+		logger_.error("[db/Config] No password.");
 	}
 }
 // ~~ stormy::common::db::Config

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../../common/db_setting.h"
 #include "../../common/rest_uri_parser.h"
-#include "db_storage.h"
 
 #include <string>
 #include <Poco/Net/HTTPRequestHandler.h>
@@ -13,7 +13,7 @@ namespace stormy {
 class GetExport : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetExport(std::string uri, db::Storage* database_storage);
+  GetExport(std::string uri, common::db::Setting storage_setting);
   ~GetExport();
 
   void handleRequest(
@@ -21,7 +21,7 @@ public:
     Poco::Net::HTTPServerResponse& response) override;
 
 private:
-  db::Storage* database_storage_;
+  common::db::Setting storage_setting_;
   common::rest::URIParser uri_parser_;
 };
 // ~~ stormy::rest::request::GetInfo

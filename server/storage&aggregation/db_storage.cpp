@@ -43,7 +43,7 @@ void Storage::connect()
 {
 	TRY
 	sql_.open(postgresql, configuration_.AsConnectionString());	
-	CATCH_MSG("[StorageDB] connect(): ")
+	CATCH_MSG("[db/Storage] connect: ")
 }
 
 void Storage::insertStation(entity::Station station)
@@ -53,7 +53,7 @@ void Storage::insertStation(entity::Station station)
     "values(:uid, :name, :url, :refresh_time, to_timestamp(0))",
     use(station.uid), use(station.name), 
     use(station.url), use(station.refresh_time);
-  CATCH_MSG("[StorageDB] insertStation(): ")
+  CATCH_MSG("[db/Storage] insertStation: ")
 }
 
 void Storage::insertStations(const vector<entity::Station>& stations)
@@ -71,7 +71,7 @@ entity::Station Storage::GetStationByUID(string uid)
 	sql_ << "SELECT uid, name, url, refresh_time FROM station WHERE uid = :uid",
 		into(station.uid), into(station.name), into(station.url),
 		into(station.refresh_time), use(uid);
-	CATCH_MSG("[StorageDB] getStationByUID(): ")
+	CATCH_MSG("[db/Storage] GetStationByUID: ")
 	return station;
 }
 
@@ -81,7 +81,7 @@ bool Storage::existsStationByUID(string uid)
 	TRY
   sql_ << "SELECT count(*) FROM station WHERE uid = :uid",
     into(count), use(uid);
-	CATCH_MSG("[StorageDB] existsStationByUID(): ")	
+	CATCH_MSG("[db/Storage] existsStationByUID: ")	
   return count > 0;
 }
 
@@ -165,7 +165,7 @@ bool Storage::insertOneMetrics(entity::Metrics metrics)
     use(metrics.type), use(metrics.unit),
     use(metrics.format);
   return true;
-  CATCH			
+  CATCH_MSG("[db/Storage] insertOneMetrics: ")
 	return false;	
 }
 
@@ -186,7 +186,7 @@ bool Storage::existsMetricsByCode(const string& code)
 	TRY
 	sql_ << "SELECT count(*) FROM metrics WHERE code = :code",
 		into(count), use(code);
-	CATCH_MSG("[StorageDB] existsMetricsByCode(): ")
+	CATCH_MSG("[db/Storage] existsMetricsByCode: ")
 	return count > 0;
 }
 
@@ -204,7 +204,7 @@ uint32_t Storage::CountAllStations()
 	uint32_t count = 0;
 	TRY
 	sql_ << "SELECT count(uid) FROM station", into(count);
-	CATCH_MSG("[StorageDB] countStation(): ")
+	CATCH_MSG("[db/Storage] CountAllStations: ")
 	return count;
 }
 
@@ -214,7 +214,7 @@ uint64_t Storage::CountStationMeasurements(string uid)
 	TRY
 	sql_ << "SELECT count(*) FROM measurement "
 		"WHERE station_uid = :uid", use(uid), into(count);
-	CATCH_MSG("[db/Storage] countMeasurementFromStation() ")
+	CATCH_MSG("[db/Storage] CountStationMeasurements: ")
 	return count;
 }
 
@@ -233,7 +233,7 @@ vector<entity::Station> Storage::GetStations()
 		element.last_update = row.get<tm>(4);
 		stations.push_back(element);
 	}
-	CATCH_MSG("[Storage] Exception at GetStations():\n\t")
+	CATCH_MSG("[db/Storage] GetStations: ")
 	return stations;
 }
 
@@ -252,7 +252,7 @@ vector<entity::Metrics> Storage::GetMetrics()
 		element.format = row.get<string>(4);
 		metrics.push_back(element);
 	}
-	CATCH_MSG("[Storage] Exception at GetMetrics():\n\t")
+	CATCH_MSG("[db/Storage] GetMetrics: ")
 	return metrics;
 }
 
@@ -271,7 +271,7 @@ vector<aggregation::entity::Task> Storage::GetTasks()
 		element.current_ts = row.get<tm>(3);
 		tasks.push_back(element);
 	}
-	CATCH_MSG("[Storage] Exception at GetTasks():\n\t")
+	CATCH_MSG("[db/Storage] GetTasks: ")
 	return tasks;
 }
 
@@ -286,7 +286,7 @@ vector<aggregation::entity::Period> Storage::GetPeriods()
     element.name = row.get<string>(0);   
     periods.push_back(element);
   }	
-	CATCH_MSG("[Storage] Exception at GetPeriods():\n\t")
+	CATCH_MSG("[db/Storage] GetPeriods: ")
 	return periods;
 }
 
@@ -298,7 +298,7 @@ bool Storage::DeleteTask(string period_name, string station_uid)
 		"AND station_uid = :station_uid",
 		use(period_name), use(station_uid);
 	return true;
-	CATCH_MSG("[Storage] Exception at DeleteTask(period, station):\n\t")
+	CATCH_MSG("[db/Storage] DeleteTask: ")
 	return false;
 }
 
@@ -320,7 +320,7 @@ tm Storage::GetOldestStationMeasureTime(string uid)
   sql_ << "SELECT EXTRACT(EPOCH FROM "
     "(SELECT min(timestamp) FROM measurement WHERE station_uid = :uid))",
     use(uid), into(time);
-  CATCH_MSG("[Storage] GetOldestStationMeasureTime():\n\t")
+  CATCH_MSG("[db/Storage] GetOldestStationMeasureTime: ")
   return *gmtime(&time);
 }
 
@@ -330,7 +330,7 @@ bool Storage::UpdateTaskCurrentTime(uint32_t id, tm timestamp)
   sql_ << "UPDATE aggregate_task SET current_ts = :timestamp "
     "WHERE id = :id", use(timestamp), use(id);
   return true;
-  CATCH_MSG("[Storage] UpdateTaskCurrentTime():\n\t")
+  CATCH_MSG("[db/Storage] UpdateTaskCurrentTime: ")
   return false;
 }
 
@@ -341,7 +341,7 @@ tm Storage::CalculateAggregateEndTime(string period_name, tm start_time)
   sql_ << "SELECT EXTRACT(EPOCH FROM (SELECT (:start_time) + (SELECT period FROM aggregate_period "
     "WHERE name = :period_name)))", use(start_time),
     use(period_name), into(time);
-  CATCH_MSG("[Storage] CalculateAggregateEndTime():\n\t")
+  CATCH_MSG("[db/Storage] CalculateAggregateEndTime: ")
   return *gmtime(&time);
 }
 
@@ -351,7 +351,7 @@ tm Storage::GetStationLastUpdate(string station_uid)
   TRY
   sql_ << "SELECT EXTRACT(EPOCH FROM (SELECT last_update FROM station "
     "WHERE uid = :uid))", use(station_uid), into(time);
-  CATCH_MSG("[Storage] Exception at GetStationLastDataUpdate(station_uid):\n\t")
+  CATCH_MSG("[db/Storage] GetStationLastDataUpdate: ")
   return *gmtime(&time);
 }
 
@@ -363,7 +363,7 @@ bool Storage::CreateTask(string period_name, string station_uid)
 		"VALUES(:period_name, :station_uid, to_timestamp(0))",
 		use(period_name), use(station_uid);
 	return true;
-	CATCH_MSG("[Storage] CreateTask(period, station):\n\t")
+	CATCH_MSG("[db/Storage] CreateTask: ")
 	return false;
 }
 

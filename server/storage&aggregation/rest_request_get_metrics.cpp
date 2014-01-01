@@ -1,5 +1,6 @@
 #include "rest_request_get_metrics.h"
 
+#include "db_storage.h"
 #include "../../common/rest_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
@@ -15,9 +16,9 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMetrics::GetMetrics(string uri, db::Storage* storage_database)
+GetMetrics::GetMetrics(string uri, common::db::Setting storage_setting)
   : uri_parser_(uri),
-    storage_database_(storage_database)
+    storage_setting_(storage_setting)
 {
 
 }
@@ -31,9 +32,10 @@ void GetMetrics::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response)
 {
+  db::Storage database_storage_(storage_setting_);
   ostream& ostr = response.send();
   auto path_segments = uri_parser_.getPathSegments();
-  auto metrics = storage_database_->GetMetrics();
+  auto metrics = database_storage_.GetMetrics();
 
   if (path_segments.size() == 1) {    
     ostr << cookbook::PrepareMetricsCodes(metrics);

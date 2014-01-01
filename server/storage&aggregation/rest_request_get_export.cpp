@@ -4,6 +4,7 @@
 #include "../../common/rest_cookbook.h"
 #include "../../common/entity_station.h"
 #include "rest_csv_cookbook.h"
+#include "db_storage.h"
 
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
@@ -30,8 +31,8 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetExport::GetExport(string uri,  db::Storage* database_storage)
-  : database_storage_(database_storage),
+GetExport::GetExport(string uri, common::db::Setting storage_setting)
+  : storage_setting_(storage_setting),
     uri_parser_(uri)
 {
 
@@ -46,17 +47,18 @@ void GetExport::handleRequest(
   HTTPServerRequest& request,
   HTTPServerResponse& response)
 {
+  db::Storage database_storage_(storage_setting_);
   auto path_segments = uri_parser_.getPathSegments();
   auto query_segments = uri_parser_.getQuerySegments();
   ostream& ostr = response.send();
 
   // api: /export
   if (path_segments.size() == 1) {
-    auto stations = database_storage_->GetStations();
+    auto stations = database_storage_.GetStations();
     vector<entity::Station> stations_with_any_meteo;
 
     for (auto it = stations.begin(); it != stations.end(); ++it) {
-      uint64_t count = database_storage_->CountStationMeasurements(it->uid);
+      uint64_t count = database_storage_.CountStationMeasurements(it->uid);
       if (count > 0) 
         stations_with_any_meteo.push_back(*it);
     }
@@ -65,9 +67,9 @@ void GetExport::handleRequest(
   // api: /export/:station_uid
   else if (path_segments.size() == 2) {
     if (query_segments.empty()) {
-      auto measurements = database_storage_->
-        GetAllMeasureSetsForStation(path_segments[1]);
-      auto valid_metrics = database_storage_->GetMetricsCodes();
+      auto measurements = database_storage_
+        .GetAllMeasureSetsForStation(path_segments[1]);
+      auto valid_metrics = database_storage_.GetMetricsCodes();
       ostr << csv::PrepareMeteo(measurements, valid_metrics);
     } else {
       auto from_index = query_segments.find(constant::from_parameter);
@@ -92,7 +94,7 @@ void GetExport::handleRequest(
       if (metrics_index != query_segments.end()) {
         vector<string> splitted_metrics;
         split(splitted_metrics, metrics_index->second , is_any_of(","));
-        auto valid_metrics = database_storage_->GetMetricsCodes();
+        auto valid_metrics = database_storage_.GetMetricsCodes();
 
         for (auto it = splitted_metrics.begin(); it != splitted_metrics.end(); ++it) {
           if (find(valid_metrics.begin(), valid_metrics.end(), *it) != valid_metrics.end() && !it->empty()) {
@@ -100,8 +102,8 @@ void GetExport::handleRequest(
           }
         }
       }
-      auto measurements = database_storage_->
-        GetMeasureSetsForStationBetweenTS(path_segments[1], from_ts, to_ts);
+      auto measurements = database_storage_
+        .GetMeasureSetsForStationBetweenTS(path_segments[1], from_ts, to_ts);
       ostr << csv::PrepareMeteo(measurements, metrics);
     }
   }

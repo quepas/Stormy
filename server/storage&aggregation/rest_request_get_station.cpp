@@ -1,5 +1,6 @@
 #include "rest_request_get_station.h"
 
+#include "db_storage.h"
 #include "../../common/rest_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
@@ -16,8 +17,8 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetStation::GetStation(string uri, db::Storage* storage_database)
-  : storage_database_(storage_database),
+GetStation::GetStation(string uri, common::db::Setting storage_setting)
+  : storage_setting_(storage_setting),
     uri_parser_(uri)
 {
 
@@ -31,17 +32,18 @@ GetStation::~GetStation()
 void GetStation::handleRequest(HTTPServerRequest& request, 
   HTTPServerResponse& response)
 { 
+  db::Storage database_storage_(storage_setting_);
   auto path_segments = uri_parser_.getPathSegments();
   ostream& ostr = response.send();
 
   // api: /station
   if (path_segments.size() == 1) {
-    auto stations = storage_database_->GetStations();
+    auto stations = database_storage_.GetStations();
     ostr << cookbook::PrepareStationUIDs(stations);
   }
   // api: /station/:station_uid
   else if (path_segments.size() == 2) {
-    auto station = storage_database_->GetStationByUID(path_segments[1]);
+    auto station = database_storage_.GetStationByUID(path_segments[1]);
 
     if(!station.uid.empty()) {
       ostr << cookbook::PrepareStationInfo(station);
