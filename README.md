@@ -1,14 +1,6 @@
-# Stormy
-
-About
------
-
 Acquisition, aggregation, analysis, visualization of weather data.
 
-Modules
--------
-
-## Stormy Acquisition Server
+# Stormy Acquisition Server
 
 Simple server for acquire meteorological data from many stations. Uses Python-based parser to getting data and NoSQL MongoDB database to temporary storage.
 
@@ -18,7 +10,7 @@ Requirements
 * Python ~3.3.3 (http://www.python.org/download/releases/3.3.3/)
 * MongoDB ~2.4.8 (http://www.mongodb.org/downloads)
 
-## Stormy Web Client
+# Stormy Web Client
 
 Web-based client for weather data visualization acquired by Stormy Acquisition or Storage&Aggregation Server.
 
