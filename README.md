@@ -1,21 +1,19 @@
 Acquisition, aggregation, analysis, visualization of weather data.
 
-# Stormy Acquisition Server
+## Stormy Acquisition Server
 
 Simple server for acquire meteorological data from many stations. Uses Python-based parser to getting data and NoSQL MongoDB database to temporary storage.
 
-Requirements
-------------
+#### Requirements
 
 * Python ~3.3.3 (http://www.python.org/download/releases/3.3.3/)
 * MongoDB ~2.4.8 (http://www.mongodb.org/downloads)
 
-# Stormy Web Client
+## Stormy Web Client
 
 Web-based client for weather data visualization acquired by Stormy Acquisition or Storage&Aggregation Server.
 
-Installation
-------------
+#### Installation
 
 * Install node.js (http://nodejs.org/download/)
 * Using npm (installed with node.js) install:
@@ -41,12 +39,10 @@ Installation
 	+ Copy 'glyphicons-halflings-white.png' to 'client/web/public/img'
 * Download 'Chart.js' (http://www.chartjs.org/) and copy it to 'client/web/public/js'
 
-Running
--------
+#### Running
 
 Open Command Prompt (cmd). Go to 'client/web' directory and run node server from 'run.js' script (type: 'node run.js').
 
-Using
------
+#### Using
 
 Go to your browser and open http://127.0.0.1:1337 site. Type Stormy Acquisition or Storage&Aggregation Server host address and port. Click 'Connect' and enjoy it!
