@@ -31,22 +31,20 @@ Scheduler::~Scheduler()
 void Scheduler::Schedule(vector<entity::Task> task_entites)
 {    
   factory_.SetInnerScheduler(this);
-  logger_.information("[aggregate::Scheduler] Launching " + 
+  logger_.information("[aggregate/Scheduler] Launching " + 
     NumberFormatter::format(task_entites.size()) + 
       " initial aggregation tasks.");
   cancelled_ = false;    
   for (auto it = task_entites.begin(); it != task_entites.end(); ++it) {     
     ScheduleAsInitialTask(*it);
-  }
-  logger_.information("[aggregate::Scheduler] "
-    "Launchin regular aggregation tasks.");
+  }  
 }
 
 void Scheduler::Cancel()
 {  
   cancel();
   cancelled_ = true;
-  logger_.information("[aggregate::Schedule] Number of tasks cancelled: "
+  logger_.information("[aggregate/Scheduler] Number of tasks cancelled: "
     + NumberFormatter::format(scheduled_tasks_.size()));  
   Clear();
 }

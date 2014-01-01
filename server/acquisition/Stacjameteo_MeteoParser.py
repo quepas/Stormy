@@ -6,12 +6,12 @@ import re
 from urllib import request
 
 def run(text, encoding="UTF-8"):
-    parser = MeteoBDataParser()
+    parser = Stacjameteo_MeteoParser()
     parser.data=[]
     parser.parseFromHtml(text, encoding)
     return parser.data
 
-class MeteoBDataParser(HTMLParser):
+class Stacjameteo_MeteoParser(HTMLParser):
     data = []
 
     def parse(self, fileName, encoding="UTF-8"):
