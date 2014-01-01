@@ -1,7 +1,7 @@
 Stormy Web Client
 =================
 
-Web-based client for weather data visualization acquired by Stormy Acquisition Server.
+Web-based client for weather data visualization acquired by Stormy Acquisition or Storage&Aggregation Server.
 
 Installation
 ------------
@@ -10,7 +10,7 @@ Installation
 * Using npm (installed with node.js) install:
 	+ 'bower' a package manager for web (just type in cmd 'npm install -g bower', '-g' parameter is for global installation)
 	+ 'express' (in cmd go to 'client/web' directory and type 'npm install express' for local or use '-g' for global installation)
-* Using bower (installed with npm) install:
+* Using bower (installed by npm) install:
 	+ 'angular.js' (in 'client/web' directory type 'bower install angular')
 	+ 'angular-route.js' (in 'client/web' directory type 'bower install angular-route', its external for 1.2.x angular.js)
 	+ 'angular-bootstrap-datetimepicker' (in 'client/web' directory type 'bower install angular-bootstrap-datetimepicker')
