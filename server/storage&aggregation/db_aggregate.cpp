@@ -1,6 +1,7 @@
 #include "db_aggregate.h"
 
-#include <iostream>
+#include "../../common/util.h"
+
 #include <postgresql/soci-postgresql.h>
 
 using Poco::Logger;
@@ -11,10 +12,9 @@ using soci::into;
 namespace stormy {
   namespace db {
 
-Aggregate::Aggregate(common::db::Setting aggregate_setting, Storage* database_storage )
+Aggregate::Aggregate(common::db::Setting aggregate_setting)
 	:	logger_(Logger::get("aggregation")),
-    aggregate_setting_(aggregate_setting),
-		database_storage_(database_storage)
+    aggregate_setting_(aggregate_setting)
 {
 	Connect();
 }

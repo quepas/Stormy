@@ -33,10 +33,8 @@ int main(int argc, char** argv) {
 	db::Storage storage_for_acquisition(storage_db_setting);
   db::Storage storage_for_aggregation(storage_db_setting);
   db::Storage storage_for_rest(storage_db_setting);
-	db::Aggregate aggregation(
-    aggregate_db_setting, &storage_for_aggregation);
-  db::Aggregate aggregation_for_rest(
-    aggregate_db_setting, &storage_for_rest);
+	db::Aggregate aggregation(aggregate_db_setting);
+  db::Aggregate aggregation_for_rest(aggregate_db_setting);
   
   logger.information("==== Storage & Aggregation started. ====");	  
 	logger.information("Measurements in storage: " + 
@@ -70,7 +68,7 @@ int main(int argc, char** argv) {
 
 	aggregation::Engine aggregation_engine(&storage_for_aggregation, &aggregation);
   aggregation::Engine::Restarter asd(360);
-  asd(aggregation_engine);	
+  asd(aggregation_engine);
   
   rest::Service rest_service(storage_db_setting, aggregate_db_setting);
   rest_service.run(argc, argv);
