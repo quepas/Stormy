@@ -1,44 +1,44 @@
 div.wrapper {
-	width: 1300px;
-    overflow: auto;
+  width: 1300px;
+  overflow: auto;
 }
 
 div.wrapper-small {
-	width: 850px;
-    overflow: auto;
+  width: 850px;
+  overflow: auto;
 }
 
 div.left {
-	width: 1000px;
-    float: left;
+  width: 1000px;
+  float: left;
 }
 
 div.left-small {
-	width: 250px;
-    float: left;
+  width: 250px;
+  float: left;
 }
 
 div.right {
-    overflow: hidden;
-    height: 900px;
+  overflow: hidden;
+  height: 900px;
 }
 
 div.center {
-	width: 300px;
-	float: left;
+  width: 300px;
+  float: left;
 }
 
 #floating {
-	float: left;
+  float: left;
 }
 
 #timepicker_div {
-	float: left;
-	margin: 5px;
+  float: left;
+  margin: 5px;
 }
 
 #timepicker_label {
-	float: left;
-	display:inline-block;
-	margin-top: 10px;
+  float: left;
+  display: inline-block;
+  margin-top: 10px;
 }
