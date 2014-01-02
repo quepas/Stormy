@@ -16,7 +16,7 @@ namespace stormy {
   namespace rest {
 
 Service::Service(uint16_t port /* = 8080 */)
-	:	port_(port)
+  : port_(port)
 {
 
 }
@@ -28,30 +28,30 @@ Service::~Service()
 
 void Service::initialized(Application& self)
 {
-	loadConfiguration();
-	ServerApplication::initialize(self);
+  loadConfiguration();
+  ServerApplication::initialize(self);
 }
 
 void Service::unitialized()
 {
-	ServerApplication::uninitialize();
+  ServerApplication::uninitialize();
 }
 
 int Service::main(const vector<string>& args)
 {
-	unsigned short configuredPort = (unsigned short)
-		config().getInt("Service.port", port_);
+  unsigned short configuredPort = (unsigned short)
+    config().getInt("Service.port", port_);
 
-	ServerSocket serverSocket(configuredPort);
-	HTTPServer httpServer(
+  ServerSocket serverSocket(configuredPort);
+  HTTPServer httpServer(
     new request::Factory(),
-		serverSocket, 
+    serverSocket,
     new HTTPServerParams);
-	httpServer.start();
-	waitForTerminationRequest();
-	httpServer.stop();
+  httpServer.start();
+  waitForTerminationRequest();
+  httpServer.stop();
 
-	return Application::EXIT_OK;
+  return Application::EXIT_OK;
 }
 // ~~ stormy::rest::Service
 }}

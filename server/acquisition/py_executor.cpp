@@ -10,26 +10,26 @@ namespace stormy {
 Executor::Executor()
   : logger_(Logger::get("py/Executor"))
 {
-	if (!Init()) {
-		if(Py_IsInitialized())
-			logger_.warning("[py/Executor] Already initialized.");
-		else
-			logger_.error("[py/Executor] Couldn't initialize.");
-	}
+  if (!Init()) {
+    if(Py_IsInitialized())
+      logger_.warning("[py/Executor] Already initialized.");
+    else
+      logger_.error("[py/Executor] Couldn't initialize.");
+  }
 }
 
 Executor::~Executor()
 {
-	Py_Finalize();
+  Py_Finalize();
 }
 
 bool Executor::Init()
 {
-	if (!Py_IsInitialized()) {
-		Py_Initialize();
-		return true;
-	}
-	return false;
+  if (!Py_IsInitialized()) {
+    Py_Initialize();
+    return true;
+  }
+  return false;
 }
 // ~~ stormy::py::Executor
 }}

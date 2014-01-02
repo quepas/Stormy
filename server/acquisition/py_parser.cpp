@@ -36,7 +36,7 @@ namespace stormy {
   namespace py {
 
 Parser::Parser(string parser_class)
-	:	logger_(Logger::get("py/Parser")),
+  : logger_(Logger::get("py/Parser")),
     parser_class_(parser_class),
     metrics_config_("config/meteo_data_type_config.yaml")
 {
@@ -61,11 +61,11 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
   vector<entity::Measurement> result;
   if (pFuncResult != nullptr)
   {
-    auto data = mapper::PairsFromSequence(pFuncResult);    
+    auto data = mapper::PairsFromSequence(pFuncResult);
     string date, time;
 
     for (auto it = data.begin(); it != data.end(); ++it) {
-      entity::Measurement measure;     
+      entity::Measurement measure;
       string metrics_code = metrics_config_.GetMetricsIdByEquivalent(it->first);
       measure.code = metrics_code;
       measure.station_uid = station.uid;
@@ -76,9 +76,9 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
         date = str_value;
       } else if(metrics_code == db::constant::time) {
         time = str_value;
-      }     
+      }
       if (metrics.is_meteo) {
-        string metrics_type = to_lower_copy(metrics.type);      			  
+        string metrics_type = to_lower_copy(metrics.type);
 
         if (str_value != "-" && !str_value.empty()) {
           if (metrics_type == db::constant::number) {
@@ -102,12 +102,12 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
     int dtz;
     if (DateTimeParser::tryParse(date + " " + time, acquire_time, dtz)) {
       //acquire_time.makeLocal(3600);
-      time_t acquire_time_t = acquire_time.timestamp().epochTime();      
+      time_t acquire_time_t = acquire_time.timestamp().epochTime();
       timestamp = *localtime(&acquire_time_t);
     }
     for (auto it = result.begin(); it != result.end(); ++it) {
-      it->timestamp = timestamp;      
-    }   
+      it->timestamp = timestamp;
+    }
     Py_DECREF(pFuncResult);
     return result;
   }

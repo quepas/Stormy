@@ -26,10 +26,10 @@ GetInfo::~GetInfo()
 }
 
 void GetInfo::handleRequest(
-  HTTPServerRequest& request, 
+  HTTPServerRequest& request,
   HTTPServerResponse& response)
 {
-	ostream& ostr = response.send();
+  ostream& ostr = response.send();
   ostr << cookbook::
     PrepareServerInfo("Acquisition Server #1", "A", "UTC/GMT +1");
 }

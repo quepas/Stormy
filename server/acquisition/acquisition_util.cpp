@@ -37,12 +37,12 @@ bool TryExtractFirstNumeric(string text, double& out_value)
 
 time_t SecondsToMiliseconds(time_t seconds)
 {
-	return (seconds > 0) ? seconds * 1000 : 0;
+  return (seconds > 0) ? seconds * 1000 : 0;
 }
 
 time_t MinutesToMiliseconds(time_t minutes)
 {
-	return SecondsToMiliseconds(minutes * 60);
+  return SecondsToMiliseconds(minutes * 60);
 }
 // ~~ stormy::acquisition::util
 }}}

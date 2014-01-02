@@ -21,15 +21,15 @@ Scheduler::~Scheduler()
 
 void Scheduler::Schedule(entity::Station station)
 {
-	schedule(new Task(station), 0,
-		util::SecondsToMiliseconds(station.refresh_time));
+  schedule(new Task(station), 0,
+    util::SecondsToMiliseconds(station.refresh_time));
 }
 
 void Scheduler::Schedule(const vector<entity::Station>& stations)
 {
-	for(auto it = stations.begin(); it != stations.end(); ++it) {
-		Schedule(*it);
-	}
+  for(auto it = stations.begin(); it != stations.end(); ++it) {
+    Schedule(*it);
+  }
 }
 // ~~ stormy::acquisition::Scheduler
 }}

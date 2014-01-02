@@ -29,15 +29,15 @@ GetMetrics::~GetMetrics()
 }
 
 void GetMetrics::handleRequest(
-  HTTPServerRequest& request, 
-	HTTPServerResponse& response)
+  HTTPServerRequest& request,
+  HTTPServerResponse& response)
 {
-	ostream& ostr = response.send();
-	auto& database_handler = db::MongoHandler::get();
+  ostream& ostr = response.send();
+  auto& database_handler = db::MongoHandler::get();
   auto path_segments = uri_parser_.getPathSegments();
   auto metrics = database_handler.GetMetrics();
 
-	if (path_segments.size() == 1) {    
+  if (path_segments.size() == 1) {
     ostr << cookbook::PrepareMetricsCodes(metrics);
   } else if (path_segments.size() == 2) {
     for (auto it = metrics.begin(); it != metrics.end(); ++it) {
@@ -47,11 +47,11 @@ void GetMetrics::handleRequest(
       }
     }
     ostr << cookbook::PrepareError(
-      "Bad request. Unknown metrics code.", 
+      "Bad request. Unknown metrics code.",
       "Use existing metrics code.");
   } else {
     ostr << cookbook::PrepareError(
-      "Bad request. Too much URI segments", 
+      "Bad request. Too much URI segments",
       "Create proper metrics request.");
   }
 }
