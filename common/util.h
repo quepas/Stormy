@@ -32,8 +32,8 @@ bool ToBool(std::string text);
 bool IsMatch(std::string text, std::string regex);
 
 // date & time
-bool IsDate(std::string date);	// YYYY-MM-DD
-bool IsTime(std::string time);	// HH:MM
+bool IsDate(std::string date);  // YYYY-MM-DD
+bool IsTime(std::string time);  // HH:MM
 std::time_t LocaltimeNow();
 
 // const
@@ -41,7 +41,7 @@ const std::string numeric_pattern = "-?[0-9]+([.][0-9]+)?";
 const std::string date_pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 const std::string time_pattern = "[0-9]{1, 2}:[0-9]{1, 2}";
 const std::string hex_md5_pattern = "[0-9a-f]{32}";
-	
+
 template<typename T, typename V>
 bool Contains(T seq, V key)
 {
@@ -58,7 +58,7 @@ template<typename T, typename V>
 T Last(V seq)
 {
   if(seq.empty()) return T();
-	return *(--seq.end());
+  return *(--seq.end());
 }
 // ~~ stormy::common::util
 }}

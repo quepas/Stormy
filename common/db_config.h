@@ -11,14 +11,14 @@ namespace stormy {
 class Config : public yaml::BaseConfig
 {
 public:
-	Config(std::string path);
+  Config(std::string path);
   ~Config();
-	Setting Configuration() {
-		return configuration_;
-	}
+  Setting Configuration() {
+    return configuration_;
+  }
 private:
-	Setting configuration_;
-	void MapIntoConfiguration();
+  Setting configuration_;
+  void MapIntoConfiguration();
 };
 // ~~ stormy::common::db::Config
 }}}
