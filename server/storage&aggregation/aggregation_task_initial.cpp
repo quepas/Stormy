@@ -2,8 +2,6 @@
 
 #include <ctime>
 #include <string>
-#include <boost/thread.hpp>
-#include <boost/chrono.hpp>
 #include <Poco/NumberFormatter.h>
 
 using std::string;
@@ -32,20 +30,14 @@ Initial::~Initial()
 }
 
 void Initial::run()
-{
-  
-  string current_ts = asctime(&task_entity_.current_ts);
-  current_ts.erase(current_ts.length()-1);  // Erase '\n' from end
+{  
+  string task_curent_time_str = asctime(&task_entity_.current_ts);
+  // Erase '\n' from end
+  task_curent_time_str.erase(task_curent_time_str.length()-1);  
 
   logger_.information(PrepareHeader("Initial") + 
-    " Period of interest from " + current_ts + ".");
-
-  /*while(storage_.CountStationMeasurements(task_entity_.station_uid) <= 0) {
-    logger_.warning(
-      PrepareHeader("Initial") + "No data. Sleeping for 60 seconds.");
-    boost::this_thread::sleep_for(boost::chrono::seconds(60));
-  }*/
-
+    "Period of interest from " + task_curent_time_str + ".");
+  
   // check if any measurements exists
   if(storage_database_.CountStationMeasurements(task_entity_.station_uid) > 0) {
     // find oldest measure for station_uid
@@ -60,7 +52,17 @@ void Initial::run()
     time_t current_task_t = mktime(&task_entity_.current_ts);
     time_t oldest_measure_t = mktime(&oldest_measure);
 
-    if (current_task_t < oldest_measure_t) {
+    if (current_task_t < oldest_measure_t) {      
+      oldest_measure.tm_min = 0;
+      oldest_measure.tm_sec = 0;
+
+      if (task_entity_.period_name == "daily") {
+        oldest_measure.tm_hour = 0;
+      }
+      if (task_entity_.period_name == "monthly") {
+        oldest_measure.tm_hour = 0;
+        oldest_measure.tm_mday = 1;
+      }           
       aggregation_database_.UpdateTaskCurrentTime(task_entity_.id, oldest_measure);
       task_entity_.current_ts = oldest_measure;
     }

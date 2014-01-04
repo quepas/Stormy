@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
 	aggregation::Engine aggregation_engine(
     storage_db_setting, 
     aggregate_db_setting);
-  aggregation::Engine::Restarter engine_restarter(360);
+  aggregation::Engine::Restarter engine_restarter(5);
   engine_restarter(aggregation_engine);
   
   rest::Service rest_service(storage_db_setting, aggregate_db_setting);

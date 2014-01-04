@@ -38,39 +38,38 @@ Regular::~Regular()
 void Regular::run()
 {
   // update task current_ts
-  task_entity_.current_ts = aggregation_database_.GetTaskCurrentTS(
-    task_entity_.id);
-  tm station_last_update_ts = storage_database_.GetStationLastUpdate(
-    task_entity_.station_uid);
-  time_t station_last_update_time = mktime(&station_last_update_ts);
+  task_entity_.current_ts = aggregation_database_
+    .GetTaskCurrentTS(task_entity_.id);
+  tm station_last_update = storage_database_
+    .GetStationLastUpdate(task_entity_.station_uid);
+  time_t station_last_update_time = 
+    mktime(&station_last_update);
 
-  string asc_current = asctime(&task_entity_.current_ts);
-  asc_current.erase(asc_current.length()-1);  // Erase '\n' from end
-  time_t current_time = mktime(&task_entity_.current_ts);
-  time_t intrval_end_time = 3600*2 + current_time;
-  tm interval_end_ts = *gmtime(&intrval_end_time);
-  string asc_end = asctime(&interval_end_ts);
-
+  tm interval_end = aggregation_database_
+    .CalculateAggregateEndTime(task_entity_.period_name, task_entity_.current_ts);
+  time_t interval_start_time = mktime(&task_entity_.current_ts);
+  time_t interval_end_time = mktime(&interval_end);
+    
   // IMPORTANT!: check if end time is newer than last data in station
-  if (station_last_update_time > intrval_end_time) {
+  if (station_last_update_time > interval_end_time) {
     // for all 'measurement code' get once, do on all operations
     //const auto& metrics_code = storage_->GetMetricsCodes();
-    // IMPORTANT! : check if measurement is numeric
-
+    
     const auto& measure_sets = storage_database_.GetMeasureSetsForStationBetweenTS(
       task_entity_.station_uid, 
-      current_time, 
-      intrval_end_time-1);
+      interval_start_time, 
+      interval_end_time-1);
     const auto& metrics_sets = util::ConvertMeasureSetsToMetricsSets(measure_sets);
-
+    
     for (auto ms_it = metrics_sets.begin(); ms_it != metrics_sets.end(); ++ms_it) {
       const auto& measure_data_set = ms_it->second;
-
+      logger_.information("Sample number: " + NumberFormatter::format(ms_it->second.size()));
       if (measure_data_set[0].is_numeric) {
         // TODO: Loop for N operations
         double dataset_sum = 0.0;        
         double aggregate_value = 0.0;
         uint32_t sample_number = measure_data_set.size();
+        //logger_.information("Sample number: " + NumberFormatter::format(sample_number));
         for (auto av_it = measure_data_set.begin(); av_it != measure_data_set.end(); ++av_it) {
           dataset_sum += av_it->value_number;
         }
@@ -87,14 +86,13 @@ void Regular::run()
         aggregation_database_.InsertAggregate(aggregate);
 
         logger_.notice(PrepareHeader("Regular") + 
-          "Period " + task_entity_.period_name + 
-          " [" + asc_current + "-" + asc_end + "]. " + 
-          "Samples: " + NumberFormatter::format(measure_data_set.size()) 
+          task_entity_.period_name + " :" + string(ctime(&interval_start_time)) +
           + ". Mean: " + NumberFormatter::format(aggregate_value) +
-          ". Station: " + task_entity_.station_uid);
+          ". Station (" + NumberFormatter::format(measure_data_set.size()) +
+          "): " + task_entity_.station_uid);
       }      
     }
-    aggregation_database_.UpdateTaskCurrentTime(task_entity_.id, interval_end_ts);
+    aggregation_database_.UpdateTaskCurrentTime(task_entity_.id, interval_end);
   }
 }
 // ~~ stormy::aggregation::task::Regular

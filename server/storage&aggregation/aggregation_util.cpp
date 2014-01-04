@@ -1,5 +1,5 @@
 #include "aggregation_util.h"
-
+#include <iostream>
 using namespace stormy::common;
 
 using std::map;
@@ -17,7 +17,7 @@ map<string, vector<entity::Measurement>>
 {
   map<string, vector<entity::Measurement>> metrics_sets;
   for (auto ms_it = measure_sets.begin(); ms_it != measure_sets.end(); ++ms_it) {
-    auto measure_set = ms_it->second;
+    auto measure_set = ms_it->second;   
     for (auto it = measure_set.begin(); it != measure_set.end(); ++it) {
       metrics_sets[it->code].push_back(*it);
     }

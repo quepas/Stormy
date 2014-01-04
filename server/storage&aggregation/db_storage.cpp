@@ -269,23 +269,22 @@ vector<string> Storage::GetMetricsCodes()
 
 tm Storage::GetOldestStationMeasureTime(string uid)
 {
-  time_t time = 0;
+  tm measure_oldest_time;
   TRY
-  sql_ << "SELECT EXTRACT(EPOCH FROM "
-    "(SELECT min(timestamp) FROM measurement WHERE station_uid = :uid))",
-    use(uid), into(time);
+  sql_ << "SELECT min(timestamp) FROM measurement WHERE station_uid = :uid",
+    use(uid), into(measure_oldest_time);
   CATCH_MSG("[db/Storage] GetOldestStationMeasureTime: ")
-  return *gmtime(&time);
+  return measure_oldest_time;
 }
 
 tm Storage::GetStationLastUpdate(string station_uid)
 {
-  time_t time = 0;
+  tm station_last_update;
   TRY
-  sql_ << "SELECT EXTRACT(EPOCH FROM (SELECT last_update FROM station "
-    "WHERE uid = :uid))", use(station_uid), into(time);
+  sql_ << "SELECT last_update FROM station WHERE uid = :uid", 
+    use(station_uid), into(station_last_update);
   CATCH_MSG("[db/Storage] GetStationLastDataUpdate: ")
-  return *gmtime(&time);
+  return station_last_update;
 }
 
 vector<tm> Storage::SelectDistinctMeasureTSForStationBetweenTS(
@@ -316,10 +315,7 @@ map<time_t, vector<entity::Measurement>>
     string station_uid, 
     time_t from, 
     time_t to)
-{
-  // Quick fix: make utc (representation in db)
-  if (from > 3600) from -= 3600;
-  if (to > 3600) to -= 3600;
+{    
   map<time_t, vector<entity::Measurement>> measure_sets;  
   tm from_time = *localtime(&from);
   tm to_time = *localtime(&to);

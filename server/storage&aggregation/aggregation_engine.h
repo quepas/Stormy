@@ -94,7 +94,7 @@ public:
       std::time_t restart_miliseconds = restart_seconds_ * 1000;
       schedule(
         new CyclicRestart(engine), 
-        15 * 1000, 
+        0, 
         static_cast<long>(restart_miliseconds));
     };
   private:
