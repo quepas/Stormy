@@ -96,7 +96,7 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
         }
       }
     }    
-    time_t time_now = std::time(nullptr) + 3600;  // make as local time
+    time_t time_now = std::time(nullptr);
     tm timestamp = *localtime(&time_now);
     DateTime acquire_time;
     int dtz;

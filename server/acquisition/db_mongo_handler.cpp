@@ -72,7 +72,8 @@ void MongoHandler::insertMeteoData(vector<entity::Measurement> measurement)
     else
       bsonBuilder.append(code, it->value_text);
   }
-  bsonBuilder.append(constant::mongo_id, mktime(&timestamp));
+  // make time local!
+  bsonBuilder.append(constant::mongo_id, mktime(&timestamp) + 3600);
   connection.insert(constant::db_meteo + "." + constant::station_uid_prefix +
       station_uid, bsonBuilder.obj());
 }
