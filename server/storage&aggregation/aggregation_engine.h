@@ -64,13 +64,12 @@ private:
   std::multimap<BadTaskReason, std::pair<std::string, std::string>> bad_tasks_reason_;
   std::vector<std::pair<std::string, std::string>> verified_period_station_;
 
-  task::Factory factory_;
-  Scheduler scheduler_;
-  Poco::Logger& logger_;
-				
   db::Storage storage_;
   db::Aggregate aggregation_;
 
+  task::Factory factory_;
+  Scheduler scheduler_;
+  Poco::Logger& logger_;		
 public:
   class CyclicRestart : public Poco::Util::TimerTask
   {

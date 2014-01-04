@@ -16,7 +16,7 @@ Engine::Engine(
   : logger_(Logger::get("aggregation")),
     storage_(storage_setting),
     aggregation_(aggregate_setting),
-    factory_(storage_setting, aggregate_setting),
+    factory_(storage_, aggregation_),
     scheduler_(factory_)
 {
 
@@ -174,8 +174,8 @@ void Engine::FetchAvailableData()
 	ClearAvailableData();
 	available_stations_ = storage_.GetStations();
 	available_metrics_ = storage_.GetMetrics();
-	available_tasks_ = storage_.GetTasks();
-	available_periods_ = storage_.GetPeriods();
+	available_tasks_ = aggregation_.GetTasks();
+	available_periods_ = aggregation_.GetPeriods();
 }
 
 void Engine::ClearAvailableData()
@@ -202,14 +202,14 @@ bool Engine::CreateMissingTask(
   std::string period_name, 
   std::string station_uid)
 {
-	return storage_.CreateTask(period_name, station_uid);
+	return aggregation_.CreateTask(period_name, station_uid);
 }
 
 bool Engine::DeleteUselessTask(
   std::string period_name, 
   std::string station_uid)
 {
-	return storage_.DeleteTask(period_name, station_uid);
+	return aggregation_.DeleteTask(period_name, station_uid);
 }
 
 

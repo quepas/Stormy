@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../../common/db_setting.h"
+#include "db_storage.h"
+#include "db_aggregate.h"
 #include "aggregation_task_base.h"
 
 namespace stormy {
@@ -12,8 +13,8 @@ class Regular : public Base
 public:
   Regular(
     entity::Task task_data, 
-    common::db::Setting storage_setting, 
-    common::db::Setting aggregate_setting);
+    db::Storage& storage_database,
+    db::Aggregate& aggregation_database);
   ~Regular();
 
   void run() override;

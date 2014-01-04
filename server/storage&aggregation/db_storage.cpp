@@ -256,52 +256,6 @@ vector<entity::Metrics> Storage::GetMetrics()
 	return metrics;
 }
 
-// TODO: move to DBAggregate?
-vector<aggregation::entity::Task> Storage::GetTasks()
-{
-	auto tasks = vector<aggregation::entity::Task>();
-	TRY
-	rowset<row> rs = (sql_.prepare << "SELECT * FROM aggregate_task");
-	for (auto it = rs.begin(); it != rs.end(); ++it) {
-		row const& row = *it;
-		aggregation::entity::Task element;
-		element.id = row.get<int>(0);
-		element.period_name = row.get<string>(1);
-		element.station_uid = row.get<string>(2);		
-		element.current_ts = row.get<tm>(3);
-		tasks.push_back(element);
-	}
-	CATCH_MSG("[db/Storage] GetTasks: ")
-	return tasks;
-}
-
-vector<aggregation::entity::Period> Storage::GetPeriods()
-{
-	auto periods = vector<aggregation::entity::Period>();
-	TRY
-  rowset<row> rs = (sql_.prepare << "SELECT name FROM aggregate_period");
-  for (auto it = rs.begin(); it != rs.end(); ++it) {
-    const row& row = *it;
-    aggregation::entity::Period element;
-    element.name = row.get<string>(0);   
-    periods.push_back(element);
-  }	
-	CATCH_MSG("[db/Storage] GetPeriods: ")
-	return periods;
-}
-
-bool Storage::DeleteTask(string period_name, string station_uid)
-{
-	TRY
-	sql_ << "DELETE FROM aggregate_task "
-		"WHERE period_name = :period_name "
-		"AND station_uid = :station_uid",
-		use(period_name), use(station_uid);
-	return true;
-	CATCH_MSG("[db/Storage] DeleteTask: ")
-	return false;
-}
-
 vector<string> Storage::GetMetricsCodes()
 {
   static auto metrics = GetMetrics();
@@ -324,27 +278,6 @@ tm Storage::GetOldestStationMeasureTime(string uid)
   return *gmtime(&time);
 }
 
-bool Storage::UpdateTaskCurrentTime(uint32_t id, tm timestamp)
-{
-  TRY
-  sql_ << "UPDATE aggregate_task SET current_ts = :timestamp "
-    "WHERE id = :id", use(timestamp), use(id);
-  return true;
-  CATCH_MSG("[db/Storage] UpdateTaskCurrentTime: ")
-  return false;
-}
-
-tm Storage::CalculateAggregateEndTime(string period_name, tm start_time)
-{  
-  time_t time = 0;
-  TRY
-  sql_ << "SELECT EXTRACT(EPOCH FROM (SELECT (:start_time) + (SELECT period FROM aggregate_period "
-    "WHERE name = :period_name)))", use(start_time),
-    use(period_name), into(time);
-  CATCH_MSG("[db/Storage] CalculateAggregateEndTime: ")
-  return *gmtime(&time);
-}
-
 tm Storage::GetStationLastUpdate(string station_uid)
 {
   time_t time = 0;
@@ -353,18 +286,6 @@ tm Storage::GetStationLastUpdate(string station_uid)
     "WHERE uid = :uid))", use(station_uid), into(time);
   CATCH_MSG("[db/Storage] GetStationLastDataUpdate: ")
   return *gmtime(&time);
-}
-
-bool Storage::CreateTask(string period_name, string station_uid)
-{
-	TRY
-	sql_ << "INSERT INTO aggregate_task "
-		"(period_name, station_uid, current_ts)"
-		"VALUES(:period_name, :station_uid, to_timestamp(0))",
-		use(period_name), use(station_uid);
-	return true;
-	CATCH_MSG("[db/Storage] CreateTask: ")
-	return false;
 }
 
 vector<tm> Storage::SelectDistinctMeasureTSForStationBetweenTS(
@@ -422,12 +343,12 @@ map<time_t, vector<entity::Measurement>>
       measure.station_uid = row->get<string>(2);
 
       const auto& value_text_ind = row->get_indicator(3);
-      if (value_text_ind != i_null) {
+      if (value_text_ind != i_null) {        
         measure.value_text = row->get<string>(3);
         measure.is_numeric = false;
       }
       const auto& value_number_ind = row->get_indicator(4);
-      if (value_number_ind != i_null) {
+      if (value_number_ind != i_null) {       
         measure.value_number = row->get<double>(4);
         measure.is_numeric = true;
       }

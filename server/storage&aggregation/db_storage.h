@@ -12,9 +12,6 @@
 #include "../../common/entity_metrics.h"
 #include "../../common/entity_measurement.h"
 
-#include "aggregation_entity_task.h"
-#include "aggregation_entity_period.h"
-
 namespace stormy {
   namespace db {
     
@@ -22,12 +19,7 @@ class Storage
 {
 public:
   Storage(common::db::Setting storage_setting);
-  ~Storage();
-  
-  bool DeleteTask(std::string period_name, std::string station_uid);
-  bool CreateTask(std::string period_name, std::string station_uid);
-  bool UpdateTaskCurrentTime(uint32_t id, std::tm timestamp);
-  std::tm CalculateAggregateEndTime(std::string period_name, std::tm start_time);  
+  ~Storage();   
 
   std::tm GetOldestStationMeasureTime(std::string uid);  
   
@@ -59,9 +51,7 @@ public:
   uint64_t CountStationMeasurements(std::string uid);
   uint32_t CountAllStations();
 
-  std::vector<common::entity::Station> GetStations();  
-  std::vector<aggregation::entity::Task> GetTasks();
-  std::vector<aggregation::entity::Period> GetPeriods();   
+  std::vector<common::entity::Station> GetStations();    
   std::vector<common::entity::Metrics> GetMetrics();
   std::vector<std::string> GetMetricsCodes();
 

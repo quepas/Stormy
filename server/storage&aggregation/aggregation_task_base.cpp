@@ -12,12 +12,12 @@ namespace stormy {
 
 Base::Base(
   entity::Task task_data, 
-  common::db::Setting storage_setting, 
-  common::db::Setting aggregate_setting)
-  : logger_(Logger::get("aggregation")),
+  db::Storage& storage_database, 
+  db::Aggregate& aggregation_database)
+  : logger_(Logger::get("aggregation/Task")),
     task_entity_(task_data),
-    storage_(storage_setting),
-    aggregation_(aggregate_setting)
+    storage_database_(storage_database),
+    aggregation_database_(aggregation_database)
 {
 }
 

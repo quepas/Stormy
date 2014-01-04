@@ -18,10 +18,10 @@ namespace stormy {
 
 Initial::Initial(
   entity::Task task_data, 
-  common::db::Setting storage_setting, 
-  common::db::Setting aggregate_setting,
+  db::Storage& storage_database,
+  db::Aggregate& aggregation_database,
   Scheduler* inner_scheduler)
-  : Base(task_data, storage_setting, aggregate_setting),
+  : Base(task_data, storage_database, aggregation_database),
     inner_scheduler_(inner_scheduler)    
 {
 }
@@ -47,9 +47,9 @@ void Initial::run()
   }*/
 
   // check if any measurements exists
-  if(storage_.CountStationMeasurements(task_entity_.station_uid) > 0) {
+  if(storage_database_.CountStationMeasurements(task_entity_.station_uid) > 0) {
     // find oldest measure for station_uid
-    tm oldest_measure = storage_
+    tm oldest_measure = storage_database_
       .GetOldestStationMeasureTime(task_entity_.station_uid);
 
     string oldest_measure_str = asctime(&oldest_measure);
@@ -61,7 +61,7 @@ void Initial::run()
     time_t oldest_measure_t = mktime(&oldest_measure);
 
     if (current_task_t < oldest_measure_t) {
-      storage_.UpdateTaskCurrentTime(task_entity_.id, oldest_measure);
+      aggregation_database_.UpdateTaskCurrentTime(task_entity_.id, oldest_measure);
       task_entity_.current_ts = oldest_measure;
     }
   }  

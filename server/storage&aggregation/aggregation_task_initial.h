@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../common/db_setting.h"
 #include "aggregation_task_base.h"
 #include "aggregation_scheduler.h"
 #include "db_storage.h"
@@ -15,8 +14,8 @@ class Initial : public Base
 public:
   Initial(
     entity::Task task_data, 
-    common::db::Setting storage_setting, 
-    common::db::Setting aggregate_setting, 
+    db::Storage& storage_database,
+    db::Aggregate& aggregation_database, 
     Scheduler* inner_scheduler);
   ~Initial();
 

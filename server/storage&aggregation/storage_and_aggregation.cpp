@@ -5,10 +5,8 @@
 #include <Poco/AutoPtr.h>
 
 #include "aggregation_config.h"
-#include "aggregation_setting.h"
 #include "acquisition_config.h"
 #include "db_storage.h"
-#include "db_aggregate.h"
 #include "acquisition_scheduler.h"
 #include "../../common/util.h"
 #include "../../common/db_config.h"
@@ -30,11 +28,7 @@ int main(int argc, char** argv) {
 	auto aggregate_db_setting = 
     common::db::Config("config/aggregation_database.yaml").Configuration();
 
-	db::Storage storage_for_acquisition(storage_db_setting);
-  db::Storage storage_for_aggregation(storage_db_setting);
-  db::Storage storage_for_rest(storage_db_setting);
-	db::Aggregate aggregation(aggregate_db_setting);
-  db::Aggregate aggregation_for_rest(aggregate_db_setting);
+	db::Storage storage_for_acquisition(storage_db_setting);  	
   
   logger.information("==== Storage & Aggregation started. ====");	  
 	logger.information("Measurements in storage: " + 
