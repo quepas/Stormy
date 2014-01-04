@@ -95,13 +95,12 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
           }
         }
       }
-    }
-    time_t time_now = std::time(nullptr);
+    }    
+    time_t time_now = std::time(nullptr) + 3600;  // make as local time
     tm timestamp = *localtime(&time_now);
     DateTime acquire_time;
     int dtz;
-    if (DateTimeParser::tryParse(date + " " + time, acquire_time, dtz)) {
-      //acquire_time.makeLocal(3600);
+    if (DateTimeParser::tryParse(date + " " + time, acquire_time, dtz)) {      
       time_t acquire_time_t = acquire_time.timestamp().epochTime();
       timestamp = *localtime(&acquire_time_t);
     }
