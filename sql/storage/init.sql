@@ -32,7 +32,7 @@ CREATE TABLE measurement (
 	code text,
 	station_uid text,
 	value_text text,
-	value_number real,
+	value_number numeric,
 	timestamp timestamp,
 	PRIMARY KEY(id),
 	FOREIGN KEY(code) REFERENCES metrics(code),
@@ -49,8 +49,7 @@ CREATE TABLE aggregate_period (
 
 CREATE TABLE aggregate_operation (
 	name text,
-	formula text,
-	analysisMethod text,
+	analysis_method text,
 	PRIMARY KEY(name),
 	UNIQUE(name)
 );
@@ -83,7 +82,7 @@ CREATE TABLE aggregate (
 
 -- Fill with default data
 -- Operation
-INSERT INTO aggregate_operation VALUES('mean', 'mean(x)', 'mean()');
+INSERT INTO aggregate_operation VALUES('mean', 'mean_normal');
 -- Periods
 INSERT INTO aggregate_period VALUES('hourly', '1 hour'::interval);
 --INSERT INTO aggregate_period VALUES('daily', '1 day'::interval);
