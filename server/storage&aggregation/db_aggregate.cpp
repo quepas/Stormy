@@ -145,10 +145,12 @@ bool Aggregate::UpdateTaskCurrentTime(uint32_t id, tm timestamp)
 tm Aggregate::CalculateAggregateEndTime(string period_name, tm start_time)
 {    
   tm aggregate_end_time;
+  time_t start_time_t = mktime(&start_time);
   TRY
-  sql_ << "SELECT (:start_time) + (SELECT period FROM aggregate_period "
-    "WHERE name = :period_name)", use(start_time),
-    use(period_name), into(aggregate_end_time);
+  sql_ << "SELECT to_timestamp(:start_time) + "
+    "(SELECT period FROM aggregate_period "
+    " WHERE name = :period_name)::interval",
+   use(start_time_t), use(period_name), into(aggregate_end_time);  
   CATCH_MSG("[db/Aggregate] CalculateAggregateEndTime: ")
   return aggregate_end_time;
 }
