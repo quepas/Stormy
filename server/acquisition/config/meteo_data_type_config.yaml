@@ -61,10 +61,10 @@
   id: windDirectionAngle
   valueType: number
   valueUnit: angle
-  equivalents: Kąt kierunku wiatru
+  equivalents: Kąt kierunku wiatru;Kierunek wiatru
 -
   id: windDirection
-  valueType: text
+  valueType: number
   valueUnit: direction
   equivalents: Kierunek wiatru
 -

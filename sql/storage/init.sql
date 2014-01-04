@@ -85,5 +85,5 @@ CREATE TABLE aggregate (
 INSERT INTO aggregate_operation VALUES('mean', 'mean_normal');
 -- Periods
 INSERT INTO aggregate_period VALUES('hourly', '1 hour'::interval);
---INSERT INTO aggregate_period VALUES('daily', '1 day'::interval);
---INSERT INTO aggregate_period VALUES('monthly', '1 month'::interval);
+INSERT INTO aggregate_period VALUES('daily', '1 day'::interval);
+INSERT INTO aggregate_period VALUES('monthly', '1 month'::interval);
