@@ -46,7 +46,7 @@ void Storage::connect()
 	CATCH_MSG("[db/Storage] connect: ")
 }
 
-void Storage::insertStation(entity::Station station)
+void Storage::InsertStation(entity::Station station)
 {
   TRY
   sql_ << "INSERT INTO station(uid, name, url, refresh_time, last_update)"
@@ -56,11 +56,11 @@ void Storage::insertStation(entity::Station station)
   CATCH_MSG("[db/Storage] insertStation: ")
 }
 
-void Storage::insertStations(const vector<entity::Station>& stations)
+void Storage::InsertStations(const vector<entity::Station>& stations)
 {
 	Each(stations, [&](entity::Station station) {
-		if(!existsStationByUID(station.uid))
-			insertStation(station);
+		if(!CheckIfStationExsist(station.uid))
+			InsertStation(station);
 	});
 }
 
@@ -75,7 +75,7 @@ entity::Station Storage::GetStationByUID(string uid)
 	return station;
 }
 
-bool Storage::existsStationByUID(string uid)
+bool Storage::CheckIfStationExsist(string uid)
 {	
   int count = 0;
 	TRY
@@ -143,7 +143,7 @@ void Storage::InsertMeasureAsNumeric(const entity::Measurement& measure)
   UpdateStationLastUpdateIfNeeded(measure.station_uid, measure.timestamp);
 }
 
-tm Storage::findNewestMeasureTimeByStationUID(string station_uid)
+tm Storage::GetNewestStationMeasureTime(string station_uid)
 {	
   tm newest_measure_time;
 	if(CountStationMeasurements(station_uid) > 0) {
@@ -156,7 +156,7 @@ tm Storage::findNewestMeasureTimeByStationUID(string station_uid)
 	return newest_measure_time;
 }
 
-bool Storage::insertOneMetrics(entity::Metrics metrics)
+bool Storage::InsertSingleMetrics(entity::Metrics metrics)
 {
   TRY
   sql_ << "INSERT INTO metrics(code, equivalents, type, unit, format)"
@@ -169,18 +169,18 @@ bool Storage::insertOneMetrics(entity::Metrics metrics)
 	return false;	
 }
 
-bool Storage::insertMetrics(const vector<entity::Metrics>& metrics)
+bool Storage::InsertMetrics(const vector<entity::Metrics>& metrics)
 {
 	if(!metrics.empty()) {
 		Each(metrics, [&](entity::Metrics metric) {
-			if(!existsMetricsByCode(metric.code))
-				insertOneMetrics(metric);
+			if(!CheckIfMetricsExsist(metric.code))
+				InsertSingleMetrics(metric);
 		});
 	}
 	return true;
 }
 
-bool Storage::existsMetricsByCode(const string& code)
+bool Storage::CheckIfMetricsExsist(const string& code)
 {
 	uint32_t count = 0;
 	TRY

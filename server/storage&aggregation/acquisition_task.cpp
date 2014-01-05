@@ -49,17 +49,17 @@ void Task::run()
     server -> name);
 	// metrics
 	auto metrics = http_connector.FetchMetricsAt();
-	dbStorage -> insertMetrics(metrics);
+	dbStorage -> InsertMetrics(metrics);
 
 	// stations
 	auto stations = http_connector.FetchStationsAt();
-	dbStorage -> insertStations(stations);	
+	dbStorage -> InsertStations(stations);	
 
 	uint32_t measurementCounter = 0;
 	// data
 	Each(stations, [&](entity::Station station) {
 		tm newestMeasureForStation =
-			dbStorage -> findNewestMeasureTimeByStationUID(station.uid);
+			dbStorage -> GetNewestStationMeasureTime(station.uid);
 
 		map<time_t, vector<entity::Measurement>> measurement_sets;
     time_t newest_measure_time = mktime(&newestMeasureForStation);
