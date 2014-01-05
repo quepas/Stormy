@@ -13,6 +13,7 @@
 #include "aggregation_entity_task.h"
 #include "aggregation_entity_period.h"
 #include "aggregation_entity_aggregate.h"
+#include "aggregation_entity_operation.h"
 
 namespace stormy {
   namespace db {
@@ -32,7 +33,8 @@ public:
   bool UpdateTaskCurrentTime(uint32_t id, std::tm timestamp);
   std::tm CalculateAggregateEndTime(std::string period_name, std::tm start_time);  
   std::vector<aggregation::entity::Task> GetTasks();
-  std::vector<aggregation::entity::Period> GetPeriods();   
+  std::vector<aggregation::entity::Period> GetPeriods();
+  std::vector<aggregation::entity::Operation> GetOperations();
 
   // aggregate
   bool InsertAggregate(aggregation::entity::Aggregate aggregate);

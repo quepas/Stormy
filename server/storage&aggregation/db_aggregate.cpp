@@ -109,6 +109,22 @@ vector<entity::Period> Aggregate::GetPeriods()
   return periods;
 }
 
+vector<entity::Operation> Aggregate::GetOperations()
+{
+  auto operations = vector<entity::Operation>();
+  TRY
+  rowset<row> rs = (sql_.prepare << "SELECT * FROM aggregate_operation");
+  for (auto it = rs.begin(); it != rs.end(); ++it) {
+    const row& row = *it;
+    entity::Operation element;
+    element.name = row.get<string>(0);
+    element.analysis_method = row.get<string>(1);
+    operations.push_back(element);
+  }	
+  CATCH_MSG("[db/Aggregate] GetOperations: ")
+  return operations;
+};
+
 bool Aggregate::CreateTask(string period_name, string station_uid)
 {
   TRY
@@ -277,6 +293,5 @@ map<time_t, vector<aggregation::entity::Aggregate>> Aggregate::
   return GetAggregateSetsForStationPeriodBetweenTS(
     station_uid, period_name, time, time);
 }
-
 // ~~ stormy::db::Aggregate
 }}

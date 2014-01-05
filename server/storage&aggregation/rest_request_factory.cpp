@@ -6,6 +6,8 @@
 #include "rest_request_get_info.h"
 #include "rest_request_get_metrics.h"
 #include "rest_request_get_export.h"
+#include "rest_request_get_operation.h"
+#include "rest_request_get_period.h"
 
 #include "../../common/rest_request_bad.h"
 #include "../../common/util.h"
@@ -67,6 +69,10 @@ HTTPRequestHandler* Factory::createRequestHandler(
               IsMatch(URI, constant::export_station_uid_request_pattern +
                            constant::uri_query_vars_pattern)) {
     return new GetExport(URI, db_storage_);
+  } else if (IsMatch(URI, constant::operation_request_pattern)) {
+    return new GetOperation(db_aggregation_);
+  } else if (IsMatch(URI, constant::period_request_pattern)) {
+    return new GetPeriod(db_aggregation_);
   } else {
     return new common::rest::request::Bad(URI);
   }

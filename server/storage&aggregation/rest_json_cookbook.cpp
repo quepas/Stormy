@@ -185,5 +185,29 @@ map<string, vector<aggregation::entity::Aggregate>> Cookbook::
   }
   return code_aggregate_sets;
 }
+
+string Cookbook::PreparePeriods(
+  const vector<aggregation::entity::Period>& periods)
+{
+  string content = constant::json_periods;
+  vector<string> single_period_names;
+  for (auto it = periods.begin(); it != periods.end(); ++it) {
+    single_period_names.push_back(cookbook::WrapAsString(it->name));
+  }
+  content += cookbook::WrapAsList(join(single_period_names, ","));
+  return cookbook::WrapAsJSON(content);
+}
+
+string Cookbook::PrepareOperations(
+  const vector<aggregation::entity::Operation>& operations)
+{
+  string content = constant::json_operations;
+  vector<string> single_operation_names;
+  for (auto it = operations.begin(); it != operations.end(); ++it) {
+    single_operation_names.push_back(cookbook::WrapAsString(it->name));
+  }
+  content += cookbook::WrapAsList(join(single_operation_names, ","));
+  return cookbook::WrapAsJSON(content);
+}
 // ~~ stormy::rest::json::Mapper
 }}}

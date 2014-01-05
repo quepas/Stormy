@@ -59,13 +59,13 @@ int main(int argc, char** argv) {
 
 	acquisition::Scheduler scheduler(&storage_for_acquisition);
 	scheduler.Schedule(acquisitionServersCfg.Configuration());	
-  
+  /*
 	aggregation::Engine aggregation_engine(
     storage_db_setting, 
     aggregate_db_setting);
   aggregation::Engine::Restarter engine_restarter(5);
   engine_restarter(aggregation_engine);
-  
+  */
   rest::Service rest_service(storage_db_setting, aggregate_db_setting);
   rest_service.run(argc, argv);
 }

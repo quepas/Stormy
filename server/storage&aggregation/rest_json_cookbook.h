@@ -3,6 +3,7 @@
 #include "../../common/entity_station.h"
 #include "../../common/entity_metrics.h"
 #include "aggregation_entity_period.h"
+#include "aggregation_entity_operation.h"
 #include "aggregation_entity_aggregate.h"
 
 #include <ctime>
@@ -35,6 +36,12 @@ public:
     std::time_t time,
     const std::vector<aggregation::entity::Aggregate>& aggregate_set);
 
+  // api: /period
+  static std::string PreparePeriods(
+    const std::vector<aggregation::entity::Period>& periods);
+  // api: /operation
+  static std::string PrepareOperations(
+    const std::vector<aggregation::entity::Operation>& operations);
 private:
   Cookbook() {};
   Cookbook(const Cookbook&) {}

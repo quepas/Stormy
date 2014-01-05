@@ -32,6 +32,10 @@ const std::string metrics_request_pattern = "/metrics/?";
 const std::string metrics_info_request_pattern = "/metrics/[a-zA-Z0-9]+/?";
 // api: /info
 const std::string info_request_pattern = "/info/?";
+// api: /period
+const std::string period_request_pattern = "/period/?";
+// api: /operation
+const std::string operation_request_pattern = "/operation/?";
 // api: /export
 const std::string export_request_pattern = "/export/?";
 // api: /export/:station_id
@@ -95,5 +99,7 @@ const std::string json_available_periods_marker = "available_periods";
 const std::string json_empty = "{}";
 const std::string json_acquistion_server_type = "A";
 const std::string json_storage_and_aggregation_server_type = "S&A";
+const std::string json_periods = "\"periods\":";
+const std::string json_operations = "\"operations\":";
 // ~~ stormy::common::rest::const;
 }}}}
