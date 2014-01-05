@@ -75,13 +75,12 @@ function PrepareData(measurements, metrics_code) {
   var startIndex = 0;
   var fixedLength = 30
   var length = measurements.length
-
   for(var i = 0; i < measurements.length; i++) {
     meteoLabels[i] = ''//formatTimestamp(measurements[startIndex + i].timestamp)
     meteoValues[i] = measurements[i].data[metrics_code]
 
     if(i == 0) {
-      meteoValues[i] -= 0.00001 // HACK for: https://github.com/nnnick/Chart.js/issues/242
+      meteoValues[i] -= 0.0001 // HACK for: https://github.com/nnnick/Chart.js/issues/242
     }
   }
 
