@@ -19,7 +19,7 @@
     			<datetimepicker data-ng-model="to.date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
   			</ul>
 		</div>
-    <select ng-model="mode" ng-options="c.name for c in all_modes" ng-change="UpdateMode()"></select>
+    <select ng-model="mode" ng-options="c.name for c in all_modes" ng-change="UpdateMode()" ng-hide="hide_operation"></select>
 		<select ng-model="station" ng-options="c.name for c in all_stations" ng-change="UpdateMeteo()"></select>
 		<select ng-model="metrics" ng-options="c.equivalents for c in all_metrics" ng-change="UpdateChart()"></select>
     <select ng-model="period" ng-options="c for c in all_periods" ng-change="UpdateMeteo()" ng-hide="hide_operation"></select>
