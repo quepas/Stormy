@@ -48,27 +48,29 @@ void GetMeteo::handleRequest(
   HTTPServerRequest& request, 
   HTTPServerResponse& response )
 { 
-  db::Storage storage_database_(storage_setting_);
+  db::Storage storage_database(storage_setting_);
   auto path_segments = uri_parser_.getPathSegments();
   auto query_segments = uri_parser_.getQuerySegments();
   ostream& ostr = response.send();
 
   // api: /meteo
   if (path_segments.size() == 1) {
-    auto stations = storage_database_.GetStations();
+    auto stations = storage_database.GetStations();
     vector<entity::Station> stations_with_any_meteo;
 
     for (auto it = stations.begin(); it != stations.end(); ++it) {
-      uint64_t count = storage_database_.CountStationMeasurements(it->uid);
+      uint64_t count = storage_database.CountStationMeasurements(it->uid);
       if (count > 0) 
         stations_with_any_meteo.push_back(*it);
     }
-    ostr << cookbook::PrepareStationUIDsWithAnyMeteo(stations_with_any_meteo);
+    ostr << cookbook::PrepareStationUIDsWithAny(
+              stations_with_any_meteo,
+              constant::json_measurements);
   }
   // api: /meteo/:station_uid
   else if (path_segments.size() == 2) {
     if (query_segments.empty()) {
-      auto measurements = storage_database_
+      auto measurements = storage_database
         .GetAllMeasureSetsForStation(path_segments[1]);
       vector<time_t> keys;
       copy(measurements | map_keys, back_inserter(keys));      
@@ -91,16 +93,17 @@ void GetMeteo::handleRequest(
             to_ts = common::MakeUTCIfPossible(temporary_ts);
         }
       }
-      auto measurements = storage_database_
+      auto measurements = storage_database
         .GetMeasureSetsForStationBetweenTS(path_segments[1], from_ts, to_ts);
       ostr << cookbook::PrepareMeteoSets(measurements);
     }
   }
   // api: /meteo/:station_uid/:timestamp
   else if (path_segments.size() == 3) {
-    time_t timestamp = stol(path_segments[2]);
+    time_t timestamp = 
+      common::MakeUTCIfPossible(stol(path_segments[2]));
 
-    auto measurements = storage_database_
+    auto measurements = storage_database
       .GetMeasureSetsForStationAndTS(path_segments[1], timestamp);
     ostr << cookbook::PrepareMeteoSets(measurements);
   }
