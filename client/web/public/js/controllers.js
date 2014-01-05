@@ -13,7 +13,8 @@ function ConnectCtrl() {
 
 function AppCtrl($scope, $http) {
   CheckServerType($http, $scope)
-  FetchStationAndMetrics($http, $scope)
+  InsertVisualizationModes($scope)
+  FetchInitialData($http, $scope)
 
   $scope.UpdateMeteo = function() {
     var from = 0;
@@ -25,22 +26,37 @@ function AppCtrl($scope, $http) {
       to = moment($scope.to.date).unix() + 3600;
     }
 
-
-    $http.get('/meteo/' + $scope.station.uid + '?from=' + from + '&to=' + to).success(function(data) {
-      $scope.measurements = data.measurements
-      var context = document.getElementById("meteoChart").getContext("2d")
-      var meteoChart = new Chart(context).Line(PrepareData($scope.measurements, $scope.metrics.code))
-    })
+    if ($scope.mode.name == 'Meteo') {
+      $http.get('/meteo/' + $scope.station.uid + '?from=' + from + '&to=' + to).success(function(data) {
+        $scope.measurements = data.measurements
+        var context = document.getElementById("meteoChart").getContext("2d")
+        var meteoChart = new Chart(context).Line(PrepareData($scope.measurements, $scope.metrics.code))
+      })
+    } else if ($scope.mode.name == 'Aggregate') {
+      $http.get('/aggregate/' + $scope.station.uid + '/' + $scope.period + '?from=' + from + '&to=' + to).success(function(data) {
+        $scope.aggregates = data.aggregates
+        var context = document.getElementById("meteoChart").getContext("2d")
+        var meteoChart = new Chart(context).Line(PrepareAggregate($scope.aggregates, $scope.metrics.code, $scope.operation))
+      })
+    }
   }
   $scope.UpdateChart = function() {
     var context = document.getElementById("meteoChart").getContext("2d")
-    var meteoChart = new Chart(context).Line(PrepareData($scope.measurements, $scope.metrics.code))
+    if ($scope.mode.name == 'Meteo') {
+      var meteoChart = new Chart(context).Line(PrepareData($scope.measurements, $scope.metrics.code))
+    } else {
+      var meteoChart = new Chart(context).Line(PrepareAggregate($scope.aggregates, $scope.metrics.code, $scope.operation))
+    }
+  }
+  $scope.UpdateMode = function() {
+    $scope.hide_operation = !$scope.hide_operation;
+    $scope.UpdateMeteo()
   }
 }
 
 function ExportCtrl($scope, $http) {
   $scope.checked_metrics = []
-  FetchStationAndMetrics($http, $scope)
+  FetchInitialData($http, $scope)
 
   $scope.Export = function() {
     var checked = $scope.checked_metrics
@@ -98,6 +114,35 @@ function PrepareData(measurements, metrics_code) {
   return data
 }
 
+function PrepareAggregate(aggregates, metrics_code, operation_code) {
+  var meteoLabels = []
+  var aggregateValues = []
+  var startIndex = 0;
+  var fixedLength = 30
+  var length = aggregates.length
+  for(var i = 0; i < aggregates.length; i++) {
+    meteoLabels[i] = ''//formatTimestamp(aggregates[startIndex + i].timestamp)
+    aggregateValues[i] = aggregates[i].data[metrics_code][operation_code]
+
+    if(i == 0) {
+      aggregateValues[i] -= 0.0001 // HACK for: https://github.com/nnnick/Chart.js/issues/242
+    }
+  }
+
+  var data = {
+  labels : meteoLabels,
+  datasets : [
+    {
+      fillColor : "rgba(107,149,145,0.5)",
+      strokeColor : "rgba(36,61,60,1)",
+      pointColor : "rgba(36,61,60,1)",
+      pointStrokeColor : "#fff",
+      data : aggregateValues
+    }
+  ]}
+  return data
+}
+
 function formatTimestamp(timestamp) {
   var currentDate = new Date(timestamp * 1000)
   return currentDate.getUTCHours() + ':' + currentDate.getUTCMinutes() + ' '
@@ -110,7 +155,7 @@ function SaveAsCSV(filename, text) {
     pom.click();
 }
 
-function FetchStationAndMetrics(http, scope) {
+function FetchInitialData(http, scope) {
   // Fetch station data
   http.get('/station').success(function(data) {
     var station_uids = data.stations
@@ -133,8 +178,22 @@ function FetchStationAndMetrics(http, scope) {
       })
     }
     scope.all_metrics = metrics_info
-        scope.metrics = scope.all_metrics[0]
+    scope.metrics = scope.all_metrics[0]
   })
+  if (!scope.hide_export) {
+    // Fetch periods data
+    http.get('/period').success(function(data) {
+      var period_names = data.periods
+      scope.all_periods = period_names
+      scope.period = period_names[0]
+    })
+    // Fetch operations data
+    http.get('/operation').success(function(data) {
+      var operation_names = data.operations
+      scope.all_operations = operation_names
+      scope.operation = operation_names[0]
+    })
+  }
 }
 
 function CheckServerType(http, scope) {
@@ -145,4 +204,10 @@ function CheckServerType(http, scope) {
     else
       scope.hide_export = true
   })
+}
+
+function InsertVisualizationModes(scope) {
+  scope.all_modes = [{name:'Meteo'},{name:'Aggregate'}]
+  scope.mode = scope.all_modes[0]
+  scope.hide_operation = true
 }

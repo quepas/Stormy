@@ -54,6 +54,22 @@ app.get('/metrics/:metrics_code', function(req, res) {
     }
   )
 })
+app.get('/period', function(req, res) {
+  console.log('[INFO] Get period names list.')
+  http.get(prepareConnectOptions('/period'),
+    function(rawData) {
+      collectAndSendRawData(res, rawData)
+    }
+  )
+})
+app.get('/operation', function(req, res) {
+  console.log('[INFO] Get operation names list.')
+  http.get(prepareConnectOptions('/operation'),
+    function(rawData) {
+      collectAndSendRawData(res, rawData)
+    }
+  )
+})
 app.get('/meteo/:station_uid', function(req, res) {
   var station_uid = req.params.station_uid
   var from_ts = req.query.from;
@@ -61,6 +77,20 @@ app.get('/meteo/:station_uid', function(req, res) {
   console.log('[INFO] Fetched station meteo: ' + station_uid +
     '. From: ' + from_ts + ', to: ' + to_ts)
   http.get(prepareConnectOptions('/meteo/' + station_uid +
+    '?from=' + from_ts + '&to=' + to_ts),
+    function(rawData) {
+      collectAndSendRawData(res, rawData)
+    }
+  )
+})
+app.get('/aggregate/:station_uid/:period_name', function(req, res) {
+  var station_uid = req.params.station_uid
+  var period_name = req.params.period_name
+  var from_ts = req.query.from;
+  var to_ts = req.query.to;
+  console.log('[INFO] Fetched station aggregate: ' + period_name + ' for ' + station_uid +
+    '. From: ' + from_ts + ', to: ' + to_ts)
+  http.get(prepareConnectOptions('/aggregate/' + station_uid + '/' + period_name +
     '?from=' + from_ts + '&to=' + to_ts),
     function(rawData) {
       collectAndSendRawData(res, rawData)
