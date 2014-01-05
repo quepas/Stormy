@@ -23,7 +23,7 @@ Service::Service(
   : port_(port),
     logger_(Logger::get("rest")),
     db_storage_(db_storage),
-    db_aggregation_(db_aggregation_)
+    db_aggregation_(db_aggregation)
 {
   
 }

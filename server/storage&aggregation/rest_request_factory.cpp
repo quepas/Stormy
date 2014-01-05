@@ -25,7 +25,7 @@ namespace stormy {
 Factory::Factory(common::db::Setting db_storage, common::db::Setting db_aggregation)
   : logger_(Logger::get("rest/Factory")),
     db_storage_(db_storage),
-    db_aggregation_(db_aggregation_)
+    db_aggregation_(db_aggregation)
 {
 
 }
@@ -44,8 +44,9 @@ HTTPRequestHandler* Factory::createRequestHandler(
   if (IsMatch(URI, constant::station_request_pattern) ||
         IsMatch(URI, constant::station_info_request_pattern)) {
     return new GetStation(URI, db_storage_);
-  } else if (IsMatch(URI, constant::aggregate_request_pattern)) {
-    return new GetAggregate(URI, db_aggregation_);
+  } else if (IsMatch(URI, constant::aggregate_request_pattern) ||
+              IsMatch(URI, constant::aggregate_station_uid_request_pattern)) {
+    return new GetAggregate(URI, db_storage_, db_aggregation_);
   } else if (IsMatch(URI, constant::meteo_request_pattern) ||      
               IsMatch(URI, constant::meteo_station_uid_request_pattern) ||
               IsMatch(URI, constant::meteo_station_uid_request_pattern + 
