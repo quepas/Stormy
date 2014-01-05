@@ -70,7 +70,9 @@ void GetMeteo::handleRequest(
       if (count > 0) 
         stations_with_any_meteo.push_back(*it);
     }
-    ostr << cookbook::PrepareStationUIDsWithAnyMeteo(stations_with_any_meteo);
+    ostr << cookbook::PrepareStationUIDsWithAny(
+              stations_with_any_meteo, 
+              constant::json_measurements);
   }
   // api: /meteo/:station_uid
   else if (path_segments.size() == 2) {
