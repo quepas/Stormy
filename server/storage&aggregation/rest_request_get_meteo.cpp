@@ -82,13 +82,13 @@ void GetMeteo::handleRequest(
       if (from_index != query_segments.end()) {
         if (NumberParser::tryParseUnsigned64(
           from_index->second, temporary_ts)) {
-            from_ts = temporary_ts;
+            from_ts = common::MakeUTCIfPossible(temporary_ts);
         }
       }
       if (to_index != query_segments.end()) {
         if (NumberParser::tryParseUnsigned64(
           to_index->second, temporary_ts)) {
-            to_ts = temporary_ts;
+            to_ts = common::MakeUTCIfPossible(temporary_ts);
         }
       }
       auto measurements = storage_database_

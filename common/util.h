@@ -35,6 +35,7 @@ bool IsMatch(std::string text, std::string regex);
 bool IsDate(std::string date);  // YYYY-MM-DD
 bool IsTime(std::string time);  // HH:MM
 std::time_t LocaltimeNow();
+std::time_t MakeUTCIfPossible(std::time_t time);
 
 // const
 const std::string numeric_pattern = "-?[0-9]+([.][0-9]+)?";

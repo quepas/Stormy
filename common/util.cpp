@@ -109,5 +109,11 @@ time_t LocaltimeNow()
   // TODO: fix this!
   return time(0) + 3600;
 }
+
+time_t MakeUTCIfPossible(time_t time)
+{
+  // TODO: fix this  
+  return (time > 3600) ? (time - 3600) : time;
+}
 // ~~ stormy::common::util
 }}
