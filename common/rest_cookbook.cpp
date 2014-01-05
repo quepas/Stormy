@@ -77,10 +77,10 @@ string PrepareStationInfo(const entity::Station& station)
   return WrapAsJSON(content);
 }
 
-string PrepareStationUIDsWithAnyMeteo(const vector<entity::Station>& stations)
+std::string PrepareStationUIDsWithAny(const std::vector<entity::Station>& stations, std::string data_key)
 {
   vector<string> station_uids;
-  string content = constant::json_measurements;
+  string content = data_key;
   for (auto it = stations.begin(); it != stations.end(); ++it) {
     station_uids.push_back(WrapAsString(it->uid));
   }
@@ -199,5 +199,33 @@ string PrepareServerInfo(string name, string type, string timezone)
   content += WrapAsJSON(server_info);
   return WrapAsJSON(content);
 }
+
+string PreparePeriodNamesWithAny(
+  const vector<string>& period_names, 
+  string data_key )
+{
+  vector<string> periods_as_json_string;
+  string content = data_key;
+  for (auto it = period_names.begin(); it != period_names.end(); ++it) {
+    periods_as_json_string.push_back(WrapAsString(*it));
+  }
+  content += WrapAsList(join(periods_as_json_string, ","));
+  return WrapAsJSON(content);
+}
+
+string PrepareStationPeriodStartTimes(
+  const vector<tm>& start_times)
+{
+  vector<string> start_times_as_string;
+  string content = constant::json_aggregates;
+  for (auto it = start_times.begin(); it != start_times.end(); ++it) {
+    tm start_time = *it;
+    time_t timestamp = mktime(&start_time) + 3600;  // as local time!
+    start_times_as_string.push_back(to_string(timestamp));
+  }
+  content += WrapAsList(join(start_times_as_string, ","));
+  return WrapAsJSON(content);
+}
+
 // ~~ stormy::common::rest::cookbook
 }}}}

@@ -100,8 +100,8 @@ void GetMeteo::handleRequest(
   }
   // api: /meteo/:station_uid/:timestamp
   else if (path_segments.size() == 3) {
-    time_t timestamp = 
-      common::MakeUTCIfPossible(stol(path_segments[2]));
+    time_t timestamp = common::
+      MakeUTCIfPossible(stol(path_segments[2]));
 
     auto measurements = storage_database
       .GetMeasureSetsForStationAndTS(path_segments[1], timestamp);

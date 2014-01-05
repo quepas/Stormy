@@ -3,6 +3,7 @@
 #include "../../common/entity_station.h"
 #include "../../common/entity_metrics.h"
 #include "aggregation_entity_period.h"
+#include "aggregation_entity_aggregate.h"
 
 #include <ctime>
 #include <map>
@@ -27,6 +28,13 @@ public:
     const std::map<std::time_t, std::string>& measurements);
   static std::string PrepareEmpty();  
 
+  // api: /aggregate/:station_uid/:period_name/:timestamp
+  static std::string PrepareAggregateSets(
+    const std::map<std::time_t, std::vector<aggregation::entity::Aggregate>>& aggregate_sets);
+  static std::string PrepareAggregateSet(
+    std::time_t time,
+    const std::vector<aggregation::entity::Aggregate>& aggregate_set);
+
 private:
   Cookbook() {};
   Cookbook(const Cookbook&) {}
@@ -35,6 +43,10 @@ private:
   static std::string WrapAsJSONString(const std::string& text);  
   static std::string PrepareMetricsSequence(const std::vector<common::entity::Metrics>& metrics);
   static std::string PreparePeriodSequence(const std::vector<aggregation::entity::Period>& periods);
+
+  static std::map<std::string, std::vector<aggregation::entity::Aggregate>> 
+    ConvertAggregateSetToCodeAggregateSet(
+      const std::vector<aggregation::entity::Aggregate>& aggregate_set);
 };
 // ~~ stormy::rest::json::Mapper
 }}}

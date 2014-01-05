@@ -14,12 +14,18 @@ const std::string station_request_pattern = "/station/?";
 const std::string station_info_request_pattern = "/station/[0-9a-f]{32}/?";
 // api: /meteo
 const std::string meteo_request_pattern = "/meteo/?";
-// api: /meteo/:station_id
+// api: /meteo/:station_uid
 const std::string meteo_station_uid_request_pattern = "/meteo/[0-9a-f]{32}/?";
-// api: /meteo/:station_id/:timestamp
+// api: /meteo/:station_uid/:timestamp
 const std::string meteo_station_uid_ts_request_pattern = "/meteo/[0-9a-f]{32}/[0-9]{10}/?";
-// api: /aggregate/:station_id
-const std::string aggregate_request_pattern = "/aggregate/[0-9a-f]{32}/?";
+// api: /aggregate
+const std::string aggregate_request_pattern = "/aggregate/?";
+// api: /aggregate/:station_uid/
+const std::string aggregate_station_uid_request_pattern = "/aggregate/[0-9a-f]{32}/?";
+// api: /aggregate/:station_uid/:period_name
+const std::string aggregate_station_period_request_pattern = "/aggregate/[0-9a-f]{32}/[a-zA-Z]+/?";
+// api: /aggregate/:station_uid/:period_name
+const std::string aggregate_station_period_time_request_pattern = "/aggregate/[0-9a-f]{32}/[a-zA-Z]+/[0-9]{10}/?";
 // api: /metrics
 const std::string metrics_request_pattern = "/metrics/?";
 // api: /metrics/:metrics_code
@@ -69,6 +75,8 @@ const std::string json_unit = "\"unit\":";
 const std::string json_error = "\"error\":";
 const std::string json_msg = "\"msg\":";
 const std::string json_measurements = "\"measurements\":";
+const std::string json_aggregates = "\"aggregates\":";
+const std::string json_start_time = "\"start_time\":";
 const std::string json_timezone = "\"timezone\":";
 const std::string json_time = "\"time\":";
 const std::string json_timestamp = "\"timestamp\":";

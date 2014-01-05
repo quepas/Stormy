@@ -45,7 +45,11 @@ HTTPRequestHandler* Factory::createRequestHandler(
         IsMatch(URI, constant::station_info_request_pattern)) {
     return new GetStation(URI, db_storage_);
   } else if (IsMatch(URI, constant::aggregate_request_pattern) ||
-              IsMatch(URI, constant::aggregate_station_uid_request_pattern)) {
+              IsMatch(URI, constant::aggregate_station_uid_request_pattern) ||
+              IsMatch(URI, constant::aggregate_station_period_request_pattern) ||
+              IsMatch(URI, constant::aggregate_station_period_request_pattern +
+                           constant::uri_query_vars_pattern) ||
+              IsMatch(URI, constant::aggregate_station_period_time_request_pattern)) {
     return new GetAggregate(URI, db_storage_, db_aggregation_);
   } else if (IsMatch(URI, constant::meteo_request_pattern) ||      
               IsMatch(URI, constant::meteo_station_uid_request_pattern) ||

@@ -12,13 +12,17 @@ namespace stormy {
 class GetAggregate : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetAggregate(std::string uri, common::db::Setting aggregate_setting);
+  GetAggregate(
+    std::string uri, 
+    common::db::Setting storage_setting,
+    common::db::Setting aggregate_setting);
   ~GetAggregate();
 
   void handleRequest(Poco::Net::HTTPServerRequest& request, 
     Poco::Net::HTTPServerResponse& response);
 
 private:
+  common::db::Setting storage_setting_;
   common::db::Setting aggregate_setting_;
   common::rest::URIParser uri_parser_;
 };

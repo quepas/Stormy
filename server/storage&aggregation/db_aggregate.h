@@ -3,6 +3,7 @@
 #include <ctime>
 #include <string>
 #include <vector>
+#include <map>
 #include <cstdint>
 #include <soci.h>
 
@@ -32,8 +33,35 @@ public:
   std::tm CalculateAggregateEndTime(std::string period_name, std::tm start_time);  
   std::vector<aggregation::entity::Task> GetTasks();
   std::vector<aggregation::entity::Period> GetPeriods();   
+
   // aggregate
   bool InsertAggregate(aggregation::entity::Aggregate aggregate);
+  uint64_t CountStationAggregates(std::string station_uid);
+  uint64_t CountStationPeriodAggregates(
+    std::string station_uid, 
+    std::string period_name);
+
+  std::vector<std::tm> SelectDistinctAggregateTSForStationPeriodBetweenTS(
+    std::string station_uid, 
+    std::string period_name,
+    std::tm from, 
+    std::tm to);
+
+  std::vector<std::tm> SelectAllDistinctAggregateTSForStationPeriod(
+    std::string station_uid, 
+    std::string period_name);
+
+  std::map<std::time_t, std::vector<aggregation::entity::Aggregate>> 
+    GetAggregateSetsForStationPeriodBetweenTS(
+      std::string station_uid, 
+      std::string period_name,
+      std::time_t from, 
+      std::time_t to);
+  std::map<std::time_t, std::vector<aggregation::entity::Aggregate>> 
+    GetAggregateSetsForStationPeriodAndTS(
+      std::string station_uid,
+      std::string period_name,
+      std::time_t time);
   
   common::db::Setting Configuration() {
     return aggregate_setting_;
