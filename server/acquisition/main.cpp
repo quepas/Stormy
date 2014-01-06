@@ -26,11 +26,11 @@ int main(int argc, char** argv)
   dbHandler.RemoveMetrics();
   dbHandler.InsertMetrics(meteoTypeCfg.Configuration());
 
-  stormy::acquisition::Scheduler acqSecheduler;
+  /*stormy::acquisition::Scheduler acqSecheduler;
   acqSecheduler.Schedule(meteoStationsCfg.getConfiguration());
 
   stormy::common::db::expiration::Engine expiration_engine(dbHandler);
-  expiration_engine.ScheduleEverySeconds(3600);
+  expiration_engine.ScheduleEverySeconds(3600);*/
 
   stormy::rest::Service httpServer;
   httpServer.run(argc, argv);
