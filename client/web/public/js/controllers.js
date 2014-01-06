@@ -79,7 +79,7 @@ function ExportCtrl($scope, $http) {
     });
 
     $http.get('/export/' + $scope.station.uid + '?from=' + from + '&to=' + to + '&metrics=' + metrics).success(function(data) {
-      SaveAsCSV('meteo_' + moment().unix(), data)
+      SaveAsCSV('meteo_' + $scope.station.uid + '_' + from + '_' + to, data)
     })
   }
 }
