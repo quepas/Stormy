@@ -2,8 +2,8 @@
 
 #include "acquisition_util.h"
 #include "db_constant.h"
-#include "py_function.h"
 #include "py_mapper.h"
+#include "../../common/py_function.h"
 #include "../../common/util.h"
 
 #include <ctime>
@@ -17,6 +17,7 @@
 #include <Poco/Timestamp.h>
 
 using namespace stormy::common;
+
 using boost::any;
 using boost::any_cast;
 using boost::to_lower_copy;
@@ -55,7 +56,7 @@ vector<entity::Measurement> Parser::ParseFromStation(entity::Station station)
   PyObject* pURLValue = PyUnicode_FromString(station.url.c_str());
   PyTuple_SetItem(pArgs, 0, pURLValue);
 
-  PyObject* pFuncResult = py::Function(parser_class_.c_str(), "run")(pArgs);
+  PyObject* pFuncResult = common::py::Function(parser_class_.c_str(), "run")(pArgs);
   Py_DECREF(pArgs);
 
   vector<entity::Measurement> result;

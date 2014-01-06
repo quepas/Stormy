@@ -5,7 +5,8 @@
 #include <Poco/Logger.h>
 
 namespace stormy {
-  namespace py {
+  namespace common {
+    namespace py {
 
 class Function
 {
@@ -21,5 +22,5 @@ private:
   PyObject* py_function_;
   Poco::Logger& logger_;
 };
-// ~~ stormy::py::Function
-}}
+// ~~ stormy::common::py::Function
+}}}

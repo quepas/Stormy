@@ -4,7 +4,8 @@ using std::string;
 using Poco::Logger;
 
 namespace stormy {
-  namespace py {
+  namespace common {
+    namespace py {
 
 Function::Function(string module_name, string function_name)
   : logger_(Logger::get("py/Function")),
@@ -59,5 +60,5 @@ bool Function::Init(string module_name, string function_name)
   }
   return true;
 }
-// ~~ stormy::py::Function
-}}
+// ~~ stormy::common::py::Function
+}}}

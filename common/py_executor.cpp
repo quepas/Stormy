@@ -5,7 +5,8 @@
 using Poco::Logger;
 
 namespace stormy {
-  namespace py {
+  namespace common {
+    namespace py {
 
 Executor::Executor()
   : logger_(Logger::get("py/Executor"))
@@ -31,5 +32,5 @@ bool Executor::Init()
   }
   return false;
 }
-// ~~ stormy::py::Executor
-}}
+// ~~ stormy::common::py::Executor
+}}}

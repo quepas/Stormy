@@ -3,9 +3,10 @@
 #include <Poco/Logger.h>
 
 namespace stormy {
-  namespace py {
+  namespace common {
+    namespace py {
 
-#define PY_EXECUTOR_INIT() stormy::py::Executor::Instance();
+#define PY_EXECUTOR_INIT() stormy::common::py::Executor::Instance();
 
 class Executor
 {
@@ -25,5 +26,5 @@ private:
 
   Poco::Logger& logger_;
 };
-// ~~ stormy::py::Executor
-}}
+// ~~ stormy::common::py::Executor
+}}}
