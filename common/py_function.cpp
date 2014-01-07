@@ -48,6 +48,7 @@ bool Function::Init(string module_name, string function_name)
   PyObject* py_module_data = PyImport_Import(py_module_name);
   Py_DECREF(py_module_name);
   if (!py_module_data) {
+    PyErr_Print();
     logger_.error("[py/Function] Couldn't import given module.");
     Py_DECREF(py_module_name);
     return false;

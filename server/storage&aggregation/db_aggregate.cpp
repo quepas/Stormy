@@ -293,5 +293,28 @@ map<time_t, vector<aggregation::entity::Aggregate>> Aggregate::
   return GetAggregateSetsForStationPeriodBetweenTS(
     station_uid, period_name, time, time);
 }
+
+bool Aggregate::IfOperationExsist(string operation_name)
+{
+  uint16_t count = 0;
+  TRY
+  sql_ << "SELECT count(name) FROM aggregate_operation "
+    "WHERE name = :name", use(operation_name), into(count);
+  return count > 0;
+  CATCH_MSG("[db/Aggregate] IfOperationExsist: ")
+  return false;
+}
+
+bool Aggregate::InsertOperation(const aggregation::entity::Operation& operation)
+{
+  TRY
+  sql_ << "INSERT INTO aggregate_operation "
+    "VALUES(:name, :analysis_method) ",
+    use(operation.name), use(operation.analysis_method);
+  return true;
+  CATCH_MSG("[db/Aggregate] InsertOperation: ")
+  return false;
+}
+
 // ~~ stormy::db::Aggregate
 }}

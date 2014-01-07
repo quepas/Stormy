@@ -34,6 +34,9 @@ public:
   std::tm CalculateAggregateEndTime(std::string period_name, std::tm start_time);  
   std::vector<aggregation::entity::Task> GetTasks();
   std::vector<aggregation::entity::Period> GetPeriods();
+
+  bool IfOperationExsist(std::string operation_name);
+  bool InsertOperation(const aggregation::entity::Operation& operation);
   std::vector<aggregation::entity::Operation> GetOperations();
 
   // aggregate
