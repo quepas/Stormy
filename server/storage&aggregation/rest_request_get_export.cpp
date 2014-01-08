@@ -14,7 +14,7 @@
 
 using namespace stormy::common;
 using namespace stormy::common::rest;
-
+  
 using boost::split;
 using boost::is_any_of;
 using std::find;
@@ -84,13 +84,13 @@ void GetExport::handleRequest(
       if (from_index != query_segments.end()) {
         if (NumberParser::tryParseUnsigned64(
           from_index->second, temporary_ts)) {
-            from_ts = temporary_ts;
+            from_ts = common::MakeUTCIfPossible(temporary_ts);
         }
       }
       if (to_index != query_segments.end()) {
         if (NumberParser::tryParseUnsigned64(
           to_index->second, temporary_ts)) {
-            to_ts = temporary_ts;
+            to_ts = common::MakeUTCIfPossible(temporary_ts);
         }
       }
       if (metrics_index != query_segments.end()) {
