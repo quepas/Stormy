@@ -92,6 +92,7 @@ const std::string json_parser_class = "\"parser_class\":";
 const std::string json_station_uid = "\"station_uid\":";
 const std::string json_station = "\"station\":";
 const std::string json_stations = "\"stations\":";
+const std::string json_status = "\"status\":";
 const std::string json_size = "\"size\":";
 const std::string json_times = "\"times\":";
 const std::string json_available_metrics_marker = "available_metrics";

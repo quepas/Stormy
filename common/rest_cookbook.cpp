@@ -192,6 +192,7 @@ string PrepareServerInfo(string name, string type, string timezone)
   string str_time = asctime(gmtime(&current_time));
   str_time.pop_back();  // remove new line character
   string server_info =
+    constant::json_status + WrapAsString("OK") + "," +
     constant::json_name + WrapAsString(name) + "," +
     constant::json_type + WrapAsString(type) + "," +
     constant::json_timezone + WrapAsString(timezone) + "," +
