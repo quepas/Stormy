@@ -29,13 +29,13 @@ CREATE TABLE metrics (
 
 CREATE TABLE measurement (
 	id serial,
-	code text,
+	metrics_code text,
 	station_uid text,
 	value_text text,
 	value_number numeric,
 	timestamp timestamp,
 	PRIMARY KEY(id),
-	FOREIGN KEY(code) REFERENCES metrics(code),
+	FOREIGN KEY(metrics_code) REFERENCES metrics(code),
 	FOREIGN KEY(station_uid) REFERENCES station(uid)
 );
 
@@ -72,7 +72,7 @@ CREATE TABLE aggregate (
 	period_name text,
 	start_time timestamp,
 	value numeric,
-	sample_number integer,
+	sample_count integer,
 	PRIMARY KEY(id),
 	FOREIGN KEY(station_uid) REFERENCES station(uid),
 	FOREIGN KEY(metrics_code) REFERENCES metrics(code),
@@ -81,8 +81,6 @@ CREATE TABLE aggregate (
 );
 
 -- Fill with default data
--- Operation
-INSERT INTO aggregate_operation VALUES('mean', 'mean_normal');
 -- Periods
 INSERT INTO aggregate_period VALUES('hourly', '1 hour'::interval);
 INSERT INTO aggregate_period VALUES('daily', '1 day'::interval);
