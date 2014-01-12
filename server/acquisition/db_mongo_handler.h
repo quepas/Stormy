@@ -23,7 +23,7 @@ public:
   void ExpireData() override;
   std::vector<std::string> FetchStationsUID();
 		
-  void insertMeteoData(std::vector<common::entity::Measurement> meteoData);			
+  void InsertMeasurement(std::vector<common::entity::Measurement> meteoData);			
 
   void clearStationsData();
   void insertStationsData(const std::vector<common::entity::Station>& stations);

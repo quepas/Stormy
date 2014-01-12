@@ -25,7 +25,7 @@ Task::~Task()
 void Task::run()
 {
   logger_.information("[acquisition/Task] Acquire weather from " + station_.uid);
-  database_handler_.insertMeteoData(
+  database_handler_.InsertMeasurement(
     py_parser_ -> ParseFromStation(station_));
 }
 // ~~ stormy::acquisition::Task

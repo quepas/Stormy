@@ -57,7 +57,7 @@ void MongoHandler::connect(string dbAddress)
   }
 }
 
-void MongoHandler::insertMeteoData(vector<entity::Measurement> measurement)
+void MongoHandler::InsertMeasurement(vector<entity::Measurement> measurement)
 {
   if(!connected_ || measurement.empty()) return;
 
