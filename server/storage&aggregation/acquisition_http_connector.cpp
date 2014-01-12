@@ -57,7 +57,7 @@ string HTTPConnector::FetchDataAsStringAt(string resource) const
 }
 
 vector<entity::Station>
-  HTTPConnector::FetchStationsAt() const
+  HTTPConnector::FetchStations() const
 {
   vector<entity::Station> stations;
 	string resource = "/station";
@@ -83,7 +83,7 @@ map<time_t, vector<entity::Measurement>>
 	return measurements;
 }
 
-vector<entity::Metrics> HTTPConnector::FetchMetricsAt() const
+vector<entity::Metrics> HTTPConnector::FetchMetrics() const
 {
 	vector<entity::Metrics> metrics;
   string resource = "/metrics";

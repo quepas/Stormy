@@ -48,11 +48,11 @@ void Task::run()
 	logger_.notice("[acquisition/Task] Start fetching data from " + 
     server -> name);
 	// metrics
-	auto metrics = http_connector.FetchMetricsAt();
+	auto metrics = http_connector.FetchMetrics();
 	dbStorage -> InsertMetrics(metrics);
 
 	// stations
-	auto stations = http_connector.FetchStationsAt();
+	auto stations = http_connector.FetchStations();
 	dbStorage -> InsertStations(stations);	
 
 	uint32_t measurementCounter = 0;

@@ -22,10 +22,10 @@ public:
   ~HTTPConnector() {};
 
   std::string FetchDataAsStringAt(std::string resource) const;
-  std::vector<common::entity::Station> FetchStationsAt() const;
+  std::vector<common::entity::Station> FetchStations() const;
   std::map<std::time_t, std::vector<common::entity::Measurement>>
     FetchMeasureSets(std::string station_uid, std::time_t from_time) const;  
-  std::vector<common::entity::Metrics> FetchMetricsAt() const;
+  std::vector<common::entity::Metrics> FetchMetrics() const;
 
 private:
   Poco::Logger& logger_;
