@@ -1,38 +1,38 @@
 <div class="wrapper">
-	<div class="left"><canvas id="meteoChart" width="1000" height="500"></canvas></div>
-	<div class="right">
-		<div class="dropdown">
-  			<a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#">
-    		<div class="input-append"><input type="text" class="input-large" data-ng-model="from.date" ><span class="add-on"><i class="icon-calendar"></i></span>
-    		</div>
-  			</a>
-  			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-    			<datetimepicker data-ng-model="from.date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
-  			</ul>
-		</div>
-		<div class="dropdown">
-  			<a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#">
-    		<div class="input-append"><input type="text" class="input-large" data-ng-model="to.date"><span class="add-on"><i class="icon-calendar"></i></span>
-    		</div>
-  			</a>
-  			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-    			<datetimepicker data-ng-model="to.date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
-  			</ul>
-		</div>
+  <div class="left"><canvas id="meteoChart" width="1000" height="500"></canvas></div>
+  <div class="right">
+    <div class="dropdown">
+        <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#">
+        <div class="input-append"><input type="text" class="input-large" data-ng-model="from.date" ><span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <datetimepicker data-ng-model="from.date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+        </ul>
+    </div>
+    <div class="dropdown">
+        <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#">
+        <div class="input-append"><input type="text" class="input-large" data-ng-model="to.date"><span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <datetimepicker data-ng-model="to.date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+        </ul>
+    </div>
     <select ng-model="mode" ng-options="c.name for c in all_modes" ng-change="UpdateMode()" ng-hide="hide_mode"></select>
-		<select ng-model="station" ng-options="c.name for c in all_stations" ng-change="UpdateMeteo()"></select>
-		<select ng-model="metrics" ng-options="c.equivalents for c in all_metrics" ng-change="UpdateChart()"></select>
+    <select ng-model="station" ng-options="c.name for c in all_stations" ng-change="UpdateMeteo()"></select>
+    <select ng-model="metrics" ng-options="c.equivalents for c in all_metrics" ng-change="UpdateChart()"></select>
     <select ng-model="period" ng-options="c for c in all_periods" ng-change="UpdateMeteo()" ng-hide="hide_operation"></select>
     <select ng-model="operation" ng-options="c for c in all_operations" ng-change="UpdateChart()" ng-hide="hide_operation"></select>
-		<div>
-			</br><strong>ID:</strong> {{station.uid}}
-			</br><strong>URL:</strong> <a href="{{station.url}}">{{station.url}}</a>
-			</br><strong>Refresh time:</strong> {{station.refresh_time}}
-		</div>
-		<a href='#/' class="btn btn-danger">Back</a>
-		<a href='#/export' class="btn btn-info" ng-hide="hide_export">Export</a>
-		<a class="btn btn-success" ng-click="UpdateMeteo()">Refresh</a>
-	</div>
+    <div>
+      </br><strong>ID:</strong> {{station.uid}}
+      </br><strong>URL:</strong> <a href="{{station.url}}">{{station.url}}</a>
+      </br><strong>Refresh time:</strong> {{station.refresh_time}}
+    </div>
+    <a href='#/' class="btn btn-danger">Back</a>
+    <a href='#/export' class="btn btn-info" ng-hide="hide_export">Export</a>
+    <a class="btn btn-success" ng-click="UpdateMeteo()">Refresh</a>
+  </div>
 </div>
 
 
