@@ -45,7 +45,7 @@ string HTTPConnector::FetchDataAsStringAt(string resource) const
 	session.setHost(host_);
 	session.setPort(port_);	
 	session.setTimeout(Timespan(5000));
-	HTTPRequest request(HTTPRequest::HTTP_POST, resource);
+	HTTPRequest request(HTTPRequest::HTTP_GET, resource);
 	session.sendRequest(request);		
 
 	HTTPResponse response;
