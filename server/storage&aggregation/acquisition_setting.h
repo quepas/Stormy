@@ -5,27 +5,27 @@
 #include <Poco/NumberFormatter.h>
 
 namespace stormy {
-  namespace acquisition {   
+  namespace acquisition {
 
 struct Setting
 {
-	std::string id;
-	std::string name;
-	std::string host;
-	uint16_t port;
-	uint32_t interval;	// seconds
+  std::string id;
+  std::string name;
+  std::string host;
+  uint16_t port;
+  time_t interval;  // seconds
 
   std::string ToString() {
-		std::string result;
-		result.append("[id: " + id + ", ");
-		result.append("name: " + name + ", ");
-		result.append("host: " + host + ", ");
-		result.append("port: " + 
+    std::string result;
+    result.append("[id: " + id + ", ");
+    result.append("name: " + name + ", ");
+    result.append("host: " + host + ", ");
+    result.append("port: " +
        Poco::NumberFormatter::format(port) + ", ");
-		result.append("acqInterval: " + 
+    result.append("acqInterval: " +
        Poco::NumberFormatter::format(interval) + "]");
-		return result;
-	}
+    return result;
+  }
 };
 // ~~ stormy::acquisition::Setting
 }}
