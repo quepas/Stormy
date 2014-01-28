@@ -63,10 +63,10 @@ bool Aggregate::InsertAggregate(entity::Aggregate aggregate)
 {
   TRY
   sql_ << "INSERT INTO aggregate (station_uid, metrics_code, "
-    "operation_name, period_name, start_time, value, sample_number) "
+    "operation_name, period_name, start_time, value, sample_count) "
     "VALUES(:station_uid, "
     ":metrics_code, :operation_name, :period_name, "
-    ":start_time, :value, :sample_number)",
+    ":start_time, :value, :sample_count)",
     use(aggregate.station_uid), use(aggregate.metrics_code),
     use(aggregate.operation_name), use(aggregate.period_name),
     use(aggregate.start_time), use(aggregate.value), 

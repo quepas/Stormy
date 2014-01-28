@@ -119,8 +119,8 @@ void Storage::InsertMeasureAsText(const entity::Measurement& measure)
 {
   TRY  
   sql_ << "INSERT INTO measurement"
-    "(code, value_text, value_number, station_uid, timestamp)"
-    "values(:code, :value_text, NULL, :station_uid, :timestamp)", 
+    "(metrics_code, value_text, value_number, station_uid, timestamp)"
+    "values(:metrics_code, :value_text, NULL, :station_uid, :timestamp)", 
     use(measure.code),
     use(measure.value_text), 
     use(measure.station_uid),
@@ -133,8 +133,8 @@ void Storage::InsertMeasureAsNumeric(const entity::Measurement& measure)
 {
   TRY  
   sql_ << "INSERT INTO measurement"
-    "(code, value_number, value_text, station_uid, timestamp)"
-    "values(:code, :value_number, NULL, :station_uid, :timestamp)", 
+    "(metrics_code, value_number, value_text, station_uid, timestamp)"
+    "values(:metrics_code, :value_number, NULL, :station_uid, :timestamp)", 
     use(measure.code),
     use(measure.value_number),
     use(measure.station_uid),
