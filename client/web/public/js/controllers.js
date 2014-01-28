@@ -200,19 +200,17 @@ function CheckServerType(http, scope) {
   http.get('/info').success(function(data) {
     var info = data.server
     if(info.type == "S&A") {
-      scope.hide_export = false
-      scope.hide_operation = false
       scope.hide_mode = false
     }
     else {
-      scope.hide_export = true
-      scope.hide_operation = true
       scope.hide_mode = true
     }
+    scope.hide_export = true
+    scope.hide_operation = true
   })
 }
 
 function InsertVisualizationModes(scope) {
   scope.all_modes = [{name:'Meteo'},{name:'Aggregate'}]
-  scope.mode = scope.all_modes[1]
+  scope.mode = scope.all_modes[0]
 }
