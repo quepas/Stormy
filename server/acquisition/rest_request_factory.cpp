@@ -13,6 +13,7 @@ using namespace stormy::common::rest;
 
 using std::string;
 using Poco::Logger;
+using Poco::Net::HTTPRequest;
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 
@@ -37,23 +38,28 @@ HTTPRequestHandler* Factory::createRequestHandler(
   string URI = request.getURI();
   logger_.information("[rest/Factory] Handling request: " + URI);
 
-  if(IsMatch(URI, constant::station_request_pattern) ||
-      IsMatch(URI, constant::station_info_request_pattern)) {
-    return new GetStation(URI);
-  }
-  else if(IsMatch(URI, constant::meteo_request_pattern) ||
-      IsMatch(URI, constant::meteo_station_uid_request_pattern) ||
-      IsMatch(URI, constant::meteo_station_uid_request_pattern +
-                   constant::uri_query_vars_pattern) ||
-      IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
-    return new GetMeteo(URI);
-  }
-  else if(IsMatch(URI, constant::metrics_request_pattern) ||
-      IsMatch(URI, constant::metrics_info_request_pattern)) {
-    return new GetMetrics(URI);
-  }
-  else if(IsMatch(URI, constant::info_request_pattern)) {
-    return new GetInfo();
+  if (request.getMethod() == HTTPRequest::HTTP_GET) {
+    if(IsMatch(URI, constant::station_request_pattern) ||
+        IsMatch(URI, constant::station_info_request_pattern)) {
+      return new GetStation(URI);
+    }
+    else if(IsMatch(URI, constant::meteo_request_pattern) ||
+        IsMatch(URI, constant::meteo_station_uid_request_pattern) ||
+        IsMatch(URI, constant::meteo_station_uid_request_pattern +
+                     constant::uri_query_vars_pattern) ||
+        IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
+      return new GetMeteo(URI);
+    }
+    else if(IsMatch(URI, constant::metrics_request_pattern) ||
+        IsMatch(URI, constant::metrics_info_request_pattern)) {
+      return new GetMetrics(URI);
+    }
+    else if(IsMatch(URI, constant::info_request_pattern)) {
+      return new GetInfo();
+    }
+    else {
+      return new common::rest::request::Bad(URI);
+    }
   } else {
     return new common::rest::request::Bad(URI);
   }
