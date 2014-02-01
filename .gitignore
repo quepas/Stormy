@@ -1,8 +1,5 @@
 *.py[cod]
 
-# C extensions
-*.so
-
 # Packages
 *.egg
 *.egg-info
@@ -19,22 +16,6 @@ lib
 lib64
 __pycache__
 
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
-.coverage
-.tox
-nosetests.xml
-
-# Translations
-*.mo
-
-# Intellij
-.idea/
-*.iml
-*.iws
-
 # Visual C++
 *.opensdf
 *.sdf
@@ -46,6 +27,10 @@ nosetests.xml
 ipch/
 Debug/
 Release/
+
+# Codelite
+.codelite/
+*.workspace
 
 # Stormy related files & folders
 test/
