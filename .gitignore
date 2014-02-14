@@ -29,6 +29,7 @@ Debug/
 Release/
 
 # Codelite
+Codelite/
 .codelite/
 *.workspace
 *.project
