@@ -28,7 +28,7 @@ GetOptions::~GetOptions()
 void GetOptions::handleRequest(
   HTTPServerRequest& request,
   HTTPServerResponse& response)
-{
+{  
   ostream& ostr = response.send();
   ostr << constant::json_empty;
 }
