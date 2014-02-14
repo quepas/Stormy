@@ -34,8 +34,8 @@ private:
 
   void RemoveBatch(std::string batch_id);
 
-  std::map<std::string, Batch> batch_data_;
-  std::map<std::string, DevoidBatch> devoid_batch_data_;
+  std::map<std::string, FullBatch> batch_data_;
+  std::map<std::string, BareBatch> devoid_batch_data_;
 };
 
 template<typename T>

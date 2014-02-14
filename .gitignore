@@ -31,6 +31,7 @@ Release/
 # Codelite
 .codelite/
 *.workspace
+*.project
 
 # Stormy related files & folders
 test/

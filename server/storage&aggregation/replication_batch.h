@@ -10,7 +10,7 @@
 namespace stormy {
   namespace replication {
 
-struct DevoidBatch
+struct BareBatch
 {
   std::vector<long> measurement_ids;
   std::vector<long> metrics_ids;
@@ -18,12 +18,25 @@ struct DevoidBatch
   std::vector<long> aggregate_ids;
 };
 
-struct Batch
+struct FullBatch
 {
   std::vector<common::entity::Measurement> measurements;
   std::vector<common::entity::Metrics> metrics;
   std::vector<common::entity::Station> stations;
   std::vector<aggregation::entity::Aggregate> aggregates;
+};
+
+class Batch
+{
+public:
+  template<typename T>
+  void Add(const T& value);
+
+private:
+  virtual void AddMeasurement(common::entity::Measurement value);
+  virtual void AddMetrics(common::entity::Metrics value);
+  virtual void AddStation(common::entity::Station value);
+  virtual void AddAggregate(aggregation::entity::Aggregate value);
 };
 // ~~ stormy::replication::Batch
 }}

@@ -14,14 +14,14 @@ BatchMgr::BatchMgr()
 
 void BatchMgr::RegisterBatch(string batch_id)
 {
-  DevoidBatch new_dbatch;
+  BareBatch new_dbatch;
   devoid_batch_data_.insert(make_pair(batch_id, new_dbatch));
 }
 
 void BatchMgr::PrepareBatch(string batch_id)
 {
   // TODO: fill with data from db
-  Batch new_batch;
+  FullBatch new_batch;
   batch_data_.insert(make_pair(batch_id, new_batch));
 }
 
