@@ -35,11 +35,8 @@ Codelite/
 *.project
 
 # Stormy related files & folders
-test/
+other/
 bin/
-server/acquisition/dbgHelp.dll
-server/acquisition/symSrv.dll
-server/acquisition/symSrv.yes
 client/web/node_modules
 client/web/bower_components
 client/web/public/js/angular.min.js
