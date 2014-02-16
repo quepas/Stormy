@@ -1,6 +1,9 @@
 #include <iostream>
 #include <cppunit/ui/text/TestRunner.h>
 
+// unit tests
+#include "util_test.h"
+
 int main() 
 {
   std::cout << "=======================" << std::endl;
@@ -8,7 +11,9 @@ int main()
   std::cout << "=======================" << std::endl;
 
   CppUnit::TextUi::TestRunner test_runner;
+  test_runner.addTest(UtilTest::suite());
   test_runner.run();
 
   getchar();
+  return 0;
 }
