@@ -37,7 +37,7 @@ double ToDouble(string number)
     } else {
       if (!extracted_number.empty())
         break;
-    }            
+    }
   }
   double result;
   try {
@@ -51,7 +51,7 @@ double ToDouble(string number)
 bool IsNumeric(string text)
 {
   regex numberRegex(numeric_pattern);
-  return regex_match(text, numberRegex);
+  return text.empty() ? false : regex_match(text, numberRegex);
 }
 
 string MD5(string text)
