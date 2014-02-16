@@ -25,6 +25,7 @@ public:
     CPPUNIT_ASSERT(ToDouble("abc") == 0.0);
     CPPUNIT_ASSERT(ToDouble(".6") == 0.6);
     CPPUNIT_ASSERT(ToDouble(" ") == 0.0);
+    CPPUNIT_ASSERT(ToDouble("") == 0.0);
   }
 
   void TestIsNumeric()
@@ -32,7 +33,8 @@ public:
     CPPUNIT_ASSERT(IsNumeric("abc123.123") == false);
     CPPUNIT_ASSERT(IsNumeric("123") == true);
     CPPUNIT_ASSERT(IsNumeric("123.321") == true);
-    CPPUNIT_ASSERT(IsNumeric(" ") == false);
     CPPUNIT_ASSERT(IsNumeric(".5") == true);
+    CPPUNIT_ASSERT(IsNumeric(" ") == false);
+    CPPUNIT_ASSERT(IsNumeric("") == false);
   }
 };
