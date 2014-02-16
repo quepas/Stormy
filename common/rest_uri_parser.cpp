@@ -9,15 +9,16 @@ using std::make_pair;
 using Poco::URI;
 using boost::split;
 using boost::is_any_of;
+using boost::trim;
 
 namespace stormy {
   namespace common {
     namespace rest { 
 
-URIParser::URIParser(string raw_uri)
-  : uri_(raw_uri)
+URIParser::URIParser(string raw_uri)  
 {
-
+  trim(raw_uri);
+  uri_ = URI(raw_uri);
 }
 
 URIParser::~URIParser()
