@@ -40,15 +40,18 @@ map<string, string> URIParser::getQuerySegments()
   auto query_segments = map<string, string>();
 
   split(segments, uri_.getQuery(), is_any_of("&"));
-  if(!segments.empty()) {
+  if (!segments.empty()) {
     parameters_with_values.reserve(2);
     for (auto it = segments.begin(); it != segments.end(); ++it) {
       parameters_with_values.clear();
       split(parameters_with_values, *it, is_any_of("="));
 
-      if(parameters_with_values.size() == 2) {
-        query_segments.insert(
-          make_pair(parameters_with_values[0], parameters_with_values[1]));
+      if (parameters_with_values.size() == 2) {
+        string parameter = parameters_with_values[0];
+        if (!parameter.empty()) {
+          query_segments.insert(
+            make_pair(parameter, parameters_with_values[1]));
+        }
       }
     }
   }
