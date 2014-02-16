@@ -6,6 +6,7 @@
 #include <Poco/MD5Engine.h>
 #include <Poco/NumberFormatter.h>
 #include <typeinfo>
+#include <cctype>
 
 using boost::any;
 using boost::any_cast;
@@ -18,6 +19,7 @@ using boost::smatch;
 using boost::to_lower;
 using std::string;
 using std::vector;
+using std::isdigit;
 using Poco::MD5Engine;
 
 namespace stormy {
@@ -25,9 +27,21 @@ namespace stormy {
 
 double ToDouble(string number)
 {
+  int i = 0;
+  string extracted_number;
+  char c;
+  while(i < number.length()) {
+    c = number[i++];
+    if (isdigit(c) || c == '.') {
+      extracted_number.push_back(c);
+    } else {
+      if (!extracted_number.empty())
+        break;
+    }            
+  }
   double result;
   try {
-    result = lexical_cast<double>(number);
+    result = lexical_cast<double>(extracted_number);
   } catch(bad_lexical_cast const&) {
     result = 0.0;
   }

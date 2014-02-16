@@ -38,7 +38,7 @@ std::time_t LocaltimeNow();
 std::time_t MakeUTCIfPossible(std::time_t time);
 
 // const
-const std::string numeric_pattern = "-?[0-9]+([.][0-9]+)?";
+const std::string numeric_pattern = "-?[0-9]*([.][0-9]+)?";
 const std::string date_pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
 const std::string time_pattern = "[0-9]{1, 2}:[0-9]{1, 2}";
 const std::string hex_md5_pattern = "[0-9a-f]{32}";
