@@ -4,6 +4,7 @@
 // unit tests
 #include "util_test.h"
 #include "rest_uri_parser_test.h"
+#include "json_config_test.h"
 
 int main() 
 {
@@ -14,6 +15,7 @@ int main()
   CppUnit::TextUi::TestRunner test_runner;
   test_runner.addTest(UtilTest::suite());
   test_runner.addTest(RestURIParserTest::suite());
+  test_runner.addTest(JSONConfigTest::suite());
   test_runner.run();
 
   getchar();
