@@ -3,6 +3,7 @@
 #include <iostream>
 #include <thread>
 #include <string>
+#include "py_read_script.hpp"
 
 using std::chrono::seconds;
 using std::cout;
