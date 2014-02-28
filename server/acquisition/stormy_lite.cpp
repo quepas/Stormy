@@ -6,12 +6,13 @@
 
 #include <yaml-cpp/yaml.h>
 #include "data_acquire_task.hpp"
+#include "py_read_script.hpp"
 
 int main(int argc, char* argv [])
 {
   std::cout << "### Welcome to StormyLite ###"
     << "\n* (press key to exit)"
-    << "\n* (enjoy this shit!)"
+    << "\n* (enjoy this!)"
     << "\n\nData acquire in progress";
   std::vector<stormy::DataAcquireTask*> tasks;
 
@@ -38,7 +39,7 @@ int main(int argc, char* argv [])
   catch (const YAML::BadFile& ex) {
     std::cout << "Bad file ex: " << ex.what() << std::endl;
   }
-
+  
   getchar();
   for (auto& entry : tasks) {
     entry->Stop();
