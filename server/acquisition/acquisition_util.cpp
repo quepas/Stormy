@@ -1,10 +1,9 @@
 #include "acquisition_util.h"
 
 #include <vector>
+#include <Poco/NumberParser.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
-#include <Poco/NumberParser.h>
-#include "../../common/util.h"
 
 using boost::trim;
 using boost::replace_all;
