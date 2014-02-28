@@ -11,7 +11,8 @@ PyReadScript::PyReadScript(const std::string& file_path)
 {
   Py_Initialize();
 
-  
+  module_ = import("__main__");
+  namespace_ = module_.attr("__dict__");    
 }
 
 PyReadScript::~PyReadScript()
@@ -21,11 +22,7 @@ PyReadScript::~PyReadScript()
 
 void PyReadScript::operator()() const
 {
- 
-  module_ = import("__main__");
-  namespace_ = module_.attr("__dict__");  
-  //object ignored = exec("print('asd')", namespace_);
- 
+  object ignored = exec("print('asd')", namespace_);
 }
 
 // ~~ stormy::PyReadScript

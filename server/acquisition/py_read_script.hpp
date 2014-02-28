@@ -22,8 +22,8 @@ public:
 private:
   std::string file_path_;
 
-  mutable boost::python::object module_;
-  mutable boost::python::object namespace_;
+  boost::python::object module_;
+  boost::python::object namespace_;
 };
 // stormy::PyReadScript
 }
