@@ -4,7 +4,7 @@
 #include <thread>
 #include <string>
 #include <exception>
-#include "py_read_script.hpp"
+#include "data_acquire_queue.hpp"
 
 #include <boost/network.hpp>
 #include <boost/timer.hpp>
@@ -30,23 +30,23 @@ public:
     std::string script_name;
   };
 
-  DataAcquireTask(const Station& station) 
+  DataAcquireTask(const Station& station, DataAcquireQueue& queue)
     : done(false),
-      read_script(station.script_name) {
+      queue_(queue) {
     thread_ = thread([this, station]{
       while (!done)
       {
         boost::timer timer;
-        try {          
-          //read_script();                
-          boost::network::uri::uri uri(station.url);          
+        try {
+          boost::network::uri::uri uri(station.url);
           if (uri.is_valid()) 
           {
-            client::request request_(uri);            
+            client::request request_(uri);
             request_ << header("Connection", "close");
             client client_;
-            client::response response_ = client_.get(request_);            
+            client::response response_ = client_.get(request_);
             std::string s = body(response_);
+            queue_.Push(s);
             std::cout << ".";
           } 
           else
@@ -76,8 +76,8 @@ public:
   DataAcquireTask(const DataAcquireTask&) = delete;
   DataAcquireTask& operator=(const DataAcquireTask&) = delete;
 private:
-  thread thread_;
-  PyReadScript read_script;
+  thread thread_;  
+  DataAcquireQueue& queue_;
   mutable bool done;  
 };
 // ~~ stormy::DataAcquireTask
