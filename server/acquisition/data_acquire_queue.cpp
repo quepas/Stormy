@@ -2,6 +2,7 @@
 
 using std::lock_guard;
 using std::mutex;
+using std::string;
 
 namespace stormy {
 
@@ -13,13 +14,13 @@ DataAcquireQueue::~DataAcquireQueue()
 {
 }
 
-void DataAcquireQueue::Push(MeteoData data)
+void DataAcquireQueue::Push(string data)
 {
   lock_guard<mutex> guard(mutex_);
   data_queue_.push(data);
 }
 
-MeteoData DataAcquireQueue::Pop()
+string DataAcquireQueue::Pop()
 {
   lock_guard<mutex> guard(mutex_);
   auto result = data_queue_.back();

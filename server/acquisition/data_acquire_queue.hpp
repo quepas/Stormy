@@ -3,7 +3,7 @@
 #include <queue>
 #include <thread>
 #include <mutex>
-#include "meteo_data.hpp"
+#include <string>
 
 namespace stormy {
 
@@ -13,12 +13,13 @@ public:
   DataAcquireQueue();
   ~DataAcquireQueue();
 
-  void Push(MeteoData data);
-  MeteoData Pop();
+  unsigned Size() const { return data_queue_.size(); }
+  void Push(std::string data);
+  std::string Pop();
 
 private:
   std::mutex mutex_;
-  std::queue<MeteoData> data_queue_;  
+  std::queue<std::string> data_queue_;  
 };
 
 // ~~ stormy::DataAcquireQueue
