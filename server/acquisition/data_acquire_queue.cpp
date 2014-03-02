@@ -23,7 +23,7 @@ void DataAcquireQueue::Push(string data)
 string DataAcquireQueue::Pop()
 {
   lock_guard<mutex> guard(mutex_);
-  auto result = data_queue_.back();
+  auto result = data_queue_.front();
   data_queue_.pop();
   return result;
 }
