@@ -14,6 +14,7 @@ using namespace boost::network::http;
 
 using std::chrono::milliseconds;
 using std::cout;
+using std::string;
 using std::thread;
 using std::this_thread::sleep_for;
 
@@ -45,7 +46,11 @@ public:
             request_ << header("Connection", "close");
             client client_;
             client::response response_ = client_.get(request_);
-            std::string s = body(response_);
+            string s = body(response_);
+
+            string::size_type left_index = s.find_first_of("<");
+            s = s.substr(left_index);
+
             queue_.Push(s);
             std::cout << ".";
           } 
