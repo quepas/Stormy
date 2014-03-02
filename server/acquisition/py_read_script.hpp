@@ -14,7 +14,7 @@ public:
   ~PyReadScript();
 
   // call 'read' function
-  void operator()() const;
+  void operator()(std::string data_to_process);
 
   PyReadScript(const PyReadScript&) = delete;
   PyReadScript& operator=(const PyReadScript&) = delete;
