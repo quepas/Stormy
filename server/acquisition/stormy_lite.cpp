@@ -19,7 +19,7 @@ int main(int argc, char* argv [])
   stormy::DataAcquireQueue queue;
 
   try {
-    YAML::Node root = YAML::LoadFile("../config/meteo_stations_config.yaml");
+    YAML::Node root = YAML::LoadFile("../config/meteo_stations.yaml");
     int i = 0;
     for (auto it = root.begin(); it != root.end(); ++it)
     {
@@ -28,8 +28,8 @@ int main(int argc, char* argv [])
         stormy::DataAcquireTask::Station station = {
           (*it)["name"].as<std::string>(),
           (*it)["url"].as<std::string>(),
-          (*it)["refreshTime"].as<unsigned>(),
-          (*it)["parserClass"].as<std::string>()
+          (*it)["update_time"].as<unsigned>(),
+          (*it)["read_script"].as<std::string>()
         };
         tasks.push_back(new stormy::DataAcquireTask(station, queue));
       }
