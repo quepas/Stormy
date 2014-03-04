@@ -1,20 +1,19 @@
 #pragma once
 
 #include <string>
+#include "meteo_element.hpp"
 
 namespace stormy {
+  namespace meteo {
 
-struct MeteoData
-{
-  struct Element
-  {
-    std::string id;
-    double value;
-  };
-
-  int size;
-  Element* elements;
+struct Data 
+{ 
+  // used for numeric data
+  double number;
+  // used for text data
+  std::string text;
+  // ptr to meteo element structure
+  Element* element;
 };
-
-// ~~ stormy::MeteoData
-}
+// ~~ stormy::meteo::Data
+}}
