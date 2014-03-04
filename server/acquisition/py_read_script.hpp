@@ -4,6 +4,7 @@
 #include <boost/python.hpp>
 
 #include <string>
+#include <map>
 
 namespace stormy {
 
@@ -13,8 +14,9 @@ public:
   PyReadScript(const std::string& file_path);
   ~PyReadScript();
 
-  // call 'read' function
-  void operator()(std::string data_to_process);
+  // call 'process' function
+  std::map<std::string, std::string>
+    operator()(const std::string& data_to_process);
 
   PyReadScript(const PyReadScript&) = delete;
   PyReadScript& operator=(const PyReadScript&) = delete;
