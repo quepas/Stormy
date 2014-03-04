@@ -37,7 +37,10 @@ class StacjameteoReader:
 
     def parseSingleRow(self, tr):
         if len(tr) == 2:
-            dictItem = {tr[0][0].text : tr[1][0].text}
+            dictItem = {
+              tr[0][0].text.encode('unicode-escape') :
+              tr[1][0].text.encode('unicode-escape')
+            }
             return dictItem
 
     def extractTable(self, text):
