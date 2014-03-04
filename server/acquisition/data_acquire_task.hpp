@@ -9,11 +9,13 @@
 #include <boost/network.hpp>
 #include <boost/timer.hpp>
 
-using namespace boost::network;
-using namespace boost::network::http;
+namespace net = boost::network;
 
 using std::chrono::milliseconds;
 using std::cout;
+using std::endl;
+using std::floor;
+using std::string;
 using std::thread;
 using std::this_thread::sleep_for;
 
@@ -38,35 +40,33 @@ public:
       {
         boost::timer timer;
         try {
-          boost::network::uri::uri uri(station.url);
+          net::uri::uri uri(station.url);
           if (uri.is_valid()) 
           {
-            client::request request_(uri);
-            request_ << header("Connection", "close");
-            client client_;
-            client::response response_ = client_.get(request_);
-            std::string s = body(response_);
+            net::http::client::request request_(uri);
+            request_ << net::header("Connection", "close");
+            net::http::client client_;
+            net::http::client::response response_ = client_.get(request_);
+            string content = body(response_);
 
-            std::string::size_type left_index = s.find_first_of("<");
-            s = s.substr(left_index);
+            string::size_type left_index = content.find_first_of("<");
+            content = content.substr(left_index);
 
-            queue_.Push(s);
+            queue_.Push(content);
             std::cout << ".";
-          } 
+          }
           else
           {
-            std::cout << "\nFailed: " << station.url;
-          }          
+            cout << "\nFailed: " << station.url << endl;
+          }
         }
         catch (const std::exception& ex) {
-          std::cout << "ex: " << ex.what() << std::endl;          
+          cout << "ex: " << ex.what() << endl;
         }
-        double time_elapsed = timer.elapsed()*1000;
-        double recompensate_time = std::floor(station.refresh_time * 1000 - time_elapsed);
-        std::cout << "\nrecomp: " << recompensate_time << ", elapsed: " << time_elapsed << ", refresh: " << station.refresh_time * 1000 <<std::endl;
-        // time recompensing
-        if (recompensate_time > 0)
-          sleep_for(milliseconds(static_cast<int>(recompensate_time)));
+        double time_elapsed_ms = timer.elapsed() * 1000;
+        double time_recompensation_ms = floor(station.refresh_time * 1000 - time_elapsed_ms);
+        if (time_recompensation_ms > 0)
+          sleep_for(milliseconds(static_cast<int>(time_recompensation_ms)));
       }
     });
   }
