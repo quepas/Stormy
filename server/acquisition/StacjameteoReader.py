@@ -1,9 +1,11 @@
+__author__ = 'quepas'
 # Stacjameteo data reader
 # python 2.7.6
 
 import xml.etree.ElementTree as ETree
 
 def process(text):
+    print(text)
     parser = StacjameteoReader()
     parser.data={}
     parser.parseText(text.strip())

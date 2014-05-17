@@ -25,7 +25,7 @@ map<string, string>
   PyReadScript::operator()(const string& data_to_process)
 {
   map<string, string> result_map;
-  try {
+  try {    
     py::object ignored = py::exec_file(file_path_.c_str(), namespace_, namespace_);
     py::object run = namespace_["process"];
     py::object result = run(data_to_process);
@@ -45,7 +45,7 @@ map<string, string>
       py::extract<string> extracted_value(dict[key]);
 
       if (!extracted_value.check()) {
-        cout << "Invalid value." << endl;
+        cout << "Invalid value for key " << key << "." << endl;
         continue;
       }
       string value = extracted_value;

@@ -18,12 +18,12 @@ int main(int argc, char* argv [])
   std::vector<stormy::DataAcquireTask*> tasks;
   stormy::DataAcquireQueue queue;
 
+  // load met
   try {
     YAML::Node root = YAML::LoadFile("../config/meteo_stations.yaml");
     int i = 0;
     for (auto it = root.begin(); it != root.end(); ++it)
     {
-      ++i;
       try {
         stormy::DataAcquireTask::Station station = {
           (*it)["name"].as<std::string>(),
@@ -32,11 +32,14 @@ int main(int argc, char* argv [])
           (*it)["read_script"].as<std::string>()
         };
         tasks.push_back(new stormy::DataAcquireTask(station, queue));
+        ++i;
       }
       catch (const YAML::ParserException& ex) {
         std::cout << "Parser ex: " << ex.what() << std::endl;
       }
     }
+    std::cout << "Successfully loaded " << i 
+      << " meteo station data." << std::endl;
   }
   catch (const YAML::BadFile& ex) {
     std::cout << "Bad file ex: " << ex.what() << std::endl;
@@ -44,12 +47,13 @@ int main(int argc, char* argv [])
   
   std::atomic<bool> done(false);
   std::thread read_thread([&queue, &done](){
-    stormy::PyReadScript read_script("../StacjameteoReader.py");
-    while (!done.load()) {
-      std::cout << "Queue:" << queue.Size() << std::endl;
-      std::this_thread::sleep_for(std::chrono::seconds(1));
+    stormy::PyReadScript read_script("../AGHReader.py");
+    while (!done.load()) {            
       if (queue.Size() > 0) {
+        std::cout << "#" << queue.Size() << "^";
         read_script(queue.Pop());
+      } else {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
       }
     }
   });
