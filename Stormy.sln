@@ -1,7 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Acquisition", "Server_Acquisition\Server_Acquisition.vcxproj", "{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Storage", "Server_Storage\Server_Storage.vcxproj", "{9E18CCDF-74DC-4044-A43A-E0F427FC6858}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Common", "Server_Common\Server_Common.vcxproj", "{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}.Debug|Win32.Build.0 = Debug|Win32
+		{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}.Release|Win32.ActiveCfg = Release|Win32
+		{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}.Release|Win32.Build.0 = Release|Win32
+		{9E18CCDF-74DC-4044-A43A-E0F427FC6858}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9E18CCDF-74DC-4044-A43A-E0F427FC6858}.Debug|Win32.Build.0 = Debug|Win32
+		{9E18CCDF-74DC-4044-A43A-E0F427FC6858}.Release|Win32.ActiveCfg = Release|Win32
+		{9E18CCDF-74DC-4044-A43A-E0F427FC6858}.Release|Win32.Build.0 = Release|Win32
+		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Debug|Win32.Build.0 = Debug|Win32
+		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Release|Win32.ActiveCfg = Release|Win32
+		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
