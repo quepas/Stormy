@@ -2,18 +2,39 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
+    <STORMY_COMMON>$(SolutionDir)\Server_Common</STORMY_COMMON>
+    <PYTHON>D:\Programy\Python 3.3.4</PYTHON>
     <BOOST>D:\Programowanie\Biblioteki\Tidy\boost_1_55_0_vc2010</BOOST>
     <JSON_CPP>D:\Programowanie\Biblioteki\Tidy\json-cpp_vc2010\jsoncpp</JSON_CPP>
+    <YAML_CPP>D:\Programowanie\Biblioteki\Tidy\yaml-cpp-0.5.1_vc2010</YAML_CPP>
+    <POCO>D:\Programowanie\Biblioteki\Tidy\poco-1.4.6p4-all_vc2010</POCO>
+    <MONGO_DB_DRIVER>D:\Programowanie\Biblioteki\Tidy\mongo-cxx-driver_vc2010</MONGO_DB_DRIVER>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
   <ItemGroup>
+    <BuildMacro Include="STORMY_COMMON">
+      <Value>$(STORMY_COMMON)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
     <BuildMacro Include="BOOST">
       <Value>$(BOOST)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="JSON_CPP">
       <Value>$(JSON_CPP)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+     <BuildMacro Include="YAML_CPP">
+      <Value>$(YAML_CPP)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="POCO">
+      <Value>$(POCO)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="MONGO_DB_DRIVER">
+      <Value>$(MONGO_DB_DRIVER)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
