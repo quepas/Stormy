@@ -20,11 +20,7 @@ __pycache__
 # Visual C++
 *.opensdf
 *.sdf
-*.sln
 *.suo
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
 ipch/
 Debug/
 Release/
