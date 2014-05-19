@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(STORMY_COMMON)\src;$(MONGO_DB_DRIVER)\include;$(YAML_CPP)\include;$(PYTHON)\include;$(BOOST);$(POCO)\Net\include;$(POCO)\Util\include;$(POCO)\Foundation\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Programowanie\Projekty\Stormy\Debug;$(YAML_CPP)\lib;$(PYTHON)\libs;$(POCO)\lib;$(MONGO_DB_DRIVER)\lib;$(BOOST)\lib32-msvc-10.0;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Debug;$(YAML_CPP)\lib;$(PYTHON)\libs;$(POCO)\lib;$(MONGO_DB_DRIVER)\lib;$(BOOST)\lib32-msvc-10.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
