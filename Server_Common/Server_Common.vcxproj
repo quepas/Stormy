@@ -16,7 +16,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -38,11 +38,14 @@
     <Import Project="..\Library_paths.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(PYTHON)\include;$(BOOST);$(YAML_CPP)\include;$(POCO)\Util\include;$(POCO)\Net\include;$(POCO)\Foundation\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -62,6 +65,44 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\db_config.cpp" />
+    <ClCompile Include="src\db_expiration_engine.cpp" />
+    <ClCompile Include="src\db_expiration_task.cpp" />
+    <ClCompile Include="src\db_handler.cpp" />
+    <ClCompile Include="src\py_executor.cpp" />
+    <ClCompile Include="src\py_function.cpp" />
+    <ClCompile Include="src\rest_cookbook.cpp" />
+    <ClCompile Include="src\rest_request_bad.cpp" />
+    <ClCompile Include="src\rest_request_get_options.cpp" />
+    <ClCompile Include="src\rest_uri_parser.cpp" />
+    <ClCompile Include="src\util.cpp" />
+    <ClCompile Include="src\yaml_base_config.cpp" />
+    <ClCompile Include="src\yaml_util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\db_config.h" />
+    <ClInclude Include="src\db_expiration_engine.h" />
+    <ClInclude Include="src\db_expiration_task.h" />
+    <ClInclude Include="src\db_handler.h" />
+    <ClInclude Include="src\db_has_data_expiration.h" />
+    <ClInclude Include="src\db_setting.h" />
+    <ClInclude Include="src\entity_measurement.h" />
+    <ClInclude Include="src\entity_metrics.h" />
+    <ClInclude Include="src\entity_station.h" />
+    <ClInclude Include="src\json_config.h" />
+    <ClInclude Include="src\json_config_test.h" />
+    <ClInclude Include="src\py_executor.h" />
+    <ClInclude Include="src\py_function.h" />
+    <ClInclude Include="src\rest_constant.h" />
+    <ClInclude Include="src\rest_cookbook.h" />
+    <ClInclude Include="src\rest_request_bad.h" />
+    <ClInclude Include="src\rest_request_get_options.h" />
+    <ClInclude Include="src\rest_uri_parser.h" />
+    <ClInclude Include="src\rest_uri_parser_test.h" />
+    <ClInclude Include="src\util.h" />
+    <ClInclude Include="src\util_test.h" />
+    <ClInclude Include="src\yaml_base_config.h" />
+    <ClInclude Include="src\yaml_util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

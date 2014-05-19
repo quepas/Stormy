@@ -38,14 +38,20 @@
     <Import Project="..\Library_paths.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(STORMY_COMMON)\src;$(MONGO_DB_DRIVER)\include;$(YAML_CPP)\include;$(PYTHON)\include;$(BOOST);$(POCO)\Net\include;$(POCO)\Util\include;$(POCO)\Foundation\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Programowanie\Projekty\Stormy\Debug;$(YAML_CPP)\lib;$(PYTHON)\libs;$(POCO)\lib;$(MONGO_DB_DRIVER)\lib;$(BOOST)\lib32-msvc-10.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>STATIC_LIBMONGOCLIENT;D_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Server_Common.lib;libyaml-cppmdd.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -62,6 +68,41 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\acquisition_config_metrics.cpp" />
+    <ClCompile Include="src\acquisition_config_station.cpp" />
+    <ClCompile Include="src\acquisition_scheduler.cpp" />
+    <ClCompile Include="src\acquisition_task.cpp" />
+    <ClCompile Include="src\acquisition_util.cpp" />
+    <ClCompile Include="src\db_mongo_handler.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\py_mapper.cpp" />
+    <ClCompile Include="src\py_parser.cpp" />
+    <ClCompile Include="src\rest_request_factory.cpp" />
+    <ClCompile Include="src\rest_request_get_info.cpp" />
+    <ClCompile Include="src\rest_request_get_meteo.cpp" />
+    <ClCompile Include="src\rest_request_get_metrics.cpp" />
+    <ClCompile Include="src\rest_request_get_station.cpp" />
+    <ClCompile Include="src\rest_service.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\acquisition_config_metrics.h" />
+    <ClInclude Include="src\acquisition_config_station.h" />
+    <ClInclude Include="src\acquisition_scheduler.h" />
+    <ClInclude Include="src\acquisition_task.h" />
+    <ClInclude Include="src\acquisition_util.h" />
+    <ClInclude Include="src\db_constant.h" />
+    <ClInclude Include="src\db_mongo_handler.h" />
+    <ClInclude Include="src\meteo_data.hpp" />
+    <ClInclude Include="src\meteo_element.hpp" />
+    <ClInclude Include="src\meteo_station.hpp" />
+    <ClInclude Include="src\py_mapper.h" />
+    <ClInclude Include="src\py_parser.h" />
+    <ClInclude Include="src\rest_request_factory.h" />
+    <ClInclude Include="src\rest_request_get_info.h" />
+    <ClInclude Include="src\rest_request_get_meteo.h" />
+    <ClInclude Include="src\rest_request_get_metrics.h" />
+    <ClInclude Include="src\rest_request_get_station.h" />
+    <ClInclude Include="src\rest_service.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
