@@ -5,7 +5,6 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-#include <boost/any.hpp>
 #include <sstream>
 
 namespace stormy {
@@ -27,7 +26,6 @@ std::string MD5(std::string text);
 bool IsHexMD5(std::string text);
 std::string ExtractMD5(std::string text);
 std::string ExtractURIEndPathSegment(std::string URI);
-std::string ToString(boost::any any);
 bool ToBool(std::string text);
 bool IsMatch(std::string text, std::string regex);
 

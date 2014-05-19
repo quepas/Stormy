@@ -8,8 +8,6 @@
 #include <typeinfo>
 #include <cctype>
 
-using boost::any;
-using boost::any_cast;
 using boost::is_any_of;
 using boost::lexical_cast;
 using boost::bad_lexical_cast;
@@ -75,17 +73,6 @@ bool IsMatch(string text, string expr)
 {
   regex regexPattern(expr);
   return regex_match(text, regexPattern);
-}
-
-string ToString(any value)
-{
-  if(typeid(double) == value.type()) {
-    return lexical_cast<string>(any_cast<double>(value));
-  }
-  else if(typeid(string) == value.type()) {
-    return any_cast<string>(value);
-  }
-  return "_none";
 }
 
 bool IsHexMD5(string text)
