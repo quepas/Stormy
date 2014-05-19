@@ -38,14 +38,22 @@
     <Import Project="..\Library_paths.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(STORMY_COMMON)\src;$(JSON_CPP)\include;$(YAML_CPP)\include;$(MONGO_DB_DRIVER)\include;$(PYTHON)\include;$(BOOST);$(POCO)\Util\include;$(POCO)\Foundation\include;$(POCO)\Net\include;$(SOCI)\core;$(SOCI)\backends;$(POSTGRESQL)\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Debug;$(BOOST)\lib32-msvc-10.0;$(JSON_CPP)\lib\Debug;$(MONGO_DB_DRIVER)\lib;$(PYTHON)\libs;$(POCO)\lib;$(POSTGRESQL)\lib;$(SOCI)\lib\Debug;$(YAML_CPP)\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <PreprocessorDefinitions>STATIC_LIBMONGOCLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Server_Common.lib;libyaml-cppmdd.lib;jsoncpp.lib;ws2_32.lib;libsoci_core_3_2.lib;libsoci_postgresql_3_2.lib;libpq.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -62,6 +70,75 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\acquisition_config.cpp" />
+    <ClCompile Include="src\acquisition_http_connector.cpp" />
+    <ClCompile Include="src\acquisition_json_util.cpp" />
+    <ClCompile Include="src\acquisition_scheduler.cpp" />
+    <ClCompile Include="src\acquisition_task.cpp" />
+    <ClCompile Include="src\aggregation_config.cpp" />
+    <ClCompile Include="src\aggregation_engine.cpp" />
+    <ClCompile Include="src\aggregation_py_operation_mgr.cpp" />
+    <ClCompile Include="src\aggregation_scheduler.cpp" />
+    <ClCompile Include="src\aggregation_task_base.cpp" />
+    <ClCompile Include="src\aggregation_task_factory.cpp" />
+    <ClCompile Include="src\aggregation_task_initial.cpp" />
+    <ClCompile Include="src\aggregation_task_regular.cpp" />
+    <ClCompile Include="src\aggregation_util.cpp" />
+    <ClCompile Include="src\analysis_operation_mgr.cpp" />
+    <ClCompile Include="src\db_aggregate.cpp" />
+    <ClCompile Include="src\db_storage.cpp" />
+    <ClCompile Include="src\replication_batch_manager.cpp" />
+    <ClCompile Include="src\rest_csv_cookbook.cpp" />
+    <ClCompile Include="src\rest_json_cookbook.cpp" />
+    <ClCompile Include="src\rest_request_factory.cpp" />
+    <ClCompile Include="src\rest_request_get_aggregate.cpp" />
+    <ClCompile Include="src\rest_request_get_export.cpp" />
+    <ClCompile Include="src\rest_request_get_info.cpp" />
+    <ClCompile Include="src\rest_request_get_meteo.cpp" />
+    <ClCompile Include="src\rest_request_get_metrics.cpp" />
+    <ClCompile Include="src\rest_request_get_operation.cpp" />
+    <ClCompile Include="src\rest_request_get_period.cpp" />
+    <ClCompile Include="src\rest_request_get_station.cpp" />
+    <ClCompile Include="src\rest_service.cpp" />
+    <ClCompile Include="src\storage_and_aggregation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\acquisition_config.h" />
+    <ClInclude Include="src\acquisition_http_connector.h" />
+    <ClInclude Include="src\acquisition_json_util.h" />
+    <ClInclude Include="src\acquisition_scheduler.h" />
+    <ClInclude Include="src\acquisition_setting.h" />
+    <ClInclude Include="src\acquisition_task.h" />
+    <ClInclude Include="src\aggregation_config.h" />
+    <ClInclude Include="src\aggregation_engine.h" />
+    <ClInclude Include="src\aggregation_entity_aggregate.h" />
+    <ClInclude Include="src\aggregation_entity_operation.h" />
+    <ClInclude Include="src\aggregation_entity_period.h" />
+    <ClInclude Include="src\aggregation_entity_task.h" />
+    <ClInclude Include="src\aggregation_scheduler.h" />
+    <ClInclude Include="src\aggregation_setting.h" />
+    <ClInclude Include="src\aggregation_task_base.h" />
+    <ClInclude Include="src\aggregation_task_factory.h" />
+    <ClInclude Include="src\aggregation_task_initial.h" />
+    <ClInclude Include="src\aggregation_task_regular.h" />
+    <ClInclude Include="src\aggregation_util.h" />
+    <ClInclude Include="src\analysis_operation_mgr.h" />
+    <ClInclude Include="src\db_aggregate.h" />
+    <ClInclude Include="src\db_storage.h" />
+    <ClInclude Include="src\replication_batch.h" />
+    <ClInclude Include="src\replication_batch_manager.h" />
+    <ClInclude Include="src\rest_csv_cookbook.h" />
+    <ClInclude Include="src\rest_json_cookbook.h" />
+    <ClInclude Include="src\rest_request_factory.h" />
+    <ClInclude Include="src\rest_request_get_aggregate.h" />
+    <ClInclude Include="src\rest_request_get_export.h" />
+    <ClInclude Include="src\rest_request_get_info.h" />
+    <ClInclude Include="src\rest_request_get_meteo.h" />
+    <ClInclude Include="src\rest_request_get_metrics.h" />
+    <ClInclude Include="src\rest_request_get_operation.h" />
+    <ClInclude Include="src\rest_request_get_period.h" />
+    <ClInclude Include="src\rest_request_get_station.h" />
+    <ClInclude Include="src\rest_service.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
