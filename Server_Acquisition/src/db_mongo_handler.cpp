@@ -219,8 +219,8 @@ entity::Station MongoHandler::GetStationByUID(string uid)
 
 uint32_t MongoHandler::CountMeasureSetsForStationByUID(string uid)
 {
-  return connection.count(constant::db_meteo + "." +
-    constant::station_uid_prefix + uid);
+  return static_cast<uint32_t>(connection.count(constant::db_meteo + "." +
+    constant::station_uid_prefix + uid));
 }
 
 map<time_t, vector<entity::Measurement>>
