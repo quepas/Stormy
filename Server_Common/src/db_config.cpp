@@ -8,7 +8,6 @@ using Poco::NumberFormatter;
 namespace stormy {
   namespace common {
     namespace db {
-
 Config::Config(string path)
   : BaseConfig(path),
     configuration_()
@@ -18,7 +17,6 @@ Config::Config(string path)
 
 Config::~Config()
 {
-
 }
 
 void Config::MapIntoConfiguration()
