@@ -20,7 +20,7 @@ Scheduler::~Scheduler()
 
 void Scheduler::Schedule(Setting* server)
 {
-	schedule(new Task(storage_database_, server), 1000, server -> interval * 1000);
+	schedule(new Task(storage_database_, server), 1000, static_cast<long>(server -> interval * 1000));
 }
 
 void Scheduler::Schedule( 
