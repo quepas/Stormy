@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../../common/yaml_base_config.h"
+#include "yaml_base_config.h"
 #include "aggregation_setting.h"
 
 namespace stormy {

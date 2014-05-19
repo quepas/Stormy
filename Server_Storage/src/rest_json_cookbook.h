@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../common/entity_station.h"
-#include "../../common/entity_metrics.h"
+#include "entity_station.h"
+#include "entity_metrics.h"
 #include "aggregation_entity_period.h"
 #include "aggregation_entity_operation.h"
 #include "aggregation_entity_aggregate.h"

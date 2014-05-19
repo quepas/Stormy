@@ -5,9 +5,9 @@
 #include <Poco/Util/Timer.h>
 #include <Poco/Util/TimerTask.h>
 
-#include "../../common/db_setting.h"
-#include "../../common/entity_station.h"
-#include "../../common/entity_metrics.h"
+#include "db_setting.h"
+#include "entity_station.h"
+#include "entity_metrics.h"
 
 #include "aggregation_scheduler.h"
 #include "aggregation_task_factory.h"

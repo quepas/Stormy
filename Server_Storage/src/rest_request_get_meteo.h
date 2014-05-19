@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../common/db_setting.h"
-#include "../../common/rest_uri_parser.h"
+#include "db_setting.h"
+#include "rest_uri_parser.h"
 
 #include <Poco/Net/HTTPRequestHandler.h>
 

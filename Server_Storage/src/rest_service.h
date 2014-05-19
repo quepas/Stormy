@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../common/db_setting.h"
+#include "db_setting.h"
 
 #include <cstdint>
 #include <Poco/Logger.h>

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../common/entity_measurement.h"
-#include "../../common/entity_metrics.h"
-#include "../../common/entity_station.h"
+#include "entity_measurement.h"
+#include "entity_metrics.h"
+#include "entity_station.h"
 #include "aggregation_entity_aggregate.h"
 
 #include <vector>

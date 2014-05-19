@@ -1,6 +1,6 @@
 #include "rest_request_get_info.h"
 
-#include "../../common/rest_cookbook.h"
+#include "rest_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>

@@ -7,8 +7,8 @@
 #include <Poco/NumberFormatter.h>
 #include <Poco/Stopwatch.h>
 
-#include "../../common/entity_measurement.h"
-#include "../../common/entity_station.h"
+#include "entity_measurement.h"
+#include "entity_station.h"
 #include "acquisition_http_connector.h"
 #include "acquisition_json_util.h"
 

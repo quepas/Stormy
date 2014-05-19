@@ -9,9 +9,9 @@
 #include "rest_request_get_operation.h"
 #include "rest_request_get_period.h"
 
-#include "../../common/rest_request_bad.h"
-#include "../../common/util.h"
-#include "../../common/rest_constant.h"
+#include "rest_request_bad.h"
+#include "util.h"
+#include "rest_constant.h"
 
 using namespace stormy::common;
 using namespace stormy::common::rest;

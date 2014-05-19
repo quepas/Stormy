@@ -1,7 +1,7 @@
 #include "rest_json_cookbook.h"
 
-#include "../../common/rest_cookbook.h"
-#include "../../common/rest_constant.h"
+#include "rest_cookbook.h"
+#include "rest_constant.h"
 
 // TODO: use something lightest for creating json
 #include <boost/algorithm/string.hpp>

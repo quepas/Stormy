@@ -9,7 +9,7 @@
 
 #include "aggregation_entity_aggregate.h"
 #include "aggregation_util.h"
-#include "../../common/py_function.h"
+#include "py_function.h"
 
 using std::string;
 using std::asctime;

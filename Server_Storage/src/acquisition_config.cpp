@@ -1,6 +1,6 @@
 #include "acquisition_config.h"
 
-#include "../../common/util.h"
+#include "util.h"
 
 using std::string;
 

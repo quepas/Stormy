@@ -9,7 +9,7 @@
 
 #include <Poco/Logger.h>
 
-#include "../../common/db_setting.h"
+#include "db_setting.h"
 #include "aggregation_entity_task.h"
 #include "aggregation_entity_period.h"
 #include "aggregation_entity_aggregate.h"

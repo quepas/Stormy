@@ -4,9 +4,9 @@
 #include "db_storage.h"
 #include "db_aggregate.h"
 #include "aggregation_entity_period.h"
-#include "../../common/entity_station.h"
-#include "../../common/rest_constant.h"
-#include "../../common/rest_cookbook.h"
+#include "entity_station.h"
+#include "rest_constant.h"
+#include "rest_cookbook.h"
 
 #include <vector>
 #include <Poco/Net/HTTPServerRequest.h>

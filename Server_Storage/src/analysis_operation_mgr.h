@@ -1,7 +1,7 @@
 #pragma once
 
 #include "db_aggregate.h"
-#include "../../common/db_setting.h"
+#include "db_setting.h"
 
 #include <string>
 #include <vector>

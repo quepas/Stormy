@@ -12,9 +12,9 @@
 #include "rest_service.h"
 #include "analysis_operation_mgr.h"
 
-#include "../../common/util.h"
-#include "../../common/db_config.h"
-#include "../../common/py_executor.h"
+#include "util.h"
+#include "db_config.h"
+#include "py_executor.h"
 
 using namespace stormy;
 using namespace Poco;

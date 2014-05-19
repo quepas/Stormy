@@ -7,7 +7,7 @@
 #include <Poco/NumberFormatter.h>
 #include <Poco/Timespan.h>
 
-#include "../../common/util.h"
+#include "util.h"
 #include "acquisition_json_util.h"
 
 using namespace stormy::common;

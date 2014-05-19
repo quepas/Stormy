@@ -3,7 +3,7 @@
 #include <string>
 
 #include "acquisition_setting.h"
-#include "../../common/yaml_base_config.h"
+#include "yaml_base_config.h"
 
 namespace stormy {
   namespace acquisition {

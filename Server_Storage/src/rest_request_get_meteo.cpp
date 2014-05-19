@@ -1,9 +1,9 @@
 #include "rest_request_get_meteo.h"
 
 #include "db_storage.h"
-#include "../../common/rest_constant.h"
-#include "../../common/rest_cookbook.h"
-#include "../../common/entity_station.h"
+#include "rest_constant.h"
+#include "rest_cookbook.h"
+#include "entity_station.h"
 
 #include <map>
 #include <vector>

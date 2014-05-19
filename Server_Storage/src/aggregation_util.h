@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../common/entity_measurement.h"
+#include "entity_measurement.h"
 
 #include <ctime>
 #include <map>

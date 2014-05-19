@@ -5,12 +5,12 @@
 #include <soci.h>
 #include <Poco/Logger.h>
 
-#include "../../common/db_setting.h"
-#include "../../common/util.h"
+#include "db_setting.h"
+#include "util.h"
 
-#include "../../common/entity_station.h"
-#include "../../common/entity_metrics.h"
-#include "../../common/entity_measurement.h"
+#include "entity_station.h"
+#include "entity_metrics.h"
+#include "entity_measurement.h"
 
 namespace stormy {
   namespace db {

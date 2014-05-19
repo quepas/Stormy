@@ -1,7 +1,7 @@
 #include "rest_request_get_metrics.h"
 
 #include "db_storage.h"
-#include "../../common/rest_cookbook.h"
+#include "rest_cookbook.h"
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>

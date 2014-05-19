@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../common/db_setting.h"
+#include "db_setting.h"
 
 #include <Poco/Logger.h>
 #include <Poco/Net/HTTPServerRequest.h>
