@@ -9,6 +9,8 @@
     <YAML_CPP>D:\Programowanie\Biblioteki\Tidy\yaml-cpp-0.5.1_vc2010</YAML_CPP>
     <POCO>D:\Programowanie\Biblioteki\Tidy\poco-1.4.6p4-all_vc2010</POCO>
     <MONGO_DB_DRIVER>D:\Programowanie\Biblioteki\Tidy\mongo-cxx-driver_vc2010</MONGO_DB_DRIVER>
+    <SOCI>D:\Programowanie\Biblioteki\soci-3.2.2</SOCI>
+    <POSTGRESQL>C:\Program Files (x86)\PostgreSQL\9.3</POSTGRESQL>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
@@ -35,6 +37,14 @@
     </BuildMacro>
     <BuildMacro Include="MONGO_DB_DRIVER">
       <Value>$(MONGO_DB_DRIVER)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="SOCI">
+      <Value>$(SOCI)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="POSTGRESQL">
+      <Value>$(POSTGRESQL)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
