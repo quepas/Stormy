@@ -140,6 +140,12 @@
     <ClInclude Include="src\rest_request_get_station.h" />
     <ClInclude Include="src\rest_service.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="config\acquisition_servers.yaml" />
+    <None Include="config\aggregation.yaml" />
+    <None Include="config\aggregation_database.yaml" />
+    <None Include="config\storage_database.yaml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

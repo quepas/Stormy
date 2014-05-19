@@ -105,6 +105,11 @@
     <ClInclude Include="src\rest_request_get_station.h" />
     <ClInclude Include="src\rest_service.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="config\meteo_data_type_config.yaml" />
+    <None Include="config\meteo_stations.yaml" />
+    <None Include="config\meteo_stations_config.yaml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
