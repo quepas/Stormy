@@ -2,7 +2,7 @@
 
 #include <yaml-cpp/yaml.h>
 #include <boost/algorithm/string.hpp>
-#include "../../common/yaml_util.h"
+#include "yaml_util.h"
 
 using namespace stormy::common;
 using boost::equal;

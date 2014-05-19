@@ -5,7 +5,7 @@
 #include "acquisition_config_metrics.h"
 #include "acquisition_util.h"
 #include "db_constant.h"
-#include "../../common/util.h"
+#include "util.h"
 
 using namespace stormy::common;
 using std::auto_ptr;

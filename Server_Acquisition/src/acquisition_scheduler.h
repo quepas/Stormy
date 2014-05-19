@@ -3,7 +3,7 @@
 #include <vector>
 #include <Poco/Util/Timer.h>
 
-#include "../../common/entity_station.h"
+#include "entity_station.h"
 
 namespace stormy {
   namespace acquisition {

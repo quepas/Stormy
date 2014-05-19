@@ -1,9 +1,9 @@
 #include "rest_request_get_meteo.h"
 
-#include "../../common/util.h"
-#include "../../common/rest_cookbook.h"
-#include "../../common/rest_constant.h"
-#include "../../common/entity_station.h"
+#include "util.h"
+#include "rest_cookbook.h"
+#include "rest_constant.h"
+#include "entity_station.h"
 #include "db_mongo_handler.h"
 
 #include <ctime>

@@ -1,6 +1,6 @@
 #include "rest_request_get_metrics.h"
 
-#include "../../common/rest_cookbook.h"
+#include "rest_cookbook.h"
 #include "db_mongo_handler.h"
 #include "acquisition_config_metrics.h"
 

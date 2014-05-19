@@ -5,8 +5,8 @@
 #include <Poco/Logger.h>
 
 #include "acquisition_config_metrics.h"
-#include "../../common/entity_station.h"
-#include "../../common/entity_measurement.h"
+#include "entity_station.h"
+#include "entity_measurement.h"
 
 namespace stormy {
   namespace py {

@@ -1,7 +1,7 @@
 #include "rest_request_get_station.h"
 
-#include "../../common/util.h"
-#include "../../common/rest_cookbook.h"
+#include "util.h"
+#include "rest_cookbook.h"
 #include "db_mongo_handler.h"
 
 #include <Poco/Net/HTTPServerRequest.h>

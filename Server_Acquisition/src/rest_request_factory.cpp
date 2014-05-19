@@ -4,9 +4,9 @@
 #include "rest_request_get_metrics.h"
 #include "rest_request_get_meteo.h"
 #include "rest_request_get_info.h"
-#include "../../common/util.h"
-#include "../../common/rest_constant.h"
-#include "../../common/rest_request_bad.h"
+#include "util.h"
+#include "rest_constant.h"
+#include "rest_request_bad.h"
 
 using namespace stormy::common;
 using namespace stormy::common::rest;

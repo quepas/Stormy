@@ -6,9 +6,9 @@
 #include "rest_service.h"
 #include "acquisition_scheduler.h"
 
-#include "../../common/py_executor.h"
-#include "../../common/util.h"
-#include "../../common/db_expiration_engine.h"
+#include "py_executor.h"
+#include "util.h"
+#include "db_expiration_engine.h"
 
 #include <sstream>
 

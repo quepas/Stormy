@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../common/rest_uri_parser.h"
+#include "rest_uri_parser.h"
 #include <Poco/Net/HTTPRequestHandler.h>
 
 namespace stormy {

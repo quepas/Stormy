@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../common/entity_metrics.h"
+#include "entity_metrics.h"
 
 #include <string>
 #include <vector>

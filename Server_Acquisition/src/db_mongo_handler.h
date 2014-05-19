@@ -8,11 +8,11 @@
 #include <mongo/client/dbclient.h>
 #include <Poco/Logger.h>
 
-#include "../../common/db_handler.h"
-#include "../../common/db_has_data_expiration.h"
-#include "../../common/entity_station.h"
-#include "../../common/entity_metrics.h"
-#include "../../common/entity_measurement.h"
+#include "db_handler.h"
+#include "db_has_data_expiration.h"
+#include "entity_station.h"
+#include "entity_metrics.h"
+#include "entity_measurement.h"
 
 namespace stormy {
   namespace db {

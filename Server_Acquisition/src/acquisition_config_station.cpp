@@ -1,8 +1,8 @@
 #include "acquisition_config_station.h"
 
 #include <yaml-cpp/yaml.h>
-#include "../../common/yaml_util.h"
-#include "../../common/util.h"
+#include "yaml_util.h"
+#include "util.h"
 
 using namespace stormy::common;
 using std::string;

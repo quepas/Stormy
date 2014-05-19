@@ -3,8 +3,8 @@
 #include "acquisition_util.h"
 #include "db_constant.h"
 #include "py_mapper.h"
-#include "../../common/py_function.h"
-#include "../../common/util.h"
+#include "py_function.h"
+#include "util.h"
 
 #include <ctime>
 #include <map>

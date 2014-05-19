@@ -3,7 +3,7 @@
 #include <Poco/Util/TimerTask.h>
 #include <Poco/Logger.h>
 
-#include "../../common/entity_station.h"
+#include "entity_station.h"
 #include "py_parser.h"
 #include "db_mongo_handler.h"
 

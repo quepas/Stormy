@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../../common/entity_station.h"
+#include "entity_station.h"
 
 namespace stormy {
   namespace acquisition {
