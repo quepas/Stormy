@@ -16,6 +16,12 @@
     <Filter Include="Resource Files\config">
       <UniqueIdentifier>{6427a659-60cc-4d70-938c-8136a316dea7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\stormy_lite">
+      <UniqueIdentifier>{0c9fccc9-e500-4379-b7dd-db2c409f0735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\stormy_lite">
+      <UniqueIdentifier>{23103c5c-2046-4e7b-9895-1faae68eb032}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\acquisition_config_metrics.cpp">
@@ -62,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="src\rest_service.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\py_read_script.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\data_acquire_queue.cpp">
+      <Filter>Source Files\stormy_lite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="src\rest_service.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\py_read_script.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data_acquire_queue.hpp">
+      <Filter>Header Files\stormy_lite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

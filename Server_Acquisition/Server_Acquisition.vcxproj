@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(MONGO_DB_DRIVER)\include;$(YAML_CPP)\include;$(PYTHON)\include;$(BOOST);$(POCO)\Net\include;$(POCO)\Util\include;$(POCO)\Foundation\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;$(YAML_CPP)\lib;$(PYTHON)\libs;$(POCO)\lib;$(MONGO_DB_DRIVER)\lib;$(BOOST)\lib32-msvc-10.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(STORMY_COMMON)\src;$(MONGO_DB_DRIVER)\include;$(YAML_CPP)\include;$(PYTHON)\include;$(PYTHON_27)\include;$(BOOST);$(POCO)\Net\include;$(POCO)\Util\include;$(POCO)\Foundation\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Debug;$(YAML_CPP)\lib;$(PYTHON)\libs;$(PYTHON_27)\libs;$(POCO)\lib;$(MONGO_DB_DRIVER)\lib;$(BOOST)\lib32-msvc-10.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -74,10 +74,12 @@
     <ClCompile Include="src\acquisition_scheduler.cpp" />
     <ClCompile Include="src\acquisition_task.cpp" />
     <ClCompile Include="src\acquisition_util.cpp" />
+    <ClCompile Include="src\data_acquire_queue.cpp" />
     <ClCompile Include="src\db_mongo_handler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\py_mapper.cpp" />
     <ClCompile Include="src\py_parser.cpp" />
+    <ClCompile Include="src\py_read_script.cpp" />
     <ClCompile Include="src\rest_request_factory.cpp" />
     <ClCompile Include="src\rest_request_get_info.cpp" />
     <ClCompile Include="src\rest_request_get_meteo.cpp" />
@@ -91,6 +93,7 @@
     <ClInclude Include="src\acquisition_scheduler.h" />
     <ClInclude Include="src\acquisition_task.h" />
     <ClInclude Include="src\acquisition_util.h" />
+    <ClInclude Include="src\data_acquire_queue.hpp" />
     <ClInclude Include="src\db_constant.h" />
     <ClInclude Include="src\db_mongo_handler.h" />
     <ClInclude Include="src\meteo_data.hpp" />
@@ -98,6 +101,7 @@
     <ClInclude Include="src\meteo_station.hpp" />
     <ClInclude Include="src\py_mapper.h" />
     <ClInclude Include="src\py_parser.h" />
+    <ClInclude Include="src\py_read_script.hpp" />
     <ClInclude Include="src\rest_request_factory.h" />
     <ClInclude Include="src\rest_request_get_info.h" />
     <ClInclude Include="src\rest_request_get_meteo.h" />
