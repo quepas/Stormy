@@ -18,10 +18,10 @@ public:
   std::map<std::string, std::string>
     operator()(const std::string& data_to_process);
 
-  PyReadScript(const PyReadScript&) = delete;
-  PyReadScript& operator=(const PyReadScript&) = delete;
-
 private:
+  PyReadScript(const PyReadScript&);
+  PyReadScript& operator=(const PyReadScript&);
+
   std::string file_path_;
 
   boost::python::object module_;
