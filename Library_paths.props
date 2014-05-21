@@ -4,6 +4,7 @@
   <PropertyGroup Label="UserMacros">
     <STORMY_COMMON>$(SolutionDir)\Server_Common</STORMY_COMMON>
     <PYTHON>D:\Programy\Python 3.3.4</PYTHON>
+    <PYTHON_27>D:\Programy\Python2.7.6</PYTHON_27>
     <BOOST>D:\Programowanie\Biblioteki\Tidy\boost_1_55_0_vc2010</BOOST>
     <JSON_CPP>D:\Programowanie\Biblioteki\Tidy\json-cpp_vc2010\jsoncpp</JSON_CPP>
     <YAML_CPP>D:\Programowanie\Biblioteki\Tidy\yaml-cpp-0.5.1_vc2010</YAML_CPP>
@@ -17,6 +18,14 @@
   <ItemGroup>
     <BuildMacro Include="STORMY_COMMON">
       <Value>$(STORMY_COMMON)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+     <BuildMacro Include="PYTHON">
+      <Value>$(PYTHON)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+     <BuildMacro Include="PYTHON_27">
+      <Value>$(PYTHON_27)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
     <BuildMacro Include="BOOST">
