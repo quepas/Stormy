@@ -1,18 +1,14 @@
 #include "data_acquire_queue.hpp"
 
-using std::lock_guard;
-using std::mutex;
+using boost::lock_guard;
+using boost::mutex;
 using std::string;
 
 namespace stormy {
 
-DataAcquireQueue::DataAcquireQueue()
-{
-}
+DataAcquireQueue::DataAcquireQueue() {}
 
-DataAcquireQueue::~DataAcquireQueue()
-{
-}
+DataAcquireQueue::~DataAcquireQueue() {}
 
 void DataAcquireQueue::Push(string data)
 {

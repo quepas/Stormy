@@ -1,8 +1,8 @@
 #pragma once
 
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 #include <queue>
-#include <thread>
-#include <mutex>
 #include <string>
 
 namespace stormy {
@@ -18,7 +18,7 @@ public:
   std::string Pop();
 
 private:
-  std::mutex mutex_;
+  boost::mutex mutex_;
   std::queue<std::string> data_queue_;  
 };
 
