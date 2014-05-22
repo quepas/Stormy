@@ -1,5 +1,5 @@
 {
-  "name": "Wisła Malinka",
+  "name": "Wisla Malinka",
   "url": "http://stacjameteo.pl/dane/index.php?stacja=21",
   "parserClass": "Stacjameteo_MeteoParser",
   "refreshTime": 300

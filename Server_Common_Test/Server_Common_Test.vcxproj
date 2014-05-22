@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(POCO)\Foundation\include;$(POCO)\Util\include;$(STORMY_COMMON)\src;$(CATCH)\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;$(POCO)\lib;$(BOOST)\lib32-msvc-10.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(STORMY_COMMON)\src;$(CATCH)\include;$(JSON_CPP)\include;$(POCO)\Foundation\include;$(POCO)\Util\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Debug;$(POCO)\lib;$(BOOST)\lib32-msvc-10.0;$(JSON_CPP)\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -50,7 +50,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Server_Common.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Server_Common.lib;jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -67,6 +68,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\json_config_test.cpp" />
     <ClCompile Include="src\rest_uri_parser_test.cpp" />
     <ClCompile Include="src\run_all.cpp" />
     <ClCompile Include="src\util_test.cpp" />

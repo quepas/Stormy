@@ -39,7 +39,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(PYTHON)\include;$(BOOST);$(YAML_CPP)\include;$(POCO)\Util\include;$(POCO)\Net\include;$(POCO)\Foundation\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(JSON_CPP)\include;$(PYTHON)\include;$(BOOST);$(YAML_CPP)\include;$(POCO)\Util\include;$(POCO)\Net\include;$(POCO)\Foundation\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -71,6 +71,7 @@
     <ClCompile Include="src\db_expiration_engine.cpp" />
     <ClCompile Include="src\db_expiration_task.cpp" />
     <ClCompile Include="src\db_handler.cpp" />
+    <ClCompile Include="src\json_config.cpp" />
     <ClCompile Include="src\py_executor.cpp" />
     <ClCompile Include="src\py_function.cpp" />
     <ClCompile Include="src\rest_cookbook.cpp" />
@@ -92,7 +93,6 @@
     <ClInclude Include="src\entity_metrics.h" />
     <ClInclude Include="src\entity_station.h" />
     <ClInclude Include="src\json_config.h" />
-    <ClInclude Include="src\json_config_test.h" />
     <ClInclude Include="src\py_executor.h" />
     <ClInclude Include="src\py_function.h" />
     <ClInclude Include="src\rest_constant.h" />
