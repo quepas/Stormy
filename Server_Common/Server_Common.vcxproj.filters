@@ -110,9 +110,6 @@
     <ClInclude Include="src\rest_uri_parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\rest_uri_parser_test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -100,7 +100,6 @@
     <ClInclude Include="src\rest_request_bad.h" />
     <ClInclude Include="src\rest_request_get_options.h" />
     <ClInclude Include="src\rest_uri_parser.h" />
-    <ClInclude Include="src\rest_uri_parser_test.h" />
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\util_test.h" />
     <ClInclude Include="src\yaml_base_config.h" />
