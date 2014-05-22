@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Storage", "Server_St
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Common", "Server_Common\Server_Common.vcxproj", "{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Common_Test", "Server_Common_Test\Server_Common_Test.vcxproj", "{12038244-1505-44A1-BCE9-E7EC1A402B0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +33,10 @@ Global
 		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Debug|Win32.Build.0 = Debug|Win32
 		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Release|Win32.ActiveCfg = Release|Win32
 		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Release|Win32.Build.0 = Release|Win32
+		{12038244-1505-44A1-BCE9-E7EC1A402B0F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{12038244-1505-44A1-BCE9-E7EC1A402B0F}.Debug|Win32.Build.0 = Debug|Win32
+		{12038244-1505-44A1-BCE9-E7EC1A402B0F}.Release|Win32.ActiveCfg = Release|Win32
+		{12038244-1505-44A1-BCE9-E7EC1A402B0F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
