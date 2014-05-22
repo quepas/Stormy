@@ -13,6 +13,7 @@
     <MONGO_DB_DRIVER>D:\Programowanie\Biblioteki\Tidy\mongo-cxx-driver_vc2010</MONGO_DB_DRIVER>
     <SOCI>D:\Programowanie\Biblioteki\soci-3.2.2</SOCI>
     <POSTGRESQL>C:\Program Files (x86)\PostgreSQL\9.3</POSTGRESQL>
+    <CATCH>D:\Programowanie\Biblioteki\Tidy\catch</CATCH>
     <!-- End -->
   </PropertyGroup>
   <PropertyGroup />
@@ -56,6 +57,10 @@
     </BuildMacro>
     <BuildMacro Include="POSTGRESQL">
       <Value>$(POSTGRESQL)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+     <BuildMacro Include="CATCH">
+      <Value>$(CATCH)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
