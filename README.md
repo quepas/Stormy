@@ -1,3 +1,5 @@
+![stormy logo](stormy_logo.png)
+
 Acquisition, aggregation, analysis, visualization of weather data.
 
 ## Stormy Acquisition Server
