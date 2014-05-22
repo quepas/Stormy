@@ -18,8 +18,11 @@
     <ClCompile Include="src\run_all.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rest_uri_parser_test.h">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="src\rest_uri_parser_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util_test.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

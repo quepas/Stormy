@@ -113,9 +113,6 @@
     <ClInclude Include="src\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\util_test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\yaml_base_config.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(POCO)\Foundation\include;$(POCO)\Util\include;$(STORMY_COMMON)\src;$(CATCH)\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;$(POCO)\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Debug;$(POCO)\lib;$(BOOST)\lib32-msvc-10.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -67,8 +67,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\rest_uri_parser_test.cpp" />
     <ClCompile Include="src\run_all.cpp" />
-    <ClCompile Include="src\rest_uri_parser_test.h" />
+    <ClCompile Include="src\util_test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
