@@ -1,5 +1,6 @@
 #include "py_executor.h"
 
+#define HAVE_ROUND
 #include <Python.h>
 
 using Poco::Logger;

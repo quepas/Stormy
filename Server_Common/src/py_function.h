@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#define HAVE_ROUND
 #include <Python.h>
 #include <Poco/Logger.h>
 
