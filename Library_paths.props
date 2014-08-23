@@ -24,6 +24,7 @@
     <!-- Poco C++ library -->
     <POCO_ALL_LIB>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\lib</POCO_ALL_LIB>
     <POCO_INCLUDE_FOUNDATION>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\Foundation\include</POCO_INCLUDE_FOUNDATION>
+    <POCO_INCLUDE_MONGODB>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\MongoDB\include</POCO_INCLUDE_MONGODB>
     <POCO_INCLUDE_NET>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\Net\include</POCO_INCLUDE_NET>
     <POCO_INCLUDE_UTIL>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\Util\include</POCO_INCLUDE_UTIL>
     <!-- YAML C++ library -->
@@ -32,8 +33,8 @@
     <!-- Python libraries -->
     <PYTHON_27_LIB>D:\Programy\Python2.7.8\libs</PYTHON_27_LIB>
     <PYTHON_27_INCLUDE>D:\Programy\Python2.7.8\include</PYTHON_27_INCLUDE>
-    <PYTHON_34_LIB>D:\Programy\Python 3.3.4\libs</PYTHON_34_LIB>
-    <PYTHON_34_INCLUDE>D:\Programy\Python 3.3.4\include</PYTHON_34_INCLUDE>
+    <PYTHON_34_LIB>D:\Programy\Python331\libs</PYTHON_34_LIB>
+    <PYTHON_34_INCLUDE>D:\Programy\Python331\include</PYTHON_34_INCLUDE>
     <!-- End -->
   </PropertyGroup>
   <PropertyGroup Label="LibrariesNames">
