@@ -69,6 +69,9 @@
     <ClCompile Include="src\stormy_lite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\main_acqu.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\acquisition_config_metrics.h">

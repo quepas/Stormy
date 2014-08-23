@@ -7,14 +7,11 @@
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Resource Files\config">
-      <UniqueIdentifier>{4cc2573d-3055-447e-aa3b-20913d97422c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -221,19 +218,5 @@
     <ClInclude Include="src\rest_service.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="config\acquisition_servers.yaml">
-      <Filter>Resource Files\config</Filter>
-    </None>
-    <None Include="config\aggregation.yaml">
-      <Filter>Resource Files\config</Filter>
-    </None>
-    <None Include="config\aggregation_database.yaml">
-      <Filter>Resource Files\config</Filter>
-    </None>
-    <None Include="config\storage_database.yaml">
-      <Filter>Resource Files\config</Filter>
-    </None>
   </ItemGroup>
 </Project>

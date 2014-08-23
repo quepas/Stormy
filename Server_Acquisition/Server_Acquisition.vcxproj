@@ -5,10 +5,6 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release2|Win32">
-      <Configuration>Release2</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -20,12 +16,6 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
@@ -45,49 +35,32 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Library_paths.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\Library_paths.props" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Library_paths.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(PYTHON_34_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_MONGODB);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_34_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(PYTHON_34_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_MONGODB);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Release;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_34_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STORMY_LITE;_WIN32_WINDOWS;STATIC_LIBMONGOCLIENT;BOOST_ALL_DYN_LINK;_WINSOCK_DEPRECATED_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STORMY_OLD;_WIN32_WINDOWS;STATIC_LIBMONGOCLIENT;BOOST_ALL_DYN_LINK;_WINSOCK_DEPRECATED_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Server_Common.lib;$(CPP_NETLIB_LIB_NAMES);$(POCO_LIB_NAMES);$(YAML_CPP_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>python27_d.lib</IgnoreSpecificDefaultLibraries>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_WIN32_WINDOWS;STATIC_LIBMONGOCLIENT;BOOST_ALL_DYN_LINK;_WINSOCK_DEPRECATED_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Server_Common.lib;$(POCO_LIB_NAMES);libyaml-cppmdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>python27_d.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>Server_Common.lib;$(MONGO_DB_DRIVER_LIB_NAMES);$(CPP_NETLIB_LIB_NAMES);$(POCO_LIB_NAMES);$(YAML_CPP_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -97,11 +70,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>STORMY_OLD;_WIN32_WINDOWS;STATIC_LIBMONGOCLIENT;BOOST_ALL_DYN_LINK;_WINSOCK_DEPRECATED_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libyaml-cppmd.lib;Server_Common.lib;$(MONGO_DB_DRIVER_LIB_NAMES);$(CPP_NETLIB_LIB_NAMES);$(POCO_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -113,9 +88,16 @@
     <ClCompile Include="src\data_acquire_queue.cpp" />
     <ClCompile Include="src\db_mongo_handler.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\py_mapper.cpp" />
-    <ClCompile Include="src\py_parser.cpp" />
-    <ClCompile Include="src\py_read_script.cpp" />
+    <ClCompile Include="src\main_acqu.cpp" />
+    <ClCompile Include="src\py_mapper.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\py_parser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\py_read_script.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\rest_request_factory.cpp" />
     <ClCompile Include="src\rest_request_get_info.cpp" />
     <ClCompile Include="src\rest_request_get_meteo.cpp" />

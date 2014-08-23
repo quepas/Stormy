@@ -7,7 +7,7 @@
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\run_all.cpp">
+    <ClCompile Include="src\json_config_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\rest_uri_parser_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\util_test.cpp">
+    <ClCompile Include="src\run_all.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\json_config_test.cpp">
+    <ClCompile Include="src\util_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
