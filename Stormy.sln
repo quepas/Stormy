@@ -1,21 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Acquisition", "Server_Acquisition\Server_Acquisition.vcxproj", "{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6} = {6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Common", "Server_Common\Server_Common.vcxproj", "{4AA0A558-935C-4203-94AC-2145B9C7386D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Storage", "Server_Storage\Server_Storage.vcxproj", "{9E18CCDF-74DC-4044-A43A-E0F427FC6858}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Acquisition", "Server_Acquisition\Server_Acquisition.vcxproj", "{88E4599C-4FE6-4B13-8F7C-4FEFC23F17EB}"
 	ProjectSection(ProjectDependencies) = postProject
-		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6} = {6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Common", "Server_Common\Server_Common.vcxproj", "{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Common_Test", "Server_Common_Test\Server_Common_Test.vcxproj", "{12038244-1505-44A1-BCE9-E7EC1A402B0F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6} = {6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}
+		{4AA0A558-935C-4203-94AC-2145B9C7386D} = {4AA0A558-935C-4203-94AC-2145B9C7386D}
 	EndProjectSection
 EndProject
 Global
@@ -24,22 +16,14 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}.Debug|Win32.ActiveCfg = Debug|Win32
-		{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}.Debug|Win32.Build.0 = Debug|Win32
-		{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}.Release|Win32.ActiveCfg = Release|Win32
-		{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}.Release|Win32.Build.0 = Release|Win32
-		{9E18CCDF-74DC-4044-A43A-E0F427FC6858}.Debug|Win32.ActiveCfg = Debug|Win32
-		{9E18CCDF-74DC-4044-A43A-E0F427FC6858}.Debug|Win32.Build.0 = Debug|Win32
-		{9E18CCDF-74DC-4044-A43A-E0F427FC6858}.Release|Win32.ActiveCfg = Release|Win32
-		{9E18CCDF-74DC-4044-A43A-E0F427FC6858}.Release|Win32.Build.0 = Release|Win32
-		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Debug|Win32.ActiveCfg = Debug|Win32
-		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Debug|Win32.Build.0 = Debug|Win32
-		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Release|Win32.ActiveCfg = Release|Win32
-		{6B24EC45-48AB-447C-A04C-6C0FF7CBE1F6}.Release|Win32.Build.0 = Release|Win32
-		{12038244-1505-44A1-BCE9-E7EC1A402B0F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{12038244-1505-44A1-BCE9-E7EC1A402B0F}.Debug|Win32.Build.0 = Debug|Win32
-		{12038244-1505-44A1-BCE9-E7EC1A402B0F}.Release|Win32.ActiveCfg = Release|Win32
-		{12038244-1505-44A1-BCE9-E7EC1A402B0F}.Release|Win32.Build.0 = Release|Win32
+		{4AA0A558-935C-4203-94AC-2145B9C7386D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4AA0A558-935C-4203-94AC-2145B9C7386D}.Debug|Win32.Build.0 = Debug|Win32
+		{4AA0A558-935C-4203-94AC-2145B9C7386D}.Release|Win32.ActiveCfg = Release|Win32
+		{4AA0A558-935C-4203-94AC-2145B9C7386D}.Release|Win32.Build.0 = Release|Win32
+		{88E4599C-4FE6-4B13-8F7C-4FEFC23F17EB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{88E4599C-4FE6-4B13-8F7C-4FEFC23F17EB}.Debug|Win32.Build.0 = Debug|Win32
+		{88E4599C-4FE6-4B13-8F7C-4FEFC23F17EB}.Release|Win32.ActiveCfg = Release|Win32
+		{88E4599C-4FE6-4B13-8F7C-4FEFC23F17EB}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

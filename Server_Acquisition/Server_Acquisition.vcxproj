@@ -56,7 +56,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(PYTHON_34_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(PYTHON_34_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'">
     <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
@@ -67,12 +67,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_WIN32_WINDOWS;STATIC_LIBMONGOCLIENT;BOOST_ALL_DYN_LINK;_WINSOCK_DEPRECATED_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STORMY_LITE;_WIN32_WINDOWS;STATIC_LIBMONGOCLIENT;BOOST_ALL_DYN_LINK;_WINSOCK_DEPRECATED_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Server_Common.lib;$(POCO_LIB_NAMES);$(YAML_CPP_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Server_Common.lib;$(CPP_NETLIB_LIB_NAMES);$(POCO_LIB_NAMES);$(YAML_CPP_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>python27_d.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
