@@ -38,6 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Label="LibrariesNames">
     <!-- Set libraries names for Linker->Input->Additional Dependecies -->
+    <CPP_NETLIB_LIB_NAMES>cppnetlib-urid.lib;cppnetlib-client-connectionsd.lib</CPP_NETLIB_LIB_NAMES>
     <MONGO_DB_DRIVER_LIB_NAMES>ws2_32.lib;</MONGO_DB_DRIVER_LIB_NAMES>
     <YAML_CPP_LIB_NAMES>libyaml-cppmdd.lib</YAML_CPP_LIB_NAMES>
   </PropertyGroup>
