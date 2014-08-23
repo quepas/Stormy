@@ -1,7 +1,7 @@
 #include "data_acquire_queue.hpp"
 
-using boost::lock_guard;
-using boost::mutex;
+using std::lock_guard;
+using std::mutex;
 using std::string;
 
 namespace stormy {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <boost/thread/thread.hpp>
-#include <boost/thread/mutex.hpp>
+#include <thread>
+#include <mutex>
 #include <queue>
 #include <string>
 
@@ -18,7 +18,7 @@ public:
   std::string Pop();
 
 private:
-  boost::mutex mutex_;
+  std::mutex mutex_;
   std::queue<std::string> data_queue_;  
 };
 
