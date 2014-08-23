@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release2|Win32">
+      <Configuration>Release2</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
@@ -11,18 +15,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8023F29D-68DB-42B1-8B4D-9CD5D9D4E9A0}</ProjectGuid>
+    <ProjectGuid>{88E4599C-4FE6-4B13-8F7C-4FEFC23F17EB}</ProjectGuid>
     <RootNamespace>Server_Acquisition</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -33,26 +45,49 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Library_paths.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Library_paths.props" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Library_paths.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(MONGO_DB_DRIVER)\include;$(YAML_CPP)\include;$(PYTHON)\include;$(PYTHON_27)\include;$(BOOST);$(POCO)\Net\include;$(POCO)\Util\include;$(POCO)\Foundation\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;$(YAML_CPP)\lib;$(PYTHON)\libs;$(PYTHON_27)\libs;$(POCO)\lib;$(MONGO_DB_DRIVER)\lib;$(BOOST)\lib32-msvc-10.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(PYTHON_34_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'">
+    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(PYTHON_34_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>STATIC_LIBMONGOCLIENT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_WIN32_WINDOWS;STATIC_LIBMONGOCLIENT;BOOST_ALL_DYN_LINK;_WINSOCK_DEPRECATED_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Server_Common.lib;libyaml-cppmdd.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Server_Common.lib;$(POCO_LIB_NAMES);$(YAML_CPP_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>python27_d.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_WIN32_WINDOWS;STATIC_LIBMONGOCLIENT;BOOST_ALL_DYN_LINK;_WINSOCK_DEPRECATED_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Server_Common.lib;$(POCO_LIB_NAMES);libyaml-cppmdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>python27_d.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -61,6 +96,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -86,6 +122,7 @@
     <ClCompile Include="src\rest_request_get_metrics.cpp" />
     <ClCompile Include="src\rest_request_get_station.cpp" />
     <ClCompile Include="src\rest_service.cpp" />
+    <ClCompile Include="src\stormy_lite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\acquisition_config_metrics.h" />
@@ -94,6 +131,7 @@
     <ClInclude Include="src\acquisition_task.h" />
     <ClInclude Include="src\acquisition_util.h" />
     <ClInclude Include="src\data_acquire_queue.hpp" />
+    <ClInclude Include="src\data_acquire_task.hpp" />
     <ClInclude Include="src\db_constant.h" />
     <ClInclude Include="src\db_mongo_handler.h" />
     <ClInclude Include="src\meteo_data.hpp" />
@@ -108,11 +146,6 @@
     <ClInclude Include="src\rest_request_get_metrics.h" />
     <ClInclude Include="src\rest_request_get_station.h" />
     <ClInclude Include="src\rest_service.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="config\meteo_data_type_config.yaml" />
-    <None Include="config\meteo_stations.yaml" />
-    <None Include="config\meteo_stations_config.yaml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
