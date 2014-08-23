@@ -5,6 +5,8 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <winsock2.h>
+#include <windows.h>
 #include <mongo/client/dbclient.h>
 #include <Poco/Logger.h>
 
