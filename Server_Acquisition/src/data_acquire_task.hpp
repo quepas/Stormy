@@ -1,3 +1,4 @@
+#ifdef STORMY_LITE
 #pragma once
 
 #include <iostream>
@@ -48,7 +49,6 @@ public:
             net::http::client client_;
             net::http::client::response response_ = client_.get(request_);
             string content = body(response_);
-
             string::size_type left_index = content.find_first_of("<");
             content = content.substr(left_index);
 
@@ -86,3 +86,4 @@ private:
 };
 // ~~ stormy::DataAcquireTask
 }
+#endif

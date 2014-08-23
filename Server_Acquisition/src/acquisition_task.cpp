@@ -1,5 +1,7 @@
 #include "acquisition_task.h"
 
+#define HAVE_ROUND
+#define HAVE_HYPOT
 #include <Python.h>
 
 using namespace stormy::common;

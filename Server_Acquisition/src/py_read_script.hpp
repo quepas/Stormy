@@ -1,5 +1,8 @@
+#ifdef STORMY_LITE
 #pragma once
 
+#define HAVE_ROUND
+#define HAVE_HYPOT
 #define BOOST_PYTHON_STATIC_LIB
 #include <boost/python.hpp>
 
@@ -29,3 +32,4 @@ private:
 };
 // stormy::PyReadScript
 }
+#endif

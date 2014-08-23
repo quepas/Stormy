@@ -1,3 +1,4 @@
+#ifdef STORMY_LITE
 #include "py_read_script.hpp"
 
 namespace py = boost::python;
@@ -59,3 +60,4 @@ map<string, string>
 }
 // ~~ stormy::PyReadScript
 }
+#endif

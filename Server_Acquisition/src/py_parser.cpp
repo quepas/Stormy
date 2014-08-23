@@ -10,6 +10,8 @@
 #include <map>
 #include <boost/any.hpp>
 #include <boost/algorithm/string.hpp>
+#define HAVE_ROUND
+#define HAVE_HYPOT
 #include <Python.h>
 #include <Poco/DateTime.h>
 #include <Poco/DateTimeParser.h>

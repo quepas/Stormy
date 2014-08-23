@@ -3,6 +3,8 @@
 #include <map>
 #include <vector>
 #include <string>
+#define HAVE_ROUND
+#define HAVE_HYPOT
 #include <Python.h>
 
 #include "acquisition_config_metrics.h"

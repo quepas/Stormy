@@ -1,3 +1,4 @@
+#ifdef STORMY_LITE
 #pragma once
 
 #include <thread>
@@ -24,3 +25,4 @@ private:
 
 // ~~ stormy::DataAcquireQueue
 }
+#endif

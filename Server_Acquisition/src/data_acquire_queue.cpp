@@ -1,3 +1,4 @@
+#ifdef STORMY_LITE
 #include "data_acquire_queue.hpp"
 
 using std::lock_guard;
@@ -25,3 +26,4 @@ string DataAcquireQueue::Pop()
 }
 // ~~ stormy::DataAcquireQueue
 }
+#endif
