@@ -1,5 +1,6 @@
-#include <iostream>
+#ifdef STORMY_OLD
 
+#include <iostream>
 #include "acquisition_config_metrics.h"
 #include "acquisition_config_station.h"
 #include "db_mongo_handler.h"
@@ -37,3 +38,5 @@ int main(int argc, char** argv)
 
   getchar();
 }
+
+#endif

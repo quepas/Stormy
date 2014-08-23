@@ -1,10 +1,11 @@
+#ifdef STORMY_LITE
+
 #include <chrono>
 #include <thread>
 #include <iostream>
 #include <string>
 #include <vector>
 #include <atomic>
-
 #include <yaml-cpp/yaml.h>
 #include "data_acquire_task.hpp"
 #include "py_read_script.hpp"
@@ -65,3 +66,5 @@ int main(int argc, char* argv [])
   }
   return EXIT_SUCCESS;
 }
+
+#endif
