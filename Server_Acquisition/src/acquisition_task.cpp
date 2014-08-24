@@ -1,34 +1,39 @@
 #include "acquisition_task.h"
+#include "net_util.hpp"
 
-#define HAVE_ROUND
-#define HAVE_HYPOT
-#include <Python.h>
+using Poco::Logger;
+using std::string;
 
 using namespace stormy::common;
-using Poco::Logger;
 
 namespace stormy {
   namespace acquisition {
 
-Task::Task(entity::Station station)
+Task::Task(entity::Station station, PyParseScript* script)
   : logger_(Logger::get("acquisition/Task")),
     station_(station),
-    py_parser_(new py::Parser(station_.parser_class)),
-    database_handler_(db::MongoHandler::get())
+    database_handler_(db::MongoHandler::get()),
+    script_(script)
 {
-
 }
 
 Task::~Task()
 {
-  delete py_parser_;
+
 }
 
 void Task::run()
 {
   logger_.information("[acquisition/Task] Acquire weather from " + station_.uid);
-  database_handler_.InsertMeasurement(
-    py_parser_ -> ParseFromStation(station_));
+  string website_content = net::FetchWebsite(station_.url);
+
+  if (!website_content.empty()) {
+    auto map = (*script_)(website_content);
+    std::cout << "Acquired: " << map.size() << " itmes." << std::endl;
+
+    /*auto data = py_parser_->ParseFromStation(station_);
+    database_handler_.InsertMeasurement(data);*/
+  }
 }
 // ~~ stormy::acquisition::Task
 }}
