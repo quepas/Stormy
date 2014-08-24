@@ -1,4 +1,3 @@
-#ifdef STORMY_LITE
 #pragma once
 
 #define HAVE_ROUND
@@ -11,25 +10,24 @@
 
 namespace stormy {
 
-class PyReadScript
+class PyParseScript
 {
 public:
-  PyReadScript(const std::string& file_path);
-  ~PyReadScript();
+  PyParseScript(const std::string& file_path);
+  ~PyParseScript();
 
   // call 'process' function
-  std::map<std::string, std::string>
-    operator()(const std::string& data_to_process);
+  std::map<std::string, std::string> operator()(const std::string& data_to_parse) const;
 
 private:
-  PyReadScript(const PyReadScript&);
-  PyReadScript& operator=(const PyReadScript&);
+  PyParseScript(const PyParseScript&);
+  PyParseScript& operator=(const PyParseScript&);
 
   std::string file_path_;
 
   boost::python::object module_;
   boost::python::object namespace_;
 };
-// stormy::PyReadScript
+
 }
-#endif
+// stormy::PyParseScript
