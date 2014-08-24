@@ -33,8 +33,7 @@ namespace stormy {
   namespace db {
 
 MongoHandler::MongoHandler(string dbAddress /*= "localhost"*/, unsigned int port /*= 27017*/)
-  : logger_(Logger::get("db/MongoHandler")),
-    Handler("MongoDB")
+  : logger_(Logger::get("db/MongoHandler"))
 {
   if(!dbAddress.empty())
     Connect("test2", dbAddress, port);
@@ -57,10 +56,10 @@ void MongoHandler::Connect(std::string db_name, std::string db_address, unsigned
         + db_address
         + ":"
         + to_string(port));
-    connected_ = true;
+    is_connected_ = true;
   } catch (const Exception& e) {
     logger_.error("[db/MongoHandler] Exception: " + e.displayText());
-    connected_ = false;
+    is_connected_ = false;
   }
 }
 
@@ -75,7 +74,7 @@ void MongoHandler::CheckLastErrors()
 
 void MongoHandler::InsertMeasurement(vector<entity::Measurement> measurement)
 {
-  if(!connected_ || measurement.empty()) return;
+  if(!is_connected_ || measurement.empty()) return;
 
   auto insert_request = database_->createInsertRequest(
     constant::collection_meteo 
@@ -98,7 +97,7 @@ void MongoHandler::InsertMeasurement(vector<entity::Measurement> measurement)
 
 void MongoHandler::clearStationsData()
 {
-  if(!connected_) return;
+  if(!is_connected_) return;
   auto delete_request = database_->createDeleteRequest(constant::collection_station);
   connection_->sendRequest(*delete_request);
   CheckLastErrors();
@@ -107,14 +106,14 @@ void MongoHandler::clearStationsData()
 void MongoHandler::insertStationsData(
   const std::vector<entity::Station>& stations)
 {
-  if(!connected_) return;
+  if(!is_connected_) return;
   for(auto it = stations.begin(); it != stations.end(); ++it)
     insertStationData(*it);
 }
 
 void MongoHandler::insertStationData(entity::Station station)
 {
-  if(!connected_) return;
+  if(!is_connected_) return;
   auto insert_request = database_->createInsertRequest(constant::collection_station);
   insert_request->addNewDocument()
     .add(constant::mongo_id, station.uid)
@@ -129,7 +128,7 @@ void MongoHandler::insertStationData(entity::Station station)
 vector<entity::Station> MongoHandler::getStationsData()
 {
   auto result = vector<entity::Station>();
-  if (!connected_) return result;
+  if (!is_connected_) return result;
 
   Cursor cursor(db_name_, constant::collection_station);
   ResponseMessage& response = cursor.next(*connection_);
@@ -153,7 +152,7 @@ vector<entity::Station> MongoHandler::getStationsData()
 vector<entity::Metrics> MongoHandler::GetMetrics()
 {
   vector<entity::Metrics> result;
-  if(!connected_) return result;
+  if(!is_connected_) return result;
 
   Cursor cursor(db_name_, constant::collection_metrics);
   ResponseMessage& response = cursor.next(*connection_);
@@ -177,7 +176,7 @@ vector<entity::Metrics> MongoHandler::GetMetrics()
 
 bool MongoHandler::InsertMetrics(const vector<entity::Metrics>& metric)
 {
-  if(!connected_ || metric.empty()) return false;
+  if(!is_connected_ || metric.empty()) return false;
 
   auto insert_request = database_->createInsertRequest(constant::collection_metrics);
   for (auto& metric : metric) {
@@ -196,7 +195,7 @@ bool MongoHandler::InsertMetrics(const vector<entity::Metrics>& metric)
 
 bool MongoHandler::RemoveMetrics()
 {
-  if(!connected_) return false;
+  if(!is_connected_) return false;
   auto delete_request = database_->createDeleteRequest(constant::collection_metrics);
   connection_->sendRequest(*delete_request);
   CheckLastErrors();
@@ -205,7 +204,7 @@ bool MongoHandler::RemoveMetrics()
 
 void MongoHandler::ExpireData()
 {
-  if(!ValidateConnection()) return;
+  if(!is_connected_) return;
   auto stations_uid = FetchStationsUID();
   time_t expiration_time = common::LocaltimeNow() - expiration_seconds();
 
@@ -223,7 +222,7 @@ void MongoHandler::ExpireData()
 vector<string> MongoHandler::FetchStationsUID()
 {
   auto result = vector<string>();
-  if(!ValidateConnection()) return result;
+  if (!is_connected_) return result;
 
   Cursor cursor(db_name_, constant::collection_station);
   cursor.query().returnFieldSelector().add(constant::mongo_id, 1);
@@ -258,7 +257,7 @@ map<time_t, vector<entity::Measurement>>
     time_t to)
 {
   auto result = map<time_t, vector<entity::Measurement>>();
-  if(!ValidateConnection()) return result;
+  if (!is_connected_) return result;
 
   Cursor cursor(db_name_, constant::collection_meteo + "." + constant::station_uid_prefix + station_uid);
   cursor.query().selector()

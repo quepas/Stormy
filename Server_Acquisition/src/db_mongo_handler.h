@@ -10,7 +10,6 @@
 #include <Poco/MongoDB/Connection.h>
 #include <Poco/MongoDB/Database.h>
 
-#include "db_handler.h"
 #include "db_has_data_expiration.h"
 #include "entity_station.h"
 #include "entity_metrics.h"
@@ -19,7 +18,7 @@
 namespace stormy {
   namespace db {
 
-class MongoHandler : public common::db::Handler, public common::db::HasDataExpiration
+class MongoHandler : public common::db::HasDataExpiration
 {
 public:
   void ExpireData() override;
@@ -52,6 +51,9 @@ public:
     const std::vector<common::entity::Metrics>& metrics_vec);
   std::vector<common::entity::Metrics> GetMetrics();
 
+  const std::string& db_name() const { return db_name_; }
+  bool is_connected() const { return is_connected_; }
+
   static MongoHandler& get() {
     static MongoHandler instance;
     return instance;
@@ -59,14 +61,14 @@ public:
 private:
   MongoHandler(std::string db_address = "localhost", unsigned int port = 27017);
   MongoHandler(const MongoHandler&)
-    : Handler("MongoDB"), 
-      logger_(Poco::Logger::get("db/MongoHandler")) {}
+    : logger_(Poco::Logger::get("db/MongoHandler")) {}
   MongoHandler& operator=(const MongoHandler&) {}
   ~MongoHandler();
 
   Poco::MongoDB::Connection* connection_;
   Poco::MongoDB::Database* database_;
   std::string db_name_;
+  bool is_connected_;
   void Connect(std::string db_name, std::string db_address, unsigned int port);
   void CheckLastErrors();
   Poco::Logger& logger_;
