@@ -39,12 +39,12 @@ bool Station::load(string filepath)
       //std::cout << "Field url is not defined" << std::endl;
       return false;
     }
-    if(!yaml::IsDefined(it, "parserClass"))
+    if(!yaml::IsDefined(it, "read_script"))
     {
       //std::cout << "Field parserClass is not defined" << std::endl;
       return false;
     }
-    if(!yaml::IsDefined(it, "refreshTime"))
+    if(!yaml::IsDefined(it, "update_time"))
     {
       //std::cout << "Field refreshTime is not defined" << std::endl;
       return false;
@@ -53,8 +53,8 @@ bool Station::load(string filepath)
     entity::Station station;
     station.url = yaml::GetString(it, "url");
     station.uid = MD5(station.url);
-    station.parser_class = yaml::GetString(it, "parserClass");
-    station.refresh_time = yaml::GetLongNumber(it, "refreshTime");
+    station.parser_class = yaml::GetString(it, "read_script");
+    station.refresh_time = yaml::GetLongNumber(it, "update_time");
 
     if(yaml::IsDefined(it, "name"))
       station.name = yaml::GetString(it, "name");
