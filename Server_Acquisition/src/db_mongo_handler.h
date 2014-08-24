@@ -5,10 +5,10 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <winsock2.h>
-#include <windows.h>
-#include <mongo/client/dbclient.h>
 #include <Poco/Logger.h>
+
+#include <Poco/MongoDB/Connection.h>
+#include <Poco/MongoDB/Database.h>
 
 #include "db_handler.h"
 #include "db_has_data_expiration.h"
@@ -21,11 +21,11 @@ namespace stormy {
 
 class MongoHandler : public common::db::Handler, public common::db::HasDataExpiration
 {
-public:						
+public:
   void ExpireData() override;
   std::vector<std::string> FetchStationsUID();
-		
-  void InsertMeasurement(std::vector<common::entity::Measurement> meteoData);			
+
+  void InsertMeasurement(std::vector<common::entity::Measurement> meteoData);
 
   void clearStationsData();
   void insertStationsData(const std::vector<common::entity::Station>& stations);
@@ -57,15 +57,18 @@ public:
     return instance;
   }
 private:
-  MongoHandler(std::string dbAddress = "localhost");
-  MongoHandler(const MongoHandler&) 
+  MongoHandler(std::string db_address = "localhost", unsigned int port = 27017);
+  MongoHandler(const MongoHandler&)
     : Handler("MongoDB"), 
       logger_(Poco::Logger::get("db/MongoHandler")) {}
   MongoHandler& operator=(const MongoHandler&) {}
   ~MongoHandler();
 
-  void connect(std::string dbAddress);			
-  mongo::DBClientConnection connection;
+  Poco::MongoDB::Connection* connection_;
+  Poco::MongoDB::Database* database_;
+  std::string db_name_;
+  void Connect(std::string db_name, std::string db_address, unsigned int port);
+  void CheckLastErrors();
   Poco::Logger& logger_;
 };
 // ~~ stormy::db::MongoHandler

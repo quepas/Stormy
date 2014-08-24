@@ -7,7 +7,7 @@ namespace stormy {
   namespace common {
     namespace db {
 
-class Handler 
+class Handler
 {
 public:
   Handler(std::string database_name);
@@ -17,7 +17,8 @@ public:
 protected:
   Poco::Logger& logger_;
   std::string database_name_;
-  bool connected_;  
+  bool connected_;
 };
-// ~~ stormy::common::db::Handler
+
 }}}
+// ~~ stormy::common::db::Handler

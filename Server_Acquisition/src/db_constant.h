@@ -27,8 +27,8 @@ const std::string format = "format";
 const std::string equivalents = "equivalents";
 const std::string is_meteo = "isMeteo";
 
-const std::string db_meteo = mongo_db_name + "." + mongo_meteo_coll;
-const std::string db_station = mongo_db_name + "." + mongo_station_coll;
-const std::string db_metrics = mongo_db_name + "." + mongo_metrics_coll;
+const std::string collection_meteo = mongo_meteo_coll;
+const std::string collection_station = mongo_station_coll;
+const std::string collection_metrics = mongo_metrics_coll;
 // ~~ stormy::db::constant
 }}}
