@@ -1,15 +1,16 @@
 #include "db_mongo_handler.h"
 
+#include <Poco/Exception.h>
+#include <Poco/Types.h>
 #include <Poco/MongoDB/Cursor.h>
 #include <Poco/MongoDB/Document.h>
 #include <Poco/MongoDB/ResponseMessage.h>
-
-#include <Poco/Exception.h>
 
 #include "acquisition_config_metrics.h"
 #include "db_constant.h"
 #include "util.h"
 
+using Poco::Int64;
 using Poco::MongoDB::Cursor;
 using Poco::MongoDB::Connection;
 using Poco::MongoDB::Database;
@@ -272,45 +273,36 @@ map<time_t, vector<entity::Measurement>>
       vector<string> available_keys;
       document->elementNames(available_keys);
 
-      for (auto& name : available_keys) {
-        logger_.information("Key: " + name);
+      time_t current_ts = 0;
+      vector<entity::Measurement> measure_vec;
+      for (auto& key : available_keys) {
+        entity::Measurement measure;
+        measure.code = key;
+        measure.station_uid = station_uid;
+
+        if (key == constant::mongo_id) {
+          current_ts = document->get<Int64>(key);
+        }
+        else {
+          if (document->isType<double>(key)) {
+            measure.value_number = document->get<double>(key);
+            measure.is_numeric = true;
+          }
+          else if (document->isType<string>(key)) {
+            measure.value_text = document->get<string>(key);
+            measure.is_numeric = false;
+          }
+          measure_vec.push_back(measure);
+        }
       }
-      
+      tm current_time = *std::gmtime(&current_ts);
+      for (auto& measure : measure_vec) {
+        measure.timestamp = current_time;
+      }
+      result.insert(make_pair(current_ts, measure_vec));
     }
     response = cursor.next(*connection_);
   } while (response.cursorID() != 0);
-
-  /*while (cursor->more()) {
-    auto current_measure_set = cursor->next();
-    set<string> available_fields;
-    current_measure_set.getFieldNames(available_fields);
-    auto measure_set = vector<entity::Measurement>();
-    time_t current_ts = 0;
-    for (auto it = available_fields.begin(); it != available_fields.end(); ++it) {
-      entity::Measurement measure;
-      measure.code = *it;
-      measure.station_uid = station_uid;
-      auto field = current_measure_set.getField(measure.code);
-
-      if (*it != constant::mongo_id) {
-        if (field.isNumber()) {
-          measure.value_number = field.numberDouble();
-          measure.is_numeric = true;
-        }
-        else {
-          measure.value_text = field.String();
-          measure.is_numeric = false;
-        }
-        measure_set.push_back(measure);
-      } else {
-        current_ts = field.numberLong();
-      }
-    }
-    for (auto m_it = measure_set.begin(); m_it != measure_set.end(); ++m_it) {
-      m_it->timestamp = *std::gmtime(&current_ts);
-    }
-    result.insert(make_pair(current_ts, measure_set));
-  }*/
   return result;
 }
 
