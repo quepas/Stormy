@@ -12,9 +12,16 @@ namespace stormy {
 PyParseScript::PyParseScript(const string& file_path)
   : file_path_(file_path)
 {
-  Py_Initialize();
-  module_ = py::import("__main__");
-  namespace_ = module_.attr("__dict__");
+  try {
+    if (!Py_IsInitialized()) {
+      Py_Initialize();
+    }
+    module_ = py::import("__main__");
+    namespace_ = module_.attr("__dict__");
+  }
+  catch (...) {
+    PyErr_Print();
+  }
 }
 
 PyParseScript::~PyParseScript()
