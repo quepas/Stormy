@@ -1,26 +1,21 @@
 __author__ = 'Quepas'
 
-from urllib import request
 from xml.dom import minidom
 
-def run(text, encoding="windows-1250"):
+def process(text):
     parser = ECOCLIMA_MeteoParser()
-    parser.data = []
-    parser.parseFromURL(text, encoding)
+    parser.data = {}
+    parser.parseText(text.strip())
     return parser.data
 
 class ECOCLIMA_MeteoParser():
     xml_dom = None
-    data = []
+    data = {}
 
-    def parseFromURL(self, url, encoding="windows-1250"):
-        data = []
-        sock = request.urlopen(url)
-        content = str(sock.read(), encoding)
-        tbody = self.extractTBody(content);
+    def parseText(self, content):
+        tbody = self.extractTBody(content)
         tbody = self.removeBadChars(tbody)
         self.parseTBody(tbody)
-        sock.close()
 
     def parseTBody(self, content):
         self.xml_dom = minidom.parseString(content)
@@ -29,11 +24,11 @@ class ECOCLIMA_MeteoParser():
         size = len(values)
 
         for x, y in zip(labels, values):
-            self.data.append({x.childNodes[0].nodeValue : y.childNodes[0].nodeValue})
+            self.data.update({x.childNodes[0].nodeValue : y.childNodes[0].nodeValue})
 
     def extractTBody(self, html_site):
         html_site = '<tbody>' + html_site.split('<tbody class="aktualne">')[1]
-        return html_site.split('</tbody>')[0] + '</tr></tbody>'
+        return html_site.split('</tbody>')[0] + '</tbody>'
 
     def removeBadChars(self, text):
-        return text.replace("&nbsp;", " ").replace("&", "").replace("°", " ");
+        return text.replace("&nbsp;", " ").replace("&", "").replace("&deg;", "")

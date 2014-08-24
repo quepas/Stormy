@@ -5,11 +5,9 @@ __author__ = 'quepas'
 import xml.etree.ElementTree as ETree
 
 def process(text):
-    print(text)
     parser = StacjameteoReader()
-    parser.data={}
+    parser.data = {}
     parser.parseText(text.strip())
-    print(parser.data)
     return parser.data
 
 class StacjameteoReader:
