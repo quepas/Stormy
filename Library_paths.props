@@ -18,9 +18,6 @@
     <!-- JsonCpp library -->
     <JSON_CPP_LIB>D:\Programowanie\Biblioteki\Tidy\json-cpp_vc2013\jsoncpp\lib</JSON_CPP_LIB>
     <JSON_CPP_INCLUDE>D:\Programowanie\Biblioteki\Tidy\json-cpp_vc2013\jsoncpp\include</JSON_CPP_INCLUDE>
-    <!-- MongoDB C++ Driver library -->
-    <MONGO_DB_DRIVER_LIB>D:\Programowanie\Biblioteki\Tidy\mongo-cxx-driver_vc2013\build\install\lib</MONGO_DB_DRIVER_LIB>
-    <MONGO_DB_DRIVER_INCLUDE>D:\Programowanie\Biblioteki\Tidy\mongo-cxx-driver_vc2013\build\install\include</MONGO_DB_DRIVER_INCLUDE>
     <!-- Poco C++ library -->
     <POCO_ALL_LIB>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\lib</POCO_ALL_LIB>
     <POCO_INCLUDE_FOUNDATION>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\Foundation\include</POCO_INCLUDE_FOUNDATION>
@@ -40,7 +37,6 @@
   <PropertyGroup Label="LibrariesNames">
     <!-- Set libraries names for Linker->Input->Additional Dependecies -->
     <CPP_NETLIB_LIB_NAMES>cppnetlib-urid.lib;cppnetlib-client-connectionsd.lib</CPP_NETLIB_LIB_NAMES>
-    <MONGO_DB_DRIVER_LIB_NAMES>ws2_32.lib;</MONGO_DB_DRIVER_LIB_NAMES>
     <YAML_CPP_LIB_NAMES>libyaml-cppmdd.lib</YAML_CPP_LIB_NAMES>
   </PropertyGroup>
 </Project>

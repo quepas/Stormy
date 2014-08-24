@@ -24,9 +24,6 @@
     <ClCompile Include="src\db_expiration_task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\db_handler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\json_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\db_expiration_task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\db_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\db_has_data_expiration.h">
