@@ -15,7 +15,12 @@ struct StationSetting
 
 struct MetricsSetting
 {
-
+  std::string name;
+  std::string type;
+  std::string unit;
+  std::string format;
+  std::vector<std::string> labels;
+  bool is_meteo;
 };
 
 typedef std::vector<StationSetting> StationSettings;
