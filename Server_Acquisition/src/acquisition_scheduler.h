@@ -5,6 +5,7 @@
 
 #include "py_script_storage.hpp"
 #include "entity_station.h"
+#include "settings.hpp"
 
 namespace stormy {
   namespace acquisition {
@@ -15,8 +16,8 @@ public:
   Scheduler(PyScriptStorage& storage);
   ~Scheduler();
 
-  void Schedule(common::entity::Station station);
-  void Schedule(const std::vector<common::entity::Station>& stations);
+  void Schedule(StationSetting station);
+  void Schedule(const StationSettings& stations);
 private:
   PyScriptStorage& storage_;
 };

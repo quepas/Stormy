@@ -1,19 +1,18 @@
 #pragma once
 
-#include <ctime>
-#include <cstdint>
-#include <string>
-#include <map>
-#include <vector>
-#include <Poco/Logger.h>
-
-#include <Poco/MongoDB/Connection.h>
-#include <Poco/MongoDB/Database.h>
-
 #include "db_has_data_expiration.h"
 #include "entity_station.h"
 #include "entity_metrics.h"
 #include "entity_measurement.h"
+#include "settings.hpp"
+
+#include <ctime>
+#include <string>
+#include <map>
+#include <vector>
+#include <Poco/Logger.h>
+#include <Poco/MongoDB/Connection.h>
+#include <Poco/MongoDB/Database.h>
 
 namespace stormy {
   namespace db {
@@ -27,12 +26,12 @@ public:
   void InsertMeasurement(std::vector<common::entity::Measurement> meteoData);
 
   void clearStationsData();
-  void insertStationsData(const std::vector<common::entity::Station>& stations);
-  void insertStationData(common::entity::Station station);
+  void InsertStationsData(const StationSettings& stations);
+  void InsertStationData(StationSetting station);
   std::vector<common::entity::Station> getStationsData();
 
   common::entity::Station GetStationByUID(std::string uid);
-  uint32_t CountMeasureSetsForStationByUID(std::string uid);
+  unsigned int CountMeasureSetsForStationByUID(std::string uid);
 
   std::map<std::time_t, std::vector<common::entity::Measurement>> 
     GetMeasureSetsForStationBetweenTS(

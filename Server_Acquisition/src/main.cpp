@@ -1,23 +1,23 @@
 #ifdef STORMY_OLD
 
 #include <iostream>
+#include <string>
 #include "acquisition_config_metrics.h"
-#include "acquisition_config_station.h"
 #include "db_mongo_handler.h"
 #include "rest_service.h"
 #include "acquisition_scheduler.h"
 
-#include "py_parse_script.hpp"
-#include "py_script_storage.hpp";
-#include "util.h"
+#include "py_script_storage.hpp"
 #include "db_expiration_engine.h"
 
-#include <sstream>
+#include "settings.hpp"
 
 int main(int argc, char** argv)
 {
   std::cout << "==== Aqcuisition started. ====" << std::endl;
-  stormy::acquisition::config::Station meteoStationsCfg("config/meteo_stations.yaml");
+
+  auto station_settings = stormy::LoadStationSettings("config/meteo_stations.json");
+
   stormy::acquisition::config::Metrics meteoTypeCfg("config/meteo_data_type_config.yaml");
 
   // register Python-based parse scripts
@@ -29,15 +29,15 @@ int main(int argc, char** argv)
   auto& dbHandler = stormy::db::MongoHandler::get();
   dbHandler.set_expiration_seconds(3600 * 72);
   dbHandler.clearStationsData();
-  dbHandler.insertStationsData(meteoStationsCfg.getConfiguration());
+  dbHandler.InsertStationsData(station_settings);
   dbHandler.RemoveMetrics();
   dbHandler.InsertMetrics(meteoTypeCfg.Configuration());
 
   stormy::acquisition::Scheduler acqSecheduler(central_storage);
-  acqSecheduler.Schedule(meteoStationsCfg.getConfiguration());
+  acqSecheduler.Schedule(station_settings);
 
   /*stormy::common::db::expiration::Engine expiration_engine(dbHandler);
-  expiration_engine.ScheduleEverySeconds(3600);*/
+  expiration_engine.ScheduleEverySeconds(3600); */
 
   stormy::rest::Service httpServer;
   httpServer.run(argc, argv);

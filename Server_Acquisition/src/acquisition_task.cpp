@@ -1,5 +1,6 @@
 #include "acquisition_task.h"
 #include "net_util.hpp"
+#include "util.h"
 
 using Poco::Logger;
 using std::string;
@@ -9,7 +10,7 @@ using namespace stormy::common;
 namespace stormy {
   namespace acquisition {
 
-Task::Task(entity::Station station, PyParseScript* script)
+Task::Task(StationSetting station, PyParseScript* script)
   : logger_(Logger::get("acquisition/Task")),
     station_(station),
     database_handler_(db::MongoHandler::get()),
@@ -24,7 +25,7 @@ Task::~Task()
 
 void Task::run()
 {
-  logger_.information("[acquisition/Task] Acquire weather from " + station_.uid);
+  logger_.information("[acquisition/Task] Acquire weather from " + MD5(station_.url));
   string website_content = net::FetchWebsite(station_.url);
 
   if (!website_content.empty()) {

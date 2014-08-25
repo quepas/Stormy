@@ -6,7 +6,6 @@
 #include <Poco/MongoDB/Document.h>
 #include <Poco/MongoDB/ResponseMessage.h>
 
-#include "acquisition_config_metrics.h"
 #include "db_constant.h"
 #include "util.h"
 
@@ -104,23 +103,23 @@ void MongoHandler::clearStationsData()
   CheckLastErrors();
 }
 
-void MongoHandler::insertStationsData(
-  const std::vector<entity::Station>& stations)
+void MongoHandler::InsertStationsData(
+  const StationSettings& stations)
 {
   if(!is_connected_) return;
   for(auto it = stations.begin(); it != stations.end(); ++it)
-    insertStationData(*it);
+    InsertStationData(*it);
 }
 
-void MongoHandler::insertStationData(entity::Station station)
+void MongoHandler::InsertStationData(StationSetting station)
 {
   if(!is_connected_) return;
   auto insert_request = database_->createInsertRequest(constant::collection_station);
   insert_request->addNewDocument()
-    .add(constant::mongo_id, station.uid)
+    .add(constant::mongo_id, MD5(station.url))
     .add(constant::name, station.name)
-    .add(constant::parser_class, station.parser_class)
-    .add(constant::refresh_time, static_cast<int>(station.refresh_time))  // TODO: int/uint32_t?
+    .add(constant::parser_class, station.parse_script)
+    .add(constant::refresh_time, static_cast<int>(station.update_time))
     .add(constant::url, station.url);
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
@@ -239,12 +238,12 @@ vector<string> MongoHandler::FetchStationsUID()
   return result;
 }
 
-uint32_t MongoHandler::CountMeasureSetsForStationByUID(string uid)
+unsigned int MongoHandler::CountMeasureSetsForStationByUID(string uid)
 {
   auto count_request = database_->createCountRequest(constant::station_uid_prefix + uid);
   ResponseMessage response;
   connection_->sendRequest(*count_request, response);
-  uint32_t result = 0;
+  unsigned int result = 0;
   if (response.hasDocuments()) {
     result = response.documents()[0]->get<int>("n");
   }

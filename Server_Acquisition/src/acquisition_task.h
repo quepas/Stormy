@@ -6,6 +6,7 @@
 #include "entity_station.h"
 #include "py_parse_script.hpp"
 #include "db_mongo_handler.h"
+#include "settings.hpp"
 
 namespace stormy {
   namespace acquisition {
@@ -13,12 +14,12 @@ namespace stormy {
 class Task : public Poco::Util::TimerTask
 {
 public:
-  Task(common::entity::Station station, PyParseScript* script);
+  Task(StationSetting station, PyParseScript* script);
   ~Task();
 
   void run() override;
 private:
-  common::entity::Station station_;
+  StationSetting station_;
   db::MongoHandler& database_handler_;
   PyParseScript* script_;
   Poco::Logger& logger_;
