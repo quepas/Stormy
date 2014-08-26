@@ -1,15 +1,14 @@
 #ifdef STORMY_OLD
 
+#include "acquisition_scheduler.h"
+#include "db_expiration_engine.h"
+#include "db_mongo_handler.h"
+#include "net_http_server.h"
+#include "py_script_storage.hpp"
+#include "settings.hpp"
+
 #include <iostream>
 #include <string>
-#include "db_mongo_handler.h"
-#include "rest_service.h"
-#include "acquisition_scheduler.h"
-
-#include "py_script_storage.hpp"
-#include "db_expiration_engine.h"
-
-#include "settings.hpp"
 
 int main(int argc, char** argv)
 {
@@ -25,12 +24,12 @@ int main(int argc, char** argv)
   central_storage.Push("ECOCLIMA_MeteoParser", new stormy::PyParseScript("./ECOCLIMA_MeteoParser.py"));
   central_storage.Push("StacjameteoReader", new stormy::PyParseScript("./StacjameteoReader.py"));
 
-  auto& dbHandler = stormy::db::MongoHandler::get();
-  dbHandler.set_expiration_seconds(3600 * 72);
-  dbHandler.clearStationsData();
-  dbHandler.InsertStationsData(station_settings);
-  dbHandler.RemoveMetrics();
-  dbHandler.InsertMetrics(metrics_settings);
+  auto& db_handler = stormy::db::MongoHandler::get();
+  db_handler.set_expiration_seconds(3600 * 72);
+  db_handler.clearStationsData();
+  db_handler.InsertStationsData(station_settings);
+  db_handler.RemoveMetrics();
+  db_handler.InsertMetrics(metrics_settings);
 
   stormy::acquisition::Scheduler acqSecheduler(central_storage);
   acqSecheduler.Schedule(station_settings);
@@ -38,7 +37,7 @@ int main(int argc, char** argv)
   /*stormy::common::db::expiration::Engine expiration_engine(dbHandler);
   expiration_engine.ScheduleEverySeconds(3600); */
 
-  stormy::rest::Service httpServer;
+  stormy::net::HTTPServer httpServer(db_handler, 8080);
   httpServer.run(argc, argv);
 
   getchar();
