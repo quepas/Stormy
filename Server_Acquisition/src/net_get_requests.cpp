@@ -27,7 +27,7 @@ string GetStationAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler&
   auto path_segments = parsed_uri.getPathSegments();
   // api: /station
   if (path_segments.size() == 1) {
-    auto stations = db_handler.getStationsData();
+    auto stations = db_handler.GetStations();
     return cookbook::PrepareStationUIDs(stations);
   }
   // api: /station/:station_uid
@@ -51,12 +51,12 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& d
 
   // api: /meteo
   if (path_segments.size() == 1) {
-    auto stations = database_handler.getStationsData();
+    auto stations = database_handler.GetStations();
     std::vector<common::entity::Station> stations_with_any_meteo;
 
     for (auto it = stations.begin(); it != stations.end(); ++it) {
       unsigned int count = database_handler
-        .CountMeasureSetsForStationByUID(it->uid);
+        .CountMeteo(it->uid);
       if (count > 0)
         stations_with_any_meteo.push_back(*it);
     }
@@ -68,7 +68,7 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& d
   else if (path_segments.size() == 2) {
     if (query_segments.empty()) {
       auto measurements = database_handler
-        .GetAllMeasureSetsForStation(path_segments[1]);
+        .GetAllMeteo(path_segments[1]);
       vector<time_t> keys;
       copy(measurements | map_keys, back_inserter(keys));
       return cookbook::PrepareMeteoTimestamps(keys);
@@ -92,7 +92,7 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& d
         }
       }
       auto measurements = database_handler
-        .GetMeasureSetsForStationBetweenTS(path_segments[1], from_ts, to_ts);
+        .GetMeteoBetween(path_segments[1], from_ts, to_ts);
       return cookbook::PrepareMeteoSets(measurements);
     }
   }
@@ -101,7 +101,7 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& d
     time_t timestamp = stol(path_segments[2]);
 
     auto measurements = database_handler
-      .GetMeasureSetsForStationAndTS(path_segments[1], timestamp);
+      .GetMeteo(path_segments[1], timestamp);
     return cookbook::PrepareMeteoSets(measurements);
   }
 }

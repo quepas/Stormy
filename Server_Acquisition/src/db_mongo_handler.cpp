@@ -74,25 +74,26 @@ void MongoHandler::CheckLastErrors()
   }
 }
 
-void MongoHandler::InsertMeasurement(vector<entity::Measurement> measurement)
+void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
 {
-  if(!is_connected_ || measurement.empty()) return;
+  if (!is_connected_ || meteo_data.empty()) return;
 
   auto insert_request = database_->createInsertRequest(
     COLLECTION_METEO
       + "."
       + STATION_UID_PREFIX
-      + measurement[0].station_uid);
+      + meteo_data[0].station_uid);
 
   auto& document = insert_request->addNewDocument();
-  for (auto& data : measurement) {
+  for (auto& data : meteo_data) {
     if (data.is_numeric) {
       document.add(data.code, data.value_number);
     } else {
       document.add(data.code, data.value_text);
     }
   }
-  document.add(MONGO_ID, mktime(&measurement[0].timestamp) + 3600);
+  tm timestamp = meteo_data[0].timestamp;
+  document.add(MONGO_ID, mktime(&timestamp) + 3600);
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
 }
@@ -218,7 +219,7 @@ vector<string> MongoHandler::FetchStationsUID()
   return result;
 }
 
-unsigned int MongoHandler::CountMeasureSetsForStationByUID(string uid)
+unsigned int MongoHandler::CountMeteo(string uid)
 {
   auto count_request = database_->createCountRequest(STATION_UID_PREFIX + uid);
   ResponseMessage response;
@@ -230,13 +231,9 @@ unsigned int MongoHandler::CountMeasureSetsForStationByUID(string uid)
   return result;
 }
 
-map<time_t, vector<entity::Measurement>>
-  MongoHandler::GetMeasureSetsForStationBetweenTS(
-    string station_uid,
-    time_t from,
-    time_t to)
+MeteoDataMap MongoHandler::GetMeteoBetween(string station_uid, time_t from, time_t to)
 {
-  auto result = map<time_t, vector<entity::Measurement>>();
+  MeteoDataMap result;
   if (!is_connected_) return result;
 
   Cursor cursor(db_name_, COLLECTION_METEO + "." + STATION_UID_PREFIX + station_uid);
@@ -253,7 +250,7 @@ map<time_t, vector<entity::Measurement>>
       document->elementNames(available_keys);
 
       time_t current_ts = 0;
-      vector<entity::Measurement> measure_vec;
+      MeteoData measure_vec;
       for (auto& key : available_keys) {
         entity::Measurement measure;
         measure.code = key;
@@ -274,7 +271,7 @@ map<time_t, vector<entity::Measurement>>
           measure_vec.push_back(measure);
         }
       }
-      tm current_time = *std::gmtime(&current_ts);
+      tm current_time = *gmtime(&current_ts);
       for (auto& measure : measure_vec) {
         measure.timestamp = current_time;
       }
@@ -285,23 +282,21 @@ map<time_t, vector<entity::Measurement>>
   return result;
 }
 
-map<time_t, vector<entity::Measurement>> MongoHandler::
-  GetMeasureSetsForStationAndTS(string station_uid, time_t ts)
+MeteoDataMap MongoHandler::GetMeteo(string station_uid, time_t ts)
 {
-  return GetMeasureSetsForStationBetweenTS(station_uid, ts, ts);
+  return GetMeteoBetween(station_uid, ts, ts);
 }
 
-map<time_t, vector<entity::Measurement>> MongoHandler::
-  GetAllMeasureSetsForStation(string station_uid)
+MeteoDataMap MongoHandler::GetAllMeteo(string station_uid)
 {
-  return GetMeasureSetsForStationBetweenTS(station_uid, 0, LocaltimeNow());
+  return GetMeteoBetween(station_uid, 0, LocaltimeNow());
 }
 
-entity::Station MongoHandler::GetStationByUID(string uid)
+StationData MongoHandler::GetStationByUID(string uid)
 {
   // TODO: reimplement this!
   auto stations = GetStations();
-  entity::Station result;
+  StationData result;
   result.uid = "";
 
   for (auto it = stations.begin(); it != stations.end(); ++it) {
@@ -311,7 +306,7 @@ entity::Station MongoHandler::GetStationByUID(string uid)
   return result;
 }
 
-bool MongoHandler::ClearCollection(std::string collection_name)
+bool MongoHandler::ClearCollection(string collection_name)
 {
   if (!is_connected_) return false;
   auto delete_request = database_->createDeleteRequest(collection_name);

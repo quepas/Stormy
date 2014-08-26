@@ -17,40 +17,35 @@
 namespace stormy {
   namespace db {
 
+typedef std::vector<common::entity::Measurement> MeteoData;
+typedef common::entity::Station StationData;
+typedef std::vector<common::entity::Station> StationsData;
+typedef std::vector<common::entity::Metrics> MetricsData;
+typedef std::map<std::time_t, MeteoData> MeteoDataMap;
+
 class MongoHandler : public common::db::HasDataExpiration
 {
 public:
   void ExpireData() override;
   std::vector<std::string> FetchStationsUID();
 
-  void InsertMeasurement(std::vector<common::entity::Measurement> meteoData);
+  void InsertStations(const StationSettings& stations);
+  bool InsertMetrics(const MetricsSettings& metrics);
+  void InsertMeteo(const MeteoData& meteo_data);
 
   bool ClearCollection(std::string collection_name);
   bool ClearStations();
   bool ClearMetrics();
 
-  
-  void InsertStations(const StationSettings& stations);
-  std::vector<common::entity::Station> GetStations();
+  StationsData GetStations();
+  MetricsData GetMetrics();
 
-  common::entity::Station GetStationByUID(std::string uid);
-  unsigned int CountMeasureSetsForStationByUID(std::string uid);
+  StationData GetStationByUID(std::string uid);
+  unsigned int CountMeteo(std::string uid);
 
-  std::map<std::time_t, std::vector<common::entity::Measurement>> 
-    GetMeasureSetsForStationBetweenTS(
-      std::string station_uid, 
-      std::time_t from, 
-      std::time_t to);
-  std::map<std::time_t, std::vector<common::entity::Measurement>> 
-    GetMeasureSetsForStationAndTS(
-      std::string station_uid, 
-      std::time_t ts);
-  std::map<std::time_t, std::vector<common::entity::Measurement>>
-    GetAllMeasureSetsForStation(std::string station_uid);
-
-  
-  bool InsertMetrics(const MetricsSettings& metrics);
-  std::vector<common::entity::Metrics> GetMetrics();
+  MeteoDataMap GetMeteoBetween(std::string station_uid, std::time_t from, std::time_t to);
+  MeteoDataMap GetMeteo(std::string station_uid, std::time_t ts);
+  MeteoDataMap GetAllMeteo(std::string station_uid);
 
   const std::string& db_name() const { return db_name_; }
   bool is_connected() const { return is_connected_; }
@@ -74,5 +69,6 @@ private:
   void CheckLastErrors();
   Poco::Logger& logger_;
 };
-// ~~ stormy::db::MongoHandler
+
 }}
+// ~~ stormy::db::MongoHandler
