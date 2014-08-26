@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include "acquisition_config_metrics.h"
 #include "db_mongo_handler.h"
 #include "rest_service.h"
 #include "acquisition_scheduler.h"
@@ -17,8 +16,7 @@ int main(int argc, char** argv)
   std::cout << "==== Aqcuisition started. ====" << std::endl;
 
   auto station_settings = stormy::LoadStationSettings("config/meteo_stations.json");
-
-  stormy::acquisition::config::Metrics meteoTypeCfg("config/meteo_data_type_config.yaml");
+  auto metrics_settings = stormy::LoadMetricsSettings("config/meteo_metrics.json");
 
   // register Python-based parse scripts
   stormy::PyScriptStorage central_storage;
@@ -31,7 +29,7 @@ int main(int argc, char** argv)
   dbHandler.clearStationsData();
   dbHandler.InsertStationsData(station_settings);
   dbHandler.RemoveMetrics();
-  dbHandler.InsertMetrics(meteoTypeCfg.Configuration());
+  dbHandler.InsertMetrics(metrics_settings);
 
   stormy::acquisition::Scheduler acqSecheduler(central_storage);
   acqSecheduler.Schedule(station_settings);
