@@ -45,7 +45,7 @@
     <LibraryPath>$(BOOST_LIB_32);$(POCO_ALL_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(POSTGRESQL_INCLUDE);$(PYTHON_27_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(SOCI_INCLUDE);$(SOCI_BACKENDS_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_JSON);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(POSTGRESQL_INCLUDE);$(PYTHON_27_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(SOCI_INCLUDE);$(SOCI_BACKENDS_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Release;$(BOOST_LIB_32);$(JSON_CPP_LIB);$(POCO_ALL_LIB);$(POSTGRESQL_LIB);$(SOCI_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -78,7 +78,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\acquisition_config.cpp" />
     <ClCompile Include="src\acquisition_http_connector.cpp" />
     <ClCompile Include="src\acquisition_json_util.cpp" />
     <ClCompile Include="src\acquisition_scheduler.cpp" />
@@ -107,10 +106,10 @@
     <ClCompile Include="src\rest_request_get_period.cpp" />
     <ClCompile Include="src\rest_request_get_station.cpp" />
     <ClCompile Include="src\rest_service.cpp" />
+    <ClCompile Include="src\settings.cpp" />
     <ClCompile Include="src\storage_and_aggregation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\acquisition_config.h" />
     <ClInclude Include="src\acquisition_http_connector.h" />
     <ClInclude Include="src\acquisition_json_util.h" />
     <ClInclude Include="src\acquisition_scheduler.h" />
@@ -146,6 +145,7 @@
     <ClInclude Include="src\rest_request_get_period.h" />
     <ClInclude Include="src\rest_request_get_station.h" />
     <ClInclude Include="src\rest_service.h" />
+    <ClInclude Include="src\settings.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

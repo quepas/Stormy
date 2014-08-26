@@ -38,9 +38,8 @@ StationSettings LoadStationSettings(const string& file_path)
         settings.push_back(entry);
       }
       catch (const NotFoundException& exception) {
-        logger_.error(
-          "Skipping entry "
-          + format(stations_key, idx - 1)
+        logger_.error("Skipping entry "
+            + format(stations_key, idx - 1)
             + ": "
             + exception.displayText());
       }
@@ -72,8 +71,7 @@ MetricsSettings LoadMetricsSettings(const string& file_path)
         }
       }
       catch (const NotFoundException& exception) {
-        logger_.error(
-          "Skipping entry "
+        logger_.error("Skipping entry "
           + format(metrics_key, idx - 1)
           + ": "
           + exception.displayText());

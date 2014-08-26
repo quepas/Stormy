@@ -4,7 +4,7 @@
 #include <Poco/Util/Timer.h>
 
 #include "db_storage.h"
-#include "acquisition_setting.h"
+#include "settings.hpp"
 #include "acquisition_task.h"
 
 namespace stormy {
@@ -18,8 +18,8 @@ public:
 
 	void SetDBStorage(db::Storage* dbStorage);
 
-	void Schedule(Setting* server);
-	void Schedule(const std::vector<Setting*>& servers);
+	void Schedule(RemoteServerSetting server);
+	void Schedule(const std::vector<RemoteServerSetting>& servers);
 
 private:
   db::Storage* storage_database_;

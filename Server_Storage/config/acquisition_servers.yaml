@@ -1,5 +1,0 @@
--
-  name: 'Quepas Acquisition Server #1'
-  host: '127.0.0.1'
-  port: 8080
-  acquisitionInterval: 30

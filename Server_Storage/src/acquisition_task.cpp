@@ -27,9 +27,9 @@ using Poco::Stopwatch;
 namespace stormy {
   namespace acquisition {
 
-Task::Task( db::Storage* _dbStorage, Setting* _server)
-	:	logger_(Logger::get("acquisition/task")),
-    dbStorage(_dbStorage), server(_server)
+Task::Task(db::Storage* db_storage, RemoteServerSetting server)
+  : logger_(Logger::get("acquisition/task")),
+    db_storage_(db_storage), server_(server)
 {
 
 }
@@ -43,23 +43,23 @@ void Task::run()
 {
 	Stopwatch stopwatch;
 	stopwatch.start();	
-	HTTPConnector http_connector(server->host, server->port);
+	HTTPConnector http_connector(server_.host, server_.port);
 
 	logger_.notice("[acquisition/Task] Start fetching data from " + 
-    server -> name);
+    server_.name);
 	// metrics
 	auto metrics = http_connector.FetchMetrics();
-	dbStorage -> InsertMetrics(metrics);
+	db_storage_ -> InsertMetrics(metrics);
 
 	// stations
 	auto stations = http_connector.FetchStations();
-	dbStorage -> InsertStations(stations);	
+	db_storage_ -> InsertStations(stations);	
 
 	uint32_t measurementCounter = 0;
 	// data
 	Each(stations, [&](entity::Station station) {
 		tm newestMeasureForStation =
-			dbStorage -> GetNewestStationMeasureTime(station.uid);
+			db_storage_ -> GetNewestStationMeasureTime(station.uid);
 
 		map<time_t, vector<entity::Measurement>> measurement_sets;
     time_t newest_measure_time = mktime(&newestMeasureForStation);
@@ -73,7 +73,7 @@ void Task::run()
         .FetchMeasureSets(station.uid, 0);
 		}    
 		measurementCounter += measurement_sets.size();
-    dbStorage -> InsertMeasureSets(measurement_sets);		
+    db_storage_ -> InsertMeasureSets(measurement_sets);		
 		measurement_sets.clear();
 	});
 	logger_.notice("[acquisition/Task] Fetched " + 

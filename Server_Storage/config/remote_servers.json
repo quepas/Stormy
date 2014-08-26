@@ -1,0 +1,11 @@
+{
+    "remote_servers": [
+        {
+            "id": "quepas_remote_1",
+            "name": "Acquisition Server #1",
+            "host": "127.0.0.1",
+            "port": 8080,
+            "update_time": 30
+        }
+    ]
+}

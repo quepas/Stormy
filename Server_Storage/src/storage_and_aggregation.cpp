@@ -5,7 +5,6 @@
 #include <Poco/AutoPtr.h>
 
 #include "aggregation_config.h"
-#include "acquisition_config.h"
 #include "db_storage.h"
 #include "acquisition_scheduler.h"
 #include "aggregation_engine.h"
@@ -15,16 +14,18 @@
 #include "util.h"
 #include "db_config.h"
 
+#include "settings.hpp"
+
 using namespace stormy;
 using namespace Poco;
 
 int main(int argc, char** argv) {
-	AutoPtr<WindowsColorConsoleChannel> channel(new WindowsColorConsoleChannel);  
-	Logger::root().setChannel(channel);
-	Logger& logger = Logger::get("aggregation_main_thread");  
-	acquisition::Config acquisitionServersCfg("config/acquisition_servers.yaml");
-	aggregation::Config aggregationCfg("config/aggregation.yaml");  
-	
+  SetupLoggers();
+  auto& logger = Logger::get("main");
+
+  auto remote_servers = LoadRemoteServerSettings("config/remote_servers.json");
+  aggregation::Config aggregationCfg("config/aggregation.yaml");
+
   auto storage_db_setting = 
     common::db::Config("config/storage_database.yaml").Configuration();
 	auto aggregate_db_setting = 
@@ -41,12 +42,11 @@ int main(int argc, char** argv) {
 	logger.information(
     "-------------------------------------------------------------"
 		"-------------------------------------------------------------");
-	// display current configurations
-	logger.information("=== Acquisition Servers: ");
-	common::Each(acquisitionServersCfg.Configuration(),
-		[&](acquisition::Setting* server) {
-			logger.information("\t" + server -> ToString());
-	});
+  // display current configurations
+  logger.information("=== Acquisition Servers: ");
+  for (auto& server : remote_servers) {
+    logger.information(ToString(server));
+  }
 	logger.information("=== Available aggregates: ");
 	common::Each(aggregationCfg.Configuration(),
 		[&](aggregation::Setting setting) {
@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 		"-------------------------------------------------------------");
 
 	acquisition::Scheduler scheduler(&storage_for_acquisition);
-	scheduler.Schedule(acquisitionServersCfg.Configuration());	
+	scheduler.Schedule(remote_servers);
   
 	aggregation::Engine aggregation_engine(
     storage_db_setting, 
