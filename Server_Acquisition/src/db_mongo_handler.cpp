@@ -105,24 +105,18 @@ void MongoHandler::clearStationsData()
   CheckLastErrors();
 }
 
-void MongoHandler::InsertStationsData(
-  const StationSettings& stations)
+void MongoHandler::InsertStationsData(const StationSettings& stations)
 {
-  if(!is_connected_) return;
-  for(auto it = stations.begin(); it != stations.end(); ++it)
-    InsertStationData(*it);
-}
-
-void MongoHandler::InsertStationData(StationSetting station)
-{
-  if(!is_connected_) return;
+  if (!is_connected_) return;
   auto insert_request = database_->createInsertRequest(COLLECTION_STATION);
-  insert_request->addNewDocument()
-    .add(MONGO_ID, MD5(station.url))
-    .add(NAME, station.name)
-    .add(PARSER_SCRIPT, station.parse_script)
-    .add(UPDATE_TIME, static_cast<int>(station.update_time))
-    .add(URL, station.url);
+  for (auto& station : stations) {
+    insert_request->addNewDocument()
+      .add(MONGO_ID, MD5(station.url))
+      .add(NAME, station.name)
+      .add(PARSER_SCRIPT, station.parse_script)
+      .add(UPDATE_TIME, static_cast<int>(station.update_time))
+      .add(URL, station.url);
+  }
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
 }

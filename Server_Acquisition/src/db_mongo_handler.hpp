@@ -27,7 +27,6 @@ public:
 
   void clearStationsData();
   void InsertStationsData(const StationSettings& stations);
-  void InsertStationData(StationSetting station);
   std::vector<common::entity::Station> getStationsData();
 
   common::entity::Station GetStationByUID(std::string uid);
