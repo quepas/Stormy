@@ -1,0 +1,10 @@
+{
+    "aggregates": [
+        {
+            "id": "hourly",
+            "pq_interval": "1 hour",
+            "update_time": 5,
+            "is_enable": true
+        }
+    ]
+}

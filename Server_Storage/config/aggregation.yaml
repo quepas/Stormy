@@ -1,5 +1,0 @@
--
-  name: 'hourly'
-  interval: '1 hour'
-  taskRefresh: 5
-  turnOn: true

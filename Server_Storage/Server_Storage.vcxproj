@@ -82,7 +82,6 @@
     <ClCompile Include="src\acquisition_json_util.cpp" />
     <ClCompile Include="src\acquisition_scheduler.cpp" />
     <ClCompile Include="src\acquisition_task.cpp" />
-    <ClCompile Include="src\aggregation_config.cpp" />
     <ClCompile Include="src\aggregation_engine.cpp" />
     <ClCompile Include="src\aggregation_scheduler.cpp" />
     <ClCompile Include="src\aggregation_task_base.cpp" />
@@ -115,14 +114,12 @@
     <ClInclude Include="src\acquisition_scheduler.h" />
     <ClInclude Include="src\acquisition_setting.h" />
     <ClInclude Include="src\acquisition_task.h" />
-    <ClInclude Include="src\aggregation_config.h" />
     <ClInclude Include="src\aggregation_engine.h" />
     <ClInclude Include="src\aggregation_entity_aggregate.h" />
     <ClInclude Include="src\aggregation_entity_operation.h" />
     <ClInclude Include="src\aggregation_entity_period.h" />
     <ClInclude Include="src\aggregation_entity_task.h" />
     <ClInclude Include="src\aggregation_scheduler.h" />
-    <ClInclude Include="src\aggregation_setting.h" />
     <ClInclude Include="src\aggregation_task_base.h" />
     <ClInclude Include="src\aggregation_task_factory.h" />
     <ClInclude Include="src\aggregation_task_initial.h" />

@@ -36,12 +36,42 @@ vector<RemoteServerSetting> LoadRemoteServerSettings(const string& file_path)
         entry.name = config.getString(remote_key + ".name");
         entry.host = config.getString(remote_key + ".host");
         entry.port = config.getUInt(remote_key + ".port");
-        entry.update_time = config.getUInt64(remote_key + ".update_time");
+        entry.update_time = config.getUInt(remote_key + ".update_time");
         settings.push_back(entry);
       }
       catch (const NotFoundException& exception) {
         logger_.error("Skipping entry "
           + format(remote_key, idx - 1)
+          + ": "
+          + exception.displayText());
+      }
+    }
+  }
+  catch (const Exception& exception) {
+    logger_.error(exception.displayText());
+  }
+  return settings;
+}
+
+vector<AggregateSetting> LoadAggregateSettings(const string& file_path)
+{
+  vector<AggregateSetting> settings;
+  try {
+    JSONConfiguration config(file_path);
+    unsigned idx = 0;
+    string main_key;
+    while (config.has(main_key = format("aggregates[%u]", idx++))) {
+      try {
+        AggregateSetting entry;
+        entry.id = config.getString(main_key + ".id");
+        entry.pq_interval = config.getString(main_key + ".pq_interval");
+        entry.update_time = config.getUInt(main_key + ".update_time");
+        entry.is_enable = config.getBool(main_key + ".is_enable");
+        settings.push_back(entry);
+      }
+      catch (const NotFoundException& exception) {
+        logger_.error("Skipping entry "
+          + format(main_key, idx - 1)
           + ": "
           + exception.displayText());
       }
@@ -60,6 +90,14 @@ string ToString(const RemoteServerSetting& setting)
     + "host=" + setting.host + ", "
     + "port=" + to_string(setting.port) + ", "
     + "update_time=" + to_string(setting.update_time) + "]";
+}
+
+string ToString(const AggregateSetting& setting)
+{
+  return "[id=" + setting.id + ", "
+    + "pq_interval=" + setting.pq_interval + ", "
+    + "update_time=" + to_string(setting.update_time) + ", "
+    + "is_enable=" + (setting.is_enable ? "yes" : "no") + "]";
 }
 
 void SetupLoggers()

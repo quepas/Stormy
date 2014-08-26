@@ -4,7 +4,6 @@
 #include <Poco/WindowsConsoleChannel.h>
 #include <Poco/AutoPtr.h>
 
-#include "aggregation_config.h"
 #include "db_storage.h"
 #include "acquisition_scheduler.h"
 #include "aggregation_engine.h"
@@ -24,7 +23,7 @@ int main(int argc, char** argv) {
   auto& logger = Logger::get("main");
 
   auto remote_servers = LoadRemoteServerSettings("config/remote_servers.json");
-  aggregation::Config aggregationCfg("config/aggregation.yaml");
+  auto aggregates = LoadAggregateSettings("config/aggregates.json");
 
   auto storage_db_setting = 
     common::db::Config("config/storage_database.yaml").Configuration();
@@ -48,10 +47,9 @@ int main(int argc, char** argv) {
     logger.information(ToString(server));
   }
 	logger.information("=== Available aggregates: ");
-	common::Each(aggregationCfg.Configuration(),
-		[&](aggregation::Setting setting) {
-			logger.information("\t" + setting.ToString());
-	});
+  for (auto& entry : aggregates) {
+    logger.information(ToString(entry));
+  }
 	logger.information("=== Storage database: ");
 	logger.information("\t" + storage_db_setting.ToString());
 	logger.information("=== Aggregation database: ");
