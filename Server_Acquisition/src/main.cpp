@@ -1,9 +1,9 @@
 #ifdef STORMY_OLD
 
-#include "acquisition_scheduler.h"
+#include "acquisition_scheduler.hpp"
 #include "db_expiration_engine.h"
-#include "db_mongo_handler.h"
-#include "net_http_server.h"
+#include "db_mongo_handler.hpp"
+#include "net_http_server.hpp"
 #include "py_script_storage.hpp"
 #include "settings.hpp"
 

@@ -1,4 +1,4 @@
-#include "db_mongo_handler.h"
+#include "db_mongo_handler.hpp"
 
 #include <Poco/Exception.h>
 #include <Poco/String.h>
@@ -7,7 +7,7 @@
 #include <Poco/MongoDB/Document.h>
 #include <Poco/MongoDB/ResponseMessage.h>
 
-#include "db_constant.h"
+#include "db_constant.hpp"
 #include "util.h"
 
 using Poco::Int64;

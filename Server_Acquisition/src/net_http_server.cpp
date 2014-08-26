@@ -1,5 +1,5 @@
-#include "net_http_server.h"
-#include "net_request_factory.h"
+#include "net_http_server.hpp"
+#include "net_request_factory.hpp"
 
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocket.h>

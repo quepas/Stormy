@@ -50,21 +50,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\acquisition_scheduler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\acquisition_task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\acquisition_util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\db_constant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\db_mongo_handler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\py_parse_script.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -80,10 +65,25 @@
     <ClInclude Include="src\net_get_requests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\net_request_factory.h">
+    <ClInclude Include="src\net_request_factory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\net_http_server.h">
+    <ClInclude Include="src\net_http_server.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\db_mongo_handler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\db_constant.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquisition_util.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquisition_task.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquisition_scheduler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

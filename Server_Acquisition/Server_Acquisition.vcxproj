@@ -95,18 +95,18 @@
     <ClCompile Include="src\settings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\acquisition_scheduler.h" />
-    <ClInclude Include="src\acquisition_task.h" />
-    <ClInclude Include="src\acquisition_util.h" />
+    <ClInclude Include="src\acquisition_scheduler.hpp" />
+    <ClInclude Include="src\acquisition_task.hpp" />
+    <ClInclude Include="src\acquisition_util.hpp" />
     <ClInclude Include="src\net_get_requests.hpp" />
     <ClInclude Include="src\net_request.hpp" />
-    <ClInclude Include="src\net_request_factory.h" />
+    <ClInclude Include="src\net_request_factory.hpp" />
     <ClInclude Include="src\settings.hpp" />
-    <ClInclude Include="src\db_constant.h" />
-    <ClInclude Include="src\db_mongo_handler.h" />
+    <ClInclude Include="src\db_constant.hpp" />
+    <ClInclude Include="src\db_mongo_handler.hpp" />
     <ClInclude Include="src\py_parse_script.hpp" />
     <ClInclude Include="src\py_script_storage.hpp" />
-    <ClInclude Include="src\net_http_server.h" />
+    <ClInclude Include="src\net_http_server.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,4 @@
-#include "acquisition_util.h"
+#include "acquisition_util.hpp"
 
 #include <vector>
 #include <Poco/NumberParser.h>

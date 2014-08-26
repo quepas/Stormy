@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db_mongo_handler.h"
+#include "db_mongo_handler.hpp"
 
 #include <Poco/Util/ServerApplication.h>
 
