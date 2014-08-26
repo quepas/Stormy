@@ -25,9 +25,13 @@ public:
 
   void InsertMeasurement(std::vector<common::entity::Measurement> meteoData);
 
-  void clearStationsData();
-  void InsertStationsData(const StationSettings& stations);
-  std::vector<common::entity::Station> getStationsData();
+  bool ClearCollection(std::string collection_name);
+  bool ClearStations();
+  bool ClearMetrics();
+
+  
+  void InsertStations(const StationSettings& stations);
+  std::vector<common::entity::Station> GetStations();
 
   common::entity::Station GetStationByUID(std::string uid);
   unsigned int CountMeasureSetsForStationByUID(std::string uid);
@@ -44,7 +48,7 @@ public:
   std::map<std::time_t, std::vector<common::entity::Measurement>>
     GetAllMeasureSetsForStation(std::string station_uid);
 
-  bool RemoveMetrics();
+  
   bool InsertMetrics(const MetricsSettings& metrics);
   std::vector<common::entity::Metrics> GetMetrics();
 

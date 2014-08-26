@@ -97,15 +97,7 @@ void MongoHandler::InsertMeasurement(vector<entity::Measurement> measurement)
   CheckLastErrors();
 }
 
-void MongoHandler::clearStationsData()
-{
-  if(!is_connected_) return;
-  auto delete_request = database_->createDeleteRequest(COLLECTION_STATION);
-  connection_->sendRequest(*delete_request);
-  CheckLastErrors();
-}
-
-void MongoHandler::InsertStationsData(const StationSettings& stations)
+void MongoHandler::InsertStations(const StationSettings& stations)
 {
   if (!is_connected_) return;
   auto insert_request = database_->createInsertRequest(COLLECTION_STATION);
@@ -121,7 +113,7 @@ void MongoHandler::InsertStationsData(const StationSettings& stations)
   CheckLastErrors();
 }
 
-vector<entity::Station> MongoHandler::getStationsData()
+vector<entity::Station> MongoHandler::GetStations()
 {
   auto result = vector<entity::Station>();
   if (!is_connected_) return result;
@@ -186,15 +178,6 @@ bool MongoHandler::InsertMetrics(const MetricsSettings& metrics)
       .add(labels, labels);
   }
   connection_->sendRequest(*insert_request);
-  CheckLastErrors();
-  return true;
-}
-
-bool MongoHandler::RemoveMetrics()
-{
-  if(!is_connected_) return false;
-  auto delete_request = database_->createDeleteRequest(COLLECTION_METRICS);
-  connection_->sendRequest(*delete_request);
   CheckLastErrors();
   return true;
 }
@@ -317,7 +300,7 @@ map<time_t, vector<entity::Measurement>> MongoHandler::
 entity::Station MongoHandler::GetStationByUID(string uid)
 {
   // TODO: reimplement this!
-  auto stations = getStationsData();
+  auto stations = GetStations();
   entity::Station result;
   result.uid = "";
 
@@ -326,6 +309,25 @@ entity::Station MongoHandler::GetStationByUID(string uid)
       return *it;
   }
   return result;
+}
+
+bool MongoHandler::ClearCollection(std::string collection_name)
+{
+  if (!is_connected_) return false;
+  auto delete_request = database_->createDeleteRequest(collection_name);
+  connection_->sendRequest(*delete_request);
+  CheckLastErrors();
+  return true;
+}
+
+bool MongoHandler::ClearStations()
+{
+  return ClearCollection(COLLECTION_STATION);
+}
+
+bool MongoHandler::ClearMetrics()
+{
+  return ClearCollection(COLLECTION_METRICS);
 }
 
 }}
