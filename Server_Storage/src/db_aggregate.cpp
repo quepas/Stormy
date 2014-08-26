@@ -20,9 +20,9 @@ using soci::rowset;
 namespace stormy {
   namespace db {
 
-Aggregate::Aggregate(common::db::Setting aggregate_setting)
+Aggregate::Aggregate(DatabaseSetting setting)
 	:	logger_(Logger::get("aggregation")),
-    aggregate_setting_(aggregate_setting)
+    setting_(setting)
 {
 	Connect();
 }
@@ -35,7 +35,7 @@ Aggregate::~Aggregate()
 void Aggregate::Connect()
 {
 	TRY
-	sql_.open(postgresql, aggregate_setting_.AsConnectionString());
+	sql_.open(postgresql, ToPostgreString(setting_));
 	CATCH_MSG("[db/Aggregate] connect(): ")
 }
 

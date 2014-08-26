@@ -25,7 +25,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-Factory::Factory(common::db::Setting db_storage, common::db::Setting db_aggregation)
+Factory::Factory(DatabaseSetting db_storage, DatabaseSetting db_aggregation)
   : logger_(Logger::get("rest/Factory")),
     db_storage_(db_storage),
     db_aggregation_(db_aggregation)

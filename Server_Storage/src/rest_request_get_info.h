@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db_config.h"
+#include "settings.hpp"
 
 #include <Poco/Net/HTTPRequestHandler.h>
 
@@ -11,7 +11,7 @@ namespace stormy {
 class GetInfo : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetInfo(common::db::Setting storage_setting);
+  GetInfo(DatabaseSetting storage_setting);
   ~GetInfo();
 
   void handleRequest(
@@ -19,7 +19,7 @@ public:
     Poco::Net::HTTPServerResponse& response) override;
 
 private:
-  common::db::Setting storage_setting_;
+  DatabaseSetting storage_setting_;
 };
 // ~~ stormy::rest::request::GetInfo
 }}}

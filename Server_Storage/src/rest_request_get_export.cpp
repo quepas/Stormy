@@ -31,7 +31,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetExport::GetExport(string uri, common::db::Setting storage_setting)
+      GetExport::GetExport(string uri, DatabaseSetting storage_setting)
   : storage_setting_(storage_setting),
     uri_parser_(uri)
 {

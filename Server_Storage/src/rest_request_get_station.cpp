@@ -17,7 +17,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetStation::GetStation(string uri, common::db::Setting storage_setting)
+GetStation::GetStation(string uri, DatabaseSetting storage_setting)
   : storage_setting_(storage_setting),
     uri_parser_(uri)
 {

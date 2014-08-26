@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db_setting.h"
+#include "settings.hpp"
 
 #include <cstdint>
 #include <Poco/Logger.h>
@@ -13,9 +13,9 @@ class Service : public Poco::Util::ServerApplication
 {
 public:
   Service(
-    common::db::Setting db_storage, 
-    common::db::Setting db_aggregation, 
-    uint16_t port = 8070);
+    DatabaseSetting db_storage, 
+    DatabaseSetting db_aggregation,
+    unsigned port = 8070);
   ~Service();
 
 protected:
@@ -24,11 +24,12 @@ protected:
   int main(const std::vector<std::string>& args) override;
 
 private:
-  uint16_t port_;
+  unsigned port_;
   Poco::Logger& logger_;
 
-  common::db::Setting db_storage_;
-  common::db::Setting db_aggregation_;
+  DatabaseSetting db_storage_;
+  DatabaseSetting db_aggregation_;
 };
-// ~~ stormy::rest::Service
+
 }}
+// ~~ stormy::rest::Service

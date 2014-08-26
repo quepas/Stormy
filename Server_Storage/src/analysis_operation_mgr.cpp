@@ -19,9 +19,9 @@ namespace stormy {
 
 OperationMgr::OperationMgr(
   string base_dir, 
-  common::db::Setting db_aggregate_setting)
+  DatabaseSetting setting)
   : logger_(Logger::get("analysis/OperationMgr")),
-    aggregate_database_(db_aggregate_setting),
+    aggregate_database_(setting),
     base_dir_(base_dir)
 {
   Reload();

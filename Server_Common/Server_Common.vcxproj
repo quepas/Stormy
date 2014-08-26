@@ -74,7 +74,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\db_config.cpp" />
     <ClCompile Include="src\db_expiration_engine.cpp" />
     <ClCompile Include="src\db_expiration_task.cpp" />
     <ClCompile Include="src\net_util.cpp" />
@@ -87,11 +86,9 @@
     <ClCompile Include="src\yaml_util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\db_config.h" />
     <ClInclude Include="src\db_expiration_engine.h" />
     <ClInclude Include="src\db_expiration_task.h" />
     <ClInclude Include="src\db_has_data_expiration.h" />
-    <ClInclude Include="src\db_setting.h" />
     <ClInclude Include="src\entity_measurement.h" />
     <ClInclude Include="src\entity_metrics.h" />
     <ClInclude Include="src\entity_station.h" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db_setting.h"
+#include "settings.hpp"
 #include "rest_uri_parser.h"
 
 #include <string>
@@ -13,7 +13,7 @@ namespace stormy {
 class GetMetrics : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetMetrics(std::string uri, common::db::Setting storage_setting);
+  GetMetrics(std::string uri, DatabaseSetting storage_setting);
   ~GetMetrics();
 
   void handleRequest(
@@ -21,7 +21,7 @@ public:
     Poco::Net::HTTPServerResponse& response) override;
 
 private:
-  common::db::Setting storage_setting_;
+  DatabaseSetting storage_setting_;
   common::rest::URIParser uri_parser_;
 };
 // ~~ stormy::rest::request::GetMetrics

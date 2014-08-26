@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db_config.h"
+#include "settings.hpp"
 
 #include <Poco/Net/HTTPRequestHandler.h>
 
@@ -11,7 +11,7 @@ namespace stormy {
 class GetPeriod : public Poco::Net::HTTPRequestHandler
 {
 public:
-  GetPeriod(common::db::Setting aggregate_setting);
+  GetPeriod(DatabaseSetting aggregate_setting);
   ~GetPeriod();
 
   void handleRequest(
@@ -19,7 +19,7 @@ public:
     Poco::Net::HTTPServerResponse& response) override;
     
 private:
-  common::db::Setting aggregate_setting_;
+  DatabaseSetting aggregate_setting_;
 };
 // ~~ stormy::rest::request::GetPeriod
 }}}

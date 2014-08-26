@@ -15,7 +15,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetOperation::GetOperation(common::db::Setting aggregate_setting)
+GetOperation::GetOperation(DatabaseSetting aggregate_setting)
   : aggregate_setting_(aggregate_setting)
 {
 

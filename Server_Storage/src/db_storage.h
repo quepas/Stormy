@@ -5,9 +5,8 @@
 #include <soci.h>
 #include <Poco/Logger.h>
 
-#include "db_setting.h"
+#include "settings.hpp"
 #include "util.h"
-
 #include "entity_station.h"
 #include "entity_metrics.h"
 #include "entity_measurement.h"
@@ -18,8 +17,8 @@ namespace stormy {
 class Storage
 {
 public:
-  Storage(common::db::Setting storage_setting);
-  ~Storage();   
+  Storage(DatabaseSetting setting);
+  ~Storage();
 
   std::tm GetOldestStationMeasureTime(std::string uid);
   std::tm GetNewestStationMeasureTime(std::string uid);
@@ -69,14 +68,11 @@ public:
   bool InsertSingleMetrics(common::entity::Metrics metrics);
   bool InsertMetrics(const std::vector<common::entity::Metrics>& metrics);
   bool CheckIfMetricsExsist(const std::string& code);
-	
-  common::db::Setting Configuration() {
-    return configuration_;
-  }
+
 private:
   void connect();
 
-  common::db::Setting configuration_;
+  DatabaseSetting setting_;
   soci::session sql_;
   Poco::Logger& logger_;
 };

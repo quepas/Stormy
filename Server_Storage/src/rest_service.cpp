@@ -17,9 +17,9 @@ namespace stormy {
   namespace rest {
 
 Service::Service(
-  common::db::Setting db_storage, 
-  common::db::Setting db_aggregation, 
-  uint16_t port /*= 8070*/)
+  DatabaseSetting db_storage, 
+  DatabaseSetting db_aggregation, 
+  unsigned port /*= 8070*/)
   : port_(port),
     logger_(Logger::get("rest")),
     db_storage_(db_storage),

@@ -83,6 +83,23 @@ vector<AggregateSetting> LoadAggregateSettings(const string& file_path)
   return settings;
 }
 
+DatabaseSetting LoadDatabaseSetting(const string& file_path)
+{
+  DatabaseSetting entry;
+  try {
+    JSONConfiguration config(file_path);
+    entry.name = config.getString("name");
+    entry.host = config.getString("host");
+    entry.port = config.getUInt("port");
+    entry.user = config.getString("user");
+    entry.password = config.getString("password");
+  }
+  catch (const Exception& exception) {
+    logger_.error(exception.displayText());
+  }
+  return entry;
+}
+
 string ToString(const RemoteServerSetting& setting)
 {
   return "[id=" + setting.id + ", "
@@ -100,11 +117,29 @@ string ToString(const AggregateSetting& setting)
     + "is_enable=" + (setting.is_enable ? "yes" : "no") + "]";
 }
 
+string ToString(const DatabaseSetting& setting)
+{
+  return "[name=" + setting.name + ", "
+    + "host=" + setting.host + ", "
+    + "port=" + to_string(setting.port) + ", "
+    + "user=" + setting.user + ", "
+    + "password=" + setting.password + "]";
+}
+
 void SetupLoggers()
 {
   AutoPtr<WindowsColorConsoleChannel> channel(new WindowsColorConsoleChannel);
   Logger::root().setChannel(channel);
   logger_.setChannel(channel);
+}
+
+string ToPostgreString(const DatabaseSetting& setting)
+{
+  return "dbname=" + setting.name
+    + " host=" + setting.host
+    + " port=" + to_string(setting.port)
+    + " user=" + setting.user
+    + " password=" + setting.password;
 }
 
 }

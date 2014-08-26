@@ -10,9 +10,7 @@ using std::make_pair;
 namespace stormy {
 	namespace aggregation {
 
-Engine::Engine(
-  common::db::Setting storage_setting, 
-  common::db::Setting aggregate_setting)
+Engine::Engine(DatabaseSetting storage_setting, DatabaseSetting aggregate_setting)
   : logger_(Logger::get("aggregation")),
     storage_(storage_setting),
     aggregation_(aggregate_setting),

@@ -1,6 +1,0 @@
-name: "StormyDB Storage"
-host: localhost
-port: 5432
-database: stormy
-user: quepas
-password: quepas

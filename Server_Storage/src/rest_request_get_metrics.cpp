@@ -16,7 +16,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMetrics::GetMetrics(string uri, common::db::Setting storage_setting)
+GetMetrics::GetMetrics(string uri, DatabaseSetting storage_setting)
   : uri_parser_(uri),
     storage_setting_(storage_setting)
 {

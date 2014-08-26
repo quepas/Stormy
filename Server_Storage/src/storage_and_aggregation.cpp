@@ -11,8 +11,6 @@
 #include "analysis_operation_mgr.h"
 
 #include "util.h"
-#include "db_config.h"
-
 #include "settings.hpp"
 
 using namespace stormy;
@@ -23,15 +21,12 @@ int main(int argc, char** argv) {
   auto& logger = Logger::get("main");
 
   auto remote_servers = LoadRemoteServerSettings("config/remote_servers.json");
-  auto aggregates = LoadAggregateSettings("config/aggregates.json");
+  auto db_storage = LoadDatabaseSetting("config/db_storage.json");
+  auto db_aggregate = LoadDatabaseSetting("config/db_aggregate.json");
 
-  auto storage_db_setting = 
-    common::db::Config("config/storage_database.yaml").Configuration();
-	auto aggregate_db_setting = 
-    common::db::Config("config/aggregation_database.yaml").Configuration();
-  analysis::OperationMgr operation_mgr("./", aggregate_db_setting);
+  analysis::OperationMgr operation_mgr("./", db_aggregate);
 
-	db::Storage storage_for_acquisition(storage_db_setting);  	
+  db::Storage storage_for_acquisition(db_storage);
   
   logger.information("==== Storage & Aggregation started. ====");	  
 	logger.information("Measurements in storage: " + 
@@ -46,14 +41,11 @@ int main(int argc, char** argv) {
   for (auto& server : remote_servers) {
     logger.information(ToString(server));
   }
-	logger.information("=== Available aggregates: ");
-  for (auto& entry : aggregates) {
-    logger.information(ToString(entry));
-  }
+
 	logger.information("=== Storage database: ");
-	logger.information("\t" + storage_db_setting.ToString());
+	logger.information("\t" + ToString(db_storage));
 	logger.information("=== Aggregation database: ");
-	logger.information("\t" + aggregate_db_setting.ToString());
+	logger.information("\t" + ToString(db_aggregate));
 	logger.information(
     "-------------------------------------------------------------"
 		"-------------------------------------------------------------");
@@ -62,11 +54,11 @@ int main(int argc, char** argv) {
 	scheduler.Schedule(remote_servers);
   
 	aggregation::Engine aggregation_engine(
-    storage_db_setting, 
-    aggregate_db_setting);
+    db_storage, 
+    db_aggregate);
   aggregation::Engine::Restarter engine_restarter(300);
   engine_restarter(aggregation_engine);
   
-  rest::Service rest_service(storage_db_setting, aggregate_db_setting);
+  rest::Service rest_service(db_storage, db_aggregate);
   rest_service.run(argc, argv);
 }

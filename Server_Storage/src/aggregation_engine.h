@@ -5,7 +5,7 @@
 #include <Poco/Util/Timer.h>
 #include <Poco/Util/TimerTask.h>
 
-#include "db_setting.h"
+#include "settings.hpp"
 #include "entity_station.h"
 #include "entity_metrics.h"
 
@@ -31,28 +31,26 @@ public:
   class CyclicRestart;
   class Restarter;
 
-  Engine(
-    common::db::Setting storage_setting, 
-    common::db::Setting aggregate_setting);
+  Engine(DatabaseSetting storage_setting, DatabaseSetting aggregate_setting);
   ~Engine();
 
   void Start();
   void Restart();
   void Stop();
-						
+
 private:
-  bool Init();			
+  bool Init();
   void Schedule();
 
-  bool VerifyTasks();	
+  bool VerifyTasks();
   void ClearVerificationData();
-  bool IsPeriodStationVerified(std::string period_name, std::string station_uid);			
+  bool IsPeriodStationVerified(std::string period_name, std::string station_uid);
   bool FixTasks();
   void FetchAvailableData();
-  void ClearAvailableData();								
+  void ClearAvailableData();
   int FindAvailableTask(std::string period_name, std::string station_uid);
   bool CreateMissingTask(std::string period_name, std::string station_uid);
-  bool DeleteUselessTask(std::string period_name, std::string station_uid);				
+  bool DeleteUselessTask(std::string period_name, std::string station_uid);
 
   // Available data
   std::vector<stormy::common::entity::Station> available_stations_;
@@ -69,7 +67,7 @@ private:
 
   task::Factory factory_;
   Scheduler scheduler_;
-  Poco::Logger& logger_;		
+  Poco::Logger& logger_;
 public:
   class CyclicRestart : public Poco::Util::TimerTask
   {
@@ -98,8 +96,9 @@ public:
         static_cast<long>(restart_miliseconds));
     };
   private:
-    std::time_t restart_seconds_;    
+    std::time_t restart_seconds_;
   };
 };
-// ~~ stormy::aggregation::Engine
+
 }}
+// ~~ stormy::aggregation::Engine

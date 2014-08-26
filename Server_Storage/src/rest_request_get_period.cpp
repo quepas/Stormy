@@ -15,7 +15,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetPeriod::GetPeriod(common::db::Setting aggregate_setting)
+GetPeriod::GetPeriod(DatabaseSetting aggregate_setting)
   : aggregate_setting_(aggregate_setting)
 {
 

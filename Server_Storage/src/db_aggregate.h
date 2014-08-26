@@ -9,7 +9,7 @@
 
 #include <Poco/Logger.h>
 
-#include "db_setting.h"
+#include "settings.hpp"
 #include "aggregation_entity_task.h"
 #include "aggregation_entity_period.h"
 #include "aggregation_entity_aggregate.h"
@@ -21,7 +21,7 @@ namespace stormy {
 class Aggregate
 {
 public:
-  Aggregate(common::db::Setting aggregate_setting);
+  Aggregate(DatabaseSetting setting);
   ~Aggregate();
     
   // tasks
@@ -67,14 +67,11 @@ public:
       std::string station_uid,
       std::string period_name,
       std::time_t time);
-  
-  common::db::Setting Configuration() {
-    return aggregate_setting_;
-  }
-private:  
+
+private:
   void Connect();
 
-  common::db::Setting aggregate_setting_;  
+  DatabaseSetting setting_;
   soci::session sql_;
   Poco::Logger& logger_;
 };

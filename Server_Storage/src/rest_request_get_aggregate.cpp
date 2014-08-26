@@ -30,8 +30,8 @@ namespace stormy {
 
 GetAggregate::GetAggregate(
   std::string uri, 
-  common::db::Setting storage_setting,
-  common::db::Setting aggregate_setting)
+  DatabaseSetting storage_setting,
+  DatabaseSetting aggregate_setting)
   : uri_parser_(uri),
     storage_setting_(storage_setting),
     aggregate_setting_(aggregate_setting)

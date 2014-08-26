@@ -1,7 +1,7 @@
 #pragma once
 
 #include "db_aggregate.h"
-#include "db_setting.h"
+#include "settings.hpp"
 
 #include <string>
 #include <vector>
@@ -15,7 +15,7 @@ class OperationMgr
 public:
   OperationMgr(
     std::string base_dir, 
-    common::db::Setting db_aggregate_setting);
+    DatabaseSetting setting);
   ~OperationMgr();
 
   int Reload();

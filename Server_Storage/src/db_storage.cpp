@@ -27,11 +27,11 @@ using soci::i_null;
 namespace stormy {
   namespace db {
 
-Storage::Storage(common::db::Setting storage_setting)
-	:	logger_(Logger::get("aggregation_main_thread")),
-    configuration_(storage_setting)
-{	
-	connect();
+Storage::Storage(DatabaseSetting setting)
+  : logger_(Logger::get("aggregation_main_thread")),
+    setting_(setting)
+{
+  connect();
 }
 
 Storage::~Storage()
@@ -41,9 +41,9 @@ Storage::~Storage()
 
 void Storage::connect()
 {
-	TRY
-	sql_.open(postgresql, configuration_.AsConnectionString());	
-	CATCH_MSG("[db/Storage] connect: ")
+  TRY
+  sql_.open(postgresql, ToPostgreString(setting_));
+  CATCH_MSG("[db/Storage] connect: ")
 }
 
 void Storage::InsertStation(entity::Station station)

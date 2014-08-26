@@ -32,7 +32,7 @@ namespace stormy {
   namespace rest {
     namespace request {
 
-GetMeteo::GetMeteo(string uri, common::db::Setting storage_setting) 
+GetMeteo::GetMeteo(string uri, DatabaseSetting storage_setting)
   : uri_parser_(uri),
     storage_setting_(storage_setting)
 {
