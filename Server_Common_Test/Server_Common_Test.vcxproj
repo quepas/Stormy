@@ -64,7 +64,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\json_config_test.cpp" />
     <ClCompile Include="src\rest_uri_parser_test.cpp" />
     <ClCompile Include="src\run_all.cpp" />
     <ClCompile Include="src\util_test.cpp" />

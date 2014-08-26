@@ -45,8 +45,8 @@
     <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_34_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_MONGODB);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Release;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_34_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_JSON);$(POCO_INCLUDE_MONGODB);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_27_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Release;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -70,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STORMY_OLD;_WIN32_WINDOWS;BOOST_ALL_DYN_LINK;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STORMY_OLD;_WIN32_WINDOWS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -80,54 +80,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\acquisition_config_metrics.cpp" />
-    <ClCompile Include="src\acquisition_config_station.cpp" />
     <ClCompile Include="src\acquisition_scheduler.cpp" />
     <ClCompile Include="src\acquisition_task.cpp" />
     <ClCompile Include="src\acquisition_util.cpp" />
-    <ClCompile Include="src\data_acquire_queue.cpp" />
     <ClCompile Include="src\db_mongo_handler.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\main_acqu.cpp" />
-    <ClCompile Include="src\py_mapper.cpp">
+    <ClCompile Include="src\net_get_requests.cpp" />
+    <ClCompile Include="src\net_request_factory.cpp" />
+    <ClCompile Include="src\py_parse_script.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\py_parser.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\py_read_script.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\rest_request_factory.cpp" />
-    <ClCompile Include="src\rest_request_get_info.cpp" />
-    <ClCompile Include="src\rest_request_get_meteo.cpp" />
-    <ClCompile Include="src\rest_request_get_metrics.cpp" />
-    <ClCompile Include="src\rest_request_get_station.cpp" />
-    <ClCompile Include="src\rest_service.cpp" />
-    <ClCompile Include="src\stormy_lite.cpp" />
+    <ClCompile Include="src\py_script_storage.cpp" />
+    <ClCompile Include="src\net_http_server.cpp" />
+    <ClCompile Include="src\settings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\acquisition_config_metrics.h" />
-    <ClInclude Include="src\acquisition_config_station.h" />
     <ClInclude Include="src\acquisition_scheduler.h" />
     <ClInclude Include="src\acquisition_task.h" />
     <ClInclude Include="src\acquisition_util.h" />
-    <ClInclude Include="src\data_acquire_queue.hpp" />
-    <ClInclude Include="src\data_acquire_task.hpp" />
+    <ClInclude Include="src\net_get_requests.hpp" />
+    <ClInclude Include="src\net_request.hpp" />
+    <ClInclude Include="src\net_request_factory.h" />
+    <ClInclude Include="src\settings.hpp" />
     <ClInclude Include="src\db_constant.h" />
     <ClInclude Include="src\db_mongo_handler.h" />
-    <ClInclude Include="src\meteo_data.hpp" />
-    <ClInclude Include="src\meteo_element.hpp" />
-    <ClInclude Include="src\meteo_station.hpp" />
-    <ClInclude Include="src\py_mapper.h" />
-    <ClInclude Include="src\py_parser.h" />
-    <ClInclude Include="src\py_read_script.hpp" />
-    <ClInclude Include="src\rest_request_factory.h" />
-    <ClInclude Include="src\rest_request_get_info.h" />
-    <ClInclude Include="src\rest_request_get_meteo.h" />
-    <ClInclude Include="src\rest_request_get_metrics.h" />
-    <ClInclude Include="src\rest_request_get_station.h" />
-    <ClInclude Include="src\rest_service.h" />
+    <ClInclude Include="src\py_parse_script.hpp" />
+    <ClInclude Include="src\py_script_storage.hpp" />
+    <ClInclude Include="src\net_http_server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

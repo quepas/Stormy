@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\acquisition_config_metrics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\acquisition_config_station.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\acquisition_scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,56 +24,32 @@
     <ClCompile Include="src\acquisition_util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\data_acquire_queue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\db_mongo_handler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\py_mapper.cpp">
+    <ClCompile Include="src\py_parse_script.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\py_parser.cpp">
+    <ClCompile Include="src\py_script_storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\py_read_script.cpp">
+    <ClCompile Include="src\settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rest_request_factory.cpp">
+    <ClCompile Include="src\net_get_requests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rest_request_get_info.cpp">
+    <ClCompile Include="src\net_request_factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rest_request_get_meteo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\rest_request_get_metrics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\rest_request_get_station.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\rest_service.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\stormy_lite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main_acqu.cpp">
+    <ClCompile Include="src\net_http_server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\acquisition_config_metrics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\acquisition_config_station.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\acquisition_scheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -89,52 +59,31 @@
     <ClInclude Include="src\acquisition_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\data_acquire_queue.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data_acquire_task.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\db_constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\db_mongo_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\meteo_data.hpp">
+    <ClInclude Include="src\py_parse_script.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\meteo_element.hpp">
+    <ClInclude Include="src\py_script_storage.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\meteo_station.hpp">
+    <ClInclude Include="src\settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\py_mapper.h">
+    <ClInclude Include="src\net_request.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\py_parser.h">
+    <ClInclude Include="src\net_get_requests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\py_read_script.hpp">
+    <ClInclude Include="src\net_request_factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\rest_request_factory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rest_request_get_info.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rest_request_get_meteo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rest_request_get_metrics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rest_request_get_station.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rest_service.h">
+    <ClInclude Include="src\net_http_server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

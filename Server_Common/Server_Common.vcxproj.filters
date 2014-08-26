@@ -24,15 +24,6 @@
     <ClCompile Include="src\db_expiration_task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\json_config.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\py_executor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\py_function.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\rest_cookbook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -52,6 +43,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\yaml_util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,15 +74,6 @@
     <ClInclude Include="src\entity_station.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\json_config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\py_executor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\py_function.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\rest_constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -111,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\yaml_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net_util.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
