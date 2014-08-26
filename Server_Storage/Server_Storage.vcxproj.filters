@@ -113,9 +113,6 @@
     <ClInclude Include="src\acquisition_scheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\acquisition_setting.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\acquisition_task.h">
       <Filter>Header Files</Filter>
     </ClInclude>

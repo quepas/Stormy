@@ -112,7 +112,6 @@
     <ClInclude Include="src\acquisition_http_connector.h" />
     <ClInclude Include="src\acquisition_json_util.h" />
     <ClInclude Include="src\acquisition_scheduler.h" />
-    <ClInclude Include="src\acquisition_setting.h" />
     <ClInclude Include="src\acquisition_task.h" />
     <ClInclude Include="src\aggregation_engine.h" />
     <ClInclude Include="src\aggregation_entity_aggregate.h" />
