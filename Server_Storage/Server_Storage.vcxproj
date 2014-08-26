@@ -92,7 +92,6 @@
     <ClCompile Include="src\analysis_operation_mgr.cpp" />
     <ClCompile Include="src\db_aggregate.cpp" />
     <ClCompile Include="src\db_storage.cpp" />
-    <ClCompile Include="src\replication_batch_manager.cpp" />
     <ClCompile Include="src\rest_csv_cookbook.cpp" />
     <ClCompile Include="src\rest_json_cookbook.cpp" />
     <ClCompile Include="src\rest_request_factory.cpp" />
@@ -127,8 +126,6 @@
     <ClInclude Include="src\analysis_operation_mgr.h" />
     <ClInclude Include="src\db_aggregate.h" />
     <ClInclude Include="src\db_storage.h" />
-    <ClInclude Include="src\replication_batch.h" />
-    <ClInclude Include="src\replication_batch_manager.h" />
     <ClInclude Include="src\rest_csv_cookbook.h" />
     <ClInclude Include="src\rest_json_cookbook.h" />
     <ClInclude Include="src\rest_request_factory.h" />

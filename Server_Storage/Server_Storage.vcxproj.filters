@@ -57,9 +57,6 @@
     <ClCompile Include="src\db_storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\replication_batch_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\rest_csv_cookbook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -156,12 +153,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\db_storage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\replication_batch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\replication_batch_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\rest_csv_cookbook.h">
