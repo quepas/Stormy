@@ -2,33 +2,22 @@
 
 namespace stormy {
   namespace db {
-    namespace constant {
 
-const std::string mongo_id = "_id";
-const std::string mongo_db_name = "test";
-const std::string mongo_meteo_coll = "meteo";
-const std::string mongo_station_coll = "station";
-const std::string mongo_metrics_coll = "metrics";
-const std::string id = "id";
-const std::string code = "code";
-const std::string station_uid_prefix = "S";
-const std::string url = "url";
-const std::string parser_class = "parserClass";
-const std::string refresh_time = "refreshTime";
-const std::string name = "name";
-const std::string date = "date";
-const std::string time = "time";
-const std::string timestamp = "timestamp";
-const std::string number = "number";
-const std::string text = "text";
-const std::string type = "type";
-const std::string unit = "unit";
-const std::string format = "format";
-const std::string equivalents = "equivalents";
-const std::string is_meteo = "isMeteo";
+const std::string MONGO_ID = "_id";
+const std::string STATION_UID_PREFIX = "S";
+const std::string URL = "url";
+const std::string PARSER_SCRIPT = "parser_script";
+const std::string UPDATE_TIME = "update_time";
+const std::string NAME = "name";
+const std::string TYPE = "type";
+const std::string UNIT = "unit";
+const std::string FORMAT = "format";
+const std::string LABELS = "labels";
+const std::string IS_METEO = "is_meteo";
 
-const std::string collection_meteo = mongo_meteo_coll;
-const std::string collection_station = mongo_station_coll;
-const std::string collection_metrics = mongo_metrics_coll;
-// ~~ stormy::db::constant
-}}}
+const std::string COLLECTION_METEO = "meteo";
+const std::string COLLECTION_STATION = "station";
+const std::string COLLECTION_METRICS = "metrics";
+
+}}
+// ~~ stormy::db::

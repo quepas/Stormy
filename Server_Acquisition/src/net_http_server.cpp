@@ -38,14 +38,14 @@ void HTTPServer::unitialized()
 
 int HTTPServer::main(const vector<string>& args)
 {
-  ServerSocket serverSocket(config().getInt("Service.port", port_));
-  Poco::Net::HTTPServer httpServer(
+  ServerSocket server_socket(config().getInt("Service.port", port_));
+  Poco::Net::HTTPServer http_server(
     new RequestFactory(db_handler_),
-    serverSocket,
+    server_socket,
     new HTTPServerParams);
-  httpServer.start();
+  http_server.start();
   waitForTerminationRequest();
-  httpServer.stop();
+  http_server.stop();
   return Application::EXIT_OK;
 }
 
