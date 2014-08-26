@@ -92,17 +92,10 @@
     <ClCompile Include="src\analysis_operation_mgr.cpp" />
     <ClCompile Include="src\db_aggregate.cpp" />
     <ClCompile Include="src\db_storage.cpp" />
+    <ClCompile Include="src\net_get_requests.cpp" />
     <ClCompile Include="src\rest_csv_cookbook.cpp" />
     <ClCompile Include="src\rest_json_cookbook.cpp" />
     <ClCompile Include="src\rest_request_factory.cpp" />
-    <ClCompile Include="src\rest_request_get_aggregate.cpp" />
-    <ClCompile Include="src\rest_request_get_export.cpp" />
-    <ClCompile Include="src\rest_request_get_info.cpp" />
-    <ClCompile Include="src\rest_request_get_meteo.cpp" />
-    <ClCompile Include="src\rest_request_get_metrics.cpp" />
-    <ClCompile Include="src\rest_request_get_operation.cpp" />
-    <ClCompile Include="src\rest_request_get_period.cpp" />
-    <ClCompile Include="src\rest_request_get_station.cpp" />
     <ClCompile Include="src\rest_service.cpp" />
     <ClCompile Include="src\settings.cpp" />
     <ClCompile Include="src\storage_and_aggregation.cpp" />
@@ -126,17 +119,10 @@
     <ClInclude Include="src\analysis_operation_mgr.h" />
     <ClInclude Include="src\db_aggregate.h" />
     <ClInclude Include="src\db_storage.h" />
+    <ClInclude Include="src\net_get_requests.hpp" />
     <ClInclude Include="src\rest_csv_cookbook.h" />
     <ClInclude Include="src\rest_json_cookbook.h" />
     <ClInclude Include="src\rest_request_factory.h" />
-    <ClInclude Include="src\rest_request_get_aggregate.h" />
-    <ClInclude Include="src\rest_request_get_export.h" />
-    <ClInclude Include="src\rest_request_get_info.h" />
-    <ClInclude Include="src\rest_request_get_meteo.h" />
-    <ClInclude Include="src\rest_request_get_metrics.h" />
-    <ClInclude Include="src\rest_request_get_operation.h" />
-    <ClInclude Include="src\rest_request_get_period.h" />
-    <ClInclude Include="src\rest_request_get_station.h" />
     <ClInclude Include="src\rest_service.h" />
     <ClInclude Include="src\settings.hpp" />
   </ItemGroup>

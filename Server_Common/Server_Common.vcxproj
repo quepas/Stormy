@@ -90,6 +90,7 @@
     <ClInclude Include="src\entity_measurement.h" />
     <ClInclude Include="src\entity_metrics.h" />
     <ClInclude Include="src\entity_station.h" />
+    <ClInclude Include="src\net_request.hpp" />
     <ClInclude Include="src\net_util.hpp" />
     <ClInclude Include="src\rest_constant.h" />
     <ClInclude Include="src\rest_cookbook.h" />

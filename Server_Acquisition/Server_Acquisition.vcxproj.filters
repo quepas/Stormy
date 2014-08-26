@@ -56,9 +56,6 @@
     <ClInclude Include="src\settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\net_request.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\net_get_requests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

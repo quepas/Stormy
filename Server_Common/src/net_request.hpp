@@ -1,10 +1,16 @@
 #pragma once
 
-#include "db_mongo_handler.hpp"
 #include "rest_uri_parser.h"
 
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/Net/HTTPRequestHandler.h>
+
+#define PREPARE_REQUEST(action_name, context_type, request_name)                                      \
+    class action_name {                                                                               \
+      public:                                                                                         \
+        static std::string PrepareResponse(common::rest::URIParser parsed_uri, context_type context); \
+      };                                                                                              \
+    typedef Request<action_name, context_type> request_name;
 
 namespace stormy {
   namespace net {

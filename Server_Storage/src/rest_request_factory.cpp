@@ -1,13 +1,6 @@
 #include "rest_request_factory.h"
 
-#include "rest_request_get_station.h"
-#include "rest_request_get_aggregate.h"
-#include "rest_request_get_meteo.h"
-#include "rest_request_get_info.h"
-#include "rest_request_get_metrics.h"
-#include "rest_request_get_export.h"
-#include "rest_request_get_operation.h"
-#include "rest_request_get_period.h"
+#include "net_get_requests.hpp"
 
 #include "rest_request_bad.h"
 #include "util.h"
@@ -47,34 +40,34 @@ HTTPRequestHandler* Factory::createRequestHandler(
   if (request.getMethod() == HTTPRequest::HTTP_GET) {
     if (IsMatch(URI, constant::station_request_pattern) ||
       IsMatch(URI, constant::station_info_request_pattern)) {
-        return new GetStation(URI, db_storage_);
+      return new net::GetStation(URI, { db_storage_, db_aggregation_ });
     } else if (IsMatch(URI, constant::aggregate_request_pattern) ||
       IsMatch(URI, constant::aggregate_station_uid_request_pattern) ||
       IsMatch(URI, constant::aggregate_station_period_request_pattern) ||
       IsMatch(URI, constant::aggregate_station_period_request_pattern +
       constant::uri_query_vars_pattern) ||
       IsMatch(URI, constant::aggregate_station_period_time_request_pattern)) {
-        return new GetAggregate(URI, db_storage_, db_aggregation_);
+      return new net::GetAggregate(URI, { db_storage_, db_aggregation_ });
     } else if (IsMatch(URI, constant::meteo_request_pattern) ||      
       IsMatch(URI, constant::meteo_station_uid_request_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_request_pattern + 
       constant::uri_query_vars_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
-        return new GetMeteo(URI, db_storage_);
+      return new net::GetMeteo(URI, { db_storage_, db_aggregation_ });
     } else if (IsMatch(URI, constant::info_request_pattern)) {
-      return new GetInfo(db_storage_);
+      return new net::GetInfo(URI, { db_storage_, db_aggregation_ });
     } else if (IsMatch(URI, constant::metrics_request_pattern) ||
       IsMatch(URI, constant::metrics_info_request_pattern)) {
-        return new GetMetrics(URI, db_storage_);
+      return new net::GetMetrics(URI, { db_storage_, db_aggregation_ });
     } else if (IsMatch(URI, constant::export_request_pattern) ||
       IsMatch(URI, constant::export_station_uid_request_pattern) ||
       IsMatch(URI, constant::export_station_uid_request_pattern +
       constant::uri_query_vars_pattern)) {
-        return new GetExport(URI, db_storage_);
+      return new net::GetExport(URI, { db_storage_, db_aggregation_ });
     } else if (IsMatch(URI, constant::operation_request_pattern)) {
-      return new GetOperation(db_aggregation_);
+      return new net::GetOperation(URI,{ db_storage_, db_aggregation_ });
     } else if (IsMatch(URI, constant::period_request_pattern)) {
-      return new GetPeriod(db_aggregation_);
+      return new net::GetPeriod(URI, { db_storage_, db_aggregation_ });
     } else {
       return new common::rest::request::Bad(URI);
     }

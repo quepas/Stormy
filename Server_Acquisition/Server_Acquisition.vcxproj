@@ -98,7 +98,6 @@
     <ClInclude Include="src\acquisition_scheduler.hpp" />
     <ClInclude Include="src\acquisition_task.hpp" />
     <ClInclude Include="src\net_get_requests.hpp" />
-    <ClInclude Include="src\net_request.hpp" />
     <ClInclude Include="src\net_request_factory.hpp" />
     <ClInclude Include="src\settings.hpp" />
     <ClInclude Include="src\db_constant.hpp" />
