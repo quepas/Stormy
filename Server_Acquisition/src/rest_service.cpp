@@ -3,7 +3,8 @@
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocket.h>
 
-#include "rest_request_factory.h"
+#include "db_mongo_handler.h"
+#include "net_request_factory.h"
 
 using std::string;
 using std::vector;
@@ -44,7 +45,7 @@ int Service::main(const vector<string>& args)
 
   ServerSocket serverSocket(configuredPort);
   HTTPServer httpServer(
-    new request::Factory(),
+    new net::RequestFactory(db::MongoHandler::get()),
     serverSocket,
     new HTTPServerParams);
   httpServer.start();
