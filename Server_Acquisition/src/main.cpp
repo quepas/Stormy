@@ -21,21 +21,21 @@ int main(int argc, char** argv)
   // register Python-based parse scripts
   stormy::PyScriptStorage central_storage;
   central_storage.Push("AGHReader", new stormy::PyParseScript("./AGHReader.py"));
-  central_storage.Push("ECOCLIMA_MeteoParser", new stormy::PyParseScript("./ECOCLIMA_MeteoParser.py"));
+  //central_storage.Push("ECOCLIMA_MeteoParser", new stormy::PyParseScript("./ECOCLIMA_MeteoParser.py"));
   central_storage.Push("StacjameteoReader", new stormy::PyParseScript("./StacjameteoReader.py"));
 
   auto& db_handler = stormy::db::MongoHandler::get();
   db_handler.set_expiration_seconds(3600 * 72);
-  db_handler.clearStationsData();
-  db_handler.InsertStationsData(station_settings);
-  db_handler.RemoveMetrics();
+  db_handler.ClearStations();
+  db_handler.InsertStations(station_settings);
+  db_handler.ClearMetrics();
   db_handler.InsertMetrics(metrics_settings);
 
   stormy::acquisition::Scheduler acqSecheduler(central_storage);
   acqSecheduler.Schedule(station_settings);
 
-  /*stormy::common::db::expiration::Engine expiration_engine(dbHandler);
-  expiration_engine.ScheduleEverySeconds(3600); */
+  stormy::common::db::expiration::Engine expiration_engine(db_handler);
+  expiration_engine.ScheduleEverySeconds(3600);
 
   stormy::net::HTTPServer httpServer(db_handler, 8080);
   httpServer.run(argc, argv);
