@@ -15,6 +15,7 @@ int main(int argc, char** argv)
 {
   std::cout << "==== Aqcuisition started. ====" << std::endl;
 
+  stormy::SetupLoggers();
   auto station_settings = stormy::LoadStationSettings("config/meteo_stations.json");
   auto metrics_settings = stormy::LoadMetricsSettings("config/meteo_metrics.json");
 

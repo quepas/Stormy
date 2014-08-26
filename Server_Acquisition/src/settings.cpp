@@ -1,14 +1,18 @@
 #include "settings.hpp"
 
+#include <Poco/AutoPtr.h>
 #include <Poco/Exception.h>
 #include <Poco/Format.h>
 #include <Poco/Logger.h>
+#include <Poco/WindowsConsoleChannel.h>
 #include <Poco/Util/JSONConfiguration.h>
 
+using Poco::AutoPtr;
 using Poco::Exception;
 using Poco::format;
 using Poco::NotFoundException;
 using Poco::Logger;
+using Poco::WindowsColorConsoleChannel;
 using Poco::Util::JSONConfiguration;
 using std::string;
 using std::to_string;
@@ -89,6 +93,13 @@ MetricsSettings LoadMetricsSettings(const string& file_path)
     logger_.error(exception.displayText());
   }
   return settings;
+}
+
+void SetupLoggers()
+{
+  AutoPtr<WindowsColorConsoleChannel> channel(new WindowsColorConsoleChannel);
+  Logger::root().setChannel(channel);
+  logger_.setChannel(channel);
 }
 
 }

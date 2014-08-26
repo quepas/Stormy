@@ -28,6 +28,7 @@ typedef std::vector<MetricsSetting> MetricsSettings;
 
 StationSettings LoadStationSettings(const std::string& file_path);
 MetricsSettings LoadMetricsSettings(const std::string& file_path);
+void SetupLoggers();
 
 }
 // ~~ stormy::
