@@ -22,17 +22,17 @@ using std::vector;
 namespace stormy {
   namespace net {
 
-string GetStationAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& db_handler)
+string GetStationAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
 {
   auto path_segments = parsed_uri.getPathSegments();
   // api: /station
   if (path_segments.size() == 1) {
-    auto stations = db_handler.GetStations();
+    auto stations = db_context.db_handler.GetStations();
     return cookbook::PrepareStationUIDs(stations);
   }
   // api: /station/:station_uid
   else if (path_segments.size() == 2) {
-    auto station = db_handler.GetStationByUID(path_segments[1]);
+    auto station = db_context.db_handler.GetStationByUID(path_segments[1]);
     if (!station.uid.empty()) {
       return cookbook::PrepareStationInfo(station);
     }
@@ -43,7 +43,7 @@ string GetStationAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler&
   }
 }
 
-string GetMeteoAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& db_handler)
+string GetMeteoAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
 {
   auto& database_handler = db::MongoHandler::get();
   auto path_segments = parsed_uri.getPathSegments();
@@ -106,10 +106,10 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& d
   }
 }
 
-string GetMetricsAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& db_handler)
+string GetMetricsAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
 {
   auto path_segments = parsed_uri.getPathSegments();
-  auto metrics = db_handler.GetMetrics();
+  auto metrics = db_context.db_handler.GetMetrics();
 
   if (path_segments.size() == 1) {
     return cookbook::PrepareMetricsCodes(metrics);
@@ -131,7 +131,7 @@ string GetMetricsAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler&
   }
 }
 
-string GetInfoAction::PrepareResponse(URIParser parsed_uri, db::MongoHandler& db_handler)
+string GetInfoAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
 {
   return cookbook::PrepareServerInfo("Acquisition Server #1", "A", "UTC/GMT +1");
 }

@@ -1,5 +1,5 @@
 #include "net_request_factory.hpp"
-#include "net_request.hpp"
+#include "net_get_requests.hpp"
 #include "rest_request_bad.h"
 #include "rest_constant.h"
 #include "util.h"
