@@ -46,8 +46,7 @@ public:
     GetAllMeasureSetsForStation(std::string station_uid);
 
   bool RemoveMetrics();
-  bool InsertMetrics(
-    const std::vector<common::entity::Metrics>& metrics_vec);
+  bool InsertMetrics(const MetricsSettings& metrics);
   std::vector<common::entity::Metrics> GetMetrics();
 
   const std::string& db_name() const { return db_name_; }

@@ -1,6 +1,7 @@
 #include "db_mongo_handler.h"
 
 #include <Poco/Exception.h>
+#include <Poco/String.h>
 #include <Poco/Types.h>
 #include <Poco/MongoDB/Cursor.h>
 #include <Poco/MongoDB/Document.h>
@@ -10,6 +11,7 @@
 #include "util.h"
 
 using Poco::Int64;
+using Poco::cat;
 using Poco::MongoDB::Cursor;
 using Poco::MongoDB::Connection;
 using Poco::MongoDB::Database;
@@ -174,19 +176,20 @@ vector<entity::Metrics> MongoHandler::GetMetrics()
   return result;
 }
 
-bool MongoHandler::InsertMetrics(const vector<entity::Metrics>& metric)
+bool MongoHandler::InsertMetrics(const MetricsSettings& metrics)
 {
-  if(!is_connected_ || metric.empty()) return false;
+  if (!is_connected_ || metrics.empty()) return false;
 
   auto insert_request = database_->createInsertRequest(constant::collection_metrics);
-  for (auto& metric : metric) {
+  for (auto& metric : metrics) {
+    string labels = cat(string(";"), metric.labels.begin(), metric.labels.end());
     insert_request->addNewDocument()
-      .add(constant::mongo_id, metric.code)
-      .add(constant::equivalents, metric.equivalents)
+      .add(constant::mongo_id, metric.name)
       .add(constant::type, metric.type)
       .add(constant::unit, metric.unit)
       .add(constant::format, metric.format)
-      .add(constant::is_meteo, metric.is_meteo);
+      .add(constant::is_meteo, metric.is_meteo)
+      .add(constant::equivalents, labels);
   }
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
