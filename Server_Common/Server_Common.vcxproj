@@ -45,6 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_27_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

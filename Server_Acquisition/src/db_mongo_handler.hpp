@@ -57,7 +57,7 @@ public:
 private:
   MongoHandler(std::string db_address = "localhost", unsigned int port = 27017);
   MongoHandler(const MongoHandler&)
-    : logger_(Poco::Logger::get("db/MongoHandler")) {}
+    : logger_(Poco::Logger::get("main")) {}
   MongoHandler& operator=(const MongoHandler&) {}
   ~MongoHandler();
 

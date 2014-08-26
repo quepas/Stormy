@@ -31,7 +31,7 @@ void Engine::ScheduleEverySeconds(time_t seconds_interval)
   schedule(expiration_task, 0, static_cast<long>(seconds_interval * 1000));
 
   logger_.information("[expiration/Engine] Scheduled for every " +
-    NumberFormatter::format(seconds_interval) + " minutes.");  
+    NumberFormatter::format(seconds_interval) + " seconds.");  
 }
 // ~~ stormy::common::db::expiration::Engine
 }}}}

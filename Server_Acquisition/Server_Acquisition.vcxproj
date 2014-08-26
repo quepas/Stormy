@@ -47,6 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(CPP_NETLIB_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_JSON);$(POCO_INCLUDE_MONGODB);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_27_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Release;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -82,7 +83,6 @@
   <ItemGroup>
     <ClCompile Include="src\acquisition_scheduler.cpp" />
     <ClCompile Include="src\acquisition_task.cpp" />
-    <ClCompile Include="src\acquisition_util.cpp" />
     <ClCompile Include="src\db_mongo_handler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\net_get_requests.cpp" />
@@ -97,7 +97,6 @@
   <ItemGroup>
     <ClInclude Include="src\acquisition_scheduler.hpp" />
     <ClInclude Include="src\acquisition_task.hpp" />
-    <ClInclude Include="src\acquisition_util.hpp" />
     <ClInclude Include="src\net_get_requests.hpp" />
     <ClInclude Include="src\net_request.hpp" />
     <ClInclude Include="src\net_request_factory.hpp" />

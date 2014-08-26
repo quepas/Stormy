@@ -21,9 +21,6 @@
     <ClCompile Include="src\acquisition_task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\acquisition_util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\db_mongo_handler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,9 +72,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\db_constant.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\acquisition_util.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\acquisition_task.hpp">
