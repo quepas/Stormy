@@ -5,9 +5,12 @@
 #include <boost/algorithm/string.hpp>
 #include <Poco/MD5Engine.h>
 #include <Poco/NumberFormatter.h>
+#include <Poco/NumberParser.h>
 #include <typeinfo>
 #include <cctype>
 
+using boost::replace_all;
+using boost::trim;
 using boost::is_any_of;
 using boost::lexical_cast;
 using boost::bad_lexical_cast;
@@ -18,6 +21,7 @@ using boost::to_lower;
 using std::string;
 using std::vector;
 using std::isdigit;
+using Poco::NumberParser;
 using Poco::MD5Engine;
 
 namespace stormy {
@@ -50,6 +54,21 @@ bool IsNumeric(string text)
 {
   regex numberRegex(numeric_pattern);
   return text.empty() ? false : regex_match(text, numberRegex);
+}
+
+bool TryExtractFirstNumeric(string text, double& out_value)
+{
+  vector<string> splited;
+  trim(text);
+  replace_all(text, ",", ".");
+  regex regex("-?[0-9]+([.][0-9]+)?");
+  smatch match;
+  if (regex_search(text, match, regex)) {
+    out_value = NumberParser::parseFloat(match[0]);
+    return true;
+  }
+  out_value = 0.0;
+  return false;
 }
 
 string MD5(string text)
@@ -116,5 +135,16 @@ time_t MakeUTCIfPossible(time_t time)
   // TODO: fix this  
   return (time > 3600) ? (time - 3600) : time;
 }
-// ~~ stormy::common::util
+
+time_t SecondsToMiliseconds(time_t seconds)
+{
+  return (seconds > 0) ? seconds * 1000 : 0;
+}
+
+time_t MinutesToMiliseconds(time_t minutes)
+{
+  return SecondsToMiliseconds(minutes * 60);
+}
+
 }}
+// ~~ stormy::common::util

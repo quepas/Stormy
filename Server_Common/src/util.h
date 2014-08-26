@@ -22,6 +22,7 @@ namespace stormy {
 
 double ToDouble(std::string number);
 bool IsNumeric(std::string number);
+bool TryExtractFirstNumeric(std::string text, double& out_value);
 std::string MD5(std::string text);
 bool IsHexMD5(std::string text);
 std::string ExtractMD5(std::string text);
@@ -34,6 +35,8 @@ bool IsDate(std::string date);  // YYYY-MM-DD
 bool IsTime(std::string time);  // HH:MM
 std::time_t LocaltimeNow();
 std::time_t MakeUTCIfPossible(std::time_t time);
+std::time_t MinutesToMiliseconds(std::time_t minutes);
+std::time_t SecondsToMiliseconds(std::time_t seconds);
 
 // const
 const std::string numeric_pattern = "-?[0-9]*([.][0-9]+)?";

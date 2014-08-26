@@ -1,7 +1,7 @@
 #include "acquisition_scheduler.hpp"
 
 #include "acquisition_task.hpp"
-#include "acquisition_util.hpp"
+#include "util.h"
 
 #include <Poco/Logger.h>
 
@@ -28,7 +28,7 @@ void Scheduler::Schedule(StationSetting station)
   auto parse_script = storage_.Fetch(station.parse_script);
   if (parse_script != nullptr) {
     schedule(new Task(station, parse_script), 0,
-      static_cast<long>(util::SecondsToMiliseconds(station.update_time)));
+      static_cast<long>(SecondsToMiliseconds(station.update_time)));
   }
   else {
     Logger::get("acquisition/Scheduler")
