@@ -4,14 +4,17 @@
   <PropertyGroup Label="LibrariesPaths">
     <!-- Set this to your own libraries path -->
     <STORMY_COMMON>$(SolutionDir)\Server_Common</STORMY_COMMON>
-    
-    <SOCI>D:\Programowanie\Biblioteki\soci-3.2.2</SOCI>
-    <POSTGRESQL>C:\Program Files (x86)\PostgreSQL\9.3</POSTGRESQL>
-    <CATCH>D:\Programowanie\Biblioteki\Tidy\catch</CATCH>
-
+    <!-- PostgreSQL -->
+    <POSTGRESQL_LIB>C:\Program Files (x86)\PostgreSQL\9.3\lib</POSTGRESQL_LIB>
+    <POSTGRESQL_INCLUDE>C:\Program Files (x86)\PostgreSQL\9.3\include</POSTGRESQL_INCLUDE>
+    <!-- Temporary -->
+    <MONGO_DB_DRIVER_LIB>D:\Programowanie\Biblioteki\Tidy\mongo-cxx-driver_vc2013\build\install\lib</MONGO_DB_DRIVER_LIB>
+    <MONGO_DB_DRIVER_INCLUDE>D:\Programowanie\Biblioteki\Tidy\mongo-cxx-driver_vc2013\build\install\include</MONGO_DB_DRIVER_INCLUDE>
     <!-- Boost C++ library -->
     <BOOST_LIB_32>D:\Programowanie\Biblioteki\Tidy\boost_1_55_0_vc2013\lib32-msvc-12.0</BOOST_LIB_32>
     <BOOST_INCLUDE>D:\Programowanie\Biblioteki\Tidy\boost_1_55_0_vc2013</BOOST_INCLUDE>
+    <!-- Catch C++ unit test library -->
+    <CATCH_INCLUDE>D:\Programowanie\Biblioteki\Tidy\catch\include</CATCH_INCLUDE>
     <!-- CppNetlib library -->
     <CPP_NETLIB_LIB>D:\Programowanie\Biblioteki\Tidy\cpp-netlib-0.11.0_vc2013_x86\lib</CPP_NETLIB_LIB>
     <CPP_NETLIB_INCLUDE>D:\Programowanie\Biblioteki\Tidy\cpp-netlib-0.11.0_vc2013_x86</CPP_NETLIB_INCLUDE>
@@ -21,15 +24,20 @@
     <!-- Poco C++ library -->
     <POCO_ALL_LIB>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\lib</POCO_ALL_LIB>
     <POCO_INCLUDE_FOUNDATION>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\Foundation\include</POCO_INCLUDE_FOUNDATION>
+    <POCO_INCLUDE_JSON>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\JSON\include</POCO_INCLUDE_JSON>
     <POCO_INCLUDE_MONGODB>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\MongoDB\include</POCO_INCLUDE_MONGODB>
     <POCO_INCLUDE_NET>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\Net\include</POCO_INCLUDE_NET>
     <POCO_INCLUDE_UTIL>D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\Util\include</POCO_INCLUDE_UTIL>
+    <!-- SOCI SQL library -->
+    <SOCI_LIB>D:\Programowanie\Biblioteki\Tidy\soci-3.2.2_vc2013\lib\Release</SOCI_LIB>
+    <SOCI_INCLUDE>D:\Programowanie\Biblioteki\Tidy\soci-3.2.2_vc2013\core</SOCI_INCLUDE>
+    <SOCI_BACKENDS_INCLUDE>D:\Programowanie\Biblioteki\Tidy\soci-3.2.2_vc2013\backends</SOCI_BACKENDS_INCLUDE>
     <!-- YAML C++ library -->
     <YAML_CPP_LIB>D:\Programowanie\Biblioteki\Tidy\yaml-cpp-0.5.1_vc2013\lib</YAML_CPP_LIB>
     <YAML_CPP_INCLUDE>D:\Programowanie\Biblioteki\Tidy\yaml-cpp-0.5.1_vc2013\include</YAML_CPP_INCLUDE>
     <!-- Python libraries -->
-    <PYTHON_27_LIB>D:\Programy\Python2.7.8\libs</PYTHON_27_LIB>
-    <PYTHON_27_INCLUDE>D:\Programy\Python2.7.8\include</PYTHON_27_INCLUDE>
+    <PYTHON_27_LIB>D:\Programy\Python274\libs</PYTHON_27_LIB>
+    <PYTHON_27_INCLUDE>D:\Programy\Python274\include</PYTHON_27_INCLUDE>
     <PYTHON_34_LIB>D:\Programy\Python331\libs</PYTHON_34_LIB>
     <PYTHON_34_INCLUDE>D:\Programy\Python331\include</PYTHON_34_INCLUDE>
     <!-- End -->
@@ -37,6 +45,12 @@
   <PropertyGroup Label="LibrariesNames">
     <!-- Set libraries names for Linker->Input->Additional Dependecies -->
     <CPP_NETLIB_LIB_NAMES>cppnetlib-urid.lib;cppnetlib-client-connectionsd.lib</CPP_NETLIB_LIB_NAMES>
-    <YAML_CPP_LIB_NAMES>libyaml-cppmdd.lib</YAML_CPP_LIB_NAMES>
+    <JSON_CPP_LIB_NAMES>jsoncpp.lib</JSON_CPP_LIB_NAMES>
+    <POSTGRESQL_LIB_NAMES>libpq.lib</POSTGRESQL_LIB_NAMES>
+    <SOCI_LIB_NAMES>libsoci_core_3_2.lib;libsoci_postgresql_3_2.lib</SOCI_LIB_NAMES>
+    <YAML_CPP_LIB_NAMES>libyaml-cppmd.lib</YAML_CPP_LIB_NAMES>
+  </PropertyGroup>
+  <PropertyGroup Label="DebuggerEnv">
+    <DEBUGGER_ENV_PATH>PATH=D:\Programowanie\Biblioteki\Tidy\poco-1.5.3-all_2013\bin;D:\Programowanie\Biblioteki\Tidy\boost_1_55_0_vc2013\lib32-msvc-12.0;%PATH%</DEBUGGER_ENV_PATH>
   </PropertyGroup>
 </Project>

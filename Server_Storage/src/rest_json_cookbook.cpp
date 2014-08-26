@@ -5,6 +5,8 @@
 
 // TODO: use something lightest for creating json
 #include <boost/algorithm/string.hpp>
+#include <WinSock2.h>
+#include <windows.h>
 #include <mongo/client/dbclient.h>
 #include <Poco/NumberFormatter.h>
 

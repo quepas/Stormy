@@ -36,9 +36,6 @@
     <ClCompile Include="src\aggregation_engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\aggregation_py_operation_mgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\aggregation_scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

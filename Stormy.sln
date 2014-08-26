@@ -11,8 +11,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Acquisition", "Serve
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Common_Test", "Server_Common_Test\Server_Common_Test.vcxproj", "{EA635ED1-E5B7-4050-992F-2C0181F2B267}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4AA0A558-935C-4203-94AC-2145B9C7386D} = {4AA0A558-935C-4203-94AC-2145B9C7386D}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server_Storage", "Server_Storage\Server_Storage.vcxproj", "{2E3BF135-2954-4280-9C1D-F6DA03A7D289}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4AA0A558-935C-4203-94AC-2145B9C7386D} = {4AA0A558-935C-4203-94AC-2145B9C7386D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

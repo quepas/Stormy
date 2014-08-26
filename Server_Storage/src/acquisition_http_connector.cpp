@@ -1,5 +1,6 @@
 #include "acquisition_http_connector.h"
 
+#include <memory>
 #include <Poco/Net/HTTPClientSession.h>
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>

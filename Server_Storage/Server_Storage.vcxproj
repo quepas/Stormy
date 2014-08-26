@@ -33,12 +33,22 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Library_paths.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Library_paths.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(POSTGRESQL_INCLUDE);$(PYTHON_27_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(SOCI_INCLUDE);$(SOCI_BACKENDS_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST_LIB_32);$(POCO_ALL_LIB);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(POSTGRESQL_INCLUDE);$(PYTHON_27_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(SOCI_INCLUDE);$(SOCI_BACKENDS_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Release;$(BOOST_LIB_32);$(JSON_CPP_LIB);$(POCO_ALL_LIB);$(POSTGRESQL_LIB);$(SOCI_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -56,11 +66,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>BOOST_ALL_DYN_LINK;STATIC_LIBMONGOCLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>ws2_32.lib;Server_Common.lib;$(JSON_CPP_LIB_NAMES);$(YAML_CPP_LIB_NAMES);$(POSTGRESQL_LIB_NAMES);$(SOCI_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -71,7 +85,6 @@
     <ClCompile Include="src\acquisition_task.cpp" />
     <ClCompile Include="src\aggregation_config.cpp" />
     <ClCompile Include="src\aggregation_engine.cpp" />
-    <ClCompile Include="src\aggregation_py_operation_mgr.cpp" />
     <ClCompile Include="src\aggregation_scheduler.cpp" />
     <ClCompile Include="src\aggregation_task_base.cpp" />
     <ClCompile Include="src\aggregation_task_factory.cpp" />

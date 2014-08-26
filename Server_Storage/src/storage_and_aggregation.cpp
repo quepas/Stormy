@@ -14,13 +14,11 @@
 
 #include "util.h"
 #include "db_config.h"
-#include "py_executor.h"
 
 using namespace stormy;
 using namespace Poco;
 
 int main(int argc, char** argv) {
-  PY_EXECUTOR_INIT();
 	AutoPtr<WindowsColorConsoleChannel> channel(new WindowsColorConsoleChannel);  
 	Logger::root().setChannel(channel);
 	Logger& logger = Logger::get("aggregation_main_thread");  

@@ -71,13 +71,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STORMY_OLD;_WIN32_WINDOWS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_ROUND;STORMY_OLD;_WIN32_WINDOWS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libyaml-cppmd.lib;Server_Common.lib;$(CPP_NETLIB_LIB_NAMES);$(POCO_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Server_Common.lib;$(CPP_NETLIB_LIB_NAMES);$(POCO_LIB_NAMES);$(YAML_CPP_LIB_NAMES);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

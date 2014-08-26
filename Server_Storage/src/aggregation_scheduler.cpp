@@ -1,6 +1,7 @@
 #include "aggregation_scheduler.h"
 
 #include <map>
+#include <Poco/Timestamp.h>
 #include <Poco/NumberFormatter.h>
 #include "aggregation_task_initial.h"
 #include "aggregation_task_regular.h"
@@ -10,6 +11,7 @@ using std::string;
 using std::vector;
 using Poco::Logger;
 using Poco::NumberFormatter;
+using Poco::Timestamp;
 
 namespace stormy {
   namespace aggregation {
@@ -72,7 +74,7 @@ void Scheduler::ScheduleAsInitialTask(entity::Task task_entity)
   auto scheduled_task = factory_
     .CreateDynamicTask(task::INITIAL, task_entity);
   scheduled_tasks_.push_back(scheduled_task);
-  schedule(scheduled_task, 0);
+  schedule(scheduled_task, Timestamp(0));
 }
 
 void Scheduler::ScheduleAsRegularTask(entity::Task task_entity)
