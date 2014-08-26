@@ -1,0 +1,242 @@
+{
+    "metrics": [
+        {
+            "name": "airTemperature",
+            "type": "number",
+            "unit": "celsius",
+            "labels": [
+                "Temperatura powietrza",
+                "Temperatura"
+            ]
+        },
+        {
+            "name": "perceptibleTemperature",
+            "type": "number",
+            "unit": "celsius",
+            "labels": [
+                "Temperatura odczuwalna"
+            ]
+        },
+        {
+            "name": "soilTemperature",
+            "type": "number",
+            "unit": "celsius",
+            "labels": [
+                "Temp. przy gruncie"
+            ]
+        },
+        {
+            "name": "airHumidity",
+            "type": "number",
+            "unit": "percent",
+            "labels": [
+                "Wilgotność powietrza",
+                "Wilgotność"
+            ]
+        },
+        {
+            "name": "wettingOfLeaves",
+            "type": "number",
+            "unit": "unknown",
+            "labels": [
+                "Zwilżenie liścia"
+            ]
+        },
+        {
+            "name": "atmosphericPressure",
+            "type": "number",
+            "unit": "hectopascal",
+            "labels": [
+                "Ciśnienie atmosferyczne",
+                "Ciśnienie"
+            ]
+        },
+        {
+            "name": "barometricPressure",
+            "type": "number",
+            "unit": "hectopascal",
+            "labels": [
+                "Ciśnienie barometryczne"
+            ]
+        },
+        {
+            "name": "windSpeed",
+            "type": "number",
+            "unit": "meter_per_second",
+            "labels": [
+                "Prędkość wiatru",
+                "Kierunek i prędkość wiatru"
+            ]
+        },
+        {
+            "name": "windSpeedMax",
+            "type": "number",
+            "unit": "meter_per_second",
+            "labels": [
+                "Maksymalna prędkość wiatru"
+            ]
+        },
+        {
+            "name": "windDirectionAngle",
+            "type": "number",
+            "unit": "angle",
+            "labels": [
+                "Kąt kierunku wiatru",
+                "Kierunek wiatru"
+            ]
+        },
+        {
+            "name": "windDirection",
+            "type": "number",
+            "unit": "direction",
+            "labels": [
+                "Kierunek wiatru"
+            ]
+        },
+        {
+            "name": "windSpeedMedium",
+            "type": "number",
+            "unit": "meter_per_second",
+            "labels": [
+                "Prędkość średnia"
+            ]
+        },
+        {
+            "name": "uvRadiation",
+            "type": "number",
+            "unit": "none",
+            "labels": [
+                "Promieniowanie UV",
+                "Promieniowanie UV (tylko w dzień)"
+            ]
+        },
+        {
+            "name": "solarRadiation",
+            "type": "number",
+            "unit": "watt_per_square_meter",
+            "labels": [
+                "Promieniowanie słoneczne",
+                "Promieniowanie słoneczne (tylko w dzień)"
+            ]
+        },
+        {
+            "name": "dewPoint",
+            "type": "number",
+            "unit": "celsius",
+            "labels": [
+                "Punkt rosy"
+            ]
+        },
+        {
+            "name": "momentDrop",
+            "type": "number",
+            "unit": "millimetre_per_hour",
+            "labels": [
+                "Opad chwilowy",
+                "Aktualny opad deszczu"
+            ]
+        },
+        {
+            "name": "stormyDrop",
+            "type": "number",
+            "unit": "millimetre",
+            "labels": [
+                "Opad burzowy"
+            ]
+        },
+        {
+            "name": "dropDaily",
+            "type": "number",
+            "unit": "millimetre",
+            "labels": [
+                "Opad",
+                "Dzisiejszy opad deszczu",
+                "Opad 24h"
+            ]
+        },
+        {
+            "name": "dropMonthly",
+            "type": "number",
+            "unit": "millimetre",
+            "labels": [
+                "Opad miesięczny"
+            ]
+        },
+        {
+            "name": "dropYearly",
+            "type": "number",
+            "unit": "millimetre",
+            "labels": [
+                "Opad roczny"
+            ]
+        },
+        {
+            "name": "hail",
+            "type": "number",
+            "unit": "hits_per_square_centimeter",
+            "labels": [
+                "Grad"
+            ]
+        },
+        {
+            "name": "dropIntensity",
+            "type": "number",
+            "unit": "millimetre_per_hour",
+            "labels": [
+                "Intensywność opadu"
+            ]
+        },
+        {
+            "name": "hailIntensity",
+            "type": "number",
+            "unit": "hits_per_square_centimeter_per_hour",
+            "labels": [
+                "Intensywność gradu"
+            ]
+        },
+        {
+            "name": "tendency",
+            "type": "text",
+            "unit": "free-form",
+            "labels": [
+                "Tendencja"
+            ]
+        },
+        {
+            "name": "THW",
+            "type": "number",
+            "unit": "celsius",
+            "labels": [
+                "Współczynnik THW"
+            ]
+        },
+        {
+            "name": "heatIndex",
+            "type": "number",
+            "unit": "celsius",
+            "labels": [
+                "Indeks ciepła"
+            ]
+        },
+        {
+            "name": "date",
+            "type": "text",
+            "unit": "date",
+            "format": "YYYY-MM-DD",
+            "labels": [
+                "Data"
+            ],
+            "is_meteo": false
+        },
+        {
+            "name": "time",
+            "type": "text",
+            "unit": "time",
+            "format": "HH:MM",
+            "labels": [
+                "Czas"
+            ],
+            "is_meteo": false
+        }
+    ]
+}
