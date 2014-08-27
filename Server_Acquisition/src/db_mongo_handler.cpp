@@ -35,7 +35,7 @@ namespace stormy {
   namespace db {
 
 MongoHandler::MongoHandler(string dbAddress /*= "localhost"*/, unsigned int port /*= 27017*/)
-  : logger_(Logger::get("db/MongoHandler"))
+  : logger_(Logger::get("main"))
 {
   if(!dbAddress.empty())
     Connect("test2", dbAddress, port);
@@ -176,7 +176,7 @@ bool MongoHandler::InsertMetrics(const MetricsSettings& metrics)
       .add(UNIT, metric.unit)
       .add(FORMAT, metric.format)
       .add(IS_METEO, metric.is_meteo)
-      .add(labels, labels);
+      .add(LABELS, labels);
   }
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
