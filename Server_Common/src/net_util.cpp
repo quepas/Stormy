@@ -13,12 +13,15 @@ using Poco::URI;
 using Poco::StreamCopier;
 using Poco::Net::HTTPStreamFactory;
 using std::string;
+using std::to_string;
 using std::unique_ptr;
 
 namespace stormy {
   namespace net {
 
-string FetchWebsite(string website_url)
+Logger& logger = Logger::get("main");
+
+string FetchWebsite(const string& website_url)
 {
   string content;
   try {
@@ -28,9 +31,26 @@ string FetchWebsite(string website_url)
     StreamCopier::copyToString(*stream, content);
   }
   catch (const Exception& exception) {
-    Logger::get("net/util").error(exception.displayText());
+    logger.error(exception.displayText());
   }
   return content;
+}
+
+string PrepareUrlResource(const string& resource)
+{
+  if (resource.empty()) return resource;
+  if (resource[0] != '/') return "/" + resource;
+  return resource;
+}
+
+string PrepareHttpUrl(const string& host, const string& resource)
+{
+  return "http://" + host + PrepareUrlResource(resource);
+}
+
+string PrepareHttpUrl(const string& host, unsigned port, const string& resource)
+{
+  return "http://" + host + ":" + to_string(port) + PrepareUrlResource(resource);
 }
 
 }}

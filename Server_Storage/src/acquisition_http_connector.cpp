@@ -1,37 +1,26 @@
 #include "acquisition_http_connector.h"
 
-#include <memory>
-#include <Poco/Net/HTTPClientSession.h>
-#include <Poco/Net/HTTPRequest.h>
-#include <Poco/Net/HTTPResponse.h>
-#include <Poco/StreamCopier.h>
-#include <Poco/NumberFormatter.h>
 #include <Poco/Timespan.h>
 
 #include "util.h"
+#include "net_util.hpp"
 #include "acquisition_json_util.h"
 
 using namespace stormy::common;
 
-using std::istream;
 using std::string;
-using std::shared_ptr;
+using std::to_string;
 using std::vector;
 using std::map;
 using std::time_t;
-using Poco::Net::HTTPClientSession;
-using Poco::Net::HTTPRequest;
-using Poco::Net::HTTPResponse;
 using Poco::Logger;
-using Poco::NumberFormatter;
-using Poco::StreamCopier;
 using Poco::Timespan;
 
 namespace stormy {
   namespace acquisition {
 
-HTTPConnector::HTTPConnector(const string host, const uint32_t port)
-  : logger_(Logger::get("aggregation/HTTPConnector")),
+HTTPConnector::HTTPConnector(const string& host, unsigned port)
+  : logger_(Logger::get("main")),
     host_(host),
     port_(port)
 {
@@ -40,34 +29,18 @@ HTTPConnector::HTTPConnector(const string host, const uint32_t port)
 
 string HTTPConnector::FetchDataAsStringAt(string resource) const
 {
-	string content;
-	TRY				
-	HTTPClientSession session;
-	session.setHost(host_);
-	session.setPort(port_);	
-	session.setTimeout(Timespan(5000));
-	HTTPRequest request(HTTPRequest::HTTP_GET, resource);
-	session.sendRequest(request);		
-
-	HTTPResponse response;
-	istream& receiveStream = session.receiveResponse(response);
-	StreamCopier::copyToString(receiveStream, content);	
-	CATCH_MSG(string("[acquisition/HTTPConnector] Exception while reaching ")
-		+ host_ + ":" + NumberFormatter::format(port_) + resource)
-	return content;
+  string resource_url = net::PrepareHttpUrl(host_, port_, resource);
+  return net::FetchWebsite(resource_url);
 }
 
-vector<entity::Station>
-  HTTPConnector::FetchStations() const
+vector<entity::Station> HTTPConnector::FetchStations() const
 {
   vector<entity::Station> stations;
-	string resource = "/station";
-	string json_response = FetchDataAsStringAt(resource);
-  auto stations_uids = 
-    json::ExtractSimpleListElements(json_response, "stations");
-
-  for (auto it = stations_uids.begin(); it != stations_uids.end(); ++it) {
-    resource = "/station/" + *it;
+  string resource = "/station";
+  string json_response = FetchDataAsStringAt(resource);
+  auto stations_uids = json::ExtractSimpleListElements(json_response, "stations");
+  for (auto& uid : stations_uids) {
+    resource = "/station/" + uid;
     json_response = FetchDataAsStringAt(resource);
     stations.push_back(json::ExtractStation(json_response));
   }
@@ -77,27 +50,24 @@ vector<entity::Station>
 map<time_t, vector<entity::Measurement>>
   HTTPConnector::FetchMeasureSets(string station_uid, time_t from_time) const
 {
-  string resource = "/meteo/" + station_uid + "?from=" + 
-    NumberFormatter::format(from_time);
-	string json_response = FetchDataAsStringAt(resource);
-	auto measurements = json::ExtractMeasureSets(json_response, station_uid);
-	return measurements;
+  string resource = "/meteo/" + station_uid + "?from=" + to_string(from_time);
+  string json_response = FetchDataAsStringAt(resource);
+  return json::ExtractMeasureSets(json_response, station_uid);
 }
 
 vector<entity::Metrics> HTTPConnector::FetchMetrics() const
 {
-	vector<entity::Metrics> metrics;
+  vector<entity::Metrics> metrics;
   string resource = "/metrics";
-	string json_response = FetchDataAsStringAt(resource);
-  auto metrics_codes = 
-    json::ExtractSimpleListElements(json_response, "metrics");
-
-  for (auto it = metrics_codes.begin(); it != metrics_codes.end(); ++it) {
-    resource = "/metrics/" + *it;
+  string json_response = FetchDataAsStringAt(resource);
+  auto metrics_codes = json::ExtractSimpleListElements(json_response, "metrics");
+  for (auto& code : metrics_codes) {
+    resource = "/metrics/" + code;
     json_response = FetchDataAsStringAt(resource);
     metrics.push_back(json::ExtractMetrics(json_response));
-  }	
+  }
   return metrics;
 }
-// ~~ stormy::acquisition::HTTPConnector
+
 }}
+// ~~ stormy::acquisition::HTTPConnector

@@ -17,8 +17,8 @@ namespace stormy {
 
 class HTTPConnector
 {
-public:    
-  HTTPConnector(const std::string host, const uint32_t port);
+public:
+  HTTPConnector(const std::string& host, unsigned port);
   ~HTTPConnector() {};
 
   std::string FetchDataAsStringAt(std::string resource) const;
@@ -30,7 +30,8 @@ public:
 private:
   Poco::Logger& logger_;
   const std::string host_;
-  const uint32_t port_;
+  const unsigned port_;
 };
-// ~~ stormy::acquisition::HTTPConnector
+
 }}
+// ~~ stormy::acquisition::HTTPConnector
