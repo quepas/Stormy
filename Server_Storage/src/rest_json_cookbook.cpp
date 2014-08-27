@@ -30,7 +30,7 @@ string Cookbook::PrepareServerInfo(const vector<entity::Metrics>& metrics,
   const std::vector<aggregation::entity::Period>& periods)
 {
   string content = "{" + constant::json_server + "{";
-  content += WrapAsJSONString(constant::json_type) + ":";
+  content += WrapAsJSONString(constant::TYPE) + ":";
   content += WrapAsJSONString(constant::json_storage_and_aggregation_server_type) + "},";
   content += WrapAsJSONString(constant::json_available_metrics_marker) + ":";
   content += PrepareMetricsSequence(metrics) + ",";  
@@ -57,11 +57,11 @@ string Cookbook::WrapAsJSONString(const string& text)
 string Cookbook::PrepareStation(const entity::Station& station)
 {
   BSONObjBuilder bson_builder;
-  bson_builder.append(WrapAsJSONString(constant::json_uid), station.uid);
-  bson_builder.append(WrapAsJSONString(constant::json_name), station.name);
-  bson_builder.append(WrapAsJSONString(constant::json_url), station.url);
+  bson_builder.append(WrapAsJSONString(constant::UID), station.uid);
+  bson_builder.append(WrapAsJSONString(constant::NAME), station.name);
+  bson_builder.append(WrapAsJSONString(constant::URL), station.url);
   bson_builder.append(
-    WrapAsJSONString(constant::json_refresh_time), station.refresh_time);
+    WrapAsJSONString(constant::UPDATE_TIME), station.refresh_time);
   return bson_builder.obj().toString();
 }
 
@@ -102,7 +102,7 @@ string Cookbook::PrepareTypedMeasurement(const map<time_t, string>& measurements
   content.append(NumberFormatter::format(measurements.size()) + ",");
   content.append(constant::json_times);
   content.append("[" + time_content + "],");
-  content.append(constant::json_measurements);
+  content.append(constant::METEO);
   content.append("[" + data_content + "]}");
   return content;  
 }
@@ -124,7 +124,7 @@ string Cookbook::PreparePeriodSequence(const vector<aggregation::entity::Period>
   string sequence = "[";
   for (auto it = periods.begin(); it != periods.end(); ++it) {
     string element = "{";
-    element += constant::json_name;
+    element += constant::NAME;
     element += WrapAsJSONString(it->name) + ",";
     element += constant::json_seconds;
     element += NumberFormatter::format(it->seconds);

@@ -79,7 +79,7 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_
     }
     return cookbook::PrepareStationUIDsWithAny(
       stations_with_any_meteo,
-      constant::json_measurements);
+      constant::METEO);
   }
   // api: /meteo/:station_uid
   else if (path_segments.size() == 2) {
@@ -266,7 +266,7 @@ string GetExportAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db
     }
     return cookbook::PrepareStationUIDsWithAny(
       stations_with_any_meteo,
-      constant::json_measurements);
+      constant::METEO);
   }
   // api: /export/:station_uid
   else if (path_segments.size() == 2) {

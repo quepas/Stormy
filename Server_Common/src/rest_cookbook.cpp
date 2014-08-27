@@ -1,10 +1,10 @@
 #include "rest_cookbook.h"
-
+#include "util.h"
 #include "rest_constant.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include <Poco/NumberFormatter.h>
+#include <json/json.h>
 
 using boost::algorithm::join;
 using boost::lexical_cast;
@@ -16,11 +16,10 @@ using std::map;
 using std::mktime;
 using std::time_t;
 using std::vector;
-using Poco::NumberFormatter;
 
 namespace stormy {
   namespace common {
-    namespace rest {      
+    namespace rest {
       namespace cookbook {
 
 string PrepareError(
@@ -51,181 +50,128 @@ string WrapAsJSON(string content)
   return "{" + content + "}";
 }
 
+string ToStyledString(const Json::Value& value)
+{
+  Json::StyledWriter writer;
+  return writer.write(value);
+}
+
 string PrepareStationUIDs(const vector<entity::Station>& stations)
 {
-  vector<string> wrapped_station_uids;
-  for (auto it = stations.begin(); it != stations.end(); ++it) {
-    wrapped_station_uids.push_back(
-      WrapAsString(it->uid));
+  Json::Value root;
+  for (unsigned idx = 0; idx < stations.size(); ++idx) {
+    root[constant::STATION][idx] = stations[idx].uid;
   }
-  return
-    "{" + 
-      constant::json_stations +
-        WrapAsList(join(wrapped_station_uids, ",")) +
-    "}";
+  return ToStyledString(root);
 }
 
 string PrepareStationInfo(const entity::Station& station)
 {
-  string content = constant::json_station;
-  string station_info =  
-    constant::json_uid + WrapAsString(station.uid) + "," +
-    constant::json_name + WrapAsString(station.name) + "," +
-    constant::json_refresh_time + NumberFormatter::format(station.refresh_time) + "," +
-    constant::json_url + WrapAsString(station.url);
-  content += WrapAsJSON(station_info);
-  return WrapAsJSON(content);
+  Json::Value root;
+  root[constant::UID] = station.uid;
+  root[constant::NAME] = station.name;
+  root[constant::UPDATE_TIME] = station.refresh_time;
+  root[constant::URL] = station.url;
+  return ToStyledString(root);
 }
 
 std::string PrepareStationUIDsWithAny(const std::vector<entity::Station>& stations, std::string data_key)
 {
-  vector<string> station_uids;
-  string content = data_key;
-  for (auto it = stations.begin(); it != stations.end(); ++it) {
-    station_uids.push_back(WrapAsString(it->uid));
+  Json::Value root;
+  for (unsigned idx = 0; idx < stations.size(); ++idx) {
+    root[data_key][idx] = stations[idx].uid;
   }
-  content += WrapAsList(join(station_uids, ","));
-  return WrapAsJSON(content);
-}
-
-string PrepareMeteoCountPerStation(
-  const map<string, uint32_t>& uid_count_map)
-{
-  vector<string> prepared_pairs;
-  string content = constant::json_measurements;
-  for (auto it = uid_count_map.begin(); it != uid_count_map.end(); ++it) {
-    prepared_pairs.push_back(WrapAsJSON(      
-      constant::json_station_uid + WrapAsString(it->first) + "," +
-      constant::json_count + WrapAsString(it->second)
-    ));
-  }
-  content += WrapAsList(join(prepared_pairs, ","));
-  return WrapAsJSON(content);
-}
-
-string PrepareMeteoTimestamps(const vector<entity::Measurement>& measurements)
-{
-  vector<time_t> timestamps;
-  for (auto it = measurements.begin(); it != measurements.end(); ++it) {
-    auto timestamp = it->timestamp;
-    timestamps.push_back(mktime(&timestamp));
-  }
-  return PrepareMeteoTimestamps(timestamps);
+  return ToStyledString(root);
 }
 
 string PrepareMeteoTimestamps(const vector<time_t>& timestamps)
 {
-  vector<string> measurement_ids;
-  string content = constant::json_measurements;
-  for (auto it = timestamps.begin(); it != timestamps.end(); ++it) {
-    auto timestamp = *it;
-    measurement_ids.push_back(to_string(timestamp));
+  Json::Value root;
+  for (unsigned idx = 0; idx < timestamps.size(); ++idx) {
+    root[constant::METEO][idx] = to_string(timestamps[idx]);
   }
-  content += WrapAsList(join(measurement_ids, ","));
-  return WrapAsJSON(content);
+  return ToStyledString(root);
 }
 
 string PrepareMeteoSets(
-  const map<time_t, vector<entity::Measurement>>& ts_measure_sets_map)
+  const map<time_t, vector<entity::Measurement>>& measure_map)
 {
-  vector<string> measurement_sets;
-  string content = constant::json_measurements;
-  for (auto it = ts_measure_sets_map.begin(); it != ts_measure_sets_map.end(); ++it) {
-    measurement_sets.push_back(PrepareMeteoSet(it->first, it->second));
+  Json::Value root;
+  unsigned idx = 0;
+  for (auto it = measure_map.begin(); it != measure_map.end(); ++it) {
+    Json::Value meteo;
+    for (auto& entry : it->second) {
+      if (entry.is_numeric)
+        meteo[entry.code] = entry.value_number;
+      else
+        meteo[entry.code] = entry.value_text;
+    }
+    meteo[constant::TIMESTAMP] = to_string(it->first);
+    root[constant::METEO][idx++] = meteo;
   }
-  content += WrapAsList(join(measurement_sets, ","));
-  return WrapAsJSON(content);
+  return ToStyledString(root);
 }
 
-string PrepareMeteoSet(
-  time_t ts, 
-  const vector<entity::Measurement>& measure_set)
+string PrepareMetricsCodes(const vector<entity::Metrics>& metrics)
 {
-  vector<string> measure_pairs;
-  string content = constant::json_timestamp + to_string(ts) + ",";
-  for (auto it = measure_set.begin(); it != measure_set.end(); ++it) {
-    string row = WrapAsString(it->code) + ":";
-    if(it->is_numeric) {
-      row += NumberFormatter::format(it->value_number);
-    } else {
-      row += WrapAsString(it->value_text);
-    }
-    measure_pairs.push_back(row);
+  Json::Value root;
+  for (unsigned idx = 0; idx < metrics.size(); ++idx) {
+    root[constant::METRICS][idx] = metrics[idx].code;
   }
-  content += constant::json_data + WrapAsJSON(join(measure_pairs, ","));
-  return WrapAsJSON(content);
-}
-
-string PrepareMetricsCodes(const vector<entity::Metrics>& metrics_vec)
-{
-  vector<string> metrics_codes;
-  string content = constant::json_metrics;
-  for (auto it = metrics_vec.begin(); it != metrics_vec.end(); ++it) {
-    if (it->is_meteo) {
-      metrics_codes.push_back(WrapAsString(it->code));
-    }
-  }
-  content += WrapAsList(join(metrics_codes, ","));
-  return WrapAsJSON(content);
+  return ToStyledString(root);
 }
 
 string PrepareMetricsInfo(const entity::Metrics& metrics)
 {
-  vector<string> splitedEquivalents;
-  split(splitedEquivalents, metrics.equivalents, is_any_of(";,"));
+  Json::Value root;
+  root[constant::CODE] = metrics.code;
+  root[constant::TYPE] = metrics.type;
+  root[constant::UNIT] = metrics.unit;
+  root[constant::FORMAT] = metrics.format;
+  root[constant::IS_METEO] = metrics.is_meteo;
 
-  string content = constant::json_metrics;
-  string metrics_info =
-    constant::json_code + WrapAsString(metrics.code) + "," +
-    constant::json_equivalents + WrapAsString(splitedEquivalents[0]) + "," +
-    constant::json_type + WrapAsString(metrics.type) + "," +
-    constant::json_unit + WrapAsString(metrics.unit) + "," +
-    constant::json_format + WrapAsString(metrics.format);
-  content += WrapAsJSON(metrics_info);
-  return WrapAsJSON(content);
+  vector<string> labels;
+  split(labels, metrics.equivalents, is_any_of(";,"));
+  for (unsigned idx = 0; idx < labels.size(); ++idx) {
+    root[constant::LABELS][idx] = labels[idx];
+  }
+  return ToStyledString(root);
 }
 
 string PrepareServerInfo(string name, string type, string timezone)
 {
-  string content = constant::json_server;
-  time_t current_time = time(nullptr) + 3600;
+  Json::Value root;
+  root[constant::STATUS] = "OK"; // ? ;)
+  root[constant::NAME] = name;
+  root[constant::TYPE] = type;
+  root[constant::TIMEZONE] = timezone;
+  time_t current_time = LocaltimeNow();
   string str_time = asctime(gmtime(&current_time));
   str_time.pop_back();  // remove new line character
-  string server_info =
-    constant::json_status + WrapAsString("OK") + "," +
-    constant::json_name + WrapAsString(name) + "," +
-    constant::json_type + WrapAsString(type) + "," +
-    constant::json_timezone + WrapAsString(timezone) + "," +
-    constant::json_time + WrapAsString(str_time);
-  content += WrapAsJSON(server_info);
-  return WrapAsJSON(content);
+  root[constant::TIME_NOW] = str_time;
+  return ToStyledString(root);
 }
 
-string PreparePeriodNamesWithAny(
-  const vector<string>& period_names, 
-  string data_key )
+string PreparePeriodNamesWithAny(const vector<string>& period_names, string data_key )
 {
   vector<string> periods_as_json_string;
-  string content = data_key;
-  for (auto it = period_names.begin(); it != period_names.end(); ++it) {
-    periods_as_json_string.push_back(WrapAsString(*it));
+  Json::Value root;
+  for (unsigned idx = 0; idx < period_names.size(); ++idx) {
+    root[data_key][idx] = period_names[idx];
   }
-  content += WrapAsList(join(periods_as_json_string, ","));
-  return WrapAsJSON(content);
+  return ToStyledString(root);
 }
 
 string PrepareStationPeriodStartTimes(
   const vector<tm>& start_times)
 {
-  vector<string> start_times_as_string;
-  string content = constant::json_aggregates;
-  for (auto it = start_times.begin(); it != start_times.end(); ++it) {
-    tm start_time = *it;
+  Json::Value root;
+  for (unsigned idx = 0; idx < start_times.size(); ++idx) {
+    tm start_time = start_times[idx];
     time_t timestamp = mktime(&start_time) + 3600;  // as local time!
-    start_times_as_string.push_back(to_string(timestamp));
+    root[constant::json_aggregates] = to_string(timestamp);
   }
-  content += WrapAsList(join(start_times_as_string, ","));
-  return WrapAsJSON(content);
+  return ToStyledString(root);
 }
 
 // ~~ stormy::common::rest::cookbook

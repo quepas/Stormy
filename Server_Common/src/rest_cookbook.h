@@ -28,17 +28,12 @@ std::string PrepareStationInfo(
 // api: /meteo, /export, /aggregate
 std::string PrepareStationUIDsWithAny(const std::vector<entity::Station>& stations, std::string data_key);
 
-std::string PrepareMeteoCountPerStation(
-  const std::map<std::string, uint32_t>& uid_size_map);
 // api: /meteo/:station_uid
-std::string PrepareMeteoTimestamps(
-  const std::vector<entity::Measurement>& measurements);
 std::string PrepareMeteoTimestamps(
   const std::vector<std::time_t>& timestamps);
 // api: /meteo/:station_uid/:timestamp
 std::string PrepareMeteoSets(
   const std::map<std::time_t, std::vector<entity::Measurement>>& ts_measure_sets_map);
-std::string PrepareMeteoSet(std::time_t ts, const std::vector<entity::Measurement>& measure_set);
 
 // api: /metrics
 std::string PrepareMetricsCodes(
