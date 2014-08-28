@@ -4,6 +4,7 @@
 #include "entity_measurement.h"
 #include "entity_metrics.h"
 
+#include <json/value.h>
 #include <ctime>
 #include <string>
 #include <map>
@@ -54,6 +55,8 @@ std::string PrepareServerInfo(
   std::string name, 
   std::string type, 
   std::string timezone);
+
+std::string ToStyledString(const Json::Value& value);
 
 template<typename T>
 std::string WrapAsString(const T value);

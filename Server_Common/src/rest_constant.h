@@ -53,7 +53,6 @@ const std::string from_parameter = "from";
 const std::string to_parameter = "to";
 // ?from_last_hours=:hours
 const std::string from_last_hours_parameter = "from_last_hours";
-const uint16_t default_from_last_hours = 24;
 
 /*
  *  CSV constants
@@ -65,43 +64,30 @@ const std::string csv_missing_value = "-";
 /*
  *  JSON constants
  */
-const std::string json_id = "id";
 const std::string UID = "uid";
 const std::string IS_METEO = "is_meteo";
 const std::string NAME = "name";
 const std::string CODE = "code";
-const std::string json_count = "\"count\":";
 const std::string URL = "url";
 const std::string TYPE = "type";
 const std::string METRICS = "metrics";
 const std::string LABELS = "labels";
 const std::string FORMAT = "format";
 const std::string UNIT = "unit";
-const std::string json_error = "\"error\":";
-const std::string json_msg = "\"msg\":";
+const std::string ERROR = "error";
+const std::string MSG = "msg";
 const std::string METEO = "meteo";
-const std::string json_aggregates = "\"aggregates\":";
-const std::string json_start_time = "\"start_time\":";
+const std::string AGGREGATE = "\"aggregate\":";
 const std::string TIMEZONE = "timezone";
 const std::string TIME_NOW = "time_now";
 const std::string TIMESTAMP = "timestamp";
-const std::string json_data = "\"data\":";
-const std::string json_server = "\"server\":";
-const std::string json_seconds = "\"seconds\":";
+const std::string SERVER = "server";
 const std::string UPDATE_TIME = "update_time";
-const std::string json_parser_class = "\"parser_class\":";
-const std::string json_station_uid = "\"station_uid\":";
 const std::string STATION = "station";
-const std::string json_stations = "\"stations\":";
 const std::string STATUS = "status";
-const std::string json_size = "\"size\":";
-const std::string json_times = "\"times\":";
-const std::string json_available_metrics_marker = "available_metrics";
-const std::string json_available_periods_marker = "available_periods";
-const std::string json_empty = "{}";
-const std::string json_acquistion_server_type = "A";
-const std::string json_storage_and_aggregation_server_type = "S&A";
-const std::string json_periods = "\"periods\":";
-const std::string json_operations = "\"operations\":";
-// ~~ stormy::common::rest::const;
+const std::string JSON_EMPTY = "{}";
+const std::string PERIODS = "periods";
+const std::string OPERATIONS = "\"operations\":";
+
 }}}}
+// ~~ stormy::common::rest::const;

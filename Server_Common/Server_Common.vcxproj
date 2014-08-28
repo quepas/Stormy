@@ -65,7 +65,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -79,7 +79,6 @@
     <ClCompile Include="src\net_util.cpp" />
     <ClCompile Include="src\rest_cookbook.cpp" />
     <ClCompile Include="src\rest_request_bad.cpp" />
-    <ClCompile Include="src\rest_request_get_options.cpp" />
     <ClCompile Include="src\rest_uri_parser.cpp" />
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
@@ -95,7 +94,6 @@
     <ClInclude Include="src\rest_constant.h" />
     <ClInclude Include="src\rest_cookbook.h" />
     <ClInclude Include="src\rest_request_bad.h" />
-    <ClInclude Include="src\rest_request_get_options.h" />
     <ClInclude Include="src\rest_uri_parser.h" />
     <ClInclude Include="src\util.h" />
   </ItemGroup>

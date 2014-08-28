@@ -169,7 +169,7 @@ string GetAggregateAction::PrepareResponse(URIParser parsed_uri, DatabaseContext
     }
     return cookbook::PrepareStationUIDsWithAny(
       station_with_any_aggregate,
-      constant::json_aggregates);
+      constant::AGGREGATE);
   }
   // api: /aggregate/:station_uid
   else if (path_segments.size() == 2) {
@@ -184,7 +184,7 @@ string GetAggregateAction::PrepareResponse(URIParser parsed_uri, DatabaseContext
     }
     return cookbook::PreparePeriodNamesWithAny(
       periods_with_any_aggregate,
-      constant::json_aggregates);
+      constant::AGGREGATE);
   }
   // api: /aggregate/:station_uid/:period_name
   else if (path_segments.size() == 3) {

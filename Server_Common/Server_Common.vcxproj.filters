@@ -27,9 +27,6 @@
     <ClCompile Include="src\rest_request_bad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rest_request_get_options.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\rest_uri_parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\rest_request_bad.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rest_request_get_options.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\rest_uri_parser.h">

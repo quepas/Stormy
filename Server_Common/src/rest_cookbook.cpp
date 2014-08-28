@@ -4,7 +4,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include <json/json.h>
+#include <json/writer.h>
 
 using boost::algorithm::join;
 using boost::lexical_cast;
@@ -28,8 +28,8 @@ string PrepareError(
 {
   return 
     "{" + 
-      constant::json_error + WrapAsString(error) + "," + 
-      constant::json_msg + WrapAsString(msg) + 
+      constant::ERROR + WrapAsString(error) + "," + 
+      constant::MSG + WrapAsString(msg) + 
     "}";
 }
 
@@ -169,7 +169,7 @@ string PrepareStationPeriodStartTimes(
   for (unsigned idx = 0; idx < start_times.size(); ++idx) {
     tm start_time = start_times[idx];
     time_t timestamp = mktime(&start_time) + 3600;  // as local time!
-    root[constant::json_aggregates] = to_string(timestamp);
+    root[constant::AGGREGATE] = to_string(timestamp);
   }
   return ToStyledString(root);
 }
