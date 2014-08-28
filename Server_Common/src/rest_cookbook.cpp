@@ -26,28 +26,10 @@ string PrepareError(
   string error /*= "Bad request"*/, 
   string msg   /*= ""*/ )
 {
-  return 
-    "{" + 
-      constant::ERROR + WrapAsString(error) + "," + 
-      constant::MSG + WrapAsString(msg) + 
-    "}";
-}
-
-template<typename T>
-string WrapAsString(const T value)
-{
-  return "\"" + lexical_cast<string>(value) + "\"";
-}
-
-template<typename T>
-string WrapAsList(const T values)
-{
-  return "[" + lexical_cast<string>(values) + "]";
-}
-
-string WrapAsJSON(string content)
-{
-  return "{" + content + "}";
+  Json::Value root;
+  root[constant::ERROR] = error;
+  root[constant::MSG] = msg;
+  return ToStyledString(root);
 }
 
 string ToStyledString(const Json::Value& value)

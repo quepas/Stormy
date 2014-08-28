@@ -58,11 +58,5 @@ std::string PrepareServerInfo(
 
 std::string ToStyledString(const Json::Value& value);
 
-template<typename T>
-std::string WrapAsString(const T value);
-template<typename T>
-std::string WrapAsList(const T values);
-std::string WrapAsJSON(std::string content);
-
-// ~~ stormy::common::rest::cookbook
 }}}}
+// ~~ stormy::common::rest::cookbook
