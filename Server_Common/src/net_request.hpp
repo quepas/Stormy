@@ -23,19 +23,16 @@ public:
     : parsed_uri_(uri), context_(context) {}
   ~Request() {}
 
-  void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response) override;
+  void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response) override
+  {
+    std::ostream& ostr = response.send();
+    ostr << Action::PrepareResponse(parsed_uri_, context_);
+  }
 
 private:
   common::rest::URIParser parsed_uri_;
   ActionContext context_;
 };
-
-template<typename Action, typename ActionContext>
-void Request<Action, ActionContext>::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response)
-{
-  std::ostream& ostr = response.send();
-  ostr << Action::PrepareResponse(parsed_uri_, context_);
-}
 
 }}
 // ~~ stormy::net::Request

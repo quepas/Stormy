@@ -13,9 +13,9 @@ using boost::trim;
 
 namespace stormy {
   namespace common {
-    namespace rest { 
+    namespace rest {
 
-URIParser::URIParser(string raw_uri)  
+URIParser::URIParser(string raw_uri)
 {
   trim(raw_uri);
   uri_ = URI(raw_uri);
@@ -57,5 +57,6 @@ map<string, string> URIParser::getQuerySegments()
   }
   return query_segments;
 }
-// ~~ stormy::common::rest::URIParser
+
 }}}
+// ~~ stormy::common::rest::URIParser

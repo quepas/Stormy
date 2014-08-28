@@ -27,7 +27,7 @@ string PrepareError(
   string msg   /*= ""*/ )
 {
   Json::Value root;
-  root[constant::ERROR] = error;
+  root[constant::ERROR_] = error;
   root[constant::MSG] = msg;
   return ToStyledString(root);
 }

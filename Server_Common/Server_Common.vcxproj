@@ -78,7 +78,6 @@
     <ClCompile Include="src\db_expiration_task.cpp" />
     <ClCompile Include="src\net_util.cpp" />
     <ClCompile Include="src\rest_cookbook.cpp" />
-    <ClCompile Include="src\rest_request_bad.cpp" />
     <ClCompile Include="src\rest_uri_parser.cpp" />
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
@@ -89,11 +88,11 @@
     <ClInclude Include="src\entity_measurement.h" />
     <ClInclude Include="src\entity_metrics.h" />
     <ClInclude Include="src\entity_station.h" />
+    <ClInclude Include="src\net_common_requests.hpp" />
     <ClInclude Include="src\net_request.hpp" />
     <ClInclude Include="src\net_util.hpp" />
     <ClInclude Include="src\rest_constant.h" />
     <ClInclude Include="src\rest_cookbook.h" />
-    <ClInclude Include="src\rest_request_bad.h" />
     <ClInclude Include="src\rest_uri_parser.h" />
     <ClInclude Include="src\util.h" />
   </ItemGroup>

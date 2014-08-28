@@ -1,15 +1,14 @@
 #pragma once
 
-#include <cstdint>
 #include <string>
 
 namespace stormy {
   namespace common {
     namespace rest {
-      namespace constant {      
+      namespace constant {
 
 // api: /station
-const std::string station_request_pattern = "/station/?";   
+const std::string station_request_pattern = "/station/?";
 // api: /station/:station_uid
 const std::string station_info_request_pattern = "/station/[0-9a-f]{32}/?";
 // api: /meteo
@@ -74,10 +73,10 @@ const std::string METRICS = "metrics";
 const std::string LABELS = "labels";
 const std::string FORMAT = "format";
 const std::string UNIT = "unit";
-const std::string ERROR = "error";
+const std::string ERROR_ = "error";
 const std::string MSG = "msg";
 const std::string METEO = "meteo";
-const std::string AGGREGATE = "\"aggregate\":";
+const std::string AGGREGATE = "aggregate";
 const std::string TIMEZONE = "timezone";
 const std::string TIME_NOW = "time_now";
 const std::string TIMESTAMP = "timestamp";
@@ -87,7 +86,7 @@ const std::string STATION = "station";
 const std::string STATUS = "status";
 const std::string JSON_EMPTY = "{}";
 const std::string PERIODS = "periods";
-const std::string OPERATIONS = "\"operations\":";
+const std::string OPERATIONS = "operations";
 
 }}}}
 // ~~ stormy::common::rest::const;

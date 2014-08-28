@@ -4,7 +4,7 @@
 #include "entity_measurement.h"
 #include "entity_metrics.h"
 
-#include <json/value.h>
+#include <json/json.h>
 #include <ctime>
 #include <string>
 #include <map>

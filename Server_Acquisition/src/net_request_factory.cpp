@@ -1,6 +1,6 @@
 #include "net_request_factory.hpp"
 #include "net_get_requests.hpp"
-#include "rest_request_bad.h"
+#include "net_common_requests.hpp"
 #include "rest_constant.h"
 #include "util.h"
 
@@ -55,11 +55,11 @@ HTTPRequestHandler* RequestFactory::createRequestHandler(const HTTPServerRequest
       return new GetInfo(URI, db_handler_);
     }
     else {
-      return new common::rest::request::Bad(URI);
+      return net::CreateRequestBad_(URI);
     }
   }
   else {
-    return new common::rest::request::Bad(URI);
+    return net::CreateRequestBad_(URI);
   }
 }
 

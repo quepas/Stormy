@@ -1,8 +1,8 @@
 #include "rest_request_factory.h"
 
 #include "net_get_requests.hpp"
+#include "net_common_requests.hpp"
 
-#include "rest_request_bad.h"
 #include "util.h"
 #include "rest_constant.h"
 
@@ -69,10 +69,10 @@ HTTPRequestHandler* Factory::createRequestHandler(
     } else if (IsMatch(URI, constant::period_request_pattern)) {
       return new net::GetPeriod(URI, { db_storage_, db_aggregation_ });
     } else {
-      return new common::rest::request::Bad(URI);
+      return net::CreateRequestBad_(URI);
     }
   } else {
-    return new common::rest::request::Bad(URI);
+    return net::CreateRequestBad_(URI);
   }
 }
 // ~~ stormy::rest::request::Factory
