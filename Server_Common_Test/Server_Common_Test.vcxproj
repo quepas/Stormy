@@ -41,7 +41,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(CATCH_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(IncludePath)</IncludePath>
+    <IncludePath>$(STORMY_COMMON)\include;$(CATCH_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Release;$(BOOST_LIB_32);$(POCO_ALL_LIB);$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

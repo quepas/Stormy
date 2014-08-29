@@ -1,6 +1,6 @@
 #include "db_aggregate.h"
 
-#include "util.h"
+#include "common/util.h"
 
 #include <postgresql/soci-postgresql.h>
 

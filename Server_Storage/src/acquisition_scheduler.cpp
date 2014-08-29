@@ -1,6 +1,6 @@
 #include "acquisition_scheduler.h"
 
-#include "util.h"
+#include "common/util.h"
 
 using std::vector;
 

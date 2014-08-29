@@ -1,6 +1,6 @@
 #include "rest_json_cookbook.h"
-#include "rest_cookbook.h"
-#include "rest_constant.h"
+#include "common/rest_cookbook.h"
+#include "common/rest_constant.h"
 
 #include <json/json.h>
 

@@ -6,10 +6,10 @@
 #include <Poco/Logger.h>
 
 #include "settings.hpp"
-#include "util.h"
-#include "entity_station.h"
-#include "entity_metrics.h"
-#include "entity_measurement.h"
+#include "common/util.h"
+#include "common/entity_station.h"
+#include "common/entity_metrics.h"
+#include "common/entity_measurement.h"
 
 namespace stormy {
   namespace db {

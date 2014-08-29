@@ -45,7 +45,7 @@
     <LibraryPath>$(BOOST_LIB_32);$(POCO_ALL_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_JSON);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(POSTGRESQL_INCLUDE);$(PYTHON_27_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(SOCI_INCLUDE);$(SOCI_BACKENDS_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <IncludePath>$(STORMY_COMMON)\include;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_JSON);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(POSTGRESQL_INCLUDE);$(PYTHON_27_INCLUDE);$(MONGO_DB_DRIVER_INCLUDE);$(SOCI_INCLUDE);$(SOCI_BACKENDS_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Release;$(BOOST_LIB_32);$(JSON_CPP_LIB);$(POCO_ALL_LIB);$(POSTGRESQL_LIB);$(SOCI_LIB);$(MONGO_DB_DRIVER_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

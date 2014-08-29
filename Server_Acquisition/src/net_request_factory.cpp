@@ -1,8 +1,8 @@
 #include "net_request_factory.hpp"
 #include "net_get_requests.hpp"
-#include "net_common_requests.hpp"
-#include "rest_constant.h"
-#include "util.h"
+#include "common/net_common_requests.hpp"
+#include "common/rest_constant.h"
+#include "common/util.h"
 
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/HTTPServerRequest.h>

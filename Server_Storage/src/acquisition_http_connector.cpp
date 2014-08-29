@@ -2,8 +2,8 @@
 
 #include <Poco/Timespan.h>
 
-#include "util.h"
-#include "net_util.hpp"
+#include "common/util.h"
+#include "common/net_util.hpp"
 #include "acquisition_json_util.h"
 
 using namespace stormy::common;

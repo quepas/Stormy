@@ -1,6 +1,6 @@
 #include "acquisition_task.hpp"
-#include "net_util.hpp"
-#include "util.h"
+#include "common/net_util.hpp"
+#include "common/util.h"
 
 using Poco::Logger;
 using std::string;

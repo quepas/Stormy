@@ -1,4 +1,4 @@
-#include "rest_uri_parser.h"
+#include "common/rest_uri_parser.h"
 
 #include <boost/algorithm/string.hpp>
 

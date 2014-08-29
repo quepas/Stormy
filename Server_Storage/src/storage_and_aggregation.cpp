@@ -10,7 +10,7 @@
 #include "rest_service.h"
 #include "analysis_operation_mgr.h"
 
-#include "util.h"
+#include "common/util.h"
 #include "settings.hpp"
 
 using namespace stormy;

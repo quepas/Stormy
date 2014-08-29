@@ -8,7 +8,7 @@
 #include <Poco/MongoDB/ResponseMessage.h>
 
 #include "db_constant.hpp"
-#include "util.h"
+#include "common/util.h"
 
 using Poco::Int64;
 using Poco::cat;

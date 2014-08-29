@@ -2,11 +2,11 @@
 
 #include "db_aggregate.h"
 #include "db_storage.h"
-#include "rest_constant.h"
-#include "rest_cookbook.h"
+#include "common/rest_constant.h"
+#include "common/rest_cookbook.h"
 #include "rest_csv_cookbook.h"
 #include "rest_json_cookbook.h"
-#include "entity_station.h"
+#include "common/entity_station.h"
 
 #include <map>
 #include <vector>

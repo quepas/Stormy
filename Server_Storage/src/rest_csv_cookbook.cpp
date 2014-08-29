@@ -1,6 +1,6 @@
 #include "rest_csv_cookbook.h"
 
-#include "rest_constant.h"
+#include "common/rest_constant.h"
 
 #include <boost/range/algorithm/copy.hpp>
 #include <boost/algorithm/string/join.hpp>

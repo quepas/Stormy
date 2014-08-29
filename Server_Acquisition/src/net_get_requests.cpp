@@ -1,9 +1,9 @@
 #include "net_get_requests.hpp"
 
-#include "entity_station.h"
-#include "rest_cookbook.h"
-#include "rest_constant.h"
-#include "util.h"
+#include "common/entity_station.h"
+#include "common/rest_cookbook.h"
+#include "common/rest_constant.h"
+#include "common/util.h"
 
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/algorithm/copy.hpp>

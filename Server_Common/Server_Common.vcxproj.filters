@@ -35,43 +35,46 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\db_expiration_engine.h">
+    <ClInclude Include="include\common\db_expiration_engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\db_expiration_task.h">
+    <ClInclude Include="include\common\db_expiration_task.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\db_has_data_expiration.h">
+    <ClInclude Include="include\common\db_has_data_expiration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity_measurement.h">
+    <ClInclude Include="include\common\entity_measurement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity_metrics.h">
+    <ClInclude Include="include\common\entity_metrics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity_station.h">
+    <ClInclude Include="include\common\entity_station.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\rest_constant.h">
+    <ClInclude Include="include\common\net_common_requests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\rest_cookbook.h">
+    <ClInclude Include="include\common\net_request.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\rest_uri_parser.h">
+    <ClInclude Include="include\common\net_request_factory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\util.h">
+    <ClInclude Include="include\common\net_util.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\net_util.hpp">
+    <ClInclude Include="include\common\rest_constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\net_request.hpp">
+    <ClInclude Include="include\common\rest_cookbook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\net_common_requests.hpp">
+    <ClInclude Include="include\common\rest_uri_parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

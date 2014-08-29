@@ -6,8 +6,8 @@
 #include <Poco/Util/TimerTask.h>
 
 #include "settings.hpp"
-#include "entity_station.h"
-#include "entity_metrics.h"
+#include "common/entity_station.h"
+#include "common/entity_metrics.h"
 
 #include "aggregation_scheduler.h"
 #include "aggregation_task_factory.h"

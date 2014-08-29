@@ -1,10 +1,10 @@
 #include "rest_request_factory.h"
 
 #include "net_get_requests.hpp"
-#include "net_common_requests.hpp"
+#include "common/net_common_requests.hpp"
 
-#include "util.h"
-#include "rest_constant.h"
+#include "common/util.h"
+#include "common/rest_constant.h"
 
 using namespace stormy::common;
 using namespace stormy::common::rest;

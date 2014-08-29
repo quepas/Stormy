@@ -1,7 +1,7 @@
 #include "acquisition_scheduler.hpp"
 
 #include "acquisition_task.hpp"
-#include "util.h"
+#include "common/util.h"
 
 #include <Poco/Logger.h>
 

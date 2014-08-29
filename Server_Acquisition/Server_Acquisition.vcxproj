@@ -45,7 +45,7 @@
     <LibraryPath>$(SolutionDir)\Debug;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_34_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(STORMY_COMMON)\src;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(CPP_NETLIB_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_JSON);$(POCO_INCLUDE_MONGODB);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_27_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <IncludePath>$(STORMY_COMMON)\include;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(CPP_NETLIB_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_JSON);$(POCO_INCLUDE_MONGODB);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_27_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
     <LibraryPath>$(JSON_CPP_LIB);$(SolutionDir)\Release;$(BOOST_LIB_32);$(CPP_NETLIB_LIB);$(POCO_ALL_LIB);$(PYTHON_27_LIB);$(YAML_CPP_LIB);$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

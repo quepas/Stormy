@@ -1,6 +1,6 @@
-#include "rest_cookbook.h"
-#include "util.h"
-#include "rest_constant.h"
+#include "common/rest_cookbook.h"
+#include "common/util.h"
+#include "common/rest_constant.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>

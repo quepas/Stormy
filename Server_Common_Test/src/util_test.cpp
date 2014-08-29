@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include "util.h"
+#include "common/util.h"
 using namespace stormy::common;
 
 TEST_CASE("conversion functions") {

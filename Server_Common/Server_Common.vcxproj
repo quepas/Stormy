@@ -44,7 +44,7 @@
     <IncludePath>$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_34_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_27_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
+    <IncludePath>$(STORMY_COMMON)\include;$(BOOST_INCLUDE);$(JSON_CPP_INCLUDE);$(POCO_INCLUDE_FOUNDATION);$(POCO_INCLUDE_NET);$(POCO_INCLUDE_UTIL);$(PYTHON_27_INCLUDE);$(YAML_CPP_INCLUDE);$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -82,19 +82,20 @@
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\db_expiration_engine.h" />
-    <ClInclude Include="src\db_expiration_task.h" />
-    <ClInclude Include="src\db_has_data_expiration.h" />
-    <ClInclude Include="src\entity_measurement.h" />
-    <ClInclude Include="src\entity_metrics.h" />
-    <ClInclude Include="src\entity_station.h" />
-    <ClInclude Include="src\net_common_requests.hpp" />
-    <ClInclude Include="src\net_request.hpp" />
-    <ClInclude Include="src\net_util.hpp" />
-    <ClInclude Include="src\rest_constant.h" />
-    <ClInclude Include="src\rest_cookbook.h" />
-    <ClInclude Include="src\rest_uri_parser.h" />
-    <ClInclude Include="src\util.h" />
+    <ClInclude Include="include\common\db_expiration_engine.h" />
+    <ClInclude Include="include\common\db_expiration_task.h" />
+    <ClInclude Include="include\common\db_has_data_expiration.h" />
+    <ClInclude Include="include\common\entity_measurement.h" />
+    <ClInclude Include="include\common\entity_metrics.h" />
+    <ClInclude Include="include\common\entity_station.h" />
+    <ClInclude Include="include\common\net_common_requests.hpp" />
+    <ClInclude Include="include\common\net_request.hpp" />
+    <ClInclude Include="include\common\net_request_factory.hpp" />
+    <ClInclude Include="include\common\net_util.hpp" />
+    <ClInclude Include="include\common\rest_constant.h" />
+    <ClInclude Include="include\common\rest_cookbook.h" />
+    <ClInclude Include="include\common\rest_uri_parser.h" />
+    <ClInclude Include="include\common\util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

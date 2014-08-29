@@ -1,8 +1,8 @@
 #pragma once
 
-#include "net_request.hpp"
+#include "common/net_request.hpp"
+#include "common/rest_uri_parser.h"
 #include "db_mongo_handler.hpp"
-#include "rest_uri_parser.h"
 
 #include <string>
 

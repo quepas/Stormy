@@ -1,6 +1,6 @@
-#include "db_expiration_engine.h"
+#include "common/db_expiration_engine.h"
+#include "common/db_expiration_task.h"
 
-#include "db_expiration_task.h"
 #include <Poco/NumberFormatter.h>
 
 using std::time_t;

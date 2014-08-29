@@ -4,7 +4,7 @@
 #include <Poco/Util/Timer.h>
 
 #include "py_script_storage.hpp"
-#include "entity_station.h"
+#include "common/entity_station.h"
 #include "settings.hpp"
 
 namespace stormy {

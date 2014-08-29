@@ -1,9 +1,9 @@
 #pragma once
 
-#include "db_has_data_expiration.h"
-#include "entity_station.h"
-#include "entity_metrics.h"
-#include "entity_measurement.h"
+#include "common/db_has_data_expiration.h"
+#include "common/entity_station.h"
+#include "common/entity_metrics.h"
+#include "common/entity_measurement.h"
 #include "settings.hpp"
 
 #include <ctime>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "settings.hpp"
-#include "net_request.hpp"
+#include "common/net_request.hpp"
 
 namespace stormy {
   namespace net {

@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include "rest_uri_parser.h"
+#include "common/rest_uri_parser.h"
 using namespace stormy::common::rest;
 
 TEST_CASE("URI decomposition on segments") {
