@@ -1,5 +1,7 @@
 #pragma once
 
+#include "net_get_requests.hpp"
+#include "common/net_request_factory.hpp"
 #include "db_mongo_handler.hpp"
 
 #include <Poco/Logger.h>
@@ -8,17 +10,13 @@
 namespace stormy {
   namespace net {
 
-class RequestFactory : public Poco::Net::HTTPRequestHandlerFactory
+class AcquisitionRequestFactoryAction
 {
 public:
-  RequestFactory(db::MongoHandler& db_handler);
-  ~RequestFactory();
-
-  Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request) override;
-private:
-  db::MongoHandler& db_handler_;
-  Poco::Logger& logger_;
+  static Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request, DatabaseContext context, Poco::Logger& logger_);
 };
+
+typedef RequestFactory<AcquisitionRequestFactoryAction, DatabaseContext> AcquisitionRequestFactory;
 
 }}
 // ~~ stormy::net::RequestFactory

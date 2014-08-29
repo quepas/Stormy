@@ -18,19 +18,7 @@ using std::string;
 namespace stormy {
   namespace net {
 
-RequestFactory::RequestFactory(db::MongoHandler& db_handler)
-  : db_handler_(db_handler),
-    logger_(Logger::get("main"))
-{
-
-}
-
-RequestFactory::~RequestFactory()
-{
-
-}
-
-HTTPRequestHandler* RequestFactory::createRequestHandler(const HTTPServerRequest& request)
+HTTPRequestHandler* AcquisitionRequestFactoryAction::createRequestHandler(const HTTPServerRequest& request, DatabaseContext context, Logger& logger_)
 {
   string URI = request.getURI();
   logger_.information("[rest/Factory] Handling request: " + URI);
@@ -38,21 +26,21 @@ HTTPRequestHandler* RequestFactory::createRequestHandler(const HTTPServerRequest
   if (request.getMethod() == HTTPRequest::HTTP_GET) {
     if (IsMatch(URI, constant::station_request_pattern) ||
       IsMatch(URI, constant::station_info_request_pattern)) {
-      return new GetStation(URI, db_handler_);
+      return new GetStation(URI, context.db_handler);
     }
     else if (IsMatch(URI, constant::meteo_request_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_request_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_request_pattern +
       constant::uri_query_vars_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
-      return new GetMeteo(URI, db_handler_);
+      return new GetMeteo(URI, context.db_handler);
     }
     else if (IsMatch(URI, constant::metrics_request_pattern) ||
       IsMatch(URI, constant::metrics_info_request_pattern)) {
-      return new GetMetrics(URI, db_handler_);
+      return new GetMetrics(URI, context.db_handler);
     }
     else if (IsMatch(URI, constant::info_request_pattern)) {
-      return new GetInfo(URI, db_handler_);
+      return new GetInfo(URI, context.db_handler);
     }
     else {
       return net::CreateRequestBad_(URI);

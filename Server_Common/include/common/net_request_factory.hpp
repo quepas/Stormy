@@ -17,7 +17,7 @@ public:
   ~RequestFactory() {}
 
   Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request) override {
-    return FactoryAction::createRequestHandler(request);
+    return FactoryAction::createRequestHandler(request, context_, logger_);
   };
 
 private:
