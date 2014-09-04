@@ -1,27 +1,13 @@
 #pragma once
 
-#include "db_mongo_handler.hpp"
-
-#include <Poco/Util/ServerApplication.h>
+#include "common/net_http_server.hpp"
+#include "net_get_requests.hpp"
+#include "net_request_factory.hpp"
 
 namespace stormy {
   namespace net {
 
-class HTTPServer : public Poco::Util::ServerApplication
-{
-public:
-  HTTPServer(db::MongoHandler& db_handler, unsigned port = 8080);
-  ~HTTPServer();
-
-protected:
-  void initialized(Poco::Util::Application& self);
-  void unitialized();
-  int main(const std::vector<std::string>& args);
-
-private:
-  db::MongoHandler& db_handler_;
-  unsigned port_;
-};
+typedef HttpServer<DatabaseContext, AcquisitionRequestFactory> AcquisitionHttpServer;
 
 }}
 // ~~ stormy::net::HTTPServer

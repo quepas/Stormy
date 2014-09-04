@@ -91,7 +91,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\py_script_storage.cpp" />
-    <ClCompile Include="src\net_http_server.cpp" />
     <ClCompile Include="src\settings.cpp" />
   </ItemGroup>
   <ItemGroup>

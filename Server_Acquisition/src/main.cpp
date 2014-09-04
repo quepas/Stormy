@@ -37,8 +37,8 @@ int main(int argc, char** argv)
   stormy::common::db::expiration::Engine expiration_engine(db_handler);
   expiration_engine.ScheduleEverySeconds(3600);
 
-  stormy::net::HTTPServer httpServer(db_handler, 8080);
-  httpServer.run(argc, argv);
+  stormy::net::AcquisitionHttpServer http_server({db_handler}, 8080);
+  http_server.run(argc, argv);
 
   getchar();
 }
