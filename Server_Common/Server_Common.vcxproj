@@ -99,6 +99,8 @@
     <ClInclude Include="include\common\rest_cookbook.h" />
     <ClInclude Include="include\common\rest_uri_parser.h" />
     <ClInclude Include="include\common\util.h" />
+    <ClInclude Include="include\common\util_task_template.hpp" />
+    <ClInclude Include="include\common\util_task_scheduler.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

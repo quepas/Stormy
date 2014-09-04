@@ -1,20 +1,23 @@
 #ifdef STORMY_OLD
 
-#include "acquisition_scheduler.hpp"
 #include "common/db_expiration_engine.h"
+#include "common/util_task_scheduler.hpp"
 #include "db_mongo_handler.hpp"
 #include "net_http_server.hpp"
 #include "py_script_storage.hpp"
+#include "acquisition.hpp"
 #include "settings.hpp"
+#include "common/util.h"
 
-#include <iostream>
 #include <string>
+#include <Poco/Logger.h>
 
 int main(int argc, char** argv)
 {
-  std::cout << "==== Aqcuisition started. ====" << std::endl;
-
   stormy::SetupLoggers();
+  auto& logger = Poco::Logger::get("main");
+  logger.information("==== Aqcuisition started. ====");
+
   auto station_settings = stormy::LoadStationSettings("config/meteo_stations.json");
   auto metrics_settings = stormy::LoadMetricsSettings("config/meteo_metrics.json");
 
@@ -31,8 +34,23 @@ int main(int argc, char** argv)
   db_handler.ClearMetrics();
   db_handler.InsertMetrics(metrics_settings);
 
-  stormy::acquisition::Scheduler acqSecheduler(central_storage);
-  acqSecheduler.Schedule(station_settings);
+  stormy::util::TaskScheduler acq_scheduler;
+  for (auto station : station_settings) {
+    auto parse_script = central_storage.Fetch(station.parse_script);
+    if (parse_script != nullptr) {
+      stormy::AcquisitionContext task_context = { 
+        0, 
+        stormy::common::SecondsToMiliseconds(station.update_time),
+        station, 
+        db_handler, 
+        parse_script 
+      };
+      acq_scheduler.Schedule<stormy::AcquisitionTask>(task_context);
+    }
+    else {
+      logger.error("Missing parse script with class: " + station.parse_script);
+    }
+  }
 
   stormy::common::db::expiration::Engine expiration_engine(db_handler);
   expiration_engine.ScheduleEverySeconds(3600);

@@ -28,12 +28,6 @@
     <Filter Include="Header Files\py">
       <UniqueIdentifier>{e64461dd-3884-4706-b85b-48f106fa5eb7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\acq">
-      <UniqueIdentifier>{2b9d2980-7e02-43ca-b48f-bce72c0f2dc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\acq">
-      <UniqueIdentifier>{a05f879a-8a0d-4c36-b313-7a21d38fa8dd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\db">
       <UniqueIdentifier>{848f742a-4a75-477d-a51c-23c85f869e76}</UniqueIdentifier>
     </Filter>
@@ -56,12 +50,6 @@
     </ClCompile>
     <ClCompile Include="src\py_script_storage.cpp">
       <Filter>Source Files\py</Filter>
-    </ClCompile>
-    <ClCompile Include="src\acquisition_scheduler.cpp">
-      <Filter>Source Files\acq</Filter>
-    </ClCompile>
-    <ClCompile Include="src\acquisition_task.cpp">
-      <Filter>Source Files\acq</Filter>
     </ClCompile>
     <ClCompile Include="src\db_mongo_handler.cpp">
       <Filter>Source Files\db</Filter>
@@ -92,11 +80,8 @@
     <ClInclude Include="src\py_script_storage.hpp">
       <Filter>Header Files\py</Filter>
     </ClInclude>
-    <ClInclude Include="src\acquisition_scheduler.hpp">
-      <Filter>Header Files\acq</Filter>
-    </ClInclude>
-    <ClInclude Include="src\acquisition_task.hpp">
-      <Filter>Header Files\acq</Filter>
+    <ClInclude Include="src\acquisition.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -81,8 +81,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\acquisition_scheduler.cpp" />
-    <ClCompile Include="src\acquisition_task.cpp" />
     <ClCompile Include="src\db_mongo_handler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\net_get_requests.cpp" />
@@ -94,8 +92,7 @@
     <ClCompile Include="src\settings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\acquisition_scheduler.hpp" />
-    <ClInclude Include="src\acquisition_task.hpp" />
+    <ClInclude Include="src\acquisition.hpp" />
     <ClInclude Include="src\net_get_requests.hpp" />
     <ClInclude Include="src\net_request_factory.hpp" />
     <ClInclude Include="src\settings.hpp" />
