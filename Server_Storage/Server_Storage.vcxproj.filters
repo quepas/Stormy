@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\net">
+      <UniqueIdentifier>{e99b61f1-bee2-4593-bf4d-604afd471489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\net">
+      <UniqueIdentifier>{ad7874f8-cd44-46b8-ac21-d658f0506474}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\acquisition_http_connector.cpp">
@@ -63,9 +69,6 @@
     <ClCompile Include="src\rest_json_cookbook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rest_request_factory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\rest_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,7 +79,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\net_get_requests.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_request_factory.cpp">
+      <Filter>Source Files\net</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,17 +146,17 @@
     <ClInclude Include="src\rest_json_cookbook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\rest_request_factory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\rest_service.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\net_request_factory.hpp">
+      <Filter>Header Files\net</Filter>
+    </ClInclude>
     <ClInclude Include="src\net_get_requests.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\net</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

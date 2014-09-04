@@ -3,7 +3,7 @@
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocket.h>
 
-#include "rest_request_factory.h"
+#include "net_request_factory.hpp"
 
 using std::string;
 using std::vector;
@@ -50,7 +50,8 @@ int Service::main(const vector<string>& args)
 {
   logger_.information("[rest/Service] Start");
   ServerSocket server_socket(port_);
-  HTTPServer http_server(new request::Factory(db_storage_, db_aggregation_), 
+  net::DatabaseContext context{ db_storage_, db_aggregation_ };
+  HTTPServer http_server(new net::StorageRequestFactory(context),
     server_socket, new HTTPServerParams);
   http_server.start();
   waitForTerminationRequest();
