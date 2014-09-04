@@ -48,9 +48,6 @@
     <ClCompile Include="src\rest_json_cookbook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rest_service.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\storage_and_aggregation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -113,9 +110,6 @@
     <ClInclude Include="src\rest_json_cookbook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\rest_service.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -175,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="src\db_aggregate.h">
       <Filter>Header Files\db</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net_http_server.hpp">
+      <Filter>Source Files\net</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
