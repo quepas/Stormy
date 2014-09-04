@@ -1,5 +1,4 @@
 #include "analysis_operation_mgr.h"
-
 #include "aggregation_entity_operation.h"
 
 #include <boost/algorithm/string/erase.hpp>
@@ -20,7 +19,7 @@ namespace stormy {
 OperationMgr::OperationMgr(
   string base_dir, 
   DatabaseSetting setting)
-  : logger_(Logger::get("analysis/OperationMgr")),
+  : logger_(Logger::get("main")),
     aggregate_database_(setting),
     base_dir_(base_dir)
 {
@@ -42,13 +41,12 @@ int OperationMgr::Reload()
 int OperationMgr::LoadFromDirectory()
 {
   int loaded_files = 0;
-  path dir_path(base_dir_); 
-  
+  path dir_path(base_dir_);
   directory_iterator end;
   for (directory_iterator dir_it(dir_path); dir_it != end; ++dir_it) {
     if (dir_it->path().extension() == ".py") {
       string operation = dir_it->path().filename().string();
-      erase_first(operation, ".py");      
+      erase_first(operation, ".py");
       operations_.push_back(operation);
       ++loaded_files;
     }
@@ -58,14 +56,15 @@ int OperationMgr::LoadFromDirectory()
 
 void OperationMgr::InsertIntoDatabase()
 {
-  for (auto it = operations_.begin(); it != operations_.end(); ++it) {
+  for (auto& operation_name : operations_) {
     aggregation::entity::Operation operation;
-    operation.name = operation.analysis_method = *it;
+    operation.name = operation.analysis_method = operation_name;
 
-    if (!aggregate_database_.IfOperationExsist(*it)) {
+    if (!aggregate_database_.IfOperationExsist(operation_name)) {
       aggregate_database_.InsertOperation(operation);
     }
   }
 }
-// ~~ stormy::analysis::OperationMgr
+
 }}
+// ~~ stormy::analysis::OperationMgr

@@ -67,6 +67,7 @@ const std::string UID = "uid";
 const std::string IS_METEO = "is_meteo";
 const std::string NAME = "name";
 const std::string CODE = "code";
+const std::string DATA = "data";
 const std::string URL = "url";
 const std::string TYPE = "type";
 const std::string METRICS = "metrics";

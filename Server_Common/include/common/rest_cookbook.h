@@ -27,34 +27,31 @@ std::string PrepareStationInfo(
   const entity::Station& station);
 
 // api: /meteo, /export, /aggregate
-std::string PrepareStationUIDsWithAny(const std::vector<entity::Station>& stations, std::string data_key);
+std::string PrepareStationUIDsWithAny(
+  const std::vector<entity::Station>& stations,
+  std::string data_key);
 
 // api: /meteo/:station_uid
-std::string PrepareMeteoTimestamps(
-  const std::vector<std::time_t>& timestamps);
+std::string PrepareMeteoTimestamps(const std::vector<std::time_t>& timestamps);
 // api: /meteo/:station_uid/:timestamp
 std::string PrepareMeteoSets(
-  const std::map<std::time_t, std::vector<entity::Measurement>>& ts_measure_sets_map);
+  const std::map<std::time_t,
+  std::vector<entity::Measurement>>& ts_measure_sets_map);
 
 // api: /metrics
-std::string PrepareMetricsCodes(
-  const std::vector<entity::Metrics>& metrics_vec);
+std::string PrepareMetricsCodes(const std::vector<entity::Metrics>& metrics_vec);
 // api: /metrics/:metrics_code
 std::string PrepareMetricsInfo(const entity::Metrics& metrics);
 
 // api: /aggregate/:station_uid
 std::string PreparePeriodNamesWithAny(
-  const std::vector<std::string>& period_names, 
+  const std::vector<std::string>& period_names,
   std::string data_key);
 // api: /aggregate/:station_uid/:period_name
-std::string PrepareStationPeriodStartTimes(
-  const std::vector<std::tm>& start_times);
+std::string PrepareStationPeriodStartTimes(const std::vector<std::tm>& start_times);
 
 // api: /info
-std::string PrepareServerInfo(
-  std::string name, 
-  std::string type, 
-  std::string timezone);
+std::string PrepareServerInfo(std::string name, std::string type, std::string timezone);
 
 std::string ToStyledString(const Json::Value& value);
 

@@ -13,18 +13,12 @@ namespace stormy {
 class OperationMgr
 {
 public:
-  OperationMgr(
-    std::string base_dir, 
-    DatabaseSetting setting);
+  OperationMgr(std::string base_dir, DatabaseSetting setting);
   ~OperationMgr();
 
   int Reload();
-  std::vector<std::string> GetOperations() {
-    return operations_;
-  }  
-  std::string GetBaseDir() {
-    return base_dir_;
-  }
+  const std::vector<std::string>& operations() { return operations_; }
+  const std::string& base_dir() { return base_dir_; }
 private:
   int LoadFromDirectory();
   void InsertIntoDatabase();
@@ -34,5 +28,6 @@ private:
   db::Aggregate aggregate_database_;
   Poco::Logger& logger_;
 };
-// ~~ stormy::analysis::OperationMgr
+
 }}
+// ~~ stormy::analysis::OperationMgr

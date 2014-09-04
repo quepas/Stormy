@@ -2,7 +2,6 @@
 
 #include "net_get_requests.hpp"
 #include "common/net_request_factory.hpp"
-#include "db_mongo_handler.hpp"
 
 #include <Poco/Logger.h>
 #include <Poco/Net/HTTPRequestHandlerFactory.h>

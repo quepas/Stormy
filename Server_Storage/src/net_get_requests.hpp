@@ -8,7 +8,7 @@ namespace stormy {
 
 struct DatabaseContext
 {
-  DatabaseContext(DatabaseSetting storage, DatabaseSetting aggregate) 
+  DatabaseContext(DatabaseSetting storage, DatabaseSetting aggregate)
     : db_storage(storage), db_aggregate(aggregate) {}
   DatabaseSetting db_storage;
   DatabaseSetting db_aggregate;

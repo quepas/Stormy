@@ -1,5 +1,4 @@
 #include <Poco/Logger.h>
-#include <Poco/NumberFormatter.h>
 
 #include "db_storage.h"
 #include "acquisition_scheduler.h"
@@ -24,11 +23,11 @@ int main(int argc, char** argv) {
   analysis::OperationMgr operation_mgr("./", db_aggregate);
   db::Storage storage_for_acquisition(db_storage);
 
-  logger.information("==== Storage & Aggregation started. ====");	  
+  logger.information("==== Storage & Aggregation started. ====");
   logger.information("Measurements in storage: " + 
-    NumberFormatter::format(storage_for_acquisition.CountAllMeasurements()));
+    std::to_string(storage_for_acquisition.CountAllMeasurements()));
   logger.information("Available stations: " + 
-    NumberFormatter::format(storage_for_acquisition.CountAllStations()));
+    std::to_string(storage_for_acquisition.CountAllStations()));
   logger.information(">>-----------------------------------------------------------");
   logger.information("=== Acquisition Servers: ");
   for (auto& server : remote_servers) {
