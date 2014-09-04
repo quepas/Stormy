@@ -13,66 +13,90 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\net">
+      <UniqueIdentifier>{e7771cb6-5dc3-4e46-903c-3c239ec9b03a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\net">
+      <UniqueIdentifier>{3dea455a-a69b-4fff-b0bc-877b811ad0b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\py">
+      <UniqueIdentifier>{88464200-8cc1-4370-8a4b-af25491547c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\db">
+      <UniqueIdentifier>{7e4b869b-cb79-45a5-8a68-2ca2ce1db3c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\py">
+      <UniqueIdentifier>{e64461dd-3884-4706-b85b-48f106fa5eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\acq">
+      <UniqueIdentifier>{2b9d2980-7e02-43ca-b48f-bce72c0f2dc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\acq">
+      <UniqueIdentifier>{a05f879a-8a0d-4c36-b313-7a21d38fa8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\db">
+      <UniqueIdentifier>{848f742a-4a75-477d-a51c-23c85f869e76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\acquisition_scheduler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\acquisition_task.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\db_mongo_handler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\py_parse_script.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\py_script_storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\net_get_requests.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\net</Filter>
     </ClCompile>
     <ClCompile Include="src\net_request_factory.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\py_parse_script.cpp">
+      <Filter>Source Files\py</Filter>
+    </ClCompile>
+    <ClCompile Include="src\py_script_storage.cpp">
+      <Filter>Source Files\py</Filter>
+    </ClCompile>
+    <ClCompile Include="src\acquisition_scheduler.cpp">
+      <Filter>Source Files\acq</Filter>
+    </ClCompile>
+    <ClCompile Include="src\acquisition_task.cpp">
+      <Filter>Source Files\acq</Filter>
+    </ClCompile>
+    <ClCompile Include="src\db_mongo_handler.cpp">
+      <Filter>Source Files\db</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\py_parse_script.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\py_script_storage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\net_get_requests.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\net_request_factory.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\net</Filter>
     </ClInclude>
     <ClInclude Include="src\net_http_server.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net_get_requests.hpp">
+      <Filter>Header Files\net</Filter>
     </ClInclude>
     <ClInclude Include="src\db_mongo_handler.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\db</Filter>
     </ClInclude>
     <ClInclude Include="src\db_constant.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\db</Filter>
     </ClInclude>
-    <ClInclude Include="src\acquisition_task.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\py_parse_script.hpp">
+      <Filter>Header Files\py</Filter>
+    </ClInclude>
+    <ClInclude Include="src\py_script_storage.hpp">
+      <Filter>Header Files\py</Filter>
     </ClInclude>
     <ClInclude Include="src\acquisition_scheduler.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\acq</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquisition_task.hpp">
+      <Filter>Header Files\acq</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -13,14 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\db">
+      <UniqueIdentifier>{3ff1bee7-9fea-49ff-8ca7-f9f130cf7467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\entity">
+      <UniqueIdentifier>{b21d582f-2f61-4977-839c-f486dd892db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\net">
+      <UniqueIdentifier>{7dec412a-ce8b-4936-84e6-0e30c4648e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\db">
+      <UniqueIdentifier>{4f6ff756-cc46-4494-9611-1ec03b5ecbde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\net">
+      <UniqueIdentifier>{d6e91ac9-c216-4a2c-85ec-37d3063a790c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\db_expiration_engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\db_expiration_task.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\rest_cookbook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,44 +39,17 @@
     <ClCompile Include="src\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\net_util.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\db_expiration_engine.cpp">
+      <Filter>Source Files\db</Filter>
     </ClCompile>
-    <ClCompile Include="src\net_http_server.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\db_expiration_task.cpp">
+      <Filter>Source Files\db</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net_util.cpp">
+      <Filter>Source Files\net</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\common\db_expiration_engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\db_expiration_task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\db_has_data_expiration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\entity_measurement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\entity_metrics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\entity_station.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\net_common_requests.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\net_request.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\net_request_factory.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\common\net_util.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\common\rest_constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -80,8 +62,38 @@
     <ClInclude Include="include\common\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\common\db_expiration_engine.h">
+      <Filter>Header Files\db</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\db_expiration_task.h">
+      <Filter>Header Files\db</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\db_has_data_expiration.h">
+      <Filter>Header Files\db</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\entity_station.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\entity_measurement.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\entity_metrics.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\net_common_requests.hpp">
+      <Filter>Header Files\net</Filter>
+    </ClInclude>
     <ClInclude Include="include\common\net_http_server.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\net_request.hpp">
+      <Filter>Header Files\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\net_request_factory.hpp">
+      <Filter>Header Files\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\net_util.hpp">
+      <Filter>Header Files\net</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

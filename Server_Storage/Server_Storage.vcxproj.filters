@@ -19,48 +19,27 @@
     <Filter Include="Source Files\net">
       <UniqueIdentifier>{ad7874f8-cd44-46b8-ac21-d658f0506474}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\acq">
+      <UniqueIdentifier>{d6ca037c-6aea-4d18-8fca-66c96783ffed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\agg">
+      <UniqueIdentifier>{c2947117-bde8-4047-9cae-7a84173c3dfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\db">
+      <UniqueIdentifier>{98ac6bc5-0a48-4c44-b819-8a38843c9013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\db">
+      <UniqueIdentifier>{5d4f4830-9294-45bf-8bef-7aa4f12b5ef8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\acq">
+      <UniqueIdentifier>{b6ce78d6-d7ff-4fa6-8449-6e5042b8b4ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\agg">
+      <UniqueIdentifier>{4aee7d22-1a94-4392-a797-6de851160229}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\acquisition_http_connector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\acquisition_json_util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\acquisition_scheduler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\acquisition_task.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\aggregation_engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\aggregation_scheduler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\aggregation_task_base.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\aggregation_task_factory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\aggregation_task_initial.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\aggregation_task_regular.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\aggregation_util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\analysis_operation_mgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\db_aggregate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\db_storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\rest_csv_cookbook.cpp">
@@ -84,60 +63,48 @@
     <ClCompile Include="src\net_request_factory.cpp">
       <Filter>Source Files\net</Filter>
     </ClCompile>
+    <ClCompile Include="src\acquisition_http_connector.cpp">
+      <Filter>Source Files\acq</Filter>
+    </ClCompile>
+    <ClCompile Include="src\acquisition_json_util.cpp">
+      <Filter>Source Files\acq</Filter>
+    </ClCompile>
+    <ClCompile Include="src\acquisition_scheduler.cpp">
+      <Filter>Source Files\acq</Filter>
+    </ClCompile>
+    <ClCompile Include="src\acquisition_task.cpp">
+      <Filter>Source Files\acq</Filter>
+    </ClCompile>
+    <ClCompile Include="src\aggregation_engine.cpp">
+      <Filter>Source Files\agg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\aggregation_scheduler.cpp">
+      <Filter>Source Files\agg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\aggregation_task_base.cpp">
+      <Filter>Source Files\agg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\aggregation_task_factory.cpp">
+      <Filter>Source Files\agg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\aggregation_task_initial.cpp">
+      <Filter>Source Files\agg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\aggregation_task_regular.cpp">
+      <Filter>Source Files\agg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\aggregation_util.cpp">
+      <Filter>Source Files\agg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\db_aggregate.cpp">
+      <Filter>Source Files\db</Filter>
+    </ClCompile>
+    <ClCompile Include="src\db_storage.cpp">
+      <Filter>Source Files\db</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\acquisition_http_connector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\acquisition_json_util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\acquisition_scheduler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\acquisition_task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_entity_aggregate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_entity_operation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_entity_period.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_entity_task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_scheduler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_task_base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_task_factory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_task_initial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_task_regular.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\aggregation_util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\analysis_operation_mgr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\db_aggregate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\db_storage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\rest_csv_cookbook.h">
@@ -157,6 +124,57 @@
     </ClInclude>
     <ClInclude Include="src\net_get_requests.hpp">
       <Filter>Header Files\net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_engine.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_entity_aggregate.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_entity_operation.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_entity_period.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_entity_task.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_scheduler.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_task_base.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_task_factory.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_task_initial.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_task_regular.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\aggregation_util.h">
+      <Filter>Header Files\agg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquisition_http_connector.h">
+      <Filter>Header Files\acq</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquisition_json_util.h">
+      <Filter>Header Files\acq</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquisition_scheduler.h">
+      <Filter>Header Files\acq</Filter>
+    </ClInclude>
+    <ClInclude Include="src\acquisition_task.h">
+      <Filter>Header Files\acq</Filter>
+    </ClInclude>
+    <ClInclude Include="src\db_storage.h">
+      <Filter>Header Files\db</Filter>
+    </ClInclude>
+    <ClInclude Include="src\db_aggregate.h">
+      <Filter>Header Files\db</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

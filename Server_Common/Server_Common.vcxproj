@@ -76,7 +76,6 @@
   <ItemGroup>
     <ClCompile Include="src\db_expiration_engine.cpp" />
     <ClCompile Include="src\db_expiration_task.cpp" />
-    <ClCompile Include="src\net_http_server.cpp" />
     <ClCompile Include="src\net_util.cpp" />
     <ClCompile Include="src\rest_cookbook.cpp" />
     <ClCompile Include="src\rest_uri_parser.cpp" />
