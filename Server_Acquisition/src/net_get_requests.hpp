@@ -11,7 +11,6 @@ namespace stormy {
 
 struct DatabaseContext
 {
-  DatabaseContext(db::MongoHandler& handler) : db_handler(handler) {}
   db::MongoHandler& db_handler;
 };
 

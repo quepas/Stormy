@@ -26,21 +26,21 @@ HTTPRequestHandler* AcquisitionRequestFactoryAction::createRequestHandler(const 
   if (request.getMethod() == HTTPRequest::HTTP_GET) {
     if (IsMatch(URI, constant::station_request_pattern) ||
       IsMatch(URI, constant::station_info_request_pattern)) {
-      return new GetStation(URI, context.db_handler);
+      return new GetStation(URI, { context.db_handler });
     }
     else if (IsMatch(URI, constant::meteo_request_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_request_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_request_pattern +
       constant::uri_query_vars_pattern) ||
       IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
-      return new GetMeteo(URI, context.db_handler);
+      return new GetMeteo(URI, { context.db_handler });
     }
     else if (IsMatch(URI, constant::metrics_request_pattern) ||
       IsMatch(URI, constant::metrics_info_request_pattern)) {
-      return new GetMetrics(URI, context.db_handler);
+      return new GetMetrics(URI, { context.db_handler });
     }
     else if (IsMatch(URI, constant::info_request_pattern)) {
-      return new GetInfo(URI, context.db_handler);
+      return new GetInfo(URI, { context.db_handler });
     }
     else {
       return net::CreateRequestBad_(URI);
