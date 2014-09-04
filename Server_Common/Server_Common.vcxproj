@@ -74,6 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\csv_cookbook.cpp" />
     <ClCompile Include="src\db_expiration_engine.cpp" />
     <ClCompile Include="src\db_expiration_task.cpp" />
     <ClCompile Include="src\net_util.cpp" />
@@ -82,6 +83,7 @@
     <ClCompile Include="src\util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\common\csv_cookbook.hpp" />
     <ClInclude Include="include\common\db_expiration_engine.h" />
     <ClInclude Include="include\common\db_expiration_task.h" />
     <ClInclude Include="include\common\db_has_data_expiration.h" />

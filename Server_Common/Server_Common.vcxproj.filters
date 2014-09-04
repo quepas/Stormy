@@ -28,6 +28,12 @@
     <Filter Include="Source Files\net">
       <UniqueIdentifier>{d6e91ac9-c216-4a2c-85ec-37d3063a790c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\csv">
+      <UniqueIdentifier>{85f83e70-848a-4d3c-99df-be9d74f84923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\csv">
+      <UniqueIdentifier>{e1ba3e63-e57b-4bf6-82b8-bb8d885a688e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\rest_cookbook.cpp">
@@ -47,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="src\net_util.cpp">
       <Filter>Source Files\net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\csv_cookbook.cpp">
+      <Filter>Source Files\csv</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="include\common\net_util.hpp">
       <Filter>Header Files\net</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\csv_cookbook.hpp">
+      <Filter>Header Files\csv</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

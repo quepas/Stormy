@@ -4,7 +4,7 @@
 #include "db_storage.h"
 #include "common/rest_constant.h"
 #include "common/rest_cookbook.h"
-#include "rest_csv_cookbook.h"
+#include "common/csv_cookbook.hpp"
 #include "rest_json_cookbook.h"
 #include "common/entity_station.h"
 
@@ -274,7 +274,7 @@ string GetExportAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db
       auto measurements = database_storage_
         .GetAllMeasureSetsForStation(path_segments[1]);
       auto valid_metrics = database_storage_.GetMetricsCodes();
-      return rest::csv::PrepareMeteo(measurements, valid_metrics);
+      return csv::PrepareMeteo(measurements, valid_metrics);
     }
     else {
       auto from_index = query_segments.find(constant::from_parameter);
@@ -309,7 +309,7 @@ string GetExportAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db
       }
       auto measurements = database_storage_
         .GetMeasureSetsForStationBetweenTS(path_segments[1], from_ts, to_ts);
-      return rest::csv::PrepareMeteo(measurements, metrics);
+      return csv::PrepareMeteo(measurements, metrics);
     }
   }
 }

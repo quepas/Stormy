@@ -42,9 +42,6 @@
     <ClCompile Include="src\analysis_operation_mgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\rest_csv_cookbook.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\rest_json_cookbook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,9 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\analysis_operation_mgr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rest_csv_cookbook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\rest_json_cookbook.h">

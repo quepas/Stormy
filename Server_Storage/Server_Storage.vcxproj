@@ -94,7 +94,6 @@
     <ClCompile Include="src\db_storage.cpp" />
     <ClCompile Include="src\net_get_requests.cpp" />
     <ClCompile Include="src\net_request_factory.cpp" />
-    <ClCompile Include="src\rest_csv_cookbook.cpp" />
     <ClCompile Include="src\rest_json_cookbook.cpp" />
     <ClCompile Include="src\settings.cpp" />
     <ClCompile Include="src\storage_and_aggregation.cpp" />
@@ -121,7 +120,6 @@
     <ClInclude Include="src\net_get_requests.hpp" />
     <ClInclude Include="src\net_http_server.hpp" />
     <ClInclude Include="src\net_request_factory.hpp" />
-    <ClInclude Include="src\rest_csv_cookbook.h" />
     <ClInclude Include="src\rest_json_cookbook.h" />
     <ClInclude Include="src\settings.hpp" />
   </ItemGroup>
