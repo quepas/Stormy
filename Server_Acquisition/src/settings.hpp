@@ -7,6 +7,7 @@ namespace stormy {
 
 struct StationSetting
 {
+  std::string id;
   std::string name;
   std::string url;
   std::string parse_script;

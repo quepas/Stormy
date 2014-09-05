@@ -31,6 +31,7 @@ StationSettings LoadStationSettings(const string& file_path)
     while (config.has(stations_key = format("stations[%u]", idx++))) {
       try {
         StationSetting entry;
+        entry.id = config.getString(stations_key + ".id");
         entry.name = config.getString(stations_key + ".name");
         entry.url = config.getString(stations_key + ".url");
         entry.parse_script = config.getString(stations_key + ".read_script");
