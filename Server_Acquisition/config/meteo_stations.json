@@ -109,7 +109,7 @@
             "id": "agh",
             "name": "Akademia Górniczo{Hutnicza",
             "url": "http://meteo.ftj.agh.edu.pl/meteo/meteo.xml",
-            "read_script": "AGH_MeteoParser",
+            "read_script": "AGHReader",
             "update_time": 30
         },
         {
