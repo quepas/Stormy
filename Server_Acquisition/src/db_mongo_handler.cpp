@@ -103,7 +103,7 @@ void MongoHandler::InsertStations(const StationSettings& stations)
   auto insert_request = database_->createInsertRequest(COLLECTION_STATION);
   for (auto& station : stations) {
     insert_request->addNewDocument()
-      .add(MONGO_ID, MD5(station.url))
+      .add(MONGO_ID, station.id)
       .add(NAME, station.name)
       .add(PARSER_SCRIPT, station.parse_script)
       .add(UPDATE_TIME, static_cast<int>(station.update_time))
