@@ -237,6 +237,14 @@
                 "Czas"
             ],
             "is_meteo": false
+        },
+        {
+            "name": "datetime",
+            "type": "text",
+            "unit": "time",
+            "format": "YYYY-MM-DD HH:MM:SS+HH",
+            "labels": [],
+            "is_meteo": false
         }
     ]
 }

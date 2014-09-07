@@ -1,4 +1,4 @@
-__author__ = 'quepas'
+﻿__author__ = 'quepas'
 # AGH data reader
 # python 2.7.6
 
@@ -17,21 +17,21 @@ class AGH_MeteoParser():
 
     def parseXML(self, content):
         self.xml_dom = minidom.parseString(content)
-        self.getDataAs("ta", "Temperatura powietrza")
-        self.getDataAs("ua", "Wilgotnosc powietrza")
-        self.getDataAs("odew", "Punkt rosy")
-        self.getDataAs("owindchill", "Temperatura odczuwalna")
+        self.getDataAs("ta", "airTemperature")
+        self.getDataAs("ua", "airHumidity")
+        self.getDataAs("odew", "dewPoint")
+        self.getDataAs("owindchill", "perceptibleTemperature")
         #self.getDataAs("oheatindex", "")
-        self.getDataAs("sx", "Maksymalna predkosc wiatru")
-        self.getDataAs("sm", "Predkosc srednia")
-        self.getDataAs("dm", "Kat kierunku wiatru")
-        self.getDataAs("pa", "Cisnienie atmosferyczne")
-        self.getDataAs("barosealevel", "Cisnienie barometryczne")
-        self.getDataAs("rc", "Opad")
-        self.getDataAs("hc", "Grad")
-        self.getDataAs("ri", "Intensywnosc opadu")
-        self.getDataAs("hi", "Intensywnosc gradu")
-        self.getDataAs("tendency", "Tendencja")
+        self.getDataAs("sx", "windSpeedMax")
+        self.getDataAs("sm", "windSpeedMedium")
+        self.getDataAs("dm", "windDirectionAngle")
+        self.getDataAs("pa", "atmosphericPressure")
+        self.getDataAs("barosealevel", "barometricPressure")
+        self.getDataAs("rc", "dropDaily")
+        self.getDataAs("hc", "hail")
+        self.getDataAs("ri", "dropIntensity")
+        self.getDataAs("hi", "hailIntensity")
+        self.getDataAs("tendency", "tendency")
         self.getDateTime()
 
     def getDataAs(self, tag_name, equivalent):
@@ -42,7 +42,4 @@ class AGH_MeteoParser():
 
     def getDateTime(self):
         datetime = self.xml_dom.getElementsByTagName("dane_aktualne")[0].attributes["data"].value
-        date = datetime.split(" ")[0]
-        time = datetime.split(" ")[1]
-        self.data.update({"Data" : date.encode('unicode-escape')})
-        self.data.update({"Czas" : time.encode('unicode-escape')})
+        self.data.update({"datetime" : datetime})
