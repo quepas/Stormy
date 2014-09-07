@@ -81,7 +81,6 @@ void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
   auto insert_request = database_->createInsertRequest(
     COLLECTION_METEO
       + "."
-      + STATION_UID_PREFIX
       + meteo_data[0].station_uid);
 
   auto& document = insert_request->addNewDocument();
@@ -190,7 +189,7 @@ void MongoHandler::ExpireData()
   time_t expiration_time = common::LocaltimeNow() - expiration_seconds();
 
   for (auto& uid : stations_uid) {
-    auto delete_request = database_->createDeleteRequest(STATION_UID_PREFIX + uid);
+    auto delete_request = database_->createDeleteRequest(uid);
     delete_request->selector()
       .addNewDocument("query")
         .addNewDocument(MONGO_ID)
@@ -221,7 +220,7 @@ vector<string> MongoHandler::FetchStationsUID()
 
 unsigned int MongoHandler::CountMeteo(string uid)
 {
-  auto count_request = database_->createCountRequest(STATION_UID_PREFIX + uid);
+  auto count_request = database_->createCountRequest(uid);
   ResponseMessage response;
   connection_->sendRequest(*count_request, response);
   unsigned int result = 0;
@@ -236,7 +235,7 @@ MeteoDataMap MongoHandler::GetMeteoBetween(string station_uid, time_t from, time
   MeteoDataMap result;
   if (!is_connected_) return result;
 
-  Cursor cursor(db_name_, COLLECTION_METEO + "." + STATION_UID_PREFIX + station_uid);
+  Cursor cursor(db_name_, COLLECTION_METEO + "." + station_uid);
   cursor.query().selector()
     .addNewDocument(MONGO_ID)
       .add("$gte", from)

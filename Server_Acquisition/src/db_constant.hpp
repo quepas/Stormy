@@ -4,7 +4,6 @@ namespace stormy {
   namespace db {
 
 const std::string MONGO_ID = "_id";
-const std::string STATION_UID_PREFIX = "S";
 const std::string URL = "url";
 const std::string PARSER_SCRIPT = "parser_script";
 const std::string UPDATE_TIME = "update_time";
