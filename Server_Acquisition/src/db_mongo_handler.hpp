@@ -4,6 +4,7 @@
 #include "common/entity_station.h"
 #include "common/entity_metrics.h"
 #include "common/entity_measurement.h"
+#include "common/meteo_data.hpp"
 #include "settings.hpp"
 
 #include <ctime>
@@ -17,11 +18,11 @@
 namespace stormy {
   namespace db {
 
-typedef std::vector<common::entity::Measurement> MeteoData;
+typedef std::vector<common::entity::Measurement> MeteoData_;
 typedef common::entity::Station StationData;
 typedef std::vector<common::entity::Station> StationsData;
 typedef std::vector<common::entity::Metrics> MetricsData;
-typedef std::map<std::time_t, MeteoData> MeteoDataMap;
+typedef std::map<std::time_t, MeteoData_> MeteoDataMap;
 
 class MongoHandler : public common::db::HasDataExpiration
 {
@@ -31,6 +32,7 @@ public:
 
   void InsertStations(const StationSettings& stations);
   bool InsertMetrics(const MetricsSettings& metrics);
+  void InsertMeteo(const MeteoData_& meteo_data);
   void InsertMeteo(const MeteoData& meteo_data);
 
   bool ClearCollection(std::string collection_name);

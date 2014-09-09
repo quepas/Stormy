@@ -1,5 +1,7 @@
 #include "db_mongo_handler.hpp"
 
+#include <Poco/DateTime.h>
+#include <Poco/DateTimeParser.h>
 #include <Poco/Exception.h>
 #include <Poco/String.h>
 #include <Poco/Types.h>
@@ -10,8 +12,10 @@
 #include "db_constant.hpp"
 #include "common/util.h"
 
-using Poco::Int64;
+using Poco::DateTime;
+using Poco::DateTimeParser;
 using Poco::cat;
+using Poco::Int64;
 using Poco::MongoDB::Cursor;
 using Poco::MongoDB::Connection;
 using Poco::MongoDB::Database;
@@ -74,7 +78,7 @@ void MongoHandler::CheckLastErrors()
   }
 }
 
-void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
+void MongoHandler::InsertMeteo(const MeteoData_& meteo_data)
 {
   if (!is_connected_ || meteo_data.empty()) return;
 
@@ -93,6 +97,36 @@ void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
   }
   tm timestamp = meteo_data[0].timestamp;
   document.add(MONGO_ID, mktime(&timestamp) + 3600);
+  connection_->sendRequest(*insert_request);
+  CheckLastErrors();
+}
+
+void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
+{
+  if (!is_connected_) return;
+  DateTime date_time;
+  int time_zone;
+  if (!DateTimeParser::tryParse(meteo_data.datetime, date_time, time_zone)) {
+    logger_.warning("[db/MongoHandler] Invalid datetime. Skipping insert.");
+    return;
+  }
+  auto insert_request = database_->createInsertRequest(
+    COLLECTION_METEO + "."
+      + meteo_data.station_id + "."
+      + "dt" + to_string(date_time.year())
+      + "_" + FormatZeroPaddedMonth(date_time.month())
+      + "_" + FormatZeroPaddedDay(date_time.day()));
+
+  auto& document = insert_request->addNewDocument();
+  for (auto& entry : meteo_data.entries) {
+    if (!entry.str_data.empty()) {
+      document.add(entry.element_id, entry.str_data);
+    }
+    else {
+      document.add(entry.element_id, entry.data);
+    }
+  }
+  document.add(MONGO_ID, date_time.timestamp().epochTime());
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
 }
@@ -249,7 +283,7 @@ MeteoDataMap MongoHandler::GetMeteoBetween(string station_uid, time_t from, time
       document->elementNames(available_keys);
 
       time_t current_ts = 0;
-      MeteoData measure_vec;
+      MeteoData_ measure_vec;
       for (auto& key : available_keys) {
         entity::Measurement measure;
         measure.code = key;
