@@ -1,24 +1,24 @@
 #pragma once
 
-#include "station_data.hpp"
+#include "meteo_element.hpp"
 
 #include <string>
+#include <vector>
 
 namespace stormy {
 
-struct MeteoElement
+struct MeteoDataEntry
 {
-  std::string id;
-  double value;
-  std::string str_value;
+  std::string element_id;
+  double data;
+  std::string str_data;
 };
 
 struct MeteoData
 {
   std::string datetime;
-  MeteoElement* elements;
-  unsigned int num_elements;
-  StationData station;
+  std::vector<MeteoDataEntry> entries;
+  std::string station_id;
 };
 
 }
