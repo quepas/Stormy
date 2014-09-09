@@ -42,4 +42,4 @@ class AGH_MeteoParser():
 
     def getDateTime(self):
         datetime = self.xml_dom.getElementsByTagName("dane_aktualne")[0].attributes["data"].value
-        self.data.update({"datetime" : datetime})
+        self.data.update({"datetime" : datetime.encode('unicode-escape')})
