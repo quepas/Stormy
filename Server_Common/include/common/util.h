@@ -38,6 +38,9 @@ std::time_t MakeUTCIfPossible(std::time_t time);
 std::time_t MinutesToMiliseconds(std::time_t minutes);
 std::time_t SecondsToMiliseconds(std::time_t seconds);
 
+std::string FormatZeroPaddedDay(unsigned short day);
+std::string FormatZeroPaddedMonth(unsigned short month);
+
 // const
 const std::string numeric_pattern = "-?[0-9]*([.][0-9]+)?";
 const std::string date_pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}";

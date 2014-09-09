@@ -19,6 +19,7 @@ using boost::regex_match;
 using boost::smatch;
 using boost::to_lower;
 using std::string;
+using std::to_string;
 using std::vector;
 using std::isdigit;
 using Poco::NumberParser;
@@ -144,6 +145,20 @@ time_t SecondsToMiliseconds(time_t seconds)
 time_t MinutesToMiliseconds(time_t minutes)
 {
   return SecondsToMiliseconds(minutes * 60);
+}
+
+std::string FormatZeroPaddedDay(unsigned short day)
+{
+  if (day > 31 || day < 1) return "NA";
+  if (day < 10) return "0" + to_string(day);
+  return to_string(day);
+}
+
+std::string FormatZeroPaddedMonth(unsigned short month)
+{
+  if (month > 12 || month < 1) return "NA";
+  if (month < 10) return "0" + to_string(month);
+  return to_string(month);
 }
 
 }}
