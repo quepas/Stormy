@@ -1,0 +1,9 @@
+Package: RStormy
+Type: Package
+Title: Fetching meteo data from Stormy Meteo servers
+Version: 1.0
+Date: 2014-09-10
+Author: Patryk Kiepas (quepas)
+Maintainer: kiepas.patryk@gmail.com
+Description: Allows to fetch meteo data from Stormy servers right into R
+License: MIT License
