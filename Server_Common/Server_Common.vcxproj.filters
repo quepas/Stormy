@@ -116,5 +116,17 @@
     <ClInclude Include="include\common\util_task_scheduler.hpp">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="include\common\util_logger.hpp">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\meteo_data.hpp">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\station_data.hpp">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\common\meteo_element.hpp">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
