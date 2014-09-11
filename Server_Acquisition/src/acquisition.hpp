@@ -9,9 +9,12 @@
 #include "common/util.h"
 #include "common/util_task_template.hpp"
 #include "common/util_task_scheduler.hpp"
+#include "common/meteo_data.hpp"
 
 #include <string>
 #include <Poco/Logger.h>
+#include <Poco/DateTimeFormatter.h>
+#include <Poco/DateTimeParser.h>
 
 namespace stormy {
 
@@ -36,33 +39,52 @@ class AcquisitionAction
 {
 public:
   static void run(AcquisitionContext context) {
-    logger.information("[acquisition/Task] Acquire weather from " + common::MD5(context.station.url));
+    logger.information("[acquisition/Task] Acquire weather from " + context.station.id);
     std::string website_content = net::FetchWebsite(context.station.url);
 
     if (!website_content.empty()) {
       auto map = (*context.script)(website_content);
-      logger.information("Acquired: " + std::to_string(map.size()) + " itmes.");
+      logger.information("[acquisition/Task] Acquired meteo elements: " + std::to_string(map.size()));
 
       auto metrics = context.database_handler.GetMetrics();
-      logger.information("Metrics size: " + std::to_string(metrics.size()));
-      db::MeteoData meteo_data;
+      db::MeteoData_ old_meteo_data;
+      MeteoData meteo_data;
+      meteo_data.station_id = context.station.id;
+
+      bool no_datetime = true;
+      Poco::DateTime date_time;
       for (auto& entry : map) {
         std::string key = entry.first;
         std::string value = entry.second;
         for (auto& m_entry : metrics) {
           if (m_entry.code == key || m_entry.equivalents.find(key) != std::string::npos) {
-            common::entity::Measurement measure;
-            measure.code = key;
-            measure.station_uid = context.station.id;
-            if (m_entry.type == "number") {
-              measure.value_number = std::stod(value);
+            if (key == "datetime") {
+              no_datetime = true;
+              Poco::DateTimeParser parser;
+              int time_zone;
+              if (parser.tryParse(value, date_time, time_zone)) {
+                logger.information("day: " + std::to_string(date_time.day()));
+                logger.information("month: " + std::to_string(date_time.month()));
+                logger.information("year: " + std::to_string(date_time.year()));
+                //meteo_data.datetime = value;
+              }
             }
             else {
-              measure.value_text = value;
+              MeteoDataEntry meteo_element;
+              meteo_element.element_id = key;
+              if (m_entry.type == "number") {
+                meteo_element.data = std::stod(value);
+              }
+              else {
+                meteo_element.str_data = value;
+              }
+              meteo_data.entries.push_back(meteo_element);
             }
-            meteo_data.push_back(measure);
           }
         }
+      }
+      if (no_datetime) {
+        meteo_data.datetime = Poco::DateTimeFormatter::format(date_time, "%Y-%m-%d %H:%M:%S");
       }
       context.database_handler.InsertMeteo(meteo_data);
     }
