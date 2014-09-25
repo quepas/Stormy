@@ -112,10 +112,7 @@ void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
   }
   auto insert_request = database_->createInsertRequest(
     COLLECTION_METEO + "."
-      + meteo_data.station_id + "."
-      + "dt" + to_string(date_time.year())
-      + "_" + FormatZeroPaddedMonth(date_time.month())
-      + "_" + FormatZeroPaddedDay(date_time.day()));
+      + meteo_data.station_id);
 
   auto& document = insert_request->addNewDocument();
   for (auto& entry : meteo_data.entries) {
