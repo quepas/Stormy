@@ -8,7 +8,6 @@ def process(text):
     parser = AGH_MeteoParser()
     parser.data = {}
     parser.parseXML(text)
-    print(parser.data)
     return parser.data
 
 class AGH_MeteoParser():
