@@ -39,50 +39,57 @@ class AcquisitionAction
 {
 public:
   static void run(AcquisitionContext context) {
-    logger.information("[acquisition/Task] Acquire weather from " + context.station.id);
-    std::string website_content = net::FetchWebsite(context.station.url);
+    logger.information("[acq/Task] Acquire weather from " + context.station.id);
+    std::string website_url = context.station.url;
+    std::string website_content = net::FetchWebsite(website_url);
 
-    if (!website_content.empty()) {
-      auto map = (*context.script)(website_content);
-      auto metrics = context.database_handler.GetMetrics();
-      db::MeteoData_ old_meteo_data;
-      MeteoData meteo_data;
-      meteo_data.station_id = context.station.id;
+    if (website_content.empty()) {
+      logger.warning("[acq/Task] Website " + website_url + " is empty.");
+    }
+    else {
+      auto meteo_data = ExtractMeteoData(context, website_content);
+      auto& db_handler = context.database_handler;
+      if (!db_handler.IsMeteoExists(meteo_data)) {
+        db_handler.InsertMeteo(meteo_data);
+      }
+    }
+  }
+private:
+  static MeteoData ExtractMeteoData(AcquisitionContext context, std::string website_content) {
+    auto raw_meteo = (*context.script)(website_content);
+    auto metrics = context.database_handler.GetMetrics();
+    MeteoData meteo_data;
+    meteo_data.station_id = context.station.id;
 
-      bool datetime_exists = false;
-      Poco::DateTime date_time;
-      for (auto& entry : map) {
-        std::string key = entry.first;
-        std::string value = entry.second;
-        for (auto& m_entry : metrics) {
-          if (m_entry.code == key || m_entry.equivalents.find(key) != std::string::npos) {
-            if (key == "datetime") {
-              datetime_exists = true;
-              Poco::DateTimeParser parser;
-              int time_zone;
-              if (!parser.tryParse(value, date_time, time_zone)) {
-                logger.error("[acquisition/Task] Wrong datetime. Skipping acquisition.");
-              }
+    Poco::DateTime date_time;
+    for (auto& entry : raw_meteo) {
+      std::string key = entry.first;
+      std::string value = entry.second;
+      for (auto& m_entry : metrics) {
+        if (m_entry.code == key || m_entry.equivalents.find(key) != std::string::npos) {
+          if (key == "datetime") {
+            Poco::DateTimeParser parser;
+            int time_zone;
+            if (!parser.tryParse(value, date_time, time_zone)) {
+              logger.error("[acq/Task] Wrong datetime. Skipping acquisition.");
+            }
+          }
+          else {
+            MeteoDataEntry meteo_element;
+            meteo_element.element_id = key;
+            if (m_entry.type == "number") {
+              meteo_element.data = std::stod(value);
             }
             else {
-              MeteoDataEntry meteo_element;
-              meteo_element.element_id = key;
-              if (m_entry.type == "number") {
-                meteo_element.data = std::stod(value);
-              }
-              else {
-                meteo_element.str_data = value;
-              }
-              meteo_data.entries.push_back(meteo_element);
+              meteo_element.str_data = value;
             }
+            meteo_data.entries.push_back(meteo_element);
           }
         }
       }
-      if (datetime_exists) {
-        meteo_data.datetime = Poco::DateTimeFormatter::format(date_time, "%Y-%m-%d %H:%M:%S");
-      }
-      context.database_handler.InsertMeteo(meteo_data);
     }
+    meteo_data.datetime = Poco::DateTimeFormatter::format(date_time, "%Y-%m-%d %H:%M:%S");
+    return meteo_data;
   }
 };
 
