@@ -47,6 +47,7 @@ MongoHandler::MongoHandler(string dbAddress /*= "localhost"*/, unsigned int port
 
 MongoHandler::~MongoHandler()
 {
+  delete database_;
   connection_->disconnect();
   delete connection_;
 }
@@ -126,6 +127,19 @@ void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
   document.add(MONGO_ID, date_time.timestamp().epochTime());
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
+}
+
+bool MongoHandler::IsMeteoExists(const MeteoData& meteo_data)
+{
+  Cursor cursor(db_name_, COLLECTION_METEO + "." + meteo_data.station_id);
+  DateTime date_time;
+  int time_zone;
+  if (!DateTimeParser::tryParse(meteo_data.datetime, date_time, time_zone)) {
+    logger_.warning("[db/MongoHandler] Wrong date time. Skipping existence check.");
+  }
+  cursor.query().selector().add(MONGO_ID, date_time.timestamp().epochTime());
+  auto response = cursor.next(*connection_);
+  return response.documents().begin() != response.documents().end();
 }
 
 void MongoHandler::InsertStations(const StationSettings& stations)
