@@ -30,12 +30,13 @@ StationSettings LoadStationSettings(const string& file_path)
     string stations_key;
     while (config.has(stations_key = format("stations[%u]", idx++))) {
       try {
-        StationSetting entry;
+        StationData entry;
         entry.id = config.getString(stations_key + ".id");
         entry.name = config.getString(stations_key + ".name");
         entry.url = config.getString(stations_key + ".url");
         entry.parse_script = config.getString(stations_key + ".read_script");
         entry.update_time = config.getUInt(stations_key + ".update_time");
+        entry.time_zone = config.getInt(stations_key + ".time_zone");
         settings.push_back(entry);
       }
       catch (const NotFoundException& exception) {

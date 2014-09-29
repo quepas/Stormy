@@ -1,18 +1,11 @@
 #pragma once
 
+#include <common/station_data.hpp>
+
 #include <string>
 #include <vector>
 
 namespace stormy {
-
-struct StationSetting
-{
-  std::string id;
-  std::string name;
-  std::string url;
-  std::string parse_script;
-  unsigned int update_time;
-};
 
 struct MetricsSetting
 {
@@ -24,7 +17,7 @@ struct MetricsSetting
   bool is_meteo;
 };
 
-typedef std::vector<StationSetting> StationSettings;
+typedef std::vector<StationData> StationSettings;
 typedef std::vector<MetricsSetting> MetricsSettings;
 
 StationSettings LoadStationSettings(const std::string& file_path);

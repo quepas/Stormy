@@ -12,6 +12,7 @@ struct StationData
   std::string url;
   std::string parse_script;
   std::time_t update_time;
+  int time_zone;
 };
 
 }
