@@ -5,343 +5,392 @@
             "name": "Wisła Malinka",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=21",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "brenna",
             "name": "Brenna",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=23",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "na_jeziorze",
             "name": "Meteo na Jeziorze",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=24",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "frelichow",
             "name": "Frelichów",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=25",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "czarne_zapora",
             "name": "Wisła Czarne Zapora",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=26",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "wielka_przystan",
             "name": "Wisła Wielka Przystań",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=27",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "skoczow",
             "name": "Skoczów",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=28",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "wapienica_zapora",
             "name": "Wapienica Zapora",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=29",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "gora_zar",
             "name": "Góra Żar",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=30",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "gubalowka",
             "name": "Gubałówka",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=31",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "miasteczko_slaskie",
             "name": "Miasteczko Śląskie",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=32",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "szczecin",
             "name": "Szczecin",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=33",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "elblag",
             "name": "Elbląg",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=34",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "wloclawek",
             "name": "Włocławek",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=35",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "biebrza",
             "name": "Biebrza",
             "url": "http://stacjameteo.pl/dane/index.php?stacja=37",
             "read_script": "StacjameteoReader",
-            "update_time": 300
+            "update_time": 300,
+            "time_zone": 1
         },
         {
             "id": "agh",
             "name": "Akademia Górniczo{Hutnicza",
             "url": "http://meteo.ftj.agh.edu.pl/meteo/meteo.xml",
             "read_script": "AGHReader",
-            "update_time": 30
+            "update_time": 30,
+            "time_zone": 1
         },
         {
             "id": "um_brzesk",
             "name": "Urząd miejski w Brzesku",
             "url": "http://meteo24.nazwa.pl/brzesko/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "um_jaslo",
             "name": "Urząd miejski w Jaśle",
             "url": "http://meteo24.nazwa.pl/jaslo/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "gopr",
             "name": "Zarząd Główny GOPR",
             "url": "http://meteo24.nazwa.pl/zakopane/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "zaklad_ulhowek",
             "name": "Zakład Produkcyjno Nasienny Ulhówek",
             "url": "http://meteo24.nazwa.pl/ulhowek/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "starostwo_goldap",
             "name": "Starostwo Powiatowe w Gołdap",
             "url": "http://meteo24.nazwa.pl/3M/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "starostwo_wegorzew",
             "name": "Starostwo Powiatowe w Węgorzewie",
             "url": "http://meteo24.nazwa.pl/2M/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "starostwo_nidzica",
             "name": "Starostwo Powiatowe w Nidzicy",
             "url": "http://meteo24.nazwa.pl/5M/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "ug_grodziczno",
             "name": "Urząd Gminy Grodziczno",
             "url": "http://meteo24.nazwa.pl/6M/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "um_milomlyn",
             "name": "Urząd Miasta i Gminy Miłomłyn",
             "url": "http://meteo24.nazwa.pl/7M/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "um_frombork",
             "name": "Urząd Miasta i Gminy We Fromborku",
             "url": "http://meteo24.nazwa.pl/1M/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "gospodarstwo_wieszczyczyn",
             "name": "Gospodarstwo rolne PPHU Wieszczyczyn",
             "url": "http://meteo24.nazwa.pl/wieszczyczyn/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "zaklad_jarocin",
             "name": "Zakład Gospodarki Odpadami w Jarocinie",
             "url": "http://meteo24.nazwa.pl/jarocin_zgo/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "odlewnia_gostyn",
             "name": "Odlewnia Żeliwa Gostyń",
             "url": "http://meteo24.nazwa.pl/gostyn/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "lo_leszno",
             "name": "II LO w Leszno",
             "url": "http://meteo24.nazwa.pl/leszno/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "zarzad_ostrow_wlkp",
             "name": "Powiatowy Zarząd Dróg w Ostrowie Wielkopolskim",
             "url": "http://meteo24.nazwa.pl/sieroszewice/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "wodociagi_katowice",
             "name": "Górnośląskie Przedsiębiorstwo Wodociągów w Katowicach",
             "url": "http://meteo24.nazwa.pl/GOCZ/Current_Vantage_Pro_Plus.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "jastrzebie_zdroj",
             "name": "Przedsiębiorstwo Gospodarki Wodnej i Rekultywacji w Jastrzębie zdrój",
             "url": "http://meteo24.nazwa.pl/jastrzebie1/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "gopr_babia_gora",
             "name": "Grupa Beskidzka GOPR Babia Góra",
             "url": "http://ftp.meteo24.nazwa.pl/Grupa_Beskidzka_GOPR_Babia_Gora/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "straz_dobrowa_tarnowska",
             "name": "Straż Pożarna w Dąbrowie Tarnowskiej",
             "url": "http://meteo24.nazwa.pl/dabrowa_tarnowska/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "zarzad_czerwionka_leszczyny",
             "name": "Zarząd Dróg i Służby Komunalne w Czerwionce Leszczynach",
             "url": "http://meteo24.nazwa.pl/czerwionka_leszczyny/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "szkola_biala_rawska",
             "name": "Zespół Szkół Ponadgimnazjalnych w Białej Rawskiej",
             "url": "http://meteo24.nazwa.pl/biala_rawska/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "nadlesnictwo_swieradow_zdroj",
             "name": "Nadleśnictwo Świeradów Zdrój",
             "url": "http://meteo24.nazwa.pl/Swieradow_szkolka/Current_Vantage_Pro_Plus.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "um_sieradz",
             "name": "Urząd Miasta Sieradza",
             "url": "http://meteo24.nazwa.pl/sieradz/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "gopr_podlesice",
             "name": "Grupa Jurajska GOPR Podlesice",
             "url": "http://meteo24.nazwa.pl/podlesice/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "zaklad_henrykow",
             "name": "Zakład Produkcyjno-Nasienny Henryków",
             "url": "http://meteo24.nazwa.pl/henrykow/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "starostwo_chrzanow",
             "name": "Starostwo Powiatowe w Chrzanowie",
             "url": "http://meteo24.nazwa.pl/chrzanow/Current_Vantage.html",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "szkola_wodzislaw_slaski",
             "name": "Zespół Szkół Technicznych Wodzislaw Śląski",
             "url": "http://meteo24.nazwa.pl/wodzislaw/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "straz_pszczyna",
             "name": "Państwowa Straż Pożarna Pszczyna",
             "url": "http://meteo24.nazwa.pl/Pszczyna/Current_Wizard.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "wyciag_ochodzita_1",
             "name": "Stacja Narciarska Ochodzita 1",
             "url": "http://meteo24.nazwa.pl/OH/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "wyciag_ochodzita_2",
             "name": "Stacja Narciarska Ochodzita 2",
             "url": "http://meteo24.nazwa.pl/OCHODZITA2/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "komax_kety",
             "name": "P.K. KOMAX Kęty",
             "url": "http://meteo24.nazwa.pl/kety/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "starostwo_mikolow",
             "name": "Starostwo Powiatowe w Mikołowie",
             "url": "http://meteo24.nazwa.pl/mikolow/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         },
         {
             "id": "wodociagi_gizycko",
             "name": "Przedsiebiorstwo Wodociągów i Kanalizacji Giżycko",
             "url": "http://pwikgizycko.pl/METEO/Current_Vantage.htm",
             "read_script": "ECOCLIMA_MeteoParser",
-            "update_time": 75
+            "update_time": 75,
+            "time_zone": 1
         }
     ]
 }
