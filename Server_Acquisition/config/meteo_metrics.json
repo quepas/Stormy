@@ -243,7 +243,7 @@
             "type": "text",
             "unit": "time",
             "format": "YYYY-MM-DD HH:MM:SS+HH",
-            "labels": [],
+            "labels": ["datetime"],
             "is_meteo": false
         }
     ]
