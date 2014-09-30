@@ -10,6 +10,7 @@
 #include "common/util_task_template.hpp"
 #include "common/util_task_scheduler.hpp"
 #include "common/meteo_data.hpp"
+#include "common/station_data.hpp"
 
 #include <string>
 #include <Poco/Logger.h>
@@ -30,7 +31,7 @@ struct AcquisitionContext
   long delay;
   long interval;
 
-  StationSetting station;
+  StationData station;
   db::MongoHandler& database_handler;
   PyParseScript* script;
 };
@@ -62,6 +63,7 @@ private:
     meteo_data.station_id = context.station.id;
 
     Poco::DateTime date_time;
+    int station_timezone = common::HoursToSeconds(context.station.time_zone);
     for (auto& entry : raw_meteo) {
       std::string key = entry.first;
       std::string value = entry.second;
@@ -72,7 +74,10 @@ private:
             int time_zone;
             if (!parser.tryParse(value, date_time, time_zone)) {
               logger.error("[acq/Task] Wrong datetime. Skipping acquisition.");
+              return meteo_data;
             }
+            // TODO: fix DST/"Summer time" problem
+            //station_timezone = time_zone;
           }
           else {
             MeteoDataEntry meteo_element;
@@ -88,7 +93,8 @@ private:
         }
       }
     }
-    meteo_data.datetime = Poco::DateTimeFormatter::format(date_time, "%Y-%m-%d %H:%M:%S");
+    date_time.makeUTC(station_timezone);
+    meteo_data.datetime = { date_time.timestamp().epochTime(), context.station.time_zone };
     return meteo_data;
   }
 };
