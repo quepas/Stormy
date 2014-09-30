@@ -37,6 +37,7 @@ std::time_t LocaltimeNow();
 std::time_t MakeUTCIfPossible(std::time_t time);
 std::time_t MinutesToMiliseconds(std::time_t minutes);
 std::time_t SecondsToMiliseconds(std::time_t seconds);
+int HoursToSeconds(unsigned int hours);
 
 std::string FormatZeroPaddedDay(unsigned short day);
 std::string FormatZeroPaddedMonth(unsigned short month);

@@ -161,5 +161,10 @@ std::string FormatZeroPaddedMonth(unsigned short month)
   return to_string(month);
 }
 
+int HoursToSeconds(unsigned int hours)
+{
+  return hours * 3600;
+}
+
 }}
 // ~~ stormy::common::util
