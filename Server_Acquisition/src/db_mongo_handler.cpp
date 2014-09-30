@@ -105,12 +105,6 @@ void MongoHandler::InsertMeteo(const MeteoData_& meteo_data)
 void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
 {
   if (!is_connected_) return;
-  DateTime date_time;
-  int time_zone;
-  if (!DateTimeParser::tryParse(meteo_data.datetime, date_time, time_zone)) {
-    logger_.warning("[db/MongoHandler] Invalid datetime. Skipping insert.");
-    return;
-  }
   auto insert_request = database_->createInsertRequest(
     COLLECTION_METEO + "."
       + meteo_data.station_id);
@@ -124,7 +118,7 @@ void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
       document.add(entry.element_id, entry.data);
     }
   }
-  document.add(MONGO_ID, date_time.timestamp().epochTime());
+  document.add(MONGO_ID, meteo_data.datetime.epoch_time);
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
 }
@@ -132,12 +126,7 @@ void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
 bool MongoHandler::IsMeteoExists(const MeteoData& meteo_data)
 {
   Cursor cursor(db_name_, COLLECTION_METEO + "." + meteo_data.station_id);
-  DateTime date_time;
-  int time_zone;
-  if (!DateTimeParser::tryParse(meteo_data.datetime, date_time, time_zone)) {
-    logger_.warning("[db/MongoHandler] Wrong date time. Skipping existence check.");
-  }
-  cursor.query().selector().add(MONGO_ID, date_time.timestamp().epochTime());
+  cursor.query().selector().add(MONGO_ID, meteo_data.datetime.epoch_time);
   auto response = cursor.next(*connection_);
   return response.documents().begin() != response.documents().end();
 }
