@@ -35,8 +35,8 @@ HTTPRequestHandler* AcquisitionRequestFactoryAction::createRequestHandler(const 
       IsMatch(URI, constant::meteo_station_uid_ts_request_pattern)) {
       return new GetMeteo(URI, { context.db_handler });
     }
-    else if (IsMatch(URI, constant::metrics_request_pattern) ||
-      IsMatch(URI, constant::metrics_info_request_pattern)) {
+    else if (IsMatch(URI, constant::meteo_element_request_pattern) ||
+      IsMatch(URI, constant::meteo_element_info_request_pattern)) {
       return new GetMetrics(URI, { context.db_handler });
     }
     else if (IsMatch(URI, constant::info_request_pattern)) {

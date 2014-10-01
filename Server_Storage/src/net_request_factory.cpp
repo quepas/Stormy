@@ -45,8 +45,8 @@ HTTPRequestHandler* StorageRequestFactoryAction::createRequestHandler(const HTTP
     else if (IsMatch(URI, constant::info_request_pattern)) {
       return new net::GetInfo(URI, { db_storage, db_aggregation });
     }
-    else if (IsMatch(URI, constant::metrics_request_pattern) ||
-      IsMatch(URI, constant::metrics_info_request_pattern)) {
+    else if (IsMatch(URI, constant::meteo_element_request_pattern) ||
+      IsMatch(URI, constant::meteo_element_info_request_pattern)) {
       return new net::GetMetrics(URI, { db_storage, db_aggregation });
     }
     else if (IsMatch(URI, constant::export_request_pattern) ||

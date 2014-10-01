@@ -8,30 +8,30 @@ namespace stormy {
       namespace constant {
 
 // common regex
-static const std::string station_uid = "[a-zA-Z]+[a-zA-Z0-9_]*";
+static const std::string valid_id = "[a-zA-Z]+[a-zA-Z0-9_]*";
 
 // api: /station
 const std::string station_request_pattern = "/station/?";
-// api: /station/:station_uid
-const std::string station_info_request_pattern = "/station/" + station_uid  + "/?";
+// api: /station/:station_id
+const std::string station_info_request_pattern = "/station/" + valid_id  + "/?";
 // api: /meteo
 const std::string meteo_request_pattern = "/meteo/?";
-// api: /meteo/:station_uid
-const std::string meteo_station_uid_request_pattern = "/meteo/[0-9a-f]{32}/?";
-// api: /meteo/:station_uid/:timestamp
-const std::string meteo_station_uid_ts_request_pattern = "/meteo/[0-9a-f]{32}/[0-9]{10}/?";
+// api: /meteo/:station_id
+const std::string meteo_station_uid_request_pattern = "/meteo/" + valid_id + "/?";
+// api: /meteo/:station_id/:timestamp
+const std::string meteo_station_uid_ts_request_pattern = "/meteo/" + valid_id + "/[0-9]{10}/?";
 // api: /aggregate
 const std::string aggregate_request_pattern = "/aggregate/?";
-// api: /aggregate/:station_uid/
+// api: /aggregate/:station_id/
 const std::string aggregate_station_uid_request_pattern = "/aggregate/[0-9a-f]{32}/?";
-// api: /aggregate/:station_uid/:period_name
+// api: /aggregate/:station_id/:period_name
 const std::string aggregate_station_period_request_pattern = "/aggregate/[0-9a-f]{32}/[a-zA-Z]+/?";
-// api: /aggregate/:station_uid/:period_name
+// api: /aggregate/:station_id/:period_name
 const std::string aggregate_station_period_time_request_pattern = "/aggregate/[0-9a-f]{32}/[a-zA-Z]+/[0-9]{10}/?";
-// api: /metrics
-const std::string metrics_request_pattern = "/metrics/?";
-// api: /metrics/:metrics_code
-const std::string metrics_info_request_pattern = "/metrics/[a-zA-Z0-9]+/?";
+// api: /meteo_element
+const std::string meteo_element_request_pattern = "/meteo_element/?";
+// api: /meteo_element/:element_id
+const std::string meteo_element_info_request_pattern = "/meteo_element/" + valid_id + "/?";
 // api: /info
 const std::string info_request_pattern = "/info/?";
 // api: /period
