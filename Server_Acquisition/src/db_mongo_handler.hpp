@@ -30,7 +30,7 @@ public:
   std::vector<std::string> FetchStationsUID();
 
   void InsertStations(const std::vector<StationData>& stations);
-  bool InsertMetrics(const MetricsSettings& metrics);
+  bool InsertMetrics(const std::vector<MeteoElement>& metrics);
   void InsertMeteo(const MeteoData& meteo_data);
   bool IsMeteoExists(const MeteoData& meteo_data);
 

@@ -16,14 +16,15 @@ using Poco::WindowsColorConsoleChannel;
 using Poco::Util::JSONConfiguration;
 using std::string;
 using std::to_string;
+using std::vector;
 
 namespace stormy {
 
 static Logger& logger_ = Logger::get("main");
 
-StationSettings LoadStationSettings(const string& file_path)
+vector<StationData> LoadStationsFromFile(const string& file_path)
 {
-  StationSettings settings;
+  vector<StationData> settings;
   try {
     JSONConfiguration config(file_path);
     unsigned int idx = 0;
@@ -53,19 +54,19 @@ StationSettings LoadStationSettings(const string& file_path)
   return settings;
 }
 
-MetricsSettings LoadMetricsSettings(const string& file_path)
+std::vector<MeteoElement> LoadMeteoElementsFromFile(const string& file_path)
 {
-  MetricsSettings settings;
+  std::vector<MeteoElement> settings;
   try {
     JSONConfiguration config(file_path);
     unsigned int idx = 0;
     string metrics_key;
     while (config.has(metrics_key = format("metrics[%u]", idx++))) {
-      MetricsSetting entry;
+      MeteoElement entry;
       try {
-        entry.name = config.getString(metrics_key + ".name");
+        entry.id = config.getString(metrics_key + ".name");
         entry.type = config.getString(metrics_key + ".type");
-        entry.unit = config.getString(metrics_key + ".unit");
+        //entry.unit = config.getString(metrics_key + ".unit");
         string labels_key;
         unsigned int label_idx = 0;
         while (config.has(labels_key = format(metrics_key + ".labels[%u]", label_idx++))) {
@@ -80,11 +81,11 @@ MetricsSettings LoadMetricsSettings(const string& file_path)
       }
       string format_key = metrics_key + ".format";
       if (config.has(format_key)) {
-        entry.format = config.getString(format_key);
+        //entry.format = config.getString(format_key);
       }
       string is_meteo_key = metrics_key + ".is_meteo";
       if (config.has(is_meteo_key)) {
-        entry.is_meteo = config.getBool(is_meteo_key);
+        //entry.is_meteo = config.getBool(is_meteo_key);
       }
       settings.push_back(entry);
     }

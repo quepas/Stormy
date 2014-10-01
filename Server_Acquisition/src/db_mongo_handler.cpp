@@ -175,7 +175,7 @@ vector<entity::Metrics> MongoHandler::GetMetrics()
   return result;
 }
 
-bool MongoHandler::InsertMetrics(const MetricsSettings& metrics)
+bool MongoHandler::InsertMetrics(const vector<MeteoElement>& metrics)
 {
   if (!is_connected_ || metrics.empty()) return false;
 
@@ -183,11 +183,11 @@ bool MongoHandler::InsertMetrics(const MetricsSettings& metrics)
   for (auto& metric : metrics) {
     string labels = cat(string(";"), metric.labels.begin(), metric.labels.end());
     insert_request->addNewDocument()
-      .add(MONGO_ID, metric.name)
+      .add(MONGO_ID, metric.id)
       .add(TYPE, metric.type)
-      .add(UNIT, metric.unit)
+      /*.add(UNIT, metric.unit)
       .add(FORMAT, metric.format)
-      .add(IS_METEO, metric.is_meteo)
+      .add(IS_METEO, metric.is_meteo)*/
       .add(LABELS, labels);
   }
   connection_->sendRequest(*insert_request);

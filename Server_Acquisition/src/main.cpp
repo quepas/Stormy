@@ -18,13 +18,13 @@ int main(int argc, char** argv)
   auto& logger = Poco::Logger::get("main");
   logger.information("==== Aqcuisition started. ====");
 
-  auto station_settings = stormy::LoadStationSettings("config/meteo_stations.json");
-  auto metrics_settings = stormy::LoadMetricsSettings("config/meteo_metrics.json");
+  auto station_settings = stormy::LoadStationsFromFile("config/meteo_stations.json");
+  auto metrics_settings = stormy::LoadMeteoElementsFromFile("config/meteo_elements.json");
 
   // register Python-based parse scripts
   stormy::PyScriptStorage central_storage;
   central_storage.Push("AGHReader", new stormy::PyParseScript("./AGHReader.py"));
-  //central_storage.Push("ECOCLIMA_MeteoParser", new stormy::PyParseScript("./ECOCLIMA_MeteoParser.py"));
+  central_storage.Push("ECOCLIMA_MeteoParser", new stormy::PyParseScript("./ECOCLIMA_MeteoParser.py"));
   central_storage.Push("StacjameteoReader", new stormy::PyParseScript("./StacjameteoReader.py"));
 
   auto& db_handler = stormy::db::MongoHandler::get();
@@ -38,12 +38,12 @@ int main(int argc, char** argv)
   for (auto station : station_settings) {
     auto parse_script = central_storage.Fetch(station.parse_script);
     if (parse_script != nullptr) {
-      stormy::AcquisitionContext task_context = { 
-        0, 
+      stormy::AcquisitionContext task_context = {
+        0,
         stormy::common::SecondsToMiliseconds(station.update_time),
-        station, 
-        db_handler, 
-        parse_script 
+        station,
+        db_handler,
+        parse_script
       };
       acq_scheduler.Schedule<stormy::AcquisitionTask>(task_context);
     }
