@@ -33,7 +33,7 @@ public:
 
   bool ClearCollection(std::string collection_name);
   bool ClearStations();
-  bool ClearMetrics();
+  bool ClearMeteoElements();
 
   std::vector<StationData> GetStations();
   std::vector <MeteoElement> GetMeteoElements();

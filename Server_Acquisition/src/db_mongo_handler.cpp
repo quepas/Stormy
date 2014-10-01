@@ -330,7 +330,7 @@ bool MongoHandler::ClearStations()
   return ClearCollection(COLLECTION_STATION);
 }
 
-bool MongoHandler::ClearMetrics()
+bool MongoHandler::ClearMeteoElements()
 {
   return ClearCollection(COLLECTION_METEO_ELEMENT);
 }

@@ -31,7 +31,7 @@ int main(int argc, char** argv)
   db_handler.set_expiration_seconds(3600 * 72);
   db_handler.ClearStations();
   db_handler.InsertStations(station_settings);
-  db_handler.ClearMetrics();
+  db_handler.ClearMeteoElements();
   db_handler.InsertMeteoElements(metrics_settings);
 
   stormy::util::TaskScheduler acq_scheduler;
