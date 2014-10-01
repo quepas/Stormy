@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/meteo_data.hpp"
 #include "common/station_data.hpp"
 #include "entity_station.h"
 #include "entity_measurement.h"
@@ -38,9 +39,9 @@ std::string PrepareMeteoSets(
   std::vector<entity::Measurement>>& ts_measure_sets_map);
 
 // api: /metrics
-std::string PrepareMetricsCodes(const std::vector<entity::Metrics>& metrics_vec);
+std::string PrepareMetricsCodes(const std::vector<MeteoElement>& metrics_vec);
 // api: /metrics/:metrics_code
-std::string PrepareMetricsInfo(const entity::Metrics& metrics);
+std::string PrepareMetricsInfo(const MeteoElement& metrics);
 
 // api: /aggregate/:station_uid
 std::string PreparePeriodNamesWithAny(

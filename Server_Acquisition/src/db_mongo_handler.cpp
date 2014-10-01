@@ -1,21 +1,22 @@
 #include "db_mongo_handler.hpp"
+#include "db_constant.hpp"
+#include "common/util.h"
 
 #include <Poco/DateTime.h>
 #include <Poco/DateTimeParser.h>
 #include <Poco/Exception.h>
-#include <Poco/String.h>
 #include <Poco/Types.h>
+#include <Poco/MongoDB/Array.h>
 #include <Poco/MongoDB/Cursor.h>
 #include <Poco/MongoDB/Document.h>
 #include <Poco/MongoDB/ResponseMessage.h>
 
-#include "db_constant.hpp"
-#include "common/util.h"
-
 using Poco::DateTime;
 using Poco::DateTimeParser;
-using Poco::cat;
 using Poco::Int64;
+using Poco::Exception;
+using Poco::Logger;
+using Poco::MongoDB::Array;
 using Poco::MongoDB::Cursor;
 using Poco::MongoDB::Connection;
 using Poco::MongoDB::Database;
@@ -31,9 +32,6 @@ using std::mktime;
 using std::vector;
 using std::make_pair;
 using std::map;
-
-using Poco::Exception;
-using Poco::Logger;
 
 namespace stormy {
   namespace db {
@@ -150,45 +148,45 @@ vector<StationData> MongoHandler::GetStations()
   return result;
 }
 
-vector<entity::Metrics> MongoHandler::GetMetrics()
+vector<MeteoElement> MongoHandler::GetMeteoElements()
 {
-  vector<entity::Metrics> result;
-  if(!is_connected_) return result;
+  vector<MeteoElement> meteo_elements;
+  if(!is_connected_) return meteo_elements;
 
-  Cursor cursor(db_name_, COLLECTION_METRICS);
+  Cursor cursor(db_name_, COLLECTION_METEO_ELEMENT);
   ResponseMessage& response = cursor.next(*connection_);
-
   do {
     CheckLastErrors();
     for (auto& document : response.documents()) {
-      entity::Metrics metrics;
-      metrics.code = document->get<string>(MONGO_ID);
-      metrics.equivalents = document->get<string>(LABELS);
-      metrics.type = document->get<string>(TYPE);
-      metrics.unit = document->get<string>(UNIT);
-      metrics.format = document->get<string>(FORMAT);
-      metrics.is_meteo = document->get<bool>(IS_METEO);
-      result.push_back(metrics);
+      MeteoElement element;
+      element.id = document->get<string>(MONGO_ID);
+      element.type = document->get<string>(TYPE);
+      Array::Ptr labels_array = document->get<Array::Ptr>(LABELS);
+      for (unsigned idx = 0; idx < labels_array->size(); ++idx) {
+        element.labels.push_back(labels_array->get<string>(idx));
+      }
+      meteo_elements.push_back(element);
     }
     response = cursor.next(*connection_);
   } while (response.cursorID() != 0);
-  return result;
+  return meteo_elements;
 }
 
-bool MongoHandler::InsertMetrics(const vector<MeteoElement>& metrics)
+bool MongoHandler::InsertMeteoElements(const vector<MeteoElement>& meteo_elements)
 {
-  if (!is_connected_ || metrics.empty()) return false;
+  if (!is_connected_ || meteo_elements.empty()) return false;
 
-  auto insert_request = database_->createInsertRequest(COLLECTION_METRICS);
-  for (auto& metric : metrics) {
-    string labels = cat(string(";"), metric.labels.begin(), metric.labels.end());
-    insert_request->addNewDocument()
-      .add(MONGO_ID, metric.id)
-      .add(TYPE, metric.type)
-      /*.add(UNIT, metric.unit)
-      .add(FORMAT, metric.format)
-      .add(IS_METEO, metric.is_meteo)*/
-      .add(LABELS, labels);
+  auto insert_request = database_->createInsertRequest(COLLECTION_METEO_ELEMENT);
+  for (auto& element : meteo_elements) {
+    int counter = 0;
+    Array::Ptr labels_array = new Array();
+    for (auto& label : element.labels) {
+      labels_array->add(to_string(counter++), label);
+    }
+    auto& current_document = insert_request->addNewDocument()
+      .add(MONGO_ID, element.id)
+      .add(TYPE, element.type)
+      .add(LABELS, labels_array);
   }
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
@@ -334,7 +332,7 @@ bool MongoHandler::ClearStations()
 
 bool MongoHandler::ClearMetrics()
 {
-  return ClearCollection(COLLECTION_METRICS);
+  return ClearCollection(COLLECTION_METEO_ELEMENT);
 }
 
 }}

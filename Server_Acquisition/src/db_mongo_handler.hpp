@@ -1,8 +1,6 @@
 #pragma once
 
 #include "common/db_has_data_expiration.h"
-#include "common/entity_station.h"
-#include "common/entity_metrics.h"
 #include "common/entity_measurement.h"
 #include "common/meteo_data.hpp"
 #include "common/station_data.hpp"
@@ -20,7 +18,6 @@ namespace stormy {
   namespace db {
 
 typedef std::vector<common::entity::Measurement> MeteoData_;
-typedef std::vector<common::entity::Metrics> MetricsData;
 typedef std::map<std::time_t, MeteoData_> MeteoDataMap;
 
 class MongoHandler : public common::db::HasDataExpiration
@@ -30,7 +27,7 @@ public:
   std::vector<std::string> FetchStationsUID();
 
   void InsertStations(const std::vector<StationData>& stations);
-  bool InsertMetrics(const std::vector<MeteoElement>& metrics);
+  bool InsertMeteoElements(const std::vector<MeteoElement>& metrics);
   void InsertMeteo(const MeteoData& meteo_data);
   bool IsMeteoExists(const MeteoData& meteo_data);
 
@@ -39,7 +36,7 @@ public:
   bool ClearMetrics();
 
   std::vector<StationData> GetStations();
-  MetricsData GetMetrics();
+  std::vector <MeteoElement> GetMeteoElements();
 
   StationData GetStationByUID(std::string uid);
   unsigned int CountMeteo(std::string uid);

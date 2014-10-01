@@ -58,7 +58,7 @@ public:
 private:
   static MeteoData ExtractMeteoData(AcquisitionContext context, std::string website_content) {
     auto raw_meteo = (*context.script)(website_content);
-    auto metrics = context.database_handler.GetMetrics();
+    auto metrics = context.database_handler.GetMeteoElements();
     MeteoData meteo_data;
     meteo_data.station_id = context.station.id;
 
@@ -68,7 +68,8 @@ private:
       std::string key = entry.first;
       std::string value = entry.second;
       for (auto& m_entry : metrics) {
-        if (m_entry.code == key || m_entry.equivalents.find(key) != std::string::npos) {
+        auto position = std::find(m_entry.labels.begin(), m_entry.labels.end(), key);
+        if (m_entry.id == key || position != m_entry.labels.end()) {
           if (key == "datetime") {
             Poco::DateTimeParser parser;
             int time_zone;

@@ -17,7 +17,7 @@ const std::string TIME_ZONE = "time_zone";
 
 const std::string COLLECTION_METEO = "meteo";
 const std::string COLLECTION_STATION = "station";
-const std::string COLLECTION_METRICS = "metrics";
+const std::string COLLECTION_METEO_ELEMENT = "meteo_element";
 
 }}
 // ~~ stormy::db::

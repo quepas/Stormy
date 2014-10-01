@@ -95,28 +95,26 @@ string PrepareMeteoSets(
   return ToStyledString(root);
 }
 
-string PrepareMetricsCodes(const vector<entity::Metrics>& metrics)
+string PrepareMetricsCodes(const vector<MeteoElement>& metrics)
 {
   Json::Value root;
   for (unsigned idx = 0; idx < metrics.size(); ++idx) {
-    root[constant::METRICS][idx] = metrics[idx].code;
+    root[constant::METRICS][idx] = metrics[idx].id;
   }
   return ToStyledString(root);
 }
 
-string PrepareMetricsInfo(const entity::Metrics& metrics)
+string PrepareMetricsInfo(const MeteoElement& metrics)
 {
   Json::Value root;
-  root[constant::CODE] = metrics.code;
+  root[constant::CODE] = metrics.id;
   root[constant::TYPE] = metrics.type;
-  root[constant::UNIT] = metrics.unit;
+  /*root[constant::UNIT] = metrics.unit;
   root[constant::FORMAT] = metrics.format;
-  root[constant::IS_METEO] = metrics.is_meteo;
+  root[constant::IS_METEO] = metrics.is_meteo;*/
 
-  vector<string> labels;
-  split(labels, metrics.equivalents, is_any_of(";,"));
-  for (unsigned idx = 0; idx < labels.size(); ++idx) {
-    root[constant::LABELS][idx] = labels[idx];
+  for (unsigned idx = 0; idx < metrics.labels.size(); ++idx) {
+    root[constant::LABELS][idx] = metrics.labels[idx];
   }
   return ToStyledString(root);
 }

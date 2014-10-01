@@ -109,14 +109,14 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_
 string GetMetricsAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
 {
   auto path_segments = parsed_uri.getPathSegments();
-  auto metrics = db_context.db_handler.GetMetrics();
+  auto metrics = db_context.db_handler.GetMeteoElements();
 
   if (path_segments.size() == 1) {
     return cookbook::PrepareMetricsCodes(metrics);
   }
   else if (path_segments.size() == 2) {
     for (auto it = metrics.begin(); it != metrics.end(); ++it) {
-      if (it->code == path_segments[1]) {
+      if (it->id == path_segments[1]) {
         return cookbook::PrepareMetricsInfo(*it);
       }
     }
