@@ -15,9 +15,9 @@ struct DatabaseContext
 };
 
 PREPARE_REQUEST(GetStationAction, DatabaseContext, GetStation)
-PREPARE_REQUEST(GetMeteoAction,   DatabaseContext, GetMeteo)
-PREPARE_REQUEST(GetMetricsAction, DatabaseContext, GetMetrics)
-PREPARE_REQUEST(GetInfoAction,    DatabaseContext, GetInfo)
+PREPARE_REQUEST(GetMeteoAction, DatabaseContext, GetMeteo)
+PREPARE_REQUEST(GetMeteoElementAction, DatabaseContext, GetMetrics)
+PREPARE_REQUEST(GetInfoAction, DatabaseContext, GetInfo)
 
 }}
 // ~~ stormy::net::

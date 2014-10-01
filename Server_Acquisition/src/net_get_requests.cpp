@@ -106,28 +106,28 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_
   }
 }
 
-string GetMetricsAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
+string GetMeteoElementAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
 {
   auto path_segments = parsed_uri.getPathSegments();
-  auto metrics = db_context.db_handler.GetMeteoElements();
+  auto meteo_elements = db_context.db_handler.GetMeteoElements();
 
   if (path_segments.size() == 1) {
-    return cookbook::PrepareMetricsCodes(metrics);
+    return cookbook::PrepareMeteoElementIds(meteo_elements);
   }
   else if (path_segments.size() == 2) {
-    for (auto it = metrics.begin(); it != metrics.end(); ++it) {
+    for (auto it = meteo_elements.begin(); it != meteo_elements.end(); ++it) {
       if (it->id == path_segments[1]) {
-        return cookbook::PrepareMetricsInfo(*it);
+        return cookbook::PrepareMeteoElementDetails(*it);
       }
     }
     return cookbook::PrepareError(
-      "Bad request. Unknown metrics code.",
-      "Use existing metrics code.");
+      "Bad request. Unknown meteo element's id.",
+      "Use proper meteo element's id.");
   }
   else {
     return cookbook::PrepareError(
       "Bad request. Too much URI segments",
-      "Create proper metrics request.");
+      "Create proper meteo element request.");
   }
 }
 

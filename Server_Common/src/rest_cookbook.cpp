@@ -95,7 +95,7 @@ string PrepareMeteoSets(
   return ToStyledString(root);
 }
 
-string PrepareMetricsCodes(const vector<MeteoElement>& metrics)
+string PrepareMeteoElementIds(const vector<MeteoElement>& metrics)
 {
   Json::Value root;
   for (unsigned idx = 0; idx < metrics.size(); ++idx) {
@@ -104,7 +104,7 @@ string PrepareMetricsCodes(const vector<MeteoElement>& metrics)
   return ToStyledString(root);
 }
 
-string PrepareMetricsInfo(const MeteoElement& metrics)
+string PrepareMeteoElementDetails(const MeteoElement& metrics)
 {
   Json::Value root;
   root[constant::CODE] = metrics.id;

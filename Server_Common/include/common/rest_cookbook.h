@@ -38,10 +38,10 @@ std::string PrepareMeteoSets(
   const std::map<std::time_t,
   std::vector<entity::Measurement>>& ts_measure_sets_map);
 
-// api: /metrics
-std::string PrepareMetricsCodes(const std::vector<MeteoElement>& metrics_vec);
-// api: /metrics/:metrics_code
-std::string PrepareMetricsInfo(const MeteoElement& metrics);
+// api: /meteo_element
+std::string PrepareMeteoElementIds(const std::vector<MeteoElement>& metrics_vec);
+// api: /meteo_element/:element_id
+std::string PrepareMeteoElementDetails(const MeteoElement& metrics);
 
 // api: /aggregate/:station_uid
 std::string PreparePeriodNamesWithAny(

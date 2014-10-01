@@ -124,19 +124,19 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_
   }
 }
 
-string GetMetricsAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
+string GetMeteoElementAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_context)
 {
   db::Storage database_storage_(db_context.db_storage);
   auto path_segments = parsed_uri.getPathSegments();
   auto metrics = database_storage_.GetMetrics();
 
   if (path_segments.size() == 1) {
-    return cookbook::PrepareMetricsCodes(metrics);
+    return cookbook::PrepareMeteoElementIds(metrics);
   }
   else if (path_segments.size() == 2) {
     for (auto it = metrics.begin(); it != metrics.end(); ++it) {
       if (it->code == path_segments[1]) {
-        return cookbook::PrepareMetricsInfo(*it);
+        return cookbook::PrepareMeteoElementDetails(*it);
       }
     }
     return cookbook::PrepareError(

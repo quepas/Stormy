@@ -16,7 +16,7 @@ struct DatabaseContext
 
 PREPARE_REQUEST(GetStationAction, DatabaseContext, GetStation)
 PREPARE_REQUEST(GetMeteoAction, DatabaseContext, GetMeteo)
-PREPARE_REQUEST(GetMetricsAction, DatabaseContext, GetMetrics)
+PREPARE_REQUEST(GetMeteoElementAction, DatabaseContext, GetMetrics)
 PREPARE_REQUEST(GetAggregateAction, DatabaseContext, GetAggregate)
 PREPARE_REQUEST(GetOperationAction, DatabaseContext, GetOperation)
 PREPARE_REQUEST(GetPeriodAction, DatabaseContext, GetPeriod)
