@@ -79,29 +79,6 @@ void MongoHandler::CheckLastErrors()
   }
 }
 
-void MongoHandler::InsertMeteo(const MeteoData_& meteo_data)
-{
-  if (!is_connected_ || meteo_data.empty()) return;
-
-  auto insert_request = database_->createInsertRequest(
-    COLLECTION_METEO
-      + "."
-      + meteo_data[0].station_uid);
-
-  auto& document = insert_request->addNewDocument();
-  for (auto& data : meteo_data) {
-    if (data.is_numeric) {
-      document.add(data.code, data.value_number);
-    } else {
-      document.add(data.code, data.value_text);
-    }
-  }
-  tm timestamp = meteo_data[0].timestamp;
-  document.add(MONGO_ID, mktime(&timestamp) + 3600);
-  connection_->sendRequest(*insert_request);
-  CheckLastErrors();
-}
-
 void MongoHandler::InsertMeteo(const MeteoData& meteo_data)
 {
   if (!is_connected_) return;

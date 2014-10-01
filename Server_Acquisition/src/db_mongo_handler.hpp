@@ -31,7 +31,6 @@ public:
 
   void InsertStations(const std::vector<StationData>& stations);
   bool InsertMetrics(const MetricsSettings& metrics);
-  void InsertMeteo(const MeteoData_& meteo_data);
   void InsertMeteo(const MeteoData& meteo_data);
   bool IsMeteoExists(const MeteoData& meteo_data);
 
