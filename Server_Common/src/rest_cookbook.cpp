@@ -38,30 +38,31 @@ string ToStyledString(const Json::Value& value)
   return writer.write(value);
 }
 
-string PrepareStationUIDs(const vector<entity::Station>& stations)
+string PrepareStationUIDs(const vector<StationData>& stations)
 {
   Json::Value root;
   for (unsigned idx = 0; idx < stations.size(); ++idx) {
-    root[constant::STATION][idx] = stations[idx].uid;
+    root[constant::STATION][idx] = stations[idx].id;
   }
   return ToStyledString(root);
 }
 
-string PrepareStationInfo(const entity::Station& station)
+string PrepareStationInfo(const StationData& station)
 {
   Json::Value root;
-  root[constant::UID] = station.uid;
+  root[constant::UID] = station.id;
   root[constant::NAME] = station.name;
-  root[constant::UPDATE_TIME] = station.refresh_time;
+  root[constant::UPDATE_TIME] = station.update_time;
   root[constant::URL] = station.url;
+  root[constant::TIMEZONE] = station.time_zone;
   return ToStyledString(root);
 }
 
-std::string PrepareStationUIDsWithAny(const std::vector<entity::Station>& stations, std::string data_key)
+std::string PrepareStationUIDsWithAny(const std::vector<StationData>& stations, std::string data_key)
 {
   Json::Value root;
   for (unsigned idx = 0; idx < stations.size(); ++idx) {
-    root[data_key][idx] = stations[idx].uid;
+    root[data_key][idx] = stations[idx].id;
   }
   return ToStyledString(root);
 }

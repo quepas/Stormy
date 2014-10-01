@@ -5,6 +5,7 @@
 #include "common/entity_metrics.h"
 #include "common/entity_measurement.h"
 #include "common/meteo_data.hpp"
+#include "common/station_data.hpp"
 #include "settings.hpp"
 
 #include <ctime>
@@ -19,8 +20,6 @@ namespace stormy {
   namespace db {
 
 typedef std::vector<common::entity::Measurement> MeteoData_;
-typedef common::entity::Station StationData;
-typedef std::vector<common::entity::Station> StationsData;
 typedef std::vector<common::entity::Metrics> MetricsData;
 typedef std::map<std::time_t, MeteoData_> MeteoDataMap;
 
@@ -30,7 +29,7 @@ public:
   void ExpireData() override;
   std::vector<std::string> FetchStationsUID();
 
-  void InsertStations(const StationSettings& stations);
+  void InsertStations(const std::vector<StationData>& stations);
   bool InsertMetrics(const MetricsSettings& metrics);
   void InsertMeteo(const MeteoData_& meteo_data);
   void InsertMeteo(const MeteoData& meteo_data);
@@ -40,7 +39,7 @@ public:
   bool ClearStations();
   bool ClearMetrics();
 
-  StationsData GetStations();
+  std::vector<StationData> GetStations();
   MetricsData GetMetrics();
 
   StationData GetStationByUID(std::string uid);

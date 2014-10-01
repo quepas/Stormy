@@ -131,7 +131,7 @@ bool MongoHandler::IsMeteoExists(const MeteoData& meteo_data)
   return response.documents().begin() != response.documents().end();
 }
 
-void MongoHandler::InsertStations(const StationSettings& stations)
+void MongoHandler::InsertStations(const vector<StationData>& stations)
 {
   if (!is_connected_) return;
   auto insert_request = database_->createInsertRequest(COLLECTION_STATION);
@@ -141,15 +141,16 @@ void MongoHandler::InsertStations(const StationSettings& stations)
       .add(NAME, station.name)
       .add(PARSER_SCRIPT, station.parse_script)
       .add(UPDATE_TIME, static_cast<int>(station.update_time))
-      .add(URL, station.url);
+      .add(URL, station.url)
+      .add(TIME_ZONE, station.time_zone);
   }
   connection_->sendRequest(*insert_request);
   CheckLastErrors();
 }
 
-vector<entity::Station> MongoHandler::GetStations()
+vector<StationData> MongoHandler::GetStations()
 {
-  auto result = vector<entity::Station>();
+  auto result = vector<StationData>();
   if (!is_connected_) return result;
 
   Cursor cursor(db_name_, COLLECTION_STATION);
@@ -158,12 +159,13 @@ vector<entity::Station> MongoHandler::GetStations()
   do {
     CheckLastErrors();
     for (auto& document : response.documents()) {
-      entity::Station station;
-      station.uid = document->get<string>(MONGO_ID);
+      StationData station;
+      station.id = document->get<string>(MONGO_ID);
       station.name = document->get<string>(NAME);
-      station.parser_class = document->get<string>(PARSER_SCRIPT);
-      station.refresh_time = document->get<int>(UPDATE_TIME);
+      station.parse_script = document->get<string>(PARSER_SCRIPT);
+      station.update_time = document->get<int>(UPDATE_TIME);
       station.url = document->get<string>(URL);
+      station.time_zone = document->get<int>(TIME_ZONE);
       result.push_back(station);
     }
     response = cursor.next(*connection_);
@@ -330,10 +332,10 @@ StationData MongoHandler::GetStationByUID(string uid)
   // TODO: reimplement this!
   auto stations = GetStations();
   StationData result;
-  result.uid = "";
+  result.id = "";
 
   for (auto it = stations.begin(); it != stations.end(); ++it) {
-    if (uid == it->uid)
+    if (uid == it->id)
       return *it;
   }
   return result;

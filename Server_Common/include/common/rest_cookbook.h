@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/station_data.hpp"
 #include "entity_station.h"
 #include "entity_measurement.h"
 #include "entity_metrics.h"
@@ -20,15 +21,13 @@ std::string PrepareError(
   std::string msg = "");
 
 // api: /station
-std::string PrepareStationUIDs(
-  const std::vector<entity::Station>& stations);
+std::string PrepareStationUIDs(const std::vector<StationData>& stations);
 // api: /station/:station_uid
-std::string PrepareStationInfo(
-  const entity::Station& station);
+std::string PrepareStationInfo(const StationData& station);
 
 // api: /meteo, /export, /aggregate
 std::string PrepareStationUIDsWithAny(
-  const std::vector<entity::Station>& stations,
+  const std::vector<StationData>& stations,
   std::string data_key);
 
 // api: /meteo/:station_uid

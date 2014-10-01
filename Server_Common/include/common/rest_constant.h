@@ -7,10 +7,13 @@ namespace stormy {
     namespace rest {
       namespace constant {
 
+// common regex
+static const std::string station_uid = "[a-zA-Z]+[a-zA-Z0-9_]*";
+
 // api: /station
 const std::string station_request_pattern = "/station/?";
 // api: /station/:station_uid
-const std::string station_info_request_pattern = "/station/[0-9a-f]{32}/?";
+const std::string station_info_request_pattern = "/station/" + station_uid  + "/?";
 // api: /meteo
 const std::string meteo_request_pattern = "/meteo/?";
 // api: /meteo/:station_uid

@@ -33,7 +33,7 @@ string GetStationAction::PrepareResponse(URIParser parsed_uri, DatabaseContext d
   // api: /station/:station_uid
   else if (path_segments.size() == 2) {
     auto station = db_context.db_handler.GetStationByUID(path_segments[1]);
-    if (!station.uid.empty()) {
+    if (!station.id.empty()) {
       return cookbook::PrepareStationInfo(station);
     }
     else {
@@ -52,11 +52,11 @@ string GetMeteoAction::PrepareResponse(URIParser parsed_uri, DatabaseContext db_
   // api: /meteo
   if (path_segments.size() == 1) {
     auto stations = database_handler.GetStations();
-    std::vector<common::entity::Station> stations_with_any_meteo;
+    std::vector<StationData> stations_with_any_meteo;
 
     for (auto it = stations.begin(); it != stations.end(); ++it) {
       unsigned int count = database_handler
-        .CountMeteo(it->uid);
+        .CountMeteo(it->id);
       if (count > 0)
         stations_with_any_meteo.push_back(*it);
     }

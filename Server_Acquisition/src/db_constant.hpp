@@ -13,6 +13,7 @@ const std::string UNIT = "unit";
 const std::string FORMAT = "format";
 const std::string LABELS = "labels";
 const std::string IS_METEO = "is_meteo";
+const std::string TIME_ZONE = "time_zone";
 
 const std::string COLLECTION_METEO = "meteo";
 const std::string COLLECTION_STATION = "station";
