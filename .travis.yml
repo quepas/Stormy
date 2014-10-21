@@ -28,7 +28,9 @@ install:
   # Poco Library
   #- sudo apt-get install -qq libpoco-dev
   # Boost Library
-  - sudo apt-get install boost1.55
+  - sudo apt-get install -qq boost1.55
+  # JsonCpp Library
+  - sudo apt-get install -qq libjsoncpp-dev
 
 before_script: cmake CMakeLists.txt
 

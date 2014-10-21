@@ -6,7 +6,7 @@
 #include "entity_measurement.h"
 #include "entity_metrics.h"
 
-//#include <json/json.h>
+#include <jsoncpp/json/json.h>
 #include <ctime>
 #include <string>
 #include <map>
@@ -53,7 +53,7 @@ std::string PrepareStationPeriodStartTimes(const std::vector<std::tm>& start_tim
 // api: /info
 std::string PrepareServerInfo(std::string name, std::string type, std::string timezone);
 
-//std::string ToStyledString(const Json::Value& value);
+std::string ToStyledString(const Json::Value& value);
 
 }}}}
 // ~~ stormy::common::rest::cookbook
