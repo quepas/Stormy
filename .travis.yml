@@ -27,7 +27,7 @@ install:
   # Poco Library
   #- sudo apt-get install -qq libpoco-dev
   # Boost Library
-  - sudo apt-get install -qq libboost-all-dev
+  - sudo apt-get install -qq "libboost1.54-dev"
 
 before_script: cmake CMakeLists.txt
 
