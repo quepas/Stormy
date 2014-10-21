@@ -5,8 +5,8 @@
 #include "entity_station.h"
 #include "entity_measurement.h"
 #include "entity_metrics.h"
-
-#include <json/json.h>
+/*
+//#include <json/json.h>
 #include <ctime>
 #include <string>
 #include <map>
@@ -18,7 +18,7 @@ namespace stormy {
       namespace cookbook {
 
 std::string PrepareError(
-  std::string error = "Bad request", 
+  std::string error = "Bad request",
   std::string msg = "");
 
 // api: /station
@@ -55,5 +55,5 @@ std::string PrepareServerInfo(std::string name, std::string type, std::string ti
 
 std::string ToStyledString(const Json::Value& value);
 
-}}}}
+}}}}*/
 // ~~ stormy::common::rest::cookbook

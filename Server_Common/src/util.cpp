@@ -1,5 +1,5 @@
 #include "common/util.h"
-
+/*
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
@@ -133,7 +133,7 @@ time_t LocaltimeNow()
 
 time_t MakeUTCIfPossible(time_t time)
 {
-  // TODO: fix this  
+  // TODO: fix this
   return (time > 3600) ? (time - 3600) : time;
 }
 
@@ -166,5 +166,5 @@ int HoursToSeconds(unsigned int hours)
   return hours * 3600;
 }
 
-}}
+}}*/
 // ~~ stormy::common::util

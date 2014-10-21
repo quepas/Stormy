@@ -1,5 +1,5 @@
 #include "common/rest_uri_parser.h"
-
+/*
 #include <boost/algorithm/string.hpp>
 
 using std::string;
@@ -34,7 +34,7 @@ vector<string> URIParser::getPathSegments()
 }
 
 map<string, string> URIParser::getQuerySegments()
-{  
+{
   auto segments = vector<string>();
   auto parameters_with_values = vector<string>();
   auto query_segments = map<string, string>();
@@ -58,5 +58,5 @@ map<string, string> URIParser::getQuerySegments()
   return query_segments;
 }
 
-}}}
+}}}*/
 // ~~ stormy::common::rest::URIParser

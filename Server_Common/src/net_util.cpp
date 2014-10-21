@@ -1,5 +1,5 @@
 #include "common/net_util.hpp"
-
+/*
 #include <Poco/Exception.h>
 #include <Poco/Logger.h>
 #include <Poco/URI.h>
@@ -53,5 +53,5 @@ string PrepareHttpUrl(const string& host, unsigned port, const string& resource)
   return "http://" + host + ":" + to_string(port) + PrepareUrlResource(resource);
 }
 
-}}
+}}*/
 // ~~ stormy::net::

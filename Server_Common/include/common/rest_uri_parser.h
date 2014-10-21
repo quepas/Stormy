@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include <string>
 #include <vector>
 #include <map>
@@ -24,5 +24,5 @@ private:
   Poco::URI uri_;
 };
 
-}}}
+}}}*/
 // ~~ stormy::common::rest::URIParser

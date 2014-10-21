@@ -1,7 +1,7 @@
 #include "common/rest_cookbook.h"
 #include "common/util.h"
 #include "common/rest_constant.h"
-
+/*
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <json/writer.h>
@@ -23,8 +23,9 @@ namespace stormy {
       namespace cookbook {
 
 string PrepareError(
-  string error /*= "Bad request"*/, 
-  string msg   /*= ""*/ )
+  string error /*= "Bad request"*///,
+  //string msg   /*= ""*/ )
+  /*
 {
   Json::Value root;
   root[constant::ERROR_] = error;
@@ -112,7 +113,7 @@ string PrepareMeteoElementDetails(const MeteoElement& metrics)
   /*root[constant::UNIT] = metrics.unit;
   root[constant::FORMAT] = metrics.format;
   root[constant::IS_METEO] = metrics.is_meteo;*/
-
+/*
   for (unsigned idx = 0; idx < metrics.labels.size(); ++idx) {
     root[constant::LABELS][idx] = metrics.labels[idx];
   }
@@ -157,3 +158,4 @@ string PrepareStationPeriodStartTimes(
 
 // ~~ stormy::common::rest::cookbook
 }}}}
+*/

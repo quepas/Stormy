@@ -14,7 +14,7 @@ struct Measurement
   std::string station_uid;
   std::string value_text;
   double value_number;
-  std::tm timestamp;
+  tm timestamp;
 
   // non-entity fields
   bool is_numeric;

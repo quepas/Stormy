@@ -1,5 +1,5 @@
 #include "common/db_expiration_task.h"
-
+/*
 using Poco::Logger;
 
 namespace stormy {
@@ -11,7 +11,7 @@ Task::Task(HasDataExpiration& database_handler)
   : logger_(Logger::get("expiration/task")),
     database_handler_(database_handler)
 {
-  
+
 }
 
 Task::~Task()
@@ -25,4 +25,4 @@ void Task::run()
   logger_.information("[expiration/task] Job finished.");
 }
 // ~~ stormy::common::db::expiration::Task
-}}}}
+}}}}*/

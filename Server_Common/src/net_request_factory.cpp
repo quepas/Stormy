@@ -1,4 +1,4 @@
-#include "net_request_factory.hpp"
+#include "common/net_request_factory.hpp"
 
 namespace stormy {
   namespace net {

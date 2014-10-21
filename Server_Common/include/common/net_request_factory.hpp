@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include <Poco/Logger.h>
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPRequestHandlerFactory.h>
@@ -26,4 +26,4 @@ private:
 };
 
 }}
-// ~~ stormy::net::RequestFactory
+// ~~ stormy::net::RequestFactory*/
