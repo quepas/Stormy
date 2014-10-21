@@ -112,7 +112,7 @@ string ExtractMD5(string text)
 string ExtractURIEndPathSegment(string URI)
 {
   if(URI.empty()) return "";
-  if(Last<char>(URI) == '/') URI.pop_back();
+  if(Last<char>(URI) == '/') {}//URI.pop_back();
   vector<string> splitted;
   split(splitted, URI, is_any_of("/"));
   return Last<string>(splitted);
