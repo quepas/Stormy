@@ -1,11 +1,11 @@
 #include "common/util.h"
-/*
+
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
-#include <Poco/MD5Engine.h>
+/*#include <Poco/MD5Engine.h>
 #include <Poco/NumberFormatter.h>
-#include <Poco/NumberParser.h>
+#include <Poco/NumberParser.h>*/
 #include <typeinfo>
 #include <cctype>
 
@@ -19,11 +19,10 @@ using boost::regex_match;
 using boost::smatch;
 using boost::to_lower;
 using std::string;
-using std::to_string;
 using std::vector;
 using std::isdigit;
-using Poco::NumberParser;
-using Poco::MD5Engine;
+/*using Poco::NumberParser;
+using Poco::MD5Engine;*/
 
 namespace stormy {
   namespace common {
@@ -65,7 +64,7 @@ bool TryExtractFirstNumeric(string text, double& out_value)
   regex regex("-?[0-9]+([.][0-9]+)?");
   smatch match;
   if (regex_search(text, match, regex)) {
-    out_value = NumberParser::parseFloat(match[0]);
+    //out_value = NumberParser::parseFloat(match[0]);
     return true;
   }
   out_value = 0.0;
@@ -74,9 +73,9 @@ bool TryExtractFirstNumeric(string text, double& out_value)
 
 string MD5(string text)
 {
-  MD5Engine md5Engine;
-  md5Engine.update(text);
-  return MD5Engine::digestToHex(md5Engine.digest());
+  /*MD5Engine md5Engine;
+  md5Engine.update(text);*/
+  return "";// MD5Engine::digestToHex(md5Engine.digest());
 }
 
 bool IsDate(string date)
@@ -150,15 +149,15 @@ time_t MinutesToMiliseconds(time_t minutes)
 std::string FormatZeroPaddedDay(unsigned short day)
 {
   if (day > 31 || day < 1) return "NA";
-  if (day < 10) return "0" + to_string(day);
-  return to_string(day);
+  if (day < 10) return "0";//to_string(day);
+  return "";//to_string(day);
 }
 
 std::string FormatZeroPaddedMonth(unsigned short month)
 {
   if (month > 12 || month < 1) return "NA";
-  if (month < 10) return "0" + to_string(month);
-  return to_string(month);
+  if (month < 10) return "0";//to_string(month);
+  return "";//to_string(month);
 }
 
 int HoursToSeconds(unsigned int hours)
@@ -166,5 +165,5 @@ int HoursToSeconds(unsigned int hours)
   return hours * 3600;
 }
 
-}}*/
+}}
 // ~~ stormy::common::util

@@ -25,7 +25,9 @@ install:
   # Catch library
   - curl -o ./External_Lib/include/catch.hpp https://raw.githubusercontent.com/philsquared/Catch/master/single_include/catch.hpp
   # Poco Library
-  - sudo apt-get install -qq libpoco-dev
+  #- sudo apt-get install -qq libpoco-dev
+  # Boost Library
+  - sudo apt-get install -qq libboost-all-dev
 
 before_script: cmake CMakeLists.txt
 

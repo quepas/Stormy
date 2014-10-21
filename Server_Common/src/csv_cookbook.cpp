@@ -1,14 +1,14 @@
 #include "common/csv_cookbook.hpp"
 #include "common/rest_constant.h"
-/*
+
 #include <boost/range/algorithm/copy.hpp>
 #include <boost/algorithm/string/join.hpp>
-*/
+
 using namespace stormy::common;
 using namespace stormy::common::rest;
 
-/*using boost::join;
-using boost::copy;*/
+using boost::join;
+using boost::copy;
 using std::back_inserter;
 using std::string;
 using std::map;
@@ -43,9 +43,9 @@ string PrepareMeteo(
       if (!inserted)
         row_parts.push_back(constant::csv_missing_value);
     }
-    //rows.push_back(join(row_parts, constant::csv_delimiter));
+    rows.push_back(join(row_parts, constant::csv_delimiter));
   }
-  return "";//join(rows, constant::csv_new_line);
+  return join(rows, constant::csv_new_line);
 }
 
 string PrepareHeader(const vector<string>& metrics)
@@ -54,8 +54,8 @@ string PrepareHeader(const vector<string>& metrics)
   if (!metrics.empty()) {
     vector<string> metrics_plus_ts;
     metrics_plus_ts.push_back(header);
-    //copy(metrics, back_inserter(metrics_plus_ts));
-    //header = join(metrics_plus_ts, constant::csv_delimiter);
+    copy(metrics, back_inserter(metrics_plus_ts));
+      header = join(metrics_plus_ts, constant::csv_delimiter);
   }
   return header;
 }
