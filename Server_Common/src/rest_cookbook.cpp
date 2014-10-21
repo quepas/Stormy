@@ -51,7 +51,7 @@ string PrepareStationInfo(const StationData& station)
   Json::Value root;
   root[constant::UID] = station.id;
   root[constant::NAME] = station.name;
-  root[constant::UPDATE_TIME] = station.update_time;
+  root[constant::UPDATE_TIME] = static_cast<int>(station.update_time);
   root[constant::URL] = station.url;
   root[constant::TIMEZONE] = station.time_zone;
   return ToStyledString(root);
@@ -70,7 +70,7 @@ string PrepareMeteoTimestamps(const vector<time_t>& timestamps)
 {
   Json::Value root;
   for (unsigned idx = 0; idx < timestamps.size(); ++idx) {
-    root[constant::METEO][idx] = to_string(timestamps[idx]);
+    root[constant::METEO][idx] = std::to_string(timestamps[idx]);
   }
   return ToStyledString(root);
 }
@@ -88,7 +88,7 @@ string PrepareMeteoSets(
       else
         meteo[entry.code] = entry.value_text;
     }
-    meteo[constant::TIMESTAMP] = to_string(it->first);
+    meteo[constant::TIMESTAMP] = std::to_string(it->first);
     root[constant::METEO][idx++] = meteo;
   }
   return ToStyledString(root);
@@ -149,7 +149,7 @@ string PrepareStationPeriodStartTimes(
   for (unsigned idx = 0; idx < start_times.size(); ++idx) {
     tm start_time = start_times[idx];
     time_t timestamp = mktime(&start_time) + 3600;  // as local time!
-    root[constant::AGGREGATE] = to_string(timestamp);
+    root[constant::AGGREGATE] = std::to_string(timestamp);
   }
   return ToStyledString(root);
 }
