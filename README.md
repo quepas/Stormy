@@ -1,7 +1,8 @@
-[![Stories in Ready](https://badge.waffle.io/quepas/Stormy.png?label=ready&title=Ready)](https://waffle.io/quepas/Stormy)
 ![stormy logo](stormy_logo.png)
 
 Acquisition, aggregation, analysis, visualization of weather data.
+
+[![Stories in Ready](https://badge.waffle.io/quepas/Stormy.png?label=ready&title=Ready)](https://waffle.io/quepas/Stormy)
 
 ## Stormy Acquisition Server
 
